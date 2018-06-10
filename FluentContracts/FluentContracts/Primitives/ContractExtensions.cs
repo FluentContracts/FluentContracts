@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace FluentContracts.Primitives
 {
-	public static class GuidContractExtensions
+	public static class ContractExtensions
     {
 	    public static GuidContract Must(
 		    this Guid guidArgument, 

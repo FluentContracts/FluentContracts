@@ -4,51 +4,51 @@ using System.IO;
 namespace FluentContracts
 {
 	internal static class CallerNameLocator
-    {
-	    private const string DefaultFallbackName = "argument";
+	{
+		private const string DefaultFallbackName = "argument";
 
-	    public static string GetNameOrDefault(string filePath, int lineNumber)
-	    {
-		    if (!File.Exists(filePath))
-			    return DefaultFallbackName;
+		public static string GetNameOrDefault(string filePath, int lineNumber)
+		{
+			if (!File.Exists(filePath))
+				return DefaultFallbackName;
 
-		    var fileLines = File.ReadLines(filePath);
-		    var lineIndex = 1;
-		    var foundLine = string.Empty;
+			var fileLines = File.ReadLines(filePath);
+			var lineIndex = 1;
+			var foundLine = string.Empty;
 
-		    foreach (var line in fileLines)
-		    {
-			    if (lineIndex == lineNumber)
-			    {
+			foreach (var line in fileLines)
+			{
+				if (lineIndex == lineNumber)
+				{
 					foundLine = line;
-				    break;
-			    }
+					break;
+				}
 
-			    lineIndex++;
-		    }
+				lineIndex++;
+			}
 
-		    if (string.IsNullOrWhiteSpace(foundLine))
-			    return DefaultFallbackName;
+			if (string.IsNullOrWhiteSpace(foundLine))
+				return DefaultFallbackName;
 
-		    var mustLocation = foundLine.IndexOf("Must()", StringComparison.Ordinal);
+			var mustLocation = foundLine.IndexOf("Must()", StringComparison.Ordinal);
 
-		    if (mustLocation == -1)
-			    return DefaultFallbackName;
+			if (mustLocation == -1)
+				return DefaultFallbackName;
 
-		    var startPosition = 0;
-		    for (var i = mustLocation - 2; i >= 0; i--)
-		    {
-			    if (!char.IsLetter(foundLine[i]))
-			    {
+			var startPosition = 0;
+			for (var i = mustLocation - 2; i >= 0; i--)
+			{
+				if (!char.IsLetter(foundLine[i]))
+				{
 					startPosition = i;
-				    break;
-			    }
-		    }
+					break;
+				}
+			}
 
-		    var name = foundLine.Substring(startPosition,
-			    foundLine.Length - startPosition - (foundLine.Length - mustLocation + 1));
+			var name = foundLine.Substring(startPosition,
+				foundLine.Length - startPosition - (foundLine.Length - mustLocation + 1));
 
-		    return name;
-	    }
-    }
+			return name;
+		}
+	}
 }
