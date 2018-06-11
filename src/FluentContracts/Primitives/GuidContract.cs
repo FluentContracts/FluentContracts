@@ -5,8 +5,10 @@ namespace FluentContracts.Primitives
 {
     public class GuidContract : Contract<Guid>
     {
+        private const string DefaultFallbackName = "Guid argument";
+
         public GuidContract(Guid argument, int lineNumber = 0, string filePath = "")
-            : base(argument, lineNumber, filePath)
+            : base(argument, DefaultFallbackName, lineNumber, filePath)
         {
         }
 
