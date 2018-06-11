@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentContracts", "FluentContracts\FluentContracts.csproj", "{FD57295A-03F3-4E81-BF6D-B7D9342277A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentContracts", "src\FluentContracts\FluentContracts.csproj", "{FD57295A-03F3-4E81-BF6D-B7D9342277A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentContracts.Tests", "FluentContracts.Tests\FluentContracts.Tests.csproj", "{F47F2C48-A557-4F5F-8D2A-6933B671498A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentContracts.Tests", "src\FluentContracts.Tests\FluentContracts.Tests.csproj", "{F47F2C48-A557-4F5F-8D2A-6933B671498A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
