@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/u95t7xsvc94b5whu?svg=true)](https://ci.appveyor.com/project/totollygeek/fluentcontracts)
+
 # FluentContracts
 API for defining argument checking contracts in a fluent manner.
 
