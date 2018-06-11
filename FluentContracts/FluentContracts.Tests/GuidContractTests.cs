@@ -6,28 +6,28 @@ using Xunit;
 
 namespace FluentContracts.Tests
 {
-	public class GuidContractTests
+    public class GuidContractTests
     {
-	    [Fact]
-	    [Trait("Guid Contracts", null)]
-		public void Test_Must_BeEmpty()
-	    {
-			var notEmptyGuid = Guid.NewGuid();
+        [Fact]
+        [Trait("Guid Contracts", null)]
+        public void Test_Must_BeEmpty()
+        {
+            var notEmptyGuid = Guid.NewGuid();
 
-		    Action action = () => notEmptyGuid.Must().BeEmpty();
+            Action action = () => notEmptyGuid.Must().BeEmpty();
 
-		    action.Should().Throw<InvalidArgumentValueException>();
-		}
+            action.Should().Throw<InvalidArgumentValueException>();
+        }
 
-		[Fact]
-		[Trait("Guid Contracts", null)]
-		public void Test_Invalid_Must_BeEmpty()
-	    {
-		    var emptyGuid = Guid.Empty;
+        [Fact]
+        [Trait("Guid Contracts", null)]
+        public void Test_Invalid_Must_BeEmpty()
+        {
+            var emptyGuid = Guid.Empty;
 
-		    Action action = () => emptyGuid.Must().BeEmpty();
+            Action action = () => emptyGuid.Must().BeEmpty();
 
-		    action.Should().NotThrow();
-	    }
-	}
+            action.Should().NotThrow();
+        }
+    }
 }
