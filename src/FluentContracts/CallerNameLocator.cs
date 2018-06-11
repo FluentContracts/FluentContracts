@@ -5,12 +5,10 @@ namespace FluentContracts
 {
     internal static class CallerNameLocator
     {
-        private const string DefaultFallbackName = "argument";
-
-        public static string GetNameOrDefault(string filePath, int lineNumber)
+        public static string GetNameOrDefault(string filePath, int lineNumber, string defaultFallbackName)
         {
             if (!File.Exists(filePath))
-                return DefaultFallbackName;
+                return defaultFallbackName;
 
             var fileLines = File.ReadLines(filePath);
             var lineIndex = 1;
@@ -28,12 +26,12 @@ namespace FluentContracts
             }
 
             if (string.IsNullOrWhiteSpace(foundLine))
-                return DefaultFallbackName;
+                return defaultFallbackName;
 
             var mustLocation = foundLine.IndexOf("Must()", StringComparison.Ordinal);
 
             if (mustLocation == -1)
-                return DefaultFallbackName;
+                return defaultFallbackName;
 
             var startPosition = 0;
             for (var i = mustLocation - 2; i >= 0; i--)
