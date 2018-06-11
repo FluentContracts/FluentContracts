@@ -9,7 +9,7 @@
     <Company>www.todorov.bg</Company>
     <Description>API for contract validation using fluent style.</Description>
     <Copyright>Copyright Todor Todorov 2018</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
