@@ -1,7 +1,9 @@
 version: 0.0.1.{build}
 pull_requests:
   do_not_increment_build_number: true
-image: Visual Studio 2017
+image:
+- Visual Studio 2017
+- Visual Studio 2017 Preview
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -16,4 +18,5 @@ environment:
 before_build:
 - cmd: dotnet restore
 build:
+  parallel: true
   verbosity: minimal
