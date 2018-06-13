@@ -21,3 +21,7 @@ This is just getting started so I need some help. If you are interested in helpi
 - [Facebook](https://www.facebook.com/totollygeek/)
 
 or just send a pull request, open an issue, etc.
+
+# Credits
+
+Icon made by [IconMonk](https://www.flaticon.com/authors/icon-monk) from [Flaticon](https://www.flaticon.com) 
