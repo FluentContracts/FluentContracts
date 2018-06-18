@@ -5,6 +5,14 @@ namespace FluentContracts
 {
     internal static class CallerNameLocator
     {
+        /// <summary>
+        /// Getting the name of the caller using the source code. This won't work when code is released.
+        /// Using that until MS implement CallerExpressionArgument attribute in C# 8. Then we replace it.
+        /// </summary>
+        /// <param name="filePath">Path to the *.cs file where the method is called</param>
+        /// <param name="lineNumber">Line number in the source file</param>
+        /// <param name="defaultFallbackName">Default fallback name of the argument, when not found</param>
+        /// <returns>Name of the caller argument</returns>
         public static string GetNameOrDefault(string filePath, int lineNumber, string defaultFallbackName)
         {
             if (!File.Exists(filePath))

@@ -1,4 +1,6 @@
-﻿namespace FluentContracts
+﻿using System;
+
+namespace FluentContracts
 {
     public abstract class Contract<T>
     {
@@ -10,5 +12,14 @@
 
         protected T Argument { get; }
         protected string CallerName { get; }
+
+        public void Satisfy(Func<T, bool> customCondition)
+        {
+            if (customCondition(Argument)) return;
+
+            ThrowHelper.ThrowInvalidArgumentConditionNotSatisfiedException(
+                CallerName, 
+                $"Condition for argument {CallerName} was not satisfied");
+        }
     }
 }
