@@ -12,34 +12,43 @@ namespace FluentContracts.Primitives
         {
         }
 
-        public void NotBeEmpty()
+        private Linker<GuidContract> _linker;
+        protected Linker<GuidContract> Linker => _linker ?? (_linker = new Linker<GuidContract>(this));
+
+        public Linker<GuidContract> NotBeEmpty()
         {
             Validator.CheckSpecificValue(Argument != Guid.Empty, CallerName);
+            return Linker;
         }
 
-        public void BeEmpty()
+        public Linker<GuidContract> BeEmpty()
         {
             Validator.CheckSpecificValue(Argument == Guid.Empty, CallerName);
+            return Linker;
         }
 
-        public void Be(Guid expectedValue)
+        public Linker<GuidContract> Be(Guid expectedValue)
         {
             Validator.CheckSpecificValue(Argument == expectedValue, CallerName);
+            return Linker;
         }
 
-        public void NotBe(Guid expectedValue)
+        public Linker<GuidContract> NotBe(Guid expectedValue)
         {
             Validator.CheckSpecificValue(Argument != expectedValue, CallerName);
+            return Linker;
         }
 
-        public void BeAnyOf(params Guid[] expectedValues)
+        public Linker<GuidContract> BeAnyOf(params Guid[] expectedValues)
         {
             Validator.CheckOutOfRange(expectedValues.Any(g => g == Argument), CallerName);
+            return Linker;
         }
 
-        public void NotBeAnyOf(params Guid[] expectedValues)
+        public Linker<GuidContract> NotBeAnyOf(params Guid[] expectedValues)
         {
             Validator.CheckOutOfRange(expectedValues.All(g => g != Argument), CallerName);
+            return Linker;
         }
     }
 }
