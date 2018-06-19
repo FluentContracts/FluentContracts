@@ -3,6 +3,8 @@ pull_requests:
   do_not_increment_build_number: true
 image:
 - Visual Studio 2017
+configuration: Release
+platform: Any CPU
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -21,6 +23,7 @@ before_build:
 build:
   parallel: true
   verbosity: minimal
+  publish_nuget: true
 artifacts:
 - path: '**\*.nupkg'
   name: NuGet
