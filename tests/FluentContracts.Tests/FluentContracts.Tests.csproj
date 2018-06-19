@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentContracts\FluentContracts.csproj" />
+    <ProjectReference Include="..\..\src\FluentContracts\FluentContracts.csproj" />
   </ItemGroup>
 
 </Project>

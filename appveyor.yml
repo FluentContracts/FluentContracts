@@ -15,6 +15,10 @@ dotnet_csproj:
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+nuget:
+  account_feed: true
+  project_feed: true
+  disable_publish_on_pr: true
 before_build:
 - cmd: dotnet restore
 build:
@@ -24,3 +28,5 @@ deploy:
 - provider: NuGet
   api_key:
     secure: dtdKRChf20EyrxeGeMgNxa2847UCfg0GTazdFR3rge+avmfue97QDREoaoXCSXI2
+  skip_symbols: false
+  artifact: /.*\.nupkg/
