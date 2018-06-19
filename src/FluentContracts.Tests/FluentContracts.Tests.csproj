@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>C:\GitHub\Repos\fluentcontracts\src\FluentContracts\FluentContracts.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\FluentContracts\FluentContracts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
