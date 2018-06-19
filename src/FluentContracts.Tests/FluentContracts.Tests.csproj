@@ -2,7 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\GitHub\Repos\fluentcontracts\src\FluentContracts\FluentContracts.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\FluentContracts\FluentContracts.snk" Link="FluentContracts.snk" />
+  </ItemGroup>
 
   <ItemGroup>
 	  <PackageReference Include="FluentAssertions" Version="5.3.2" />
