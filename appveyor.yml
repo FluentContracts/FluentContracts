@@ -1,4 +1,4 @@
-version: 0.0.1-Alpha ({build})
+version: 0.0.1.{build}-Alpha
 pull_requests:
   do_not_increment_build_number: true
 image:
@@ -29,5 +29,7 @@ deploy:
 - provider: NuGet
   api_key:
     secure: dtdKRChf20EyrxeGeMgNxa2847UCfg0GTazdFR3rge+avmfue97QDREoaoXCSXI2
+  on:
+    branch: master
   skip_symbols: false
   artifact: /.*\.nupkg/
