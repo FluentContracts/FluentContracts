@@ -8,9 +8,9 @@ dotnet_csproj:
   file: '**\*.csproj'
   version: '{version}'
   package_version: '{version}'
-  assembly_version: '{version}'
-  file_version: '{version}'
-  informational_version: '{version}'
+  assembly_version: '0.0.1.{build}'
+  file_version: '0.0.1.{build}'
+  informational_version: '0.0.1.{build}'
 environment:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
