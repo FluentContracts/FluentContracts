@@ -2,17 +2,13 @@
 
 namespace FluentContracts.Primitives
 {
-    public class StringContract : Contract<string>
+    public class StringContract(string argument, int lineNumber = 0, string filePath = "")
+        : Contract<string>(argument, DefaultFallbackName, lineNumber, filePath)
     {
         private const string DefaultFallbackName = "String argument";
 
-        public StringContract(string argument, int lineNumber = 0, string filePath = "")
-            : base(argument, DefaultFallbackName, lineNumber, filePath)
-        {
-        }
-
-        private Linker<StringContract> _linker;
-        protected Linker<StringContract> Linker => _linker ?? (_linker = new Linker<StringContract>(this));
+        private Linker<StringContract>? _linker;
+        private Linker<StringContract> Linker => _linker ??= new Linker<StringContract>(this);
 
         public Linker<StringContract> NotBeNull()
         {

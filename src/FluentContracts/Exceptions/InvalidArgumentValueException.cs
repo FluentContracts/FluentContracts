@@ -5,7 +5,7 @@ namespace FluentContracts.Exceptions
 {
     public class InvalidArgumentValueException : ArgumentException
     {
-        public InvalidArgumentValueException(string message)
+        public InvalidArgumentValueException(string? message)
             : base(message)
         {
         }
@@ -15,12 +15,12 @@ namespace FluentContracts.Exceptions
         {
         }
 
-        public InvalidArgumentValueException(string paramName, string message)
+        public InvalidArgumentValueException(string paramName, string? message)
             : base(message, paramName)
         {
         }
 
-        public InvalidArgumentValueException(string paramName, string message, Exception innerException)
+        public InvalidArgumentValueException(string paramName, string? message, Exception innerException)
             : base(message, paramName, innerException)
         {
         }

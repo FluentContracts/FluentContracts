@@ -3,17 +3,13 @@ using System.Linq;
 
 namespace FluentContracts.Primitives
 {
-    public class GuidContract : Contract<Guid>
+    public class GuidContract(Guid argument, int lineNumber = 0, string filePath = "")
+        : Contract<Guid>(argument, DefaultFallbackName, lineNumber, filePath)
     {
         private const string DefaultFallbackName = "Guid argument";
 
-        public GuidContract(Guid argument, int lineNumber = 0, string filePath = "")
-            : base(argument, DefaultFallbackName, lineNumber, filePath)
-        {
-        }
-
-        private Linker<GuidContract> _linker;
-        protected Linker<GuidContract> Linker => _linker ?? (_linker = new Linker<GuidContract>(this));
+        private Linker<GuidContract>? _linker;
+        private Linker<GuidContract> Linker => _linker ??= new Linker<GuidContract>(this);
 
         public Linker<GuidContract> NotBeEmpty()
         {
