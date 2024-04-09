@@ -5,22 +5,22 @@ namespace FluentContracts.Exceptions
 {
     public class ArgumentConditionNotSatisfiedException : ArgumentException
     {
-        public ArgumentConditionNotSatisfiedException(string message)
+        public ArgumentConditionNotSatisfiedException(string? message)
             : base(message)
         {
         }
 
-        public ArgumentConditionNotSatisfiedException(string message, Exception innerException)
+        public ArgumentConditionNotSatisfiedException(string? message, Exception innerException)
             : base(message, innerException)
         {
         }
 
-        public ArgumentConditionNotSatisfiedException(string paramName, string message)
+        public ArgumentConditionNotSatisfiedException(string? paramName, string? message)
             : base(message, paramName)
         {
         }
 
-        public ArgumentConditionNotSatisfiedException(string paramName, string message, Exception innerException)
+        public ArgumentConditionNotSatisfiedException(string? paramName, string? message, Exception innerException)
             : base(message, paramName, innerException)
         {
         }

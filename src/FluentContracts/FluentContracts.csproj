@@ -1,17 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
+    <!--General-->
+    <PropertyGroup>
+        <TargetFrameworks>net47;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyVersion>0.0.0.1</AssemblyVersion>
-    <FileVersion>0.0.0.1</FileVersion>
-    <Version>0.0.1-Alpha</Version>
-    <Authors>Todor Todorov</Authors>
-    <Company>www.todorov.bg</Company>
-    <Description>API for contract validation using fluent style.</Description>
-    <Copyright>Copyright Todor Todorov 2018</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>FluentContracts.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+    <!--Package-->
+    <PropertyGroup>
+        <Title>Fluent Contracts</Title>
+        <PackageId>FluentContracts</PackageId>
+        <PackageTags>fluent contracts</PackageTags>
+        <Product>FluentContracts</Product>
+        <Copyright>Copyright (c) $([System.DateTime]::Now.Year) Todor Todorov</Copyright>
+        <Authors>Todor Todorov (a.k.a. totollygeek)</Authors>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://fluentcontracts.github.io</PackageProjectUrl>
+        <Description>API for contract validation using fluent style.</Description>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <!--<PackageIcon>icon.png</PackageIcon>-->
 
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+        <PackageVersion Condition="'$(VersionPrerelease)' == ''">
+            $(VersionMajor).$(VersionMinor).$(VersionPatch)</PackageVersion>
+        <PackageVersion Condition="'$(VersionPrerelease)' != ''">
+            $(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionPrerelease)</PackageVersion>
+    </PropertyGroup>
 </Project>
