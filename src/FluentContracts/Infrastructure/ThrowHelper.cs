@@ -1,8 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using FluentContracts.Exceptions;
 
-namespace FluentContracts
+namespace FluentContracts.Infrastructure
 {
     internal static class ThrowHelper
     {

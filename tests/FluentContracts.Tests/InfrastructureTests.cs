@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using FluentContracts.Exceptions;
-using FluentContracts.Primitives;
 using Xunit;
 
 namespace FluentContracts.Tests

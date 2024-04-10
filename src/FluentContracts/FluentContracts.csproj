@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <!--General-->
     <PropertyGroup>
-        <TargetFrameworks>net47;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -30,4 +30,7 @@
         <PackageVersion Condition="'$(VersionPrerelease)' != ''">
             $(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionPrerelease)</PackageVersion>
     </PropertyGroup>
+    <ItemGroup>
+      <Folder Include="Extensions\" />
+    </ItemGroup>
 </Project>
