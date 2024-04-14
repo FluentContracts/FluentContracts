@@ -25,7 +25,7 @@ using Nuke.Components;
     PublishArtifacts = false,
     InvokedTargets = [nameof(ITest.Test), nameof(IPack.Pack)])]
 [GitHubActions(
-    "main-release",
+    "master-release",
     GitHubActionsImage.UbuntuLatest,
     FetchDepth = 0,
     OnPushBranches = [MasterBranch],
