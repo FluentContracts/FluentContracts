@@ -6,40 +6,16 @@ namespace FluentContracts.Contracts
         : Contract<Guid?>(argumentValue, argumentName ?? DefaultFallbackName)
     {
         private const string DefaultFallbackName = "Guid argument";
-
-        public Linker<Guid?> NotBeEmpty()
+        
+        public Linker<Guid?> BeEmpty(string? message = null)
         {
-            Validator.CheckNotForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName);
+            Validator.CheckForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
             return Linker;
         }
-
-        public Linker<Guid?> BeEmpty()
+        
+        public Linker<Guid?> NotBeEmpty(string? message = null)
         {
-            Validator.CheckForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName);
-            return Linker;
-        }
-
-        public Linker<Guid?> Be(Guid expectedValue)
-        {
-            Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName);
-            return Linker;
-        }
-
-        public Linker<Guid?> NotBe(Guid expectedValue)
-        {
-            Validator.CheckNotForSpecificValue(expectedValue, ArgumentValue, ArgumentName);
-            return Linker;
-        }
-
-        public Linker<Guid?> BeAnyOf(params Guid?[] expectedValues)
-        {
-            Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName);
-            return Linker;
-        }
-
-        public Linker<Guid?> NotBeAnyOf(params Guid?[] expectedValues)
-        {
-            Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName);
+            Validator.CheckForNotSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
             return Linker;
         }
     }
