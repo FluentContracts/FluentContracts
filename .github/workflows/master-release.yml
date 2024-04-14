@@ -9,12 +9,12 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_main-release --host GitHubActions
+#         nuke --generate-configuration GitHubActions_master-release --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: main-release
+name: master-release
 
 on:
   push:
