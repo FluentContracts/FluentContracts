@@ -18,9 +18,9 @@
             ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
         
-        public static void CheckNotForAnyOf<T>(IEnumerable<T> values, T argumentValue, string argumentName, string? message = null)
+        public static void CheckForNotAnyOf<T>(IEnumerable<T> values, T argumentValue, string argumentName, string? message = null)
         {
-            if (values.Any(v => !EqualityComparer<T>.Default.Equals(v, argumentValue))) return;
+            if (values.All(v => !EqualityComparer<T>.Default.Equals(v, argumentValue))) return;
 
             ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
@@ -29,28 +29,28 @@
         {
             if (EqualityComparer<T>.Default.Equals(value, argumentValue)) return;
 
-            ThrowHelper.ThrowInvalidArgumentValueException(argumentName, message);
+            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
         
-        public static void CheckNotForSpecificValue<T>(T value, T argumentValue, string argumentName, string? message = null)
+        public static void CheckForNotSpecificValue<T>(T value, T argumentValue, string argumentName, string? message = null)
         {
             if (!EqualityComparer<T>.Default.Equals(value, argumentValue)) return;
 
-            ThrowHelper.ThrowInvalidArgumentValueException(argumentName, message);
+            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
 
         public static void CheckForNotNull<T>(T value, string argumentName, string? message = null)
         {
             if (value != null) return;
 
-            ThrowHelper.ThrowInvalidArgumentValueException(argumentName, message);
+            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
         
         public static void CheckForNull<T>(T value, string argumentName, string? message = null)
         {
             if (value == null) return;
 
-            ThrowHelper.ThrowInvalidArgumentValueException(argumentName, message);
+            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
     }
 }

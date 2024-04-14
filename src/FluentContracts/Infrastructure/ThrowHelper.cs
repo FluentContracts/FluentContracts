@@ -12,12 +12,6 @@ namespace FluentContracts.Infrastructure
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void ThrowInvalidArgumentValueException(string argumentName, string? message = null)
-        {
-            throw new InvalidArgumentValueException(argumentName, message);
-        }
-
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void ThrowInvalidArgumentConditionNotSatisfiedException(string argumentName, string? message = null)
         {
             throw new ArgumentConditionNotSatisfiedException(argumentName, message);

@@ -1,16 +1,14 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/u95t7xsvc94b5whu?svg=true)](https://ci.appveyor.com/project/totollygeek/fluentcontracts)
-
 # FluentContracts
 API for defining argument checking contracts in a fluent manner.
 
 Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentassertions)
 
-# Building
-
-Clone or fork the repo:
-> `git clone https://github.com/totollygeek/fluentcontracts.git`
-
-Open *FluentContracts.sln* in Visual Studio 2017. Build.
+# Build
+| Builds                                                                                                                                                                                        |
+|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![Dev Linux](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux?branch=dev&style=for-the-badge&logo=linux&logoColor=white&label=linux)](https://github.com/totollygeek/FluentContracts/actions)                                                                                                                                    |
+| [![Dev Windows](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux?branch=dev&style=for-the-badge&logo=windows10&logoColor=white&label=windows)](https://github.com/totollygeek/FluentContracts/actions)                                                                                                                                    |
+| [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux?branch=dev&style=for-the-badge&logo=apple&logoColor=white&label=macos)](https://github.com/totollygeek/FluentContracts/actions)                                                                                                                                    |
 
 # Help needed
 
