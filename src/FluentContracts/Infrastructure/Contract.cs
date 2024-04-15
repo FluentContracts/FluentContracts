@@ -8,9 +8,9 @@
         protected T? ArgumentValue { get; } = argumentValue;
         protected string ArgumentName { get; } = argumentName;
         
-        public Linker<T> NotBeNull()
+        public Linker<T> NotBeNull(string? message = null)
         {
-            Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+            Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
             return Linker;
         }
 

@@ -3,12 +3,95 @@ using FluentAssertions;
 using FluentContracts.Tests.TestAttributes;
 using FluentContracts.Tests.Utils;
 using Xunit;
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace FluentContracts.Tests
 {
     [ContractTest("String")]
     public class StringContractTests
     {
+         [Fact]
+        public void Test_Must_BeNull_Satisfied()
+        {
+            string nullString = null;
+
+            var action = 
+                () => nullString.Must().BeNull();
+
+            action.Should().NotThrow();
+        }
+        
+        [Fact]
+        public void Test_Must_BeNull_Throwing()
+        {
+            var notNullString = DummyData.GetRandomString();
+
+            var action = 
+                () => notNullString.Must().BeNull();
+
+            action
+                .Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithParameterName(nameof(notNullString));
+        }
+        
+        [Fact]
+        public void Test_Must_BeNull_Throwing_With_Message()
+        {
+            var notNullString = DummyData.GetRandomString();
+            var expectedError = DummyData.GetRandomErrorMessage(nameof(notNullString));
+
+            var action = 
+                () => notNullString.Must().BeNull(expectedError.Message);
+
+            action
+                .Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithParameterName(nameof(notNullString))
+                .WithMessage(expectedError.ExceptionMessage);
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Satisfied()
+        {
+            var notNullString = DummyData.GetRandomString();
+
+            var action = 
+                () => notNullString.Must().NotBeNull();
+
+            action.Should().NotThrow();
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Throwing()
+        {
+            string nullString = null;
+
+            var action = 
+                () => nullString.Must().NotBeNull();
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithParameterName(nameof(nullString));
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Throwing_With_Message()
+        {
+            string nullString = null;
+            var expectedError = DummyData.GetRandomErrorMessage(nameof(nullString));
+
+            var action = 
+                () => nullString.Must().NotBeNull(expectedError.Message);
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithParameterName(nameof(nullString))
+                .WithMessage(expectedError.ExceptionMessage);
+        }
+        
         [Fact]
         public void Test_Must_BeEmpty_Satisfied()
         {

@@ -43,7 +43,7 @@
         {
             if (value != null) return;
 
-            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+            ThrowHelper.ThrowArgumentNullException(argumentName, message);
         }
         
         public static void CheckForNull<T>(T value, string argumentName, string? message = null)
