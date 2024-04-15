@@ -7,6 +7,7 @@ using Nuke.Common.CI.GitHubActions;
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
+    ImportSecrets = [nameof(CoverallRepoKey)],
     InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-windows",
@@ -14,6 +15,7 @@ using Nuke.Common.CI.GitHubActions;
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
+    ImportSecrets = [nameof(CoverallRepoKey)],
     InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-macos",
@@ -21,6 +23,7 @@ using Nuke.Common.CI.GitHubActions;
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
+    ImportSecrets = [nameof(CoverallRepoKey)],
     InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "master-release",
