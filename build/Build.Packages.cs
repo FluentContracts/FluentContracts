@@ -1,23 +1,33 @@
+using System.Collections.Generic;
 using Nuke.Common;
+using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
-using Nuke.Components;
+using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable AllUnderscoreLocalParameterName
-partial class Build : IPublish
+partial class Build
 {
-    string IPublish.NuGetSource => "https://api.nuget.org/v3/index.json";
-    string IPublish.NuGetApiKey => PublicNuGetApiKey;
-
-    Configure<DotNetPublishSettings> ICompile.PublishSettings => _ => _
-        .When(!ScheduledTargets.Contains(((IPublish)this).Publish) , _ => _
-            .ClearProperties());
-
-    // ReSharper disable once InconsistentNaming
-    [Parameter] [Secret] readonly string PublicNuGetApiKey;
+    [Parameter] string NuGetSource = "https://api.nuget.org/v3/index.json";
+    [Parameter] [Secret] string NuGetApiKey;
     
-    Target IPublish.Publish => _ => _
-        .Inherit<IPublish>()
-        .Consumes(From<IPack>().Pack)
-        .WhenSkipped(DependencyBehavior.Execute);
+    IEnumerable<AbsolutePath> PushPackageFiles => PackagesDirectory.GlobFiles("*.nupkg");
+
+    bool PushCompleteOnFailure => true;
+    int PushDegreeOfParallelism => 5;
+    
+    Target Publish => _ => _
+        .DependsOn(Test, Pack)
+        .Requires(() => NuGetApiKey)
+        .Executes(() =>
+        {
+            DotNetNuGetPush(_ => _
+                    .SetSource(NuGetSource)
+                    .SetApiKey(NuGetApiKey)
+                    .CombineWith(PushPackageFiles, (_, v) => _
+                        .SetTargetPath(v)),
+                PushDegreeOfParallelism,
+                PushCompleteOnFailure);
+        });
 }

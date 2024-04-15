@@ -39,7 +39,7 @@ jobs:
       - name: 'Run: Test, Pack, Publish'
         run: ./build.cmd Test Pack Publish
         env:
-          PublicNuGetApiKey: ${{ secrets.PUBLIC_NUGET_API_KEY }}
+          NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Publish: test-results'
         uses: actions/upload-artifact@v3

@@ -1,7 +1,5 @@
-
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
-using Nuke.Components;
 
 [GitHubActions(
     "dev-linux",
@@ -9,21 +7,21 @@ using Nuke.Components;
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    InvokedTargets = [nameof(ITest.Test), nameof(IPack.Pack)])]
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-windows",
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    InvokedTargets = [nameof(ITest.Test), nameof(IPack.Pack)])]
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-macos",
     GitHubActionsImage.MacOsLatest,
     OnPushBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    InvokedTargets = [nameof(ITest.Test), nameof(IPack.Pack)])]
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "master-release",
     GitHubActionsImage.UbuntuLatest,
@@ -31,8 +29,8 @@ using Nuke.Components;
     OnPushBranches = [MasterBranch],
     PublishArtifacts = true,
     EnableGitHubToken = true,
-    InvokedTargets = [nameof(ITest.Test), nameof(IPack.Pack), nameof(IPublish.Publish)],
-    ImportSecrets = [nameof(PublicNuGetApiKey)])]
+    InvokedTargets = [nameof(Test), nameof(Pack), nameof(Publish)],
+    ImportSecrets = [nameof(NuGetApiKey)])]
 partial class Build
 {
     const string MasterBranch = "master";
