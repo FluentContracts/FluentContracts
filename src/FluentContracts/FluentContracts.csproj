@@ -30,7 +30,4 @@
         <PackageVersion Condition="'$(VersionPrerelease)' != ''">
             $(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionPrerelease)</PackageVersion>
     </PropertyGroup>
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
 </Project>

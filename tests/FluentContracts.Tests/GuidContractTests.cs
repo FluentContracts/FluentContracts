@@ -3,12 +3,95 @@ using FluentAssertions;
 using FluentContracts.Tests.TestAttributes;
 using FluentContracts.Tests.Utils;
 using Xunit;
+// ReSharper disable ExpressionIsAlwaysNull
 
 namespace FluentContracts.Tests
 {
     [ContractTest("Guid")]
     public class GuidContractTests
     {
+        [Fact]
+        public void Test_Must_BeNull_Satisfied()
+        {
+            Guid? nullGuid = null;
+
+            var action = 
+                () => nullGuid.Must().BeNull();
+
+            action.Should().NotThrow();
+        }
+        
+        [Fact]
+        public void Test_Must_BeNull_Throwing()
+        {
+            Guid? notNullGuid = Guid.NewGuid();
+
+            var action = 
+                () => notNullGuid.Must().BeNull();
+
+            action
+                .Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithParameterName(nameof(notNullGuid));
+        }
+        
+        [Fact]
+        public void Test_Must_BeNull_Throwing_With_Message()
+        {
+            Guid? notNullGuid = Guid.NewGuid();
+            var expectedError = DummyData.GetRandomErrorMessage(nameof(notNullGuid));
+
+            var action = 
+                () => notNullGuid.Must().BeNull(expectedError.Message);
+
+            action
+                .Should()
+                .Throw<ArgumentOutOfRangeException>()
+                .WithParameterName(nameof(notNullGuid))
+                .WithMessage(expectedError.ExceptionMessage);
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Satisfied()
+        {
+            Guid? notNullGuid = Guid.NewGuid();
+
+            var action = 
+                () => notNullGuid.Must().NotBeNull();
+
+            action.Should().NotThrow();
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Throwing()
+        {
+            Guid? nullGuid = null;
+
+            var action = 
+                () => nullGuid.Must().NotBeNull();
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithParameterName(nameof(nullGuid));
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeNull_Throwing_With_Message()
+        {
+            Guid? nullGuid = null;
+            var expectedError = DummyData.GetRandomErrorMessage(nameof(nullGuid));
+
+            var action = 
+                () => nullGuid.Must().NotBeNull(expectedError.Message);
+
+            action
+                .Should()
+                .Throw<ArgumentNullException>()
+                .WithParameterName(nameof(nullGuid))
+                .WithMessage(expectedError.ExceptionMessage);
+        }
+        
         [Fact]
         public void Test_Must_BeEmpty_Satisfied()
         {
