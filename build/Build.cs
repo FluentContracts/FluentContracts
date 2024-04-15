@@ -1,16 +1,16 @@
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
-using Nuke.Components;
 
+// ReSharper disable InconsistentNaming
 partial class Build : NukeBuild
 {   
-    public static int Main() => Execute<Build>(x => ((IPack)x).Pack);
+    public static int Main() => Execute<Build>(x => x.Pack);
     
-    [Solution(GenerateProjects = true)] readonly Solution Solution;
-    Nuke.Common.ProjectModel.Solution IHazSolution.Solution => Solution;
+    [Parameter] Configuration Configuration = IsLocalBuild ? Configuration.Debug : Configuration.Release;
+    
+    [Solution] readonly Solution Solution;
 
     AbsolutePath OutputDirectory => RootDirectory / "output";
     AbsolutePath SourceDirectory => RootDirectory / "src";
-    AbsolutePath IHazArtifacts.ArtifactsDirectory => RootDirectory / "output";
 }

@@ -1,10 +1,15 @@
+using Nuke.Common;
 using Nuke.Common.Git;
 using Nuke.Common.Tools.GitVersion;
-using Nuke.Components;
 
-partial class Build : IHazGitVersion
+// ReSharper disable InconsistentNaming
+partial class Build
 {
-    GitVersion GitVersion => From<IHazGitVersion>().Versioning;
-    // ReSharper disable once MemberHidesInterfaceMemberWithDefaultImplementation
-    GitRepository GitRepository => From<IHazGitRepository>().GitRepository;
+    [GitRepository] 
+    [Required] 
+    GitRepository GitRepository;
+        
+    [GitVersion(Framework = "net5.0", NoFetch = true)]
+    [Required]
+    GitVersion Versioning;
 }

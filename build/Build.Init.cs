@@ -1,12 +1,11 @@
 using Nuke.Common;
 using Nuke.Common.IO;
-using Nuke.Components;
 
 // ReSharper disable AllUnderscoreLocalParameterName
 partial class Build 
 {
     Target Clean => _ => _
-        .Before<IRestore>()
+        .Before(Restore)
         .Executes(() =>
         {
             SourceDirectory.GlobDirectories("*/bin", "*/obj").DeleteDirectories();

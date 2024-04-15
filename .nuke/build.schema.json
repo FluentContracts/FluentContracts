@@ -6,10 +6,6 @@
     "build": {
       "type": "object",
       "properties": {
-        "CodecovToken": {
-          "type": "string",
-          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
-        },
         "Configuration": {
           "type": "string",
           "enum": [
@@ -20,6 +16,10 @@
         "Continue": {
           "type": "boolean",
           "description": "Indicates to continue a previously failed build attempt"
+        },
+        "CoverallRepoKey": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
         "Help": {
           "type": "boolean",
@@ -46,13 +46,16 @@
             "VSCode"
           ]
         },
-        "IgnoreFailedSources": {
-          "type": "boolean",
-          "description": "Ignore unreachable sources during Restore"
-        },
         "NoLogo": {
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
+        },
+        "NuGetApiKey": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
+        "NuGetSource": {
+          "type": "string"
         },
         "Partition": {
           "type": "string",
@@ -68,10 +71,6 @@
           "items": {
             "type": "string"
           }
-        },
-        "PublicNuGetApiKey": {
-          "type": "string",
-          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
         "Root": {
           "type": "string",
