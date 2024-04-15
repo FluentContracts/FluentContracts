@@ -10,7 +10,6 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 |     Dev      | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
 |     Dev      | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                      |
 |     Dev      | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
-| Code Quality | [![Qodana](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/code-quality.yml?branch=dev&style=for-the-badge&logo=csharp&logoColor=white&label=Qodana)](https://github.com/totollygeek/FluentContracts/actions)                |
 |   Release    | [![Release](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/totollygeek/FluentContracts/actions) |
 
 
