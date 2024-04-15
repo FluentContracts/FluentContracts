@@ -5,12 +5,13 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 
 # Builds
 
-|    Build     | Status                                                                                                                                                                                                                                                         |
-|:------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|     Dev      | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
-|     Dev      | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                      |
-|     Dev      | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
-|   Release    | [![Release](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/totollygeek/FluentContracts/actions) |
+|     Type      | Status                                                                                                                                                                                                                                                         |
+|:-------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
+|   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                      |
+|   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/totollygeek/FluentContracts/actions)                              |
+| Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/totollygeek/FluentContracts?branch=dev&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/totollygeek/FluentContracts)                                             |
+|    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/totollygeek/FluentContracts/actions) |
 
 
 # Help needed
