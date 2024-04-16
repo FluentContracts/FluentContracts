@@ -29,9 +29,11 @@ partial class Build
             CoverallsNetTasks.CoverallsNet(
                 "--lcov " +
                 "--useRelativePaths " +
+                $"--basePath {RootDirectory} " +
                 $"--input {CoverageReportDirectory / "lcov.info"} " +
                 $"--repoToken {CoverallRepoKey} " +
-                $"--commitBranch {DevelopmentBranch}");
+                $"--commitBranch {DevelopmentBranch} " +
+                $"--commitId {GitRepository.Commit}");
 
             // Commenting until --reportgenerator is part of the settings 
             // CoverallsNetTasks.CoverallsNet(_ => _
