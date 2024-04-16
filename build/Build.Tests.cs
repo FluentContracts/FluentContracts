@@ -35,18 +35,15 @@ partial class Build
                         .SetNoBuild(SucceededTargets.Contains(Compile))
                         .ResetVerbosity()
                         .SetResultsDirectory(TestResultDirectory)
-                        .When(InvokedTargets.Contains(ReportCoverage) || IsServerBuild, _ => _
+                        .When(InvokedTargets.Contains(ReportCoverage), _ => _
                             .EnableCollectCoverage()
                             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                            .SetExcludeByFile("*.Generated.cs")
-                            .SetCoverletOutputFormat(
-                                $"\\\"{CoverletOutputFormat.cobertura},{CoverletOutputFormat.json}\\\"")
                             .When(IsServerBuild, _ => _
                                 .EnableUseSourceLink()))
                         .CombineWith(TestProjects, (_, v) => _
                                 .SetProjectFile(v)
                                 .AddLoggers($"{logger};LogFileName={v.Name}.{logger}")
-                                .When(InvokedTargets.Contains(ReportCoverage) || IsServerBuild, _ => _
+                                .When(InvokedTargets.Contains(ReportCoverage), _ => _
                                     .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"))),
                     completeOnFailure: true,
                     degreeOfParallelism: TestDegreeOfParallelism);
