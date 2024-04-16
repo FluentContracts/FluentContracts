@@ -18,9 +18,9 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 
 This is just getting started so I need some help. If you are interested in helping out just contact me on any of the following:
 
+- [Blog](https://todorov.bg)
 - [Twitter](https://twitter.com/totollygeek/)
 - [LinkedIn](https://www.linkedin.com/in/totollygeek/)
-- [Facebook](https://www.facebook.com/totollygeek/)
 
 or just send a pull request, open an issue, etc.
 
