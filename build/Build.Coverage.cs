@@ -13,9 +13,6 @@ partial class Build
     AbsolutePath ReportDirectory => OutputDirectory / "reports";
     AbsolutePath CoverallsAppPath => OutputDirectory / "coveralls.exe";
     AbsolutePath CoverageReportDirectory => ReportDirectory / "coverage-report";
-    
-    [LocalPath("./output/coveralls.exe")]
-    readonly Tool CoverallsApp;
   
     Target ReportCoverage => _ => _
         .DependsOn(Test)
@@ -35,24 +32,10 @@ partial class Build
                 $"-Uri 'https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe' " +
                 $"-OutFile '{CoverallsAppPath}'\"");
 
-            CoverallsApp($"report " +
+            var coverallsApp = ToolResolver.GetPathTool(CoverallsAppPath);
+            
+            coverallsApp($"report " +
                          $"{CoverageReportDirectory / "lcov.info"} " +
                          $"--repo-token={CoverallRepoKey}");
-
-            // CoverallsNetTasks.CoverallsNet(
-            //     "--lcov " +
-            //     "--useRelativePaths " +
-            //     $"--basePath {RootDirectory} " +
-            //     $"--input {CoverageReportDirectory / "lcov.info"} " +
-            //     $"--repoToken {CoverallRepoKey} " +
-            //     $"--commitBranch {DevelopmentBranch} " +
-            //     $"--commitId {GitRepository.Commit}");
-
-            // Commenting until --reportgenerator is part of the settings 
-            // CoverallsNetTasks.CoverallsNet(_ => _
-            //     .SetRepoToken(CoverallRepoKey)
-            //     .SetCommitBranch(DevelopmentBranch)
-            //     .EnableUserRelativePaths()
-            //     .SetInput(CoverageReportDirectory / "lcov.info"));
         });
 }
