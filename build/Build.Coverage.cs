@@ -1,8 +1,8 @@
 using Nuke.Common;
 using Nuke.Common.IO;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.CoverallsNet;
 using Nuke.Common.Tools.ReportGenerator;
+using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable AllUnderscoreLocalParameterName
@@ -20,15 +20,24 @@ partial class Build
         .Requires(() => CoverallRepoKey)
         .Executes(() =>
         {
-            CoverallsNetTasks.CoverallsNet(_ => _
-                .Apply(CoverallsNetSettings));
+            ReportGenerator(_ => _
+                .SetReports(TestResultDirectory / "*.xml")
+                .AddReportTypes(ReportTypes.Xml, ReportTypes.lcov)
+                .SetTargetDirectory(CoverageReportDirectory)
+                .SetFramework("netcoreapp2.1"));
+            
+            CoverallsNetTasks.CoverallsNet(
+                "--lcov " +
+                "--useRelativePaths " +
+                $"--input {CoverageReportDirectory / "lcov.info"} " +
+                $"--repoToken {CoverallRepoKey} " +
+                $"--commitBranch {DevelopmentBranch}");
+
+            // Commenting until --reportgenerator is part of the settings 
+            // CoverallsNetTasks.CoverallsNet(_ => _
+            //     .SetRepoToken(CoverallRepoKey)
+            //     .SetCommitBranch(DevelopmentBranch)
+            //     .EnableUserRelativePaths()
+            //     .SetInput(CoverageReportDirectory / "lcov.info"));
         });
-
-    public Configure<ReportGeneratorSettings> ReportGeneratorSettings => _ => _
-        .AddReportTypes(ReportTypes.Xml);
-
-    Configure<CoverallsNetSettings> CoverallsNetSettings => _ => _
-        .SetRepoToken(CoverallRepoKey)
-        .SetCommitBranch(DevelopmentBranch)
-        .SetInput(CoverageReportDirectory);
 }
