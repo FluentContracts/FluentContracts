@@ -8,7 +8,7 @@ using Nuke.Common.CI.GitHubActions;
     FetchDepth = 0,
     PublishArtifacts = false,
     ImportSecrets = [nameof(CoverallRepoKey)],
-    InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack)])]
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-windows",
     GitHubActionsImage.WindowsLatest,
@@ -24,7 +24,7 @@ using Nuke.Common.CI.GitHubActions;
     FetchDepth = 0,
     PublishArtifacts = false,
     ImportSecrets = [nameof(CoverallRepoKey)],
-    InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack)])]
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "master-release",
     GitHubActionsImage.UbuntuLatest,
