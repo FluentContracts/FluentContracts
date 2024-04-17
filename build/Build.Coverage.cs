@@ -1,3 +1,4 @@
+using System;
 using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.ReportGenerator;
@@ -29,6 +30,12 @@ partial class Build
                 OutputDirectory.CreateDownloadableTool(
                     "coveralls.exe",
                     "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe");
+
+            if (coverallsApp == null)
+            {
+                Serilog.Log.Error("Coveralls CLI could not be found!");
+                Environment.Exit(1);
+            }
             
             coverallsApp($"report " +
                          $"{CoverageReportDirectory / "lcov.info"} " +

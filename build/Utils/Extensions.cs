@@ -18,17 +18,13 @@ public static class Extensions
         if (toolPath != null)
             return ToolResolver.GetPathTool(toolPath);
 
-        var downloadFileName = Path.GetFileName(downloadUrl);
-        if (string.IsNullOrEmpty(downloadFileName))
-            return null;
-
-        var downloadAbsolutePath = directory / downloadFileName;
+        var downloadAbsolutePath = directory / executableFileName;
 			
         HttpTasks.HttpDownloadFile(
             downloadUrl,
             downloadAbsolutePath);
 
-        if (downloadFileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+        if (executableFileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
         {
             downloadAbsolutePath.UnZipTo(directory);
         }
@@ -45,8 +41,8 @@ public static class Extensions
 
         var directory = toolDirectory / fileNameWithoutExtension;
 
-        toolDirectory.CreateDirectory();
-        return toolDirectory;
+        directory.CreateDirectory();
+        return directory;
     }
     
     private static AbsolutePath TryGetToolAbsolutePath(string executableFileName, AbsolutePath directory)
