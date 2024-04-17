@@ -1,9 +1,8 @@
 using Nuke.Common;
 using Nuke.Common.IO;
-using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
+using Utils;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
-using static Nuke.Common.Tools.PowerShell.PowerShellTasks;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable AllUnderscoreLocalParameterName
@@ -26,16 +25,14 @@ partial class Build
                 .SetTargetDirectory(CoverageReportDirectory)
                 .SetFramework("netcoreapp2.1"));
 
-            PowerShell(
-                $"-Command \"" +
-                $"Invoke-WebRequest " +
-                $"-Uri 'https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe' " +
-                $"-OutFile '{CoverallsAppPath}'\"");
-
-            var coverallsApp = ToolResolver.GetPathTool(CoverallsAppPath);
+            var coverallsApp = 
+                OutputDirectory.CreateDownloadableTool(
+                    "coveralls.exe",
+                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe");
             
             coverallsApp($"report " +
                          $"{CoverageReportDirectory / "lcov.info"} " +
+                         $"--allow-empty " +
                          $"--repo-token={CoverallRepoKey}");
         });
 }
