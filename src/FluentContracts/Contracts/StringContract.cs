@@ -2,10 +2,9 @@
 
 namespace FluentContracts.Contracts
 {
-    public class StringContract(string? argumentValue, string? argumentName = null)
-        : Contract<string?>(argumentValue, argumentName ?? DefaultFallbackName)
+    public class StringContract(string? argumentValue, string argumentName)
+        : Contract<string?>(argumentValue, argumentName)
     {
-        private const string DefaultFallbackName = "String argument";
 
         public Linker<string?> BeEmpty(string? message = null)
         {

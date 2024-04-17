@@ -2,11 +2,9 @@
 
 namespace FluentContracts.Contracts
 {
-    public class GuidContract(Guid? argumentValue, string? argumentName = null)
-        : Contract<Guid?>(argumentValue, argumentName ?? DefaultFallbackName)
+    public class GuidContract(Guid? argumentValue, string argumentName)
+        : Contract<Guid?>(argumentValue, argumentName)
     {
-        private const string DefaultFallbackName = "Guid argument";
-        
         public Linker<Guid?> BeEmpty(string? message = null)
         {
             Validator.CheckForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
