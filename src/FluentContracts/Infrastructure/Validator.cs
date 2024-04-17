@@ -8,7 +8,7 @@
             
             ThrowHelper.ThrowInvalidArgumentConditionNotSatisfiedException(
                 argumentName, 
-                message ?? $"Condition for argument {message} was not satisfied");
+                message ?? $"Condition for argument {argumentName} was not satisfied");
         }
         
         public static void CheckForAnyOf<T>(IEnumerable<T> values, T argumentValue, string argumentName, string? message = null)

@@ -1,6 +1,7 @@
 using System;
 using Nuke.Common;
 using Nuke.Common.IO;
+using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
 using Utils;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
@@ -23,6 +24,8 @@ partial class Build
             ReportGenerator(_ => _
                 .SetReports(TestResultDirectory / "*.xml")
                 .AddReportTypes(ReportTypes.Xml, ReportTypes.lcov)
+                .When(IsLocalBuild, _ => _
+                    .AddReportTypes(ReportTypes.Html))
                 .SetTargetDirectory(CoverageReportDirectory)
                 .SetFramework("netcoreapp2.1"));
 
