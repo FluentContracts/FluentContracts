@@ -37,9 +37,7 @@ partial class Build
                         .SetResultsDirectory(TestResultDirectory)
                         .When(InvokedTargets.Contains(ReportCoverage), _ => _
                             .EnableCollectCoverage()
-                            .SetCoverletOutputFormat(CoverletOutputFormat.cobertura)
-                            .When(IsServerBuild, _ => _
-                                .EnableUseSourceLink()))
+                            .SetCoverletOutputFormat(CoverletOutputFormat.cobertura))
                         .CombineWith(TestProjects, (_, v) => _
                                 .SetProjectFile(v)
                                 .AddLoggers($"{logger};LogFileName={v.Name}.{logger}")
