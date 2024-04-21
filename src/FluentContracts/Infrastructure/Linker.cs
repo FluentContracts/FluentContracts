@@ -1,4 +1,6 @@
-﻿namespace FluentContracts.Infrastructure
+﻿using FluentContracts.Contracts;
+
+namespace FluentContracts.Infrastructure
 {
     /// <summary>
     /// The Linker class is used for chaining contract checks and adding more checks to existing contracts.
@@ -6,7 +8,7 @@
     /// <typeparam name="T">The type of the contract</typeparam>
     public class Linker<T>
     {
-        public Linker(Contract<T> linked)
+        public Linker(BaseContract<T> linked)
         {
             Validator.CheckForNotNull(linked, nameof(linked), "Argument linked cannot be null");
 
@@ -16,6 +18,6 @@
         /// <summary>
         /// Link back to the contract so more checks can be chained in a fluent manner
         /// </summary>
-        public Contract<T> And { get; }
+        public BaseContract<T> And { get; }
     }
 }

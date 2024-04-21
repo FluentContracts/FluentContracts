@@ -1,360 +1,109 @@
 ﻿using System;
-using FluentAssertions;
 using FluentContracts.Tests.TestAttributes;
 using FluentContracts.Tests.Utils;
 using Xunit;
-// ReSharper disable ExpressionIsAlwaysNull
 
 namespace FluentContracts.Tests
 {
     [ContractTest("Guid")]
-    public class GuidContractTests
+    public class GuidContractTests : Tests
     {
         [Fact]
-        public void Test_Must_BeNull_Satisfied()
+        public void Test_Must_BeNull()
         {
-            Guid? nullGuid = null;
-
-            var action = 
-                () => nullGuid.Must().BeNull();
-
-            action.Should().NotThrow();
+            TestContract<Guid?, ArgumentOutOfRangeException>(
+                null,
+                DummyData.GetRandomGuid(),
+                (testArgument, message) => testArgument.Must().BeNull(message),
+                "testArgument");
         }
         
         [Fact]
-        public void Test_Must_BeNull_Throwing()
+        public void Test_Must_NotBeNull()
         {
-            Guid? notNullGuid = Guid.NewGuid();
-
-            var action = 
-                () => notNullGuid.Must().BeNull();
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(notNullGuid));
-        }
-        
-        [Fact]
-        public void Test_Must_BeNull_Throwing_With_Message()
-        {
-            Guid? notNullGuid = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(notNullGuid));
-
-            var action = 
-                () => notNullGuid.Must().BeNull(expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(notNullGuid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-        
-        [Fact]
-        public void Test_Must_NotBeNull_Satisfied()
-        {
-            Guid? notNullGuid = Guid.NewGuid();
-
-            var action = 
-                () => notNullGuid.Must().NotBeNull();
-
-            action.Should().NotThrow();
-        }
-        
-        [Fact]
-        public void Test_Must_NotBeNull_Throwing()
-        {
-            Guid? nullGuid = null;
-
-            var action = 
-                () => nullGuid.Must().NotBeNull();
-
-            action
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithParameterName(nameof(nullGuid));
-        }
-        
-        [Fact]
-        public void Test_Must_NotBeNull_Throwing_With_Message()
-        {
-            Guid? nullGuid = null;
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(nullGuid));
-
-            var action = 
-                () => nullGuid.Must().NotBeNull(expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentNullException>()
-                .WithParameterName(nameof(nullGuid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-        
-        [Fact]
-        public void Test_Must_BeEmpty_Satisfied()
-        {
-            var emptyGuid = Guid.Empty;
-
-            var action = 
-                () => emptyGuid.Must().BeEmpty();
-
-            action.Should().NotThrow();
-        }
-        
-        [Fact]
-        public void Test_Must_BeEmpty_Throwing()
-        {
-            var notEmptyGuid = Guid.NewGuid();
-
-            var action = 
-                () => notEmptyGuid.Must().BeEmpty();
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(notEmptyGuid));
-        }
-        
-        [Fact]
-        public void Test_Must_BeEmpty_Throwing_With_Message()
-        {
-            var notEmptyGuid = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(notEmptyGuid));
-
-            var action = 
-                () => notEmptyGuid.Must().BeEmpty(expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(notEmptyGuid))
-                .WithMessage(expectedError.ExceptionMessage);
+            TestContract<Guid?, ArgumentNullException>(
+                DummyData.GetRandomGuid(),
+                null,
+                (testArgument, message) => testArgument.Must().NotBeNull(message),
+                "testArgument");
         }
 
         [Fact]
-        public void Test_Must_NotBeEmpty_Satisfied()
+        public void Test_Must_Be()
         {
-            var emptyGuid = Guid.NewGuid();
-
-            var action = 
-                () => emptyGuid.Must().NotBeEmpty();
-
-            action.Should().NotThrow();
-        }
-
-        [Fact]
-        public void Test_Must_NotBeEmpty_Throwing()
-        {
-            var emptyGuid = Guid.Empty;
-
-            var action = 
-                () => emptyGuid.Must().NotBeEmpty();
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(emptyGuid));
-        }
-        
-        [Fact]
-        public void Test_Must_NotBeEmpty_Throwing_With_Message()
-        {
-            var emptyGuid = Guid.Empty;
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(emptyGuid));
-
-            var action = 
-                () => emptyGuid.Must().NotBeEmpty(expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(emptyGuid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-
-        [Fact]
-        public void Test_Must_Be_Satisfied()
-        {
-            var guid = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().Be(guid);
-
-            action.Should().NotThrow();
-        }
-
-        [Fact]
-        public void Test_Must_Be_Throwing()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().Be(otherGuid);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid));
-        }
-        
-        [Fact]
-        public void Test_Must_Be_Throwing_With_Message()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(guid));
-
-            var action = 
-                () => guid.Must().Be(otherGuid, expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-
-        [Fact]
-        public void Test_Must_NotBe_Satisfied()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().NotBe(otherGuid);
-
-            action.Should().NotThrow();
-        }
-
-        [Fact]
-        public void Test_Must_NotBe_Throwing()
-        {
-            var guid = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().NotBe(guid);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid));
-        }
-        
-        [Fact]
-        public void Test_Must_NotBe_Throwing_With_Message()
-        {
-            var guid = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(guid));
-
-            var action = 
-                () => guid.Must().NotBe(guid, expectedError.Message);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-
-        [Fact]
-        public void Test_Must_BeAnyOf_Satisfied()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().BeAnyOf(otherGuid, guid, otherGuid2);
-
-            action.Should().NotThrow();
-        }
-
-        [Fact]
-        public void Test_Must_BeAnyOf_Throwing()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-            var otherGuid3 = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().BeAnyOf(otherGuid, otherGuid2, otherGuid3);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid));
-        }
-
-        [Fact]
-        public void Test_Must_BeAnyOf_Throwing_With_Message()
-        {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-            var otherGuid3 = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(guid));
-
-            var action = 
-                () => guid.Must().BeAnyOf(expectedError.Message, otherGuid, otherGuid2, otherGuid3);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid))
-                .WithMessage(expectedError.ExceptionMessage);
-        }
-        
-        [Fact]
-        public void Test_Must_NotBeAnyOf_Satisfied()
-        {
-            var guid = Guid.NewGuid();
+            var sameArgument = DummyData.GetRandomGuid();
+            var otherArgument = DummyData.GetRandomGuid();
             
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-            var otherGuid3 = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().NotBeAnyOf(otherGuid, otherGuid2, otherGuid3);
-
-            action.Should().NotThrow();
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                sameArgument,
+                otherArgument,
+                (testArgument, message) => testArgument.Must().Be(sameArgument, message),
+                "testArgument");
         }
 
         [Fact]
-        public void Test_Must_NotBeAnyOf_Throwing()
+        public void Test_Must_NotBe()
         {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-
-            var action = 
-                () => guid.Must().NotBeAnyOf(otherGuid, guid, otherGuid2);
-
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid));
+            var sameArgument = DummyData.GetRandomGuid();
+            var otherArgument = DummyData.GetRandomGuid();
+            
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                otherArgument,
+                sameArgument,
+                (testArgument, message) => testArgument.Must().NotBe(sameArgument, message),
+                "testArgument");
         }
         
         [Fact]
-        public void Test_Must_NotBeAnyOf_Throwing_With_Message()
+        public void Test_Must_BeAnyOf()
         {
-            var guid = Guid.NewGuid();
-            var otherGuid = Guid.NewGuid();
-            var otherGuid2 = Guid.NewGuid();
-            var expectedError = DummyData.GetRandomErrorMessage(nameof(guid));
+            var argument1 = DummyData.GetRandomGuid();
+            var argument2 = DummyData.GetRandomGuid();
+            var argument3 = DummyData.GetRandomGuid();
+            var argument4 = DummyData.GetRandomGuid();
+            
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                argument3,
+                argument1,
+                (testArgument, message) => 
+                    testArgument.Must().BeAnyOf(message, argument2, argument3, argument4),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_NotBeAnyOf()
+        {
+            var argument1 = DummyData.GetRandomGuid();
+            var argument2 = DummyData.GetRandomGuid();
+            var argument3 = DummyData.GetRandomGuid();
+            var argument4 = DummyData.GetRandomGuid();
 
-            var action = 
-                () => guid.Must().NotBeAnyOf(expectedError.Message, otherGuid, guid, otherGuid2);
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                argument1,
+                argument3,
+                (testArgument, message) => 
+                    testArgument.Must().NotBeAnyOf(message, argument2, argument3, argument4),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeEmpty()
+        {
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                Guid.Empty,
+                DummyData.GetRandomGuid(),
+                (testArgument, message) => testArgument.Must().BeEmpty(message),
+                "testArgument");
+        }
 
-            action
-                .Should()
-                .Throw<ArgumentOutOfRangeException>()
-                .WithParameterName(nameof(guid))
-                .WithMessage(expectedError.ExceptionMessage);
+        [Fact]
+        public void Test_Must_NotBeEmpty()
+        {
+            TestContract<Guid, ArgumentOutOfRangeException>(
+                DummyData.GetRandomGuid(),
+                Guid.Empty,
+                (testArgument, message) => testArgument.Must().NotBeEmpty(message),
+                "testArgument");
         }
     }
 }

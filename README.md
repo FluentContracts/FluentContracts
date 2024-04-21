@@ -1,3 +1,5 @@
+<img alt="Logo" width="100px" src="https://github.com/totollygeek/FluentContracts/raw/dev/assets/icon.png"/>
+
 # FluentContracts
 API for defining argument checking contracts in a fluent manner.
 
