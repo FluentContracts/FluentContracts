@@ -4,7 +4,7 @@ using FluentContracts.Infrastructure;
 namespace FluentContracts.Contracts
 {
     public class StringContract(string? argumentValue, string argumentName)
-        : Contract<string?>(argumentValue, argumentName)
+        : BaseContract<string?>(argumentValue, argumentName)
     {
         /// <summary>
         /// Checks if the value of the <see cref="string"/> argument is empty.

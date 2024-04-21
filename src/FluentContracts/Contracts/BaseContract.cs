@@ -1,13 +1,14 @@
 ﻿using System.Diagnostics.Contracts;
+using FluentContracts.Infrastructure;
 
-namespace FluentContracts.Infrastructure
+namespace FluentContracts.Contracts
 {
-    public abstract class Contract<T>(T argumentValue, string argumentName)
+    public class BaseContract<T>(T argumentValue, string argumentName)
     {
         private Linker<T>? _linker;
         protected Linker<T> Linker => _linker ??= new Linker<T>(this);
         
-        protected T? ArgumentValue { get; } = argumentValue;
+        protected T ArgumentValue { get; } = argumentValue;
         protected string ArgumentName { get; } = argumentName;
 
         /// <summary>
@@ -115,7 +116,7 @@ namespace FluentContracts.Infrastructure
         /// <param name="message">The optional error message to include in the exception.</param>
         /// <returns>Linker for chaining more checks</returns>
         [Pure]
-        public Linker<T> Satisfy(Func<T?, bool> customCondition, string? message = null)
+        public Linker<T> Satisfy(Func<T, bool> customCondition, string? message = null)
         {
             Validator.CheckGenericCondition(customCondition, ArgumentValue, ArgumentName, message);
             return Linker;
