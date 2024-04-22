@@ -1,6 +1,9 @@
 <img alt="Logo" width="100px" src="https://github.com/totollygeek/FluentContracts/raw/dev/assets/icon.png"/>
 
 # FluentContracts
+![NuGet Version](https://img.shields.io/nuget/v/FluentContracts?style=for-the-badge&logo=nuget&logoColor=white&color=green)
+![NuGet Downloads](https://img.shields.io/nuget/dt/FluentContracts?style=for-the-badge&logo=nuget&logoColor=white)
+
 API for defining argument validation contracts in a fluent manner.
 
 Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentassertions)
