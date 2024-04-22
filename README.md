@@ -1,11 +1,11 @@
 <img alt="Logo" width="100px" src="https://github.com/totollygeek/FluentContracts/raw/dev/assets/icon.png"/>
 
 # FluentContracts
-API for defining argument checking contracts in a fluent manner.
+API for defining argument validation contracts in a fluent manner.
 
 Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentassertions)
 
-# Builds
+## Builds
 
 |     Type      | Status                                                                                                                                                                                                                                                         |
 |:-------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -15,8 +15,38 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 | Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/totollygeek/FluentContracts?branch=dev&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/totollygeek/FluentContracts)                                             |
 |    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/totollygeek/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/totollygeek/FluentContracts/actions) |
 
+## Usage
 
-# Help needed
+The usage of the contracts is pretty simple. You can use the extension methods everywhere you want to do a validation of some variable.
+
+Generally when we write methods, constructors, etc., we do validation like that:
+```csharp
+public void AddOrder(Order myOrder)
+{
+    if (myOrder == null) throw new ArgumentNullException(nameof(myOrder));    
+    if (myOrder.Quantity < 5) throw new OrderQuantityException("Order quantity cannot be less than 5");
+    
+    ...
+}
+```
+
+With `FluentContracts` your code will look like this:
+```csharp
+public void AddOrder(Order myOrder)
+{
+    myOrder
+        .Must()
+        .NotBeNull()
+        .And
+        .Satisfy<OrderQuantityException>(
+            o => o.Quantity >= 5, 
+            "Order quantity cannot be less than 5");
+    
+    ...
+}
+```
+
+## Help needed
 
 This is just getting started so I need some help. If you are interested in helping out just contact me on any of the following:
 
@@ -26,6 +56,6 @@ This is just getting started so I need some help. If you are interested in helpi
 
 or just send a pull request, open an issue, etc.
 
-# Credits
+## Credits
 
 Icon made by [IconMonk](https://www.flaticon.com/authors/icon-monk) from [Flaticon](https://www.flaticon.com) 
