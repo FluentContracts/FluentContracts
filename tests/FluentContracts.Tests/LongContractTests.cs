@@ -1,6 +1,6 @@
 using System;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;
-using FluentContracts.Tests.Utils;
 using Xunit;
 
 namespace FluentContracts.Tests
@@ -65,7 +65,7 @@ namespace FluentContracts.Tests
                 included,
                 excluded,
                 (testArgument, message) => 
-                    testArgument.Must().BeAnyOf(message, array),
+                    message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
                 "testArgument");
         }
         
@@ -80,7 +80,7 @@ namespace FluentContracts.Tests
                 excluded,
                 included,
                 (testArgument, message) => 
-                    testArgument.Must().NotBeAnyOf(message, array),
+                    message == null ? testArgument.Must().NotBeAnyOf(array) : testArgument.Must().NotBeAnyOf(message, array),
                 "testArgument");
         }
         

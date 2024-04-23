@@ -1,17 +1,23 @@
 using System;
 using Bogus;
 
-namespace FluentContracts.Tests.Utils;
+namespace FluentContracts.Tests.Mocks;
 
 public static class DummyData
 {
     private const int ArraySize = 10;
     
     private static Lazy<Faker> Faker { get; } = new(() => new Faker() { Random = new Randomizer(42)});
+
+    public static string GetRandomMessage()
+    {
+        return Faker.Value.Lorem.Sentence(10);
+    }
+    
     public static (string Message, string ExceptionMessage) GetRandomErrorMessage(string parameterName)
     {
         
-        var message = Faker.Value.Lorem.Sentence(10);
+        var message = GetRandomMessage();
         var exceptionMessage = $"{message} (Parameter '{parameterName}')";
         return (message, exceptionMessage);
     }

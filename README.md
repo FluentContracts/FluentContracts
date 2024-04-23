@@ -49,9 +49,19 @@ public void AddOrder(Order myOrder)
 }
 ```
 
+or as simple as:
+
+```csharp
+public int Divide(int a, int b)
+{
+    b.Must().NotBe(0);    
+    return a / b;
+}
+```
+
 ## Help needed
 
-This is just getting started so I need some help. If you are interested in helping out just contact me on any of the following:
+This is just getting started, so I need some help. If you are interested in helping out just contact me on any of the following:
 
 - [Blog](https://todorov.bg)
 - [Twitter](https://twitter.com/totollygeek/)

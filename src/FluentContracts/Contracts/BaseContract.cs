@@ -22,6 +22,24 @@ namespace FluentContracts.Contracts
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
             return Linker;
         }
+        
+        /// <summary>
+        /// Checks if the specified argument is not null.
+        /// </summary>
+        /// <param name="message">The optional error message to include in the exception.</param>
+        /// <typeparam name="TException">Type of the exception to throw</typeparam>
+        /// <returns>Linker for chaining more checks</returns>
+        [Pure]
+        public Linker<T> NotBeNull<TException>(string? message = null)
+            where TException: Exception, new()
+        {
+            if (message != null)
+                Validator.CheckForNotNull<T, TException>(ArgumentValue, message);
+            else                    
+                Validator.CheckForNotNull<T, TException>(ArgumentValue);
+            
+            return Linker;
+        }
 
         /// <summary>
         /// Checks if the specified argument is null.

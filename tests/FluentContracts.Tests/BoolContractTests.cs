@@ -1,6 +1,6 @@
 using System;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;
-using FluentContracts.Tests.Utils;
 using Xunit;
 
 namespace FluentContracts.Tests
@@ -52,12 +52,12 @@ namespace FluentContracts.Tests
         public void Test_Must_BeAnyOf()
         {
             var array = DummyData.GetArray(() => true, true, false);
-            
+
             TestContract<bool, ArgumentOutOfRangeException>(
                 true,
                 false,
-                (testArgument, message) => 
-                    testArgument.Must().BeAnyOf(message, array),
+                (testArgument, message) =>
+                    message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
                 "testArgument");
         }
         
@@ -70,7 +70,7 @@ namespace FluentContracts.Tests
                 false,
                 true,
                 (testArgument, message) => 
-                    testArgument.Must().NotBeAnyOf(message, array),
+                    message == null ? testArgument.Must().NotBeAnyOf(array) : testArgument.Must().NotBeAnyOf(message, array),
                 "testArgument");
         }
         

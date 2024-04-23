@@ -1,8 +1,8 @@
 using System;
 using Bogus;
 using FluentAssertions;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;
-using FluentContracts.Tests.Utils;
 using Xunit;
 
 namespace FluentContracts.Tests
@@ -43,7 +43,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_And_Linker_Throws_On_The_Second_Only()
         {
-            var testString = "specific_value";
+            const string testString = "specific_value";
 
             var action =
                 () => testString.Must().NotBeNull().And.Be("another_value");
@@ -52,6 +52,28 @@ namespace FluentContracts.Tests
                 .Should()
                 .Throw<ArgumentOutOfRangeException>()
                 .WithParameterName(nameof(testString));
+        }
+        
+        [Fact]
+        public void Test_Throwing_Own_Exception()
+        {
+            TestContract<int?, MockException>(
+                DummyData.GetRandomInt(),
+                null,
+                null,
+                (testArgument, _) => testArgument.Must().NotBeNull<MockException>());
+        }
+        
+        [Fact]
+        public void Test_Throwing_Own_Exception_With_Message()
+        {
+            var errorMessage = DummyData.GetRandomMessage();
+            
+            TestContract<int?, MockException>(
+                DummyData.GetRandomInt(),
+                null,
+                errorMessage,
+                (testArgument, message) => testArgument.Must().NotBeNull<MockException>(message));
         }
     }
 }
