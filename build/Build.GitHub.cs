@@ -37,7 +37,7 @@ using Nuke.Common.CI.GitHubActions;
 partial class Build
 {
     const string MasterBranch = "master";
-    const string DevelopmentBranch = "dev";
+    const string DevelopmentBranch = "develop";
     
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
