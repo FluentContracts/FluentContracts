@@ -1,6 +1,6 @@
 ﻿using System;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;
-using FluentContracts.Tests.Utils;
 using Xunit;
 
 namespace FluentContracts.Tests
@@ -57,32 +57,30 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var argument1 = DummyData.GetRandomGuid();
-            var argument2 = DummyData.GetRandomGuid();
-            var argument3 = DummyData.GetRandomGuid();
-            var argument4 = DummyData.GetRandomGuid();
+            var included = DummyData.GetRandomGuid();
+            var excluded = DummyData.GetRandomGuid();
+            var array = DummyData.GetArray(DummyData.GetRandomGuid, included, excluded);
             
             TestContract<Guid, ArgumentOutOfRangeException>(
-                argument3,
-                argument1,
+                included,
+                excluded,
                 (testArgument, message) => 
-                    testArgument.Must().BeAnyOf(message, argument2, argument3, argument4),
+                    message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
                 "testArgument");
         }
         
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var argument1 = DummyData.GetRandomGuid();
-            var argument2 = DummyData.GetRandomGuid();
-            var argument3 = DummyData.GetRandomGuid();
-            var argument4 = DummyData.GetRandomGuid();
+            var included = DummyData.GetRandomGuid();
+            var excluded = DummyData.GetRandomGuid();
+            var array = DummyData.GetArray(DummyData.GetRandomGuid, included, excluded);
 
             TestContract<Guid, ArgumentOutOfRangeException>(
-                argument1,
-                argument3,
+                excluded,
+                included,
                 (testArgument, message) => 
-                    testArgument.Must().NotBeAnyOf(message, argument2, argument3, argument4),
+                    message == null ? testArgument.Must().NotBeAnyOf(array) : testArgument.Must().NotBeAnyOf(message, array),
                 "testArgument");
         }
         
