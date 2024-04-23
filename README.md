@@ -58,6 +58,17 @@ public int Divide(int a, int b)
     return a / b;
 }
 ```
+### User defined exceptions
+
+You can also throw your own exception like that:
+```csharp
+public void AddOrder(Order myOrder)
+{
+    myOrder.Must().NotBeNull<OrderNullException>();
+}
+```
+
+This will throw an instance of `OrderNullException` if `myOrder` is `null`.
 
 ## Help needed
 
