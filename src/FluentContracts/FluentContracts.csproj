@@ -19,17 +19,17 @@
         <PackageProjectUrl>https://fluentcontracts.github.io</PackageProjectUrl>
         <Description>API for contract validation using fluent style.</Description>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-        <!--<PackageIcon>icon.png</PackageIcon>-->
+        <PackageIcon>icon.png</PackageIcon>
 
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-
-        <PackageVersion Condition="'$(VersionPrerelease)' == ''">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch)</PackageVersion>
-        <PackageVersion Condition="'$(VersionPrerelease)' != ''">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionPrerelease)</PackageVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\..\assets\icon.png" Pack="true" PackagePath="\" />
+    </ItemGroup>
+    
     <ItemGroup>
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
     </ItemGroup>
