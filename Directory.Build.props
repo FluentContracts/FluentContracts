@@ -3,38 +3,9 @@
     properties-->
     <PropertyGroup>
         <LangVersion>preview</LangVersion>
-        <DebugSymbols>True</DebugSymbols>
         <DebugType>portable</DebugType>
-    </PropertyGroup>
-
-    <!--Version
-    properties-->
-    <PropertyGroup>
-        <BuildNumber Condition="'$(BuildNumber)' == ''">0</BuildNumber>
-        <BuildBranch Condition="'$(BuildBranch)' == ''">master</BuildBranch>
-
-        <VersionMajor Condition="'$(VersionMajor)' == ''">0</VersionMajor>
-        <VersionMinor Condition="'$(VersionMinor)' == ''">1</VersionMinor>
-        <VersionPatch Condition="'$(VersionPatch)' == ''">0</VersionPatch>
-
-        <!--suppress
-        CheckTagEmptyBody -->
-    <!--<VersionPrerelease Condition="'$(VersionPrerelease)' == ''"></VersionPrerelease>-->
-
-        <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(BuildBranch).$(BuildNumber)</VersionSuffix>
-        <VersionPrefix>$(VersionMajor).$(VersionMinor).$(VersionPatch)</VersionPrefix>
-
-        <AssemblyVersion>$(VersionMajor).$(VersionMinor).$(VersionPatch).0</AssemblyVersion>
-
-        <FileVersion Condition="'$(Configuration)'=='Debug'">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch).$(BuildNumber)</FileVersion>
-        <FileVersion Condition="'$(Configuration)'=='Release'">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch)</FileVersion>
-
-        <InformationalVersion Condition="'$(Configuration)'=='Debug'">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch)-$(VersionSuffix)</InformationalVersion>
-        <InformationalVersion Condition="'$(Configuration)'=='Release'">
-            $(VersionMajor).$(VersionMinor).$(VersionPatch)</InformationalVersion>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
     </PropertyGroup>
 
     <!--Tests
@@ -48,8 +19,5 @@
     <PropertyGroup>
         <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
         <!--<DisableImplicitPackageTargetFallback>True</DisableImplicitPackageTargetFallback>-->
-        <!--
-        No show warnings for not a valid semantic version-->
-        <NoWarn>$(NoWarn);CS7035</NoWarn>
     </PropertyGroup>
 </Project>
