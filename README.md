@@ -1,4 +1,4 @@
-<img alt="Logo" width="100px" src="https://github.com/totollygeek/FluentContracts/raw/dev/assets/icon.png"/>
+<img alt="Logo" width="100px" src="https://github.com/FluentContracts/FluentContracts/raw/develop/assets/icon.png"/>
 
 # FluentContracts
 ![NuGet Version](https://img.shields.io/nuget/v/FluentContracts?style=for-the-badge&logo=nuget&logoColor=white&color=green)
@@ -25,8 +25,8 @@ I am  perfectly aware of the other libraries out there, that are doing the same 
 Libraries like [FluentValidation](https://github.com/FluentValidation/FluentValidation) and `Guard` from [.NET Community Toolkit](https://github.com/CommunityToolkit/dotnet) are awesome 
 and have tons of functionality, support and experience. If you like those and use them already, that is fine.
 
-I did this one, because I don't really like who the other libraries require you to write, in order to achieve the validation.
-I wanted to make something more simple and "human-readable", the same way [FluentAssertions](https://github.com/fluentassertions/fluentassertions) does it for unit testing.
+I did this one, because I don't really like how the other libraries require you to write, in order to achieve the validation.
+It is pretty verbose for my taste. I wanted to make something more simple and "human-readable", the same way [FluentAssertions](https://github.com/fluentassertions/fluentassertions) does it for unit testing.
 
 ## Usage
 
