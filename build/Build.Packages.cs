@@ -12,7 +12,7 @@ partial class Build
     [Parameter] string NuGetSource = "https://api.nuget.org/v3/index.json";
     [Parameter] [Secret] string NuGetApiKey;
     
-    IEnumerable<AbsolutePath> PushPackageFiles => PackagesDirectory.GlobFiles("*.nupkg");
+    IEnumerable<AbsolutePath> NuGetPackageFiles => PackagesDirectory.GlobFiles("*.nupkg");
 
     bool PushCompleteOnFailure => true;
     int PushDegreeOfParallelism => 5;
@@ -25,7 +25,7 @@ partial class Build
             DotNetNuGetPush(_ => _
                     .SetSource(NuGetSource)
                     .SetApiKey(NuGetApiKey)
-                    .CombineWith(PushPackageFiles, (_, v) => _
+                    .CombineWith(NuGetPackageFiles, (_, v) => _
                         .SetTargetPath(v)),
                 PushDegreeOfParallelism,
                 PushCompleteOnFailure);

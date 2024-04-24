@@ -11,5 +11,5 @@ partial class Build
         
     [GitVersion(Framework = "net5.0", NoFetch = true)]
     [Required]
-    GitVersion Versioning;
+    GitVersion GitVersion;
 }
