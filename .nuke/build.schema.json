@@ -84,6 +84,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "Full",
               "Pack",
               "Publish",
               "ReportCoverage",
@@ -104,6 +105,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "Full",
               "Pack",
               "Publish",
               "ReportCoverage",
