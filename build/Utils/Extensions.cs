@@ -3,13 +3,15 @@ using System.IO;
 using System.Linq;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
+using Nuke.Common.Utilities;
 
 namespace Utils;
 
 public static class Extensions
 {
-    public static Tool CreateDownloadableTool(this AbsolutePath toolDirectory, string executableFileName, string downloadUrl)
+    public static Tool CreateDownloadableTool(this AbsolutePath toolDirectory, string downloadUrl, string executableFileName = null)
     {
+        var uri = new Uri(downloadUrl);
         var directory = CreateToolDirectory(toolDirectory, executableFileName);
         if (directory == null)
             return null;
@@ -24,7 +26,8 @@ public static class Extensions
             downloadUrl,
             downloadAbsolutePath);
 
-        if (executableFileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+        var downloadFileName = uri.Segments.Last();
+        if (downloadFileName.EndsWithAnyOrdinalIgnoreCase(".zip", ".tar.gz"))
         {
             downloadAbsolutePath.UnZipTo(directory);
         }
