@@ -24,16 +24,16 @@ partial class Build
         .Executes(() =>
         {
             ReportSummary(_ => _
-                    .AddPair("Version", Versioning.NuGetVersionV2));
+                    .AddPair("Version", GitVersion.NuGetVersionV2));
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .When(IsServerBuild, _ => _
                     .EnableContinuousIntegrationBuild())
-                .SetAssemblyVersion(Versioning.AssemblySemVer)
-                .SetFileVersion(Versioning.AssemblySemFileVer)
-                .SetInformationalVersion(Versioning.InformationalVersion)
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
+                .SetInformationalVersion(GitVersion.InformationalVersion)
                 .SetNoRestore(SucceededTargets.Contains(Restore))
                 .SetRepositoryUrl(GitRepository.HttpsUrl));
 
@@ -43,9 +43,9 @@ partial class Build
                     .EnableNoLogo()
                     .When(IsServerBuild, _ => _
                         .EnableContinuousIntegrationBuild())
-                    .SetAssemblyVersion(Versioning.AssemblySemVer)
-                    .SetFileVersion(Versioning.AssemblySemFileVer)
-                    .SetInformationalVersion(Versioning.InformationalVersion)
+                    .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                    .SetFileVersion(GitVersion.AssemblySemFileVer)
+                    .SetInformationalVersion(GitVersion.InformationalVersion)
                     .SetRepositoryUrl(GitRepository.HttpsUrl)
                     .CombineWith(PublishProjects, (_, p) => _
                         .SetProject(p)),
