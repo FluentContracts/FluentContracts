@@ -10,8 +10,8 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 
 ## Builds
 
-|     Type      | Status                                                                                                                                                                                                                                                         |
-|:-------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     Type      | Status                                                                                                                                                                                                                                                                 |
+|:-------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
 |   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                      |
 |   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
@@ -92,5 +92,11 @@ This is just getting started, so I need some help. If you are interested in help
 or just send a pull request, open an issue, etc.
 
 ## Credits
+
+#### [Matthias Koch](https://twitter.com/matkoch87)
+> The creator of [NUKE](https://nuke.build), because I cannot build any .NET project without it and because he helped me tremendously in setting up the repository and everything around this project. (_I have also copy-pasted, like his entire build and some markdown files_ 🤫)
+
+#### [Dennis Doomen](https://twitter.com/ddoomen)
+> The "[FluentAssertions](https://fluentassertions.com/)" guy. This whole project was inspired by how that library works and I might have copy-pasted also parts of his repo too 😏
 
 Icon made by [IconMonk](https://www.flaticon.com/authors/icon-monk) from [Flaticon](https://www.flaticon.com) 
