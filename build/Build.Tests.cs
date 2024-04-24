@@ -35,13 +35,13 @@ partial class Build
                         .SetNoBuild(SucceededTargets.Contains(Compile))
                         .ResetVerbosity()
                         .SetResultsDirectory(TestResultDirectory)
-                        .When(InvokedTargets.Contains(ReportCoverage), _ => _
+                        .When(InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
                             .EnableCollectCoverage()
                             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura))
                         .CombineWith(TestProjects, (_, v) => _
                                 .SetProjectFile(v)
                                 .AddLoggers($"{logger};LogFileName={v.Name}.{logger}")
-                                .When(InvokedTargets.Contains(ReportCoverage), _ => _
+                                .When(InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
                                     .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"))),
                     completeOnFailure: true,
                     degreeOfParallelism: TestDegreeOfParallelism);

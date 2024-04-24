@@ -18,7 +18,7 @@ partial class Build
     Target ReportCoverage => _ => _
         .DependsOn(Test)
         .Consumes(Test)
-        .Requires(() => CoverallRepoKey)
+        .Requires(() => IsLocalBuild || !string.IsNullOrEmpty(CoverallRepoKey))
         .Executes(() =>
         {
             ReportGenerator(_ => _
@@ -29,7 +29,9 @@ partial class Build
                 .SetTargetDirectory(CoverageReportDirectory)
                 .SetFramework("netcoreapp2.1"));
 
-            var coverallsApp = 
+            if (IsLocalBuild) return;
+            
+            var coverallsApp =
                 OutputDirectory.CreateDownloadableTool(
                     "coveralls.exe",
                     "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe");
@@ -39,7 +41,7 @@ partial class Build
                 Serilog.Log.Error("Coveralls CLI could not be found!");
                 Environment.Exit(1);
             }
-            
+
             coverallsApp($"report " +
                          $"{CoverageReportDirectory / "lcov.info"} " +
                          $"--allow-empty " +
