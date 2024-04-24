@@ -3,6 +3,7 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
+using Nuke.Common.Utilities;
 using Utils;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
@@ -18,7 +19,7 @@ partial class Build
     Target ReportCoverage => _ => _
         .DependsOn(Test)
         .Consumes(Test)
-        .Requires(() => IsLocalBuild || !string.IsNullOrEmpty(CoverallRepoKey))
+        .Requires(() => IsLocalBuild || !CoverallRepoKey.IsNullOrEmpty())
         .Executes(() =>
         {
             ReportGenerator(_ => _
@@ -30,11 +31,11 @@ partial class Build
                 .SetFramework("netcoreapp2.1"));
 
             if (IsLocalBuild) return;
-            
+
             var coverallsApp =
                 OutputDirectory.CreateDownloadableTool(
-                    "coveralls.exe",
-                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe");
+                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe",
+                    "coveralls.exe");
 
             if (coverallsApp == null)
             {
