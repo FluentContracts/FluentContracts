@@ -31,39 +31,36 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var sameArgument = DummyData.GetRandomChar();
-            var otherArgument = DummyData.GetRandomChar();
+            var pair = DummyData.GetRandomCharPair();
             
             TestContract<char, ArgumentOutOfRangeException>(
-                sameArgument,
-                otherArgument,
-                (testArgument, message) => testArgument.Must().Be(sameArgument, message),
+                pair.TestArgument,
+                pair.DifferentArgument,
+                (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
                 "testArgument");
         }
 
         [Fact]
         public void Test_Must_NotBe()
         {
-            var sameArgument = DummyData.GetRandomChar();
-            var otherArgument = DummyData.GetRandomChar();
+            var pair = DummyData.GetRandomCharPair();
             
             TestContract<char, ArgumentOutOfRangeException>(
-                otherArgument,
-                sameArgument,
-                (testArgument, message) => testArgument.Must().NotBe(sameArgument, message),
+                pair.DifferentArgument,
+                pair.TestArgument,
+                (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
                 "testArgument");
         }
         
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var included = DummyData.GetRandomChar();
-            var excluded = DummyData.GetRandomChar();
-            var array = DummyData.GetArray(DummyData.GetRandomChar, included, excluded);
+            var pair = DummyData.GetRandomCharPair();
+            var array = DummyData.GetArray(DummyData.GetRandomChar, pair.TestArgument, pair.DifferentArgument);
             
             TestContract<char, ArgumentOutOfRangeException>(
-                included,
-                excluded,
+                pair.TestArgument,
+                pair.DifferentArgument,
                 (testArgument, message) => 
                     message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
                 "testArgument");
@@ -72,13 +69,12 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var included = DummyData.GetRandomChar();
-            var excluded = DummyData.GetRandomChar();
-            var array = DummyData.GetArray(DummyData.GetRandomChar, included, excluded);
+            var pair = DummyData.GetRandomCharPair();
+            var array = DummyData.GetArray(DummyData.GetRandomChar, pair.TestArgument, pair.DifferentArgument);
 
             TestContract<char, ArgumentOutOfRangeException>(
-                excluded,
-                included,
+                pair.DifferentArgument,
+                pair.TestArgument,
                 (testArgument, message) => 
                     message == null ? testArgument.Must().NotBeAnyOf(array) : testArgument.Must().NotBeAnyOf(message, array),
                 "testArgument");
