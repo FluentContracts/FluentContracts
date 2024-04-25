@@ -21,7 +21,7 @@ public class NumberContract<T>(T argumentValue, string argumentName)
     }
     
     [Pure]
-    public Linker<T> BeGreaterOrEqualThan(T value, string? message = null)
+    public Linker<T> BeGreaterOrEqualTo(T value, string? message = null)
     {
         Validator.CheckForGreaterOrEqualThan(value, ArgumentValue, ArgumentName, message);
         return Linker;
@@ -35,7 +35,7 @@ public class NumberContract<T>(T argumentValue, string argumentName)
     }
     
     [Pure]
-    public Linker<T> BeLessOrEqualThan(T value, string? message = null)
+    public Linker<T> BeLessOrEqualTo(T value, string? message = null)
     {
         Validator.CheckForLessOrEqualThan(value, ArgumentValue, ArgumentName, message);
         return Linker;

@@ -27,9 +27,7 @@ partial class Build
         .Executes(() =>
         {
             try
-            {
-                var logger = IsLocalBuild ? "html" : "trx";
-                
+            {   
                 DotNetTest(_ => _
                         .SetConfiguration(Configuration)
                         .SetNoBuild(SucceededTargets.Contains(Compile))
@@ -40,7 +38,9 @@ partial class Build
                             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura))
                         .CombineWith(TestProjects, (_, v) => _
                                 .SetProjectFile(v)
-                                .AddLoggers($"{logger};LogFileName={v.Name}.{logger}")
+                                .AddLoggers($"trx;LogFileName={v.Name}.trx")
+                                .When(IsLocalBuild, _ => _
+                                    .AddLoggers($"html;LogFileName={v.Name}.html"))
                                 .When(InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
                                     .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"))),
                     completeOnFailure: true,

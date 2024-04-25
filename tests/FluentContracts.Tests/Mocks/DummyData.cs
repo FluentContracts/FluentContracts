@@ -32,15 +32,13 @@ public static class DummyData
     public static char GetChar(StringOption option = StringOption.Normal)
     {
         if (option == StringOption.WhiteSpace) return WhiteSpaceChar;
-
-        var randomChar = Faker.Value.Random.Char('A', 'z');
         
         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
         return option switch
         {
-            StringOption.Normal => randomChar,
-            StringOption.Uppercase => char.ToUpperInvariant(randomChar),
-            StringOption.Lowercase => char.ToLowerInvariant(randomChar),
+            StringOption.Normal => Faker.Value.Random.Char('A', 'z'),
+            StringOption.Uppercase => Faker.Value.Random.Char('A', 'Z'),
+            StringOption.Lowercase => Faker.Value.Random.Char('a', 'z'),
             StringOption.Ascii => Faker.Value.Random.Char((char)0, (char)127),
             StringOption.NonAscii => Faker.Value.Random.Char((char)161, (char)661),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
