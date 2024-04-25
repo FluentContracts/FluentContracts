@@ -13,8 +13,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Satisfy()
         {
-            var success = DummyData.GetRandomPerson();
-            var failing = DummyData.GetRandomPerson();
+            var success = DummyData.GetPerson();
+            var failing = DummyData.GetPerson();
             Func<Person, bool> testCondition = p => p.Email == success.Email;
             
             TestContract<Person, ArgumentOutOfRangeException>(
@@ -58,7 +58,7 @@ namespace FluentContracts.Tests
         public void Test_Throwing_Own_Exception()
         {
             TestContract<int?, MockException>(
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 null,
                 null,
                 (testArgument, _) => testArgument.Must().NotBeNull<MockException>());
@@ -70,7 +70,7 @@ namespace FluentContracts.Tests
             var errorMessage = DummyData.GetRandomMessage();
             
             TestContract<int?, MockException>(
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 null,
                 errorMessage,
                 (testArgument, message) => testArgument.Must().NotBeNull<MockException>(message));

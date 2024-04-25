@@ -45,13 +45,5 @@ namespace FluentContracts.Infrastructure
 
             throw ex;
         }
-        
-        [DoesNotReturn]
-        [MethodImpl(MethodImplOptions.NoInlining)]
-        public static void ThrowUserDefinedException<TException>([NotNull] string message, [NotNull] Func<string, TException> exceptionFactory)
-            where TException : Exception, new()
-        {
-            throw exceptionFactory(message);
-        }
     }
 }

@@ -13,7 +13,7 @@ namespace FluentContracts.Tests
         {
             TestContract<int?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<int?, ArgumentNullException>(
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,7 +31,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var pair = DummyData.GetRandomIntPair();
+            var pair = DummyData.GetIntPair();
             
             TestContract<int, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -43,7 +43,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var pair = DummyData.GetRandomIntPair();
+            var pair = DummyData.GetIntPair();
             
             TestContract<int, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -55,8 +55,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var pair = DummyData.GetRandomIntPair();
-            var array = DummyData.GetArray(DummyData.GetRandomInt, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetIntPair();
+            var array = DummyData.GetArray(DummyData.GetInt, pair.TestArgument, pair.DifferentArgument);
             
             TestContract<int, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -69,8 +69,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var pair = DummyData.GetRandomIntPair();
-            var array = DummyData.GetArray(DummyData.GetRandomInt, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetIntPair();
+            var array = DummyData.GetArray(DummyData.GetInt, pair.TestArgument, pair.DifferentArgument);
 
             TestContract<int, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -83,7 +83,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeBetween()
         {
-            var success = DummyData.GetRandomInt();
+            var success = DummyData.GetInt();
             var lower = success - 10;
             var higher = success + 10;
             var outOfRange = higher + 10;
@@ -99,7 +99,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterThan()
         {
-            var success = DummyData.GetRandomInt();
+            var success = DummyData.GetInt();
             var lower = success - 10;
             var outOfRange = lower - 10;
 
@@ -114,7 +114,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterOrEqualThan()
         {
-            var success = DummyData.GetRandomInt();
+            var success = DummyData.GetInt();
             var outOfRange = success - 10;
 
             TestContract<int, ArgumentOutOfRangeException>(
@@ -128,7 +128,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessThan()
         {
-            var success = DummyData.GetRandomInt();
+            var success = DummyData.GetInt();
             var higher = success + 10;
             var outOfRange = higher + 10;
 
@@ -143,7 +143,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessOrEqualThan()
         {
-            var success = DummyData.GetRandomInt();
+            var success = DummyData.GetInt();
             var outOfRange = success + 10;
 
             TestContract<int, ArgumentOutOfRangeException>(

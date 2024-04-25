@@ -13,7 +13,7 @@ namespace FluentContracts.Tests
         {
             TestContract<char?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomChar(),
+                DummyData.GetChar(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<char?, ArgumentNullException>(
-                DummyData.GetRandomChar(),
+                DummyData.GetChar(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,7 +31,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var pair = DummyData.GetRandomCharPair();
+            var pair = DummyData.GetCharPair();
             
             TestContract<char, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -43,7 +43,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var pair = DummyData.GetRandomCharPair();
+            var pair = DummyData.GetCharPair();
             
             TestContract<char, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -55,8 +55,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var pair = DummyData.GetRandomCharPair();
-            var array = DummyData.GetArray(DummyData.GetRandomChar, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetCharPair();
+            var array = DummyData.GetArray(DummyData.GetChar, pair.TestArgument, pair.DifferentArgument);
             
             TestContract<char, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -69,8 +69,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var pair = DummyData.GetRandomCharPair();
-            var array = DummyData.GetArray(DummyData.GetRandomChar, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetCharPair();
+            var array = DummyData.GetArray(DummyData.GetChar, pair.TestArgument, pair.DifferentArgument);
 
             TestContract<char, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -84,8 +84,8 @@ namespace FluentContracts.Tests
         public void Test_Must_BeDigit()
         {
             TestContract<char, ArgumentOutOfRangeException>(
-                DummyData.GetRandomDigit(),
-                DummyData.GetRandomLetter(),
+                DummyData.GetDigit(),
+                DummyData.GetLetter(),
                 (testArgument, message) => testArgument.Must().BeDigit(message),
                 "testArgument");
         }
@@ -95,8 +95,8 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeDigit()
         {
             TestContract<char, ArgumentOutOfRangeException>(
-                DummyData.GetRandomLetter(),
-                DummyData.GetRandomDigit(),
+                DummyData.GetLetter(),
+                DummyData.GetDigit(),
                 (testArgument, message) => testArgument.Must().NotBeDigit(message),
                 "testArgument");
         }
@@ -105,8 +105,8 @@ namespace FluentContracts.Tests
         public void Test_Must_BeLetter()
         {
             TestContract<char, ArgumentOutOfRangeException>(
-                DummyData.GetRandomLetter(),
-                DummyData.GetRandomDigit(),
+                DummyData.GetLetter(),
+                DummyData.GetDigit(),
                 (testArgument, message) => testArgument.Must().BeLetter(message),
                 "testArgument");
         }
@@ -115,8 +115,8 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeLetter()
         {
             TestContract<char, ArgumentOutOfRangeException>(
-                DummyData.GetRandomDigit(),
-                DummyData.GetRandomLetter(),
+                DummyData.GetDigit(),
+                DummyData.GetLetter(),
                 (testArgument, message) => testArgument.Must().NotBeLetter(message),
                 "testArgument");
         }

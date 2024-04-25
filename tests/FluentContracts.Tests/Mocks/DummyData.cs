@@ -7,7 +7,7 @@ public static class DummyData
 {
     private const int ArraySize = 10;
     
-    private static Lazy<Faker> Faker { get; } = new(() => new Faker() { Random = new Randomizer(42)});
+    private static Lazy<Faker> Faker { get; } = new(() => new Faker { Random = new Randomizer(42)});
 
     public static string GetRandomMessage()
     {
@@ -22,17 +22,17 @@ public static class DummyData
         return (message, exceptionMessage);
     }
     
-    public static Guid GetRandomGuid()
+    public static Guid GetGuid()
     {
         return Faker.Value.Random.Guid();
     }
 
-    public static char GetRandomChar()
+    public static char GetChar()
     {
         return Faker.Value.Random.Char();
     }
     
-    public static Pair<char> GetRandomCharPair()
+    public static Pair<char> GetCharPair()
     {
         const char middle = (char)(char.MaxValue / 2);
         const char nextToMiddle = (char)(middle + 1);
@@ -43,35 +43,62 @@ public static class DummyData
         return new Pair<char>(testArgument, differentArgument);
     }
     
-    public static char GetRandomDigit()
+    public static char GetDigit()
     {
         return Faker.Value.Random.Char('0', '9');
     }
     
-    public static char GetRandomLetter()
+    public static char GetLetter()
     {
         return Faker.Value.Random.Char('a', 'z');
     }
 
-    public static string GetRandomString()
+    private const string WhitespaceString = "      ";
+    public static string GetString(StringOption option = StringOption.Normal)
     {
-        return Faker.Value.Random.String(5, 10);
-    }
-    
-    public static Pair<string> GetRandomStringPair()
-    {   
-        var testArgument = Faker.Value.Random.String(5, 10);
-        var differentArgument = Faker.Value.Random.String(11, 21);
+        if (option == StringOption.Whitespace) return WhitespaceString;
 
-        return new Pair<string>(testArgument, differentArgument);
+        var randomString = Faker.Value.Random.String(5, 10, '0', 'z');
+        
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return option switch
+        {
+            StringOption.Normal => randomString,
+            StringOption.Uppercase => randomString.ToUpperInvariant(),
+            StringOption.Lowercase => randomString.ToLowerInvariant(),
+            _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
+        };
     }
     
-    public static int GetRandomInt()
+    public static Pair<string> GetStringPair(PairOption option = PairOption.Different)
+    {
+        switch (option)
+        {
+            case PairOption.Different:
+            {
+                var testArgument = Faker.Value.Random.String(5, 10, '0', 'z');
+                var differentArgument = Faker.Value.Random.String(11, 21, '0', 'z');
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            case PairOption.Containing:
+            {
+                var testArgument = Faker.Value.Random.String(10, 30, '0', 'z');
+                var differentArgument = testArgument.Substring(2, 5);
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(option), option, null);
+        }
+    }
+    
+    public static int GetInt()
     {
         return Faker.Value.Random.Int(-1_000_000, 1_000_000);
     }
     
-    public static Pair<int> GetRandomIntPair()
+    public static Pair<int> GetIntPair()
     {
         const int middle = int.MaxValue / 2;
         const int nextToMiddle = middle + 1;
@@ -107,12 +134,12 @@ public static class DummyData
         return result;
     }
     
-    public static decimal GetRandomDecimal()
+    public static decimal GetDecimal()
     {
         return Faker.Value.Random.Decimal(-1_000_000, 1_000_000);
     } 
     
-    public static Pair<decimal> GetRandomDecimalPair()
+    public static Pair<decimal> GetDecimalPair()
     {
         const decimal middle = 0m / 2;
         const decimal nextToMiddle = middle + 1;
@@ -123,12 +150,12 @@ public static class DummyData
         return new Pair<decimal>(testArgument, differentArgument);
     }
     
-    public static double GetRandomDouble()
+    public static double GetDouble()
     {
         return Faker.Value.Random.Double(-1_000_000, 1_000_000);
     }
     
-    public static Pair<double> GetRandomDoublePair()
+    public static Pair<double> GetDoublePair()
     {
         const double middle = double.MaxValue / 2;
         const double nextToMiddle = middle + 1;
@@ -139,12 +166,12 @@ public static class DummyData
         return new Pair<double>(testArgument, differentArgument);
     }
     
-    public static long GetRandomLong()
+    public static long GetLong()
     {
         return Faker.Value.Random.Long(-1_000_000, 1_000_000);
     }
     
-    public static Pair<long> GetRandomLongPair()
+    public static Pair<long> GetLongPair()
     {
         const long middle = long.MaxValue / 2;
         const long nextToMiddle = middle + 1;
@@ -155,12 +182,12 @@ public static class DummyData
         return new Pair<long>(testArgument, differentArgument);
     }
     
-    public static float GetRandomFloat()
+    public static float GetFloat()
     {
         return Faker.Value.Random.Float(-1_000_000, 1_000_000);
     }
     
-    public static Pair<float> GetRandomFloatPair()
+    public static Pair<float> GetFloatPair()
     {
         const float middle = float.MaxValue / 2;
         const float nextToMiddle = middle + 1;
@@ -171,12 +198,12 @@ public static class DummyData
         return new Pair<float>(testArgument, differentArgument);
     }
     
-    public static short GetRandomShort()
+    public static short GetShort()
     {
         return Faker.Value.Random.Short(-10_000, 10_000);
     }
     
-    public static Pair<short> GetRandomShortPair()
+    public static Pair<short> GetShortPair()
     {
         const short middle = short.MaxValue / 2;
         const short nextToMiddle = middle + 1;
@@ -187,12 +214,12 @@ public static class DummyData
         return new Pair<short>(testArgument, differentArgument);
     }
     
-    public static byte GetRandomByte()
+    public static byte GetByte()
     {
         return Faker.Value.Random.Byte(50, 100);
     }
     
-    public static Pair<byte> GetRandomBytePair()
+    public static Pair<byte> GetBytePair()
     {
         const byte middle = byte.MaxValue / 2;
         const byte nextToMiddle = middle + 1;
@@ -203,7 +230,7 @@ public static class DummyData
         return new Pair<byte>(testArgument, differentArgument);
     }
 
-    public static Person GetRandomPerson()
+    public static Person GetPerson()
     {
         return new Person();
     }

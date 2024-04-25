@@ -13,7 +13,7 @@ namespace FluentContracts.Tests
         {
             TestContract<Guid?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomGuid(),
+                DummyData.GetGuid(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<Guid?, ArgumentNullException>(
-                DummyData.GetRandomGuid(),
+                DummyData.GetGuid(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,8 +31,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var sameArgument = DummyData.GetRandomGuid();
-            var otherArgument = DummyData.GetRandomGuid();
+            var sameArgument = DummyData.GetGuid();
+            var otherArgument = DummyData.GetGuid();
             
             TestContract<Guid, ArgumentOutOfRangeException>(
                 sameArgument,
@@ -44,8 +44,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var sameArgument = DummyData.GetRandomGuid();
-            var otherArgument = DummyData.GetRandomGuid();
+            var sameArgument = DummyData.GetGuid();
+            var otherArgument = DummyData.GetGuid();
             
             TestContract<Guid, ArgumentOutOfRangeException>(
                 otherArgument,
@@ -57,9 +57,9 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var included = DummyData.GetRandomGuid();
-            var excluded = DummyData.GetRandomGuid();
-            var array = DummyData.GetArray(DummyData.GetRandomGuid, included, excluded);
+            var included = DummyData.GetGuid();
+            var excluded = DummyData.GetGuid();
+            var array = DummyData.GetArray(DummyData.GetGuid, included, excluded);
             
             TestContract<Guid, ArgumentOutOfRangeException>(
                 included,
@@ -72,9 +72,9 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var included = DummyData.GetRandomGuid();
-            var excluded = DummyData.GetRandomGuid();
-            var array = DummyData.GetArray(DummyData.GetRandomGuid, included, excluded);
+            var included = DummyData.GetGuid();
+            var excluded = DummyData.GetGuid();
+            var array = DummyData.GetArray(DummyData.GetGuid, included, excluded);
 
             TestContract<Guid, ArgumentOutOfRangeException>(
                 excluded,
@@ -89,7 +89,7 @@ namespace FluentContracts.Tests
         {
             TestContract<Guid, ArgumentOutOfRangeException>(
                 Guid.Empty,
-                DummyData.GetRandomGuid(),
+                DummyData.GetGuid(),
                 (testArgument, message) => testArgument.Must().BeEmpty(message),
                 "testArgument");
         }
@@ -98,7 +98,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeEmpty()
         {
             TestContract<Guid, ArgumentOutOfRangeException>(
-                DummyData.GetRandomGuid(),
+                DummyData.GetGuid(),
                 Guid.Empty,
                 (testArgument, message) => testArgument.Must().NotBeEmpty(message),
                 "testArgument");
