@@ -10,10 +10,10 @@
             ThrowHelper.ThrowUserDefinedException<TException>();
         }
         
-        public static void CheckForNotNull<T, TException>(T value, string message)
+        public static void CheckForNotNull<T, TException>(T argumentValue, string message)
             where TException: Exception, new()
         {
-            if (value != null) return;
+            if (argumentValue != null) return;
 
             ThrowHelper.ThrowUserDefinedException<TException>(message);
         }
@@ -58,6 +58,22 @@
             if (value.IsEqualTo(argumentValue)) return;
 
             ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+        }
+        
+        public static void CheckForSpecificValue<T, TException>(T value, T argumentValue)
+            where TException: Exception, new()
+        {
+            if (value.IsEqualTo(argumentValue)) return;
+
+            ThrowHelper.ThrowUserDefinedException<TException>();
+        }
+        
+        public static void CheckForSpecificValue<T, TException>(T value, T argumentValue, string message)
+            where TException: Exception, new()
+        {
+            if (value.IsEqualTo(argumentValue)) return;
+
+            ThrowHelper.ThrowUserDefinedException<TException>(message);
         }
         
         public static void CheckForNotSpecificValue<T>(T value, T argumentValue, string argumentName, string? message = null)

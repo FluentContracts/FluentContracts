@@ -121,7 +121,7 @@ namespace FluentContracts.Tests
                 success,
                 outOfRange,
                 (testArgument, message) => 
-                    testArgument.Must().BeGreaterOrEqualThan(success, message),
+                    testArgument.Must().BeGreaterOrEqualTo(success, message),
                 "testArgument");
         }
         
@@ -150,7 +150,7 @@ namespace FluentContracts.Tests
                 success,
                 outOfRange,
                 (testArgument, message) => 
-                    testArgument.Must().BeLessOrEqualThan(success, message),
+                    testArgument.Must().BeLessOrEqualTo(success, message),
                 "testArgument");
         }
     }
