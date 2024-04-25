@@ -61,7 +61,7 @@ namespace FluentContracts.Contracts
         /// <returns>Linker for chaining more checks</returns>
         /// <remarks>Also checks for the argument to NOT be null</remarks>
         [Pure]
-        public Linker<string?> BeWhitespace(string? message = null)
+        public Linker<string?> BeWhiteSpace(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
             Validator.CheckGenericCondition(string.IsNullOrWhiteSpace, ArgumentValue, ArgumentName, message);
@@ -75,7 +75,7 @@ namespace FluentContracts.Contracts
         /// <returns>Linker for chaining more checks</returns>
         /// <remarks>Also checks for the argument to NOT be null</remarks>
         [Pure]
-        public Linker<string?> NotBeWhitespace(string? message = null)
+        public Linker<string?> NotBeWhiteSpace(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
             Validator.CheckGenericCondition(a => !string.IsNullOrWhiteSpace(a), ArgumentValue, ArgumentName, message);
@@ -88,7 +88,7 @@ namespace FluentContracts.Contracts
         /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
         /// <returns>Linker for chaining more checks</returns>
         [Pure]
-        public Linker<string?> BeNullOrWhitespace(string? message = null)
+        public Linker<string?> BeNullOrWhiteSpace(string? message = null)
         {
             Validator.CheckGenericCondition(string.IsNullOrWhiteSpace, ArgumentValue, ArgumentName, message);
             return Linker;
@@ -100,7 +100,7 @@ namespace FluentContracts.Contracts
         /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
         /// <returns>Linker for chaining more checks</returns>
         [Pure]
-        public Linker<string?> NotBeNullOrWhitespace(string? message = null)
+        public Linker<string?> NotBeNullOrWhiteSpace(string? message = null)
         {
             Validator.CheckGenericCondition(a => !string.IsNullOrWhiteSpace(a), ArgumentValue, ArgumentName, message);
             return Linker;

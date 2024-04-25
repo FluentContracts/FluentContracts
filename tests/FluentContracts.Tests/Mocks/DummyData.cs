@@ -6,6 +6,8 @@ namespace FluentContracts.Tests.Mocks;
 public static class DummyData
 {
     private const int ArraySize = 10;
+    private const string WhiteSpaceString = "      ";
+    private const char WhiteSpaceChar = ' ';
     
     private static Lazy<Faker> Faker { get; } = new(() => new Faker { Random = new Randomizer(42)});
 
@@ -27,9 +29,22 @@ public static class DummyData
         return Faker.Value.Random.Guid();
     }
 
-    public static char GetChar()
+    public static char GetChar(StringOption option = StringOption.Normal)
     {
-        return Faker.Value.Random.Char();
+        if (option == StringOption.WhiteSpace) return WhiteSpaceChar;
+
+        var randomChar = Faker.Value.Random.Char('A', 'z');
+        
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return option switch
+        {
+            StringOption.Normal => randomChar,
+            StringOption.Uppercase => char.ToUpperInvariant(randomChar),
+            StringOption.Lowercase => char.ToLowerInvariant(randomChar),
+            StringOption.Ascii => Faker.Value.Random.Char((char)0, (char)127),
+            StringOption.NonAscii => Faker.Value.Random.Char((char)161, (char)661),
+            _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
+        };
     }
     
     public static Pair<char> GetCharPair()
@@ -52,13 +67,12 @@ public static class DummyData
     {
         return Faker.Value.Random.Char('a', 'z');
     }
-
-    private const string WhitespaceString = "      ";
+    
     public static string GetString(StringOption option = StringOption.Normal)
     {
-        if (option == StringOption.Whitespace) return WhitespaceString;
+        if (option == StringOption.WhiteSpace) return WhiteSpaceString;
 
-        var randomString = Faker.Value.Random.String(5, 10, '0', 'z');
+        var randomString = Faker.Value.Random.String(5, 10, 'A', 'z');
         
         // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
         return option switch
@@ -66,6 +80,8 @@ public static class DummyData
             StringOption.Normal => randomString,
             StringOption.Uppercase => randomString.ToUpperInvariant(),
             StringOption.Lowercase => randomString.ToLowerInvariant(),
+            StringOption.Ascii => Faker.Value.Random.String(5, 10, (char)0, (char)127),
+            StringOption.NonAscii => Faker.Value.Random.String(5, 10, (char)161, (char)661),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
     }
