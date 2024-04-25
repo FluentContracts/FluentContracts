@@ -13,7 +13,7 @@ namespace FluentContracts.Tests
         {
             TestContract<byte?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomByte(),
+                DummyData.GetByte(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<byte?, ArgumentNullException>(
-                DummyData.GetRandomByte(),
+                DummyData.GetByte(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,7 +31,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var pair = DummyData.GetRandomBytePair();
+            var pair = DummyData.GetBytePair();
             
             TestContract<byte, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -43,7 +43,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var pair = DummyData.GetRandomBytePair();
+            var pair = DummyData.GetBytePair();
             
             TestContract<byte, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -55,8 +55,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var pair = DummyData.GetRandomBytePair();
-            var array = DummyData.GetArray(DummyData.GetRandomByte, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetBytePair();
+            var array = DummyData.GetArray(DummyData.GetByte, pair.TestArgument, pair.DifferentArgument);
             
             TestContract<byte, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -69,8 +69,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var pair = DummyData.GetRandomBytePair();
-            var array = DummyData.GetArray(DummyData.GetRandomByte, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetBytePair();
+            var array = DummyData.GetArray(DummyData.GetByte, pair.TestArgument, pair.DifferentArgument);
 
             TestContract<byte, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -83,7 +83,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeBetween()
         {
-            var success = DummyData.GetRandomByte();
+            var success = DummyData.GetByte();
             var lower = (byte)(success - 10);
             var higher = (byte)(success + 10);
             var outOfRange = (byte)(higher + 10);
@@ -99,7 +99,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterThan()
         {
-            var success = DummyData.GetRandomByte();
+            var success = DummyData.GetByte();
             var lower = (byte)(success - 10);
             var outOfRange = (byte)(lower - 10);
 
@@ -114,7 +114,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterOrEqualThan()
         {
-            var success = DummyData.GetRandomByte();
+            var success = DummyData.GetByte();
             var outOfRange = (byte)(success - 10);
 
             TestContract<byte, ArgumentOutOfRangeException>(
@@ -128,7 +128,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessThan()
         {
-            var success = DummyData.GetRandomByte();
+            var success = DummyData.GetByte();
             var higher = (byte)(success + 10);
             var outOfRange = (byte)(higher + 10);
 
@@ -143,7 +143,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessOrEqualThan()
         {
-            var success = DummyData.GetRandomByte();
+            var success = DummyData.GetByte();
             var outOfRange = (byte)(success + 10);
 
             TestContract<byte, ArgumentOutOfRangeException>(

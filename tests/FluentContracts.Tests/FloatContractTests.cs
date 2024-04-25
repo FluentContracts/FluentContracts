@@ -13,7 +13,7 @@ namespace FluentContracts.Tests
         {
             TestContract<float?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomFloat(),
+                DummyData.GetFloat(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<float?, ArgumentNullException>(
-                DummyData.GetRandomFloat(),
+                DummyData.GetFloat(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,7 +31,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var pair = DummyData.GetRandomFloatPair();
+            var pair = DummyData.GetFloatPair();
             
             TestContract<float, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -43,7 +43,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var pair = DummyData.GetRandomFloatPair();
+            var pair = DummyData.GetFloatPair();
             
             TestContract<float, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -55,8 +55,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var pair = DummyData.GetRandomFloatPair();
-            var array = DummyData.GetArray(DummyData.GetRandomFloat, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetFloatPair();
+            var array = DummyData.GetArray(DummyData.GetFloat, pair.TestArgument, pair.DifferentArgument);
             
             TestContract<float, ArgumentOutOfRangeException>(
                 pair.TestArgument,
@@ -69,8 +69,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var pair = DummyData.GetRandomFloatPair();
-            var array = DummyData.GetArray(DummyData.GetRandomFloat, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetFloatPair();
+            var array = DummyData.GetArray(DummyData.GetFloat, pair.TestArgument, pair.DifferentArgument);
 
             TestContract<float, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
@@ -83,7 +83,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeBetween()
         {
-            var success = DummyData.GetRandomFloat();
+            var success = DummyData.GetFloat();
             var lower = success - 10;
             var higher = success + 10;
             var outOfRange = higher + 10;
@@ -99,7 +99,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterThan()
         {
-            var success = DummyData.GetRandomFloat();
+            var success = DummyData.GetFloat();
             var lower = success - 10;
             var outOfRange = lower - 10;
 
@@ -114,7 +114,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterOrEqualThan()
         {
-            var success = DummyData.GetRandomFloat();
+            var success = DummyData.GetFloat();
             var outOfRange = success - 10;
 
             TestContract<float, ArgumentOutOfRangeException>(
@@ -128,7 +128,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessThan()
         {
-            var success = DummyData.GetRandomFloat();
+            var success = DummyData.GetFloat();
             var higher = success + 10;
             var outOfRange = higher + 10;
 
@@ -143,7 +143,7 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessOrEqualThan()
         {
-            var success = DummyData.GetRandomFloat();
+            var success = DummyData.GetFloat();
             var outOfRange = success + 10;
 
             TestContract<float, ArgumentOutOfRangeException>(
