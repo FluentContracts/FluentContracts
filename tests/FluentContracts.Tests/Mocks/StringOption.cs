@@ -5,5 +5,7 @@ public enum StringOption
     Normal,
     Uppercase,
     Lowercase,
-    Whitespace
+    WhiteSpace,
+    Ascii,
+    NonAscii
 }

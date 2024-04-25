@@ -133,54 +133,54 @@ namespace FluentContracts.Tests
         }
         
         [Fact]
-        public void Test_Must_BeNullOrWhitespace()
+        public void Test_Must_BeNullOrWhiteSpace()
         {
             TestContract<string, ArgumentOutOfRangeException>(
-                DummyData.GetString(StringOption.Whitespace),
+                DummyData.GetString(StringOption.WhiteSpace),
                 DummyData.GetString(),
-                (testArgument, message) => testArgument.Must().BeNullOrWhitespace(message),
+                (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
                 "testArgument");
             
             TestContract<string, ArgumentOutOfRangeException>(
                 null,
                 DummyData.GetString(),
-                (testArgument, message) => testArgument.Must().BeNullOrWhitespace(message),
+                (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
                 "testArgument");
         }
 
         [Fact]
-        public void Test_Must_NotBeNullOrWhitespace()
+        public void Test_Must_NotBeNullOrWhiteSpace()
         {
             TestContract<string, ArgumentOutOfRangeException>(
                 DummyData.GetString(),
-                DummyData.GetString(StringOption.Whitespace),
-                (testArgument, message) => testArgument.Must().NotBeNullOrWhitespace(message),
+                DummyData.GetString(StringOption.WhiteSpace),
+                (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
                 "testArgument");
             
             TestContract<string, ArgumentOutOfRangeException>(
                 DummyData.GetString(),
                 null,
-                (testArgument, message) => testArgument.Must().NotBeNullOrWhitespace(message),
+                (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
                 "testArgument");
         }
         
         [Fact]
-        public void Test_Must_BeWhitespace()
+        public void Test_Must_BeWhiteSpace()
         {   
             TestContract<string, ArgumentOutOfRangeException>(
-                DummyData.GetString(StringOption.Whitespace),
+                DummyData.GetString(StringOption.WhiteSpace),
                 DummyData.GetString(),
-                (testArgument, message) => testArgument.Must().BeWhitespace(message),
+                (testArgument, message) => testArgument.Must().BeWhiteSpace(message),
                 "testArgument");
         }
 
         [Fact]
-        public void Test_Must_NotBeWhitespace()
+        public void Test_Must_NotBeWhiteSpace()
         {
             TestContract<string, ArgumentOutOfRangeException>(
                 DummyData.GetString(),
-                DummyData.GetString(StringOption.Whitespace),
-                (testArgument, message) => testArgument.Must().NotBeWhitespace(message),
+                DummyData.GetString(StringOption.WhiteSpace),
+                (testArgument, message) => testArgument.Must().NotBeWhiteSpace(message),
                 "testArgument");
         }
         
@@ -223,7 +223,6 @@ namespace FluentContracts.Tests
                 (testArgument, message) => testArgument.Must().NotBeLowercase(message),
                 "testArgument");
         }
-        
         
         [Fact]
         public void Test_Must_Contain()
