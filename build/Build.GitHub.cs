@@ -53,21 +53,20 @@ partial class Build
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
     
-    string GitHubToken => GitHubActions.Instance?.Token;
-    
     bool Prerelease => false;
     bool Draft => false;
     
     
     [UsedImplicitly]
     Target CreateGitHubRelease => _ => _
-        .Requires(() => GitHubToken)
+        .Requires(() => GitHubActions.Instance.Token != null)
         .TriggeredBy(Publish)
         .ProceedAfterFailure()
         .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(async () =>
         {
-            GitHubTasks.GitHubClient.Credentials = new Credentials(GitHubToken.NotNull());
+            var token = GitHubActions.Instance.Token;
+            GitHubTasks.GitHubClient.Credentials = new Credentials(token.NotNull());
 
             var release = await GetOrCreateReleaseAsync();
 
