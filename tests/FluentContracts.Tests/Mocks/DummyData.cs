@@ -6,8 +6,10 @@ namespace FluentContracts.Tests.Mocks;
 public static class DummyData
 {
     private const int ArraySize = 10;
+    private const string WhiteSpaceString = "      ";
+    private const char WhiteSpaceChar = ' ';
     
-    private static Lazy<Faker> Faker { get; } = new(() => new Faker() { Random = new Randomizer(42)});
+    private static Lazy<Faker> Faker { get; } = new(() => new Faker { Random = new Randomizer(42)});
 
     public static string GetRandomMessage()
     {
@@ -22,34 +24,103 @@ public static class DummyData
         return (message, exceptionMessage);
     }
     
-    public static Guid GetRandomGuid()
+    public static Guid GetGuid()
     {
         return Faker.Value.Random.Guid();
     }
 
-    public static char GetRandomChar()
+    public static char GetChar(StringOption option = StringOption.Normal)
     {
-        return Faker.Value.Random.Char();
+        if (option == StringOption.WhiteSpace) return WhiteSpaceChar;
+        
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return option switch
+        {
+            StringOption.Normal => Faker.Value.Random.Char('A', 'z'),
+            StringOption.Uppercase => Faker.Value.Random.Char('A', 'Z'),
+            StringOption.Lowercase => Faker.Value.Random.Char('a', 'z'),
+            StringOption.Ascii => Faker.Value.Random.Char((char)0, (char)127),
+            StringOption.NonAscii => Faker.Value.Random.Char((char)161, (char)661),
+            _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
+        };
     }
     
-    public static char GetRandomDigit()
+    public static Pair<char> GetCharPair()
+    {
+        const char middle = (char)(char.MaxValue / 2);
+        const char nextToMiddle = (char)(middle + 1);
+        
+        var testArgument = Faker.Value.Random.Char(char.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Char(nextToMiddle, char.MaxValue);
+
+        return new Pair<char>(testArgument, differentArgument);
+    }
+    
+    public static char GetDigit()
     {
         return Faker.Value.Random.Char('0', '9');
     }
     
-    public static char GetRandomLetter()
+    public static char GetLetter()
     {
         return Faker.Value.Random.Char('a', 'z');
     }
-
-    public static string GetRandomString()
+    
+    public static string GetString(StringOption option = StringOption.Normal)
     {
-        return Faker.Value.Random.String(5, 10);
+        if (option == StringOption.WhiteSpace) return WhiteSpaceString;
+
+        var randomString = Faker.Value.Random.String(5, 10, 'A', 'z');
+        
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return option switch
+        {
+            StringOption.Normal => randomString,
+            StringOption.Uppercase => randomString.ToUpperInvariant(),
+            StringOption.Lowercase => randomString.ToLowerInvariant(),
+            StringOption.Ascii => Faker.Value.Random.String(5, 10, (char)0, (char)127),
+            StringOption.NonAscii => Faker.Value.Random.String(5, 10, (char)161, (char)661),
+            _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
+        };
     }
     
-    public static int GetRandomInt()
+    public static Pair<string> GetStringPair(PairOption option = PairOption.Different)
+    {
+        switch (option)
+        {
+            case PairOption.Different:
+            {
+                var testArgument = Faker.Value.Random.String(5, 10, '0', 'z');
+                var differentArgument = Faker.Value.Random.String(11, 21, '0', 'z');
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            case PairOption.Containing:
+            {
+                var testArgument = Faker.Value.Random.String(10, 30, '0', 'z');
+                var differentArgument = testArgument.Substring(2, 5);
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(option), option, null);
+        }
+    }
+    
+    public static int GetInt()
     {
         return Faker.Value.Random.Int(-1_000_000, 1_000_000);
+    }
+    
+    public static Pair<int> GetIntPair()
+    {
+        const int middle = int.MaxValue / 2;
+        const int nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Int(int.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Int(nextToMiddle, int.MaxValue);
+
+        return new Pair<int>(testArgument, differentArgument);
     }
 
     public static T[] GetArray<T>(Func<T> valueFactory, T includedValue, T excludedValue, int size = ArraySize)
@@ -77,37 +148,103 @@ public static class DummyData
         return result;
     }
     
-    public static decimal GetRandomDecimal()
+    public static decimal GetDecimal()
     {
         return Faker.Value.Random.Decimal(-1_000_000, 1_000_000);
+    } 
+    
+    public static Pair<decimal> GetDecimalPair()
+    {
+        const decimal middle = 0m / 2;
+        const decimal nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Decimal(0m, middle);
+        var differentArgument = Faker.Value.Random.Decimal(nextToMiddle, 1m);
+
+        return new Pair<decimal>(testArgument, differentArgument);
     }
     
-    public static double GetRandomDouble()
+    public static double GetDouble()
     {
         return Faker.Value.Random.Double(-1_000_000, 1_000_000);
     }
     
-    public static long GetRandomLong()
+    public static Pair<double> GetDoublePair()
+    {
+        const double middle = double.MaxValue / 2;
+        const double nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Double(double.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Double(nextToMiddle, double.MaxValue);
+
+        return new Pair<double>(testArgument, differentArgument);
+    }
+    
+    public static long GetLong()
     {
         return Faker.Value.Random.Long(-1_000_000, 1_000_000);
     }
     
-    public static float GetRandomFloat()
+    public static Pair<long> GetLongPair()
+    {
+        const long middle = long.MaxValue / 2;
+        const long nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Long(long.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Long(nextToMiddle, long.MaxValue);
+
+        return new Pair<long>(testArgument, differentArgument);
+    }
+    
+    public static float GetFloat()
     {
         return Faker.Value.Random.Float(-1_000_000, 1_000_000);
     }
     
-    public static short GetRandomShort()
+    public static Pair<float> GetFloatPair()
+    {
+        const float middle = float.MaxValue / 2;
+        const float nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Float(float.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Float(nextToMiddle, float.MaxValue);
+
+        return new Pair<float>(testArgument, differentArgument);
+    }
+    
+    public static short GetShort()
     {
         return Faker.Value.Random.Short(-10_000, 10_000);
     }
     
-    public static byte GetRandomByte()
+    public static Pair<short> GetShortPair()
+    {
+        const short middle = short.MaxValue / 2;
+        const short nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Short(short.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Short(nextToMiddle, short.MaxValue);
+
+        return new Pair<short>(testArgument, differentArgument);
+    }
+    
+    public static byte GetByte()
     {
         return Faker.Value.Random.Byte(50, 100);
     }
+    
+    public static Pair<byte> GetBytePair()
+    {
+        const byte middle = byte.MaxValue / 2;
+        const byte nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.Byte(byte.MinValue, middle);
+        var differentArgument = Faker.Value.Random.Byte(nextToMiddle, byte.MaxValue);
 
-    public static Person GetRandomPerson()
+        return new Pair<byte>(testArgument, differentArgument);
+    }
+
+    public static Person GetPerson()
     {
         return new Person();
     }

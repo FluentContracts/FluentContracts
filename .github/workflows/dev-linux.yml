@@ -19,7 +19,7 @@ name: dev-linux
 on:
   push:
     branches:
-      - dev
+      - develop
 
 jobs:
   ubuntu-latest:

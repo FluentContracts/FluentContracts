@@ -10,8 +10,8 @@ Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentasserti
 
 ## Builds
 
-|     Type      | Status                                                                                                                                                                                                                                                         |
-|:-------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|     Type      | Status                                                                                                                                                                                                                                                                 |
+|:-------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 |   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
 |   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                      |
 |   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
@@ -80,16 +80,37 @@ public void AddOrder(Order myOrder)
 
 This will throw an instance of `OrderNullException` if `myOrder` is `null`.
 
-## Help needed
+## Supported contracts
 
-This is just getting started, so I need some help. If you are interested in helping out just contact me on any of the following:
+| Type      |  Extends  | Contracts                                                                                                                                                                                                                                 |
+|-----------|:---------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Generic` |     -     | `Be`, `NotBe`, `BeNull`, `NotBeNull`, `BeAnyOf`, `NotBeAnyOf`, `Satisfy`                                                                                                                                                                  |
+| `Numbers` | `Generic` | `BeBetween`, `BeGreaterThan`, `BeGreaterOrEqualTo`, `BeLessThan`, `BeLessOrEqualTo`                                                                                                                                                       |
+| `bool`    | `Generic` | `BeTrue`, `BeFalse`                                                                                                                                                                                                                       |
+| `char`    | `Numbers` | `BeDigit`, `NotBeDigit`, `BeLetter`, `NotBeLetter`, `BeLowercase`, `NotBeLowercase`, `BeUppercase`, `NotBeUppercase`, `BeWhiteSpace`, `NotBeWhiteSpace`, `BeAscii`, `NotBeAscii`                                                          |
+| `Guid`    | `Generic` | `BeEmpty`, `NotBeEmpty`                                                                                                                                                                                                                   |
+| `string`  | `Generic` | `BeEmpty`, `NotBeEmpty`, `BeNullOrEmpty`, `NotBeNullOrEmpty`, `BeWhiteSpace`, `NotBeWhiteSpace`, `BeNullOrWhiteSpace`, `NotBeNullOrWhiteSpace`, `BeUppercase`, `NotBeUppercase`, `BeLowercase`, `NotBeLowercase`, `Contain`, `NotContain` |
 
-- [Blog](https://todorov.bg)
-- [Twitter](https://twitter.com/totollygeek/)
-- [LinkedIn](https://www.linkedin.com/in/totollygeek/)
+## Help needed 🙏
 
-or just send a pull request, open an issue, etc.
+My goal for this project is to become as exhaustive, safe and stable as possible, so people can use it in production and on big projects.
+So I need some help. If you are interested in helping out just send a pull request, open an issue, etc.
 
-## Credits
+## Where to find me 🕵️
+
+[![Blog](https://img.shields.io/badge/Blog-todorov.bg-black.svg?style=for-the-badge&logo=jekyll&logoColor=white)](https://todorov.bg)
+[![X](https://img.shields.io/badge/twitter-%40totollygeek-lightgreen.svg?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/totollygeek)
+[![LinkedIn](https://img.shields.io/badge/linkedin-totollygeek-blue.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/totollygeek)
+[![Mastodon](https://img.shields.io/badge/Mastodon-%40totollygeek@infosec.exchange-darkblue.svg?style=for-the-badge&logo=mastodon&logoColor=white)](https://infosec.exchange/@totollygeek)
+[![Threads](https://img.shields.io/badge/Threads-%40totollygeek-red.svg?style=for-the-badge&logo=threads&logoColor=white)](https://www.threads.net/@totollygeek)
+[![BlueSky](https://img.shields.io/badge/BlueSky-totollygeek.com-lightblue.svg?style=for-the-badge&logo=bluesky&logoColor=white)](https://bsky.app/profile/totollygeek.com)
+
+## Credits 🙇‍♂️
+
+#### [Matthias Koch](https://twitter.com/matkoch87)
+> The creator of [NUKE](https://nuke.build), because I cannot build any .NET project without it and because he helped me tremendously in setting up the repository and everything around this project. (_I have also copy-pasted, like his entire build and some markdown files_ 🤫)
+
+#### [Dennis Doomen](https://twitter.com/ddoomen)
+> The "[FluentAssertions](https://fluentassertions.com/)" guy. This whole project was inspired by how that library works and I might have copy-pasted also parts of his repo too 😏
 
 Icon made by [IconMonk](https://www.flaticon.com/authors/icon-monk) from [Flaticon](https://www.flaticon.com) 

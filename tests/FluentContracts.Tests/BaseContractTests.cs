@@ -13,8 +13,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Satisfy()
         {
-            var success = DummyData.GetRandomPerson();
-            var failing = DummyData.GetRandomPerson();
+            var success = DummyData.GetPerson();
+            var failing = DummyData.GetPerson();
             Func<Person, bool> testCondition = p => p.Email == success.Email;
             
             TestContract<Person, ArgumentOutOfRangeException>(
@@ -55,25 +55,50 @@ namespace FluentContracts.Tests
         }
         
         [Fact]
-        public void Test_Throwing_Own_Exception()
+        public void Test_NotBeNull_Own_Exception()
         {
             TestContract<int?, MockException>(
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 null,
                 null,
                 (testArgument, _) => testArgument.Must().NotBeNull<MockException>());
         }
         
         [Fact]
-        public void Test_Throwing_Own_Exception_With_Message()
+        public void Test_NotBeNull_Own_Exception_With_Message()
         {
             var errorMessage = DummyData.GetRandomMessage();
             
             TestContract<int?, MockException>(
-                DummyData.GetRandomInt(),
+                DummyData.GetInt(),
                 null,
                 errorMessage,
                 (testArgument, message) => testArgument.Must().NotBeNull<MockException>(message));
+        }
+        
+        [Fact]
+        public void Test_Be_Own_Exception()
+        {
+            var pair = DummyData.GetIntPair();
+            
+            TestContract<int, MockException>(
+                pair.TestArgument,
+                pair.DifferentArgument,
+                null,
+                (testArgument, _) => testArgument.Must().Be<MockException>(pair.TestArgument));
+        }
+        
+        [Fact]
+        public void Test_Be_Own_Exception_With_Message()
+        {
+            var pair = DummyData.GetIntPair();
+            var errorMessage = DummyData.GetRandomMessage();
+            
+            TestContract<int?, MockException>(
+                pair.TestArgument,
+                pair.DifferentArgument,
+                errorMessage,
+                (testArgument, message) => testArgument.Must().Be<MockException>(pair.TestArgument, message));
         }
     }
 }

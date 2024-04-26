@@ -19,7 +19,7 @@ name: dev-windows
 on:
   push:
     branches:
-      - dev
+      - develop
 
 jobs:
   windows-latest:

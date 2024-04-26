@@ -3,6 +3,7 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.ReportGenerator;
+using Nuke.Common.Utilities;
 using Utils;
 using static Nuke.Common.Tools.ReportGenerator.ReportGeneratorTasks;
 
@@ -18,7 +19,7 @@ partial class Build
     Target ReportCoverage => _ => _
         .DependsOn(Test)
         .Consumes(Test)
-        .Requires(() => CoverallRepoKey)
+        .Requires(() => IsLocalBuild || !CoverallRepoKey.IsNullOrEmpty())
         .Executes(() =>
         {
             ReportGenerator(_ => _
@@ -29,17 +30,19 @@ partial class Build
                 .SetTargetDirectory(CoverageReportDirectory)
                 .SetFramework("netcoreapp2.1"));
 
-            var coverallsApp = 
+            if (IsLocalBuild) return;
+
+            var coverallsApp =
                 OutputDirectory.CreateDownloadableTool(
-                    "coveralls.exe",
-                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe");
+                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe",
+                    "coveralls.exe");
 
             if (coverallsApp == null)
             {
                 Serilog.Log.Error("Coveralls CLI could not be found!");
                 Environment.Exit(1);
             }
-            
+
             coverallsApp($"report " +
                          $"{CoverageReportDirectory / "lcov.info"} " +
                          $"--allow-empty " +
