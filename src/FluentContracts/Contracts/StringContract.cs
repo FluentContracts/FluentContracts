@@ -116,7 +116,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> BeUppercase(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckForSpecificValue(ArgumentValue!.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
+            Validator.CheckForSpecificValue(ArgumentValue.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
             return Linker;
         }
         
@@ -130,7 +130,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> NotBeUppercase(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckForNotSpecificValue(ArgumentValue!.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
+            Validator.CheckForNotSpecificValue(ArgumentValue.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
             return Linker;
         }
         
@@ -144,7 +144,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> BeLowercase(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckForSpecificValue(ArgumentValue!.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
+            Validator.CheckForSpecificValue(ArgumentValue.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
             return Linker;
         }
         
@@ -158,7 +158,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> NotBeLowercase(string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckForNotSpecificValue(ArgumentValue!.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
+            Validator.CheckForNotSpecificValue(ArgumentValue.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
             return Linker;
         }
 
@@ -173,7 +173,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> Contain(string containedString, string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckGenericCondition(a => a!.Contains(containedString, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
+            Validator.CheckGenericCondition(a => a.Contains(containedString, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
             return Linker;
         }
 
@@ -188,7 +188,7 @@ namespace FluentContracts.Contracts
         public Linker<string?> NotContain(string containedString, string? message = null)
         {
             Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-            Validator.CheckGenericCondition(a => !a!.Contains(containedString, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
+            Validator.CheckGenericCondition(a => !a.Contains(containedString, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
             return Linker;
         }
     }
