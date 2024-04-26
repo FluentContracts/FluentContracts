@@ -104,6 +104,9 @@ So I need some help. If you are interested in helping out just send a pull reque
 [![Mastodon](https://img.shields.io/badge/Mastodon-%40totollygeek@infosec.exchange-darkblue.svg?style=for-the-badge&logo=mastodon&logoColor=white)](https://infosec.exchange/@totollygeek)
 [![Threads](https://img.shields.io/badge/Threads-%40totollygeek-red.svg?style=for-the-badge&logo=threads&logoColor=white)](https://www.threads.net/@totollygeek)
 [![BlueSky](https://img.shields.io/badge/BlueSky-totollygeek.com-lightblue.svg?style=for-the-badge&logo=bluesky&logoColor=white)](https://bsky.app/profile/totollygeek.com)
+[![Linktree](https://img.shields.io/badge/Linktree-totollygeek-yellow.svg?style=for-the-badge&logo=linktree&logoColor=white)](https://linktr.ee/totollygeek)
+[![Email](https://img.shields.io/badge/Email-fluentcontracts@pm.me-blue.svg?style=for-the-badge&logo=proton&logoColor=white)](mailto://fluentcontracts@pm.me)
+
 
 ## Credits 🙇‍♂️
 
