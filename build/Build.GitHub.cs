@@ -53,7 +53,7 @@ partial class Build
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
     
-    [Parameter] [Secret] string GitHubToken => GitHubActions.Instance?.Token;
+    string GitHubToken => GitHubActions.Instance?.Token;
     
     bool Prerelease => false;
     bool Draft => false;
