@@ -65,6 +65,25 @@ namespace FluentContracts.Contracts
             Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
             return Linker;
         }
+        
+        /// <summary>
+        /// Checks if the specified argument is not null.
+        /// </summary>
+        /// <param name="expectedValue">The expected value to compare against.</param>
+        /// <param name="message">The optional error message to include in the exception.</param>
+        /// <typeparam name="TException">Type of the exception to throw</typeparam>
+        /// <returns>Linker for chaining more checks</returns>
+        [Pure]
+        public Linker<T> Be<TException>(T expectedValue, string? message = null)
+            where TException: Exception, new()
+        {
+            if (message != null)
+                Validator.CheckForSpecificValue<T, TException>(expectedValue, ArgumentValue, message);
+            else                    
+                Validator.CheckForSpecificValue<T, TException>(expectedValue, ArgumentValue);
+            
+            return Linker;
+        }
 
         /// <summary>
         /// Checks if the specified argument is not equal to the expected value.

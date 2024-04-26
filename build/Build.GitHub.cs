@@ -1,6 +1,15 @@
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
+using Nuke.Common.Git;
+using Nuke.Common.Tools.GitHub;
+using Octokit;
 
+// ReSharper disable once AllUnderscoreLocalParameterName
 [GitHubActions(
     "dev-linux",
     GitHubActionsImage.UbuntuLatest,
@@ -37,8 +46,67 @@ using Nuke.Common.CI.GitHubActions;
 partial class Build
 {
     const string MasterBranch = "master";
-    const string DevelopmentBranch = "dev";
+    const string DevelopmentBranch = "develop";
+    const string ReleaseBranchPrefix = "release";
+    const string HotfixBranchPrefix = "hotfix";
     
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
+    
+    [Parameter] [Secret] string GitHubToken => GitHubActions.Instance?.Token;
+    
+    bool Prerelease => false;
+    bool Draft => false;
+    
+    
+    [UsedImplicitly]
+    Target CreateGitHubRelease => _ => _
+        .Requires(() => GitHubToken)
+        .TriggeredBy(Publish)
+        .ProceedAfterFailure()
+        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
+        .Executes(async () =>
+        {
+            GitHubTasks.GitHubClient.Credentials = new Credentials(GitHubToken.NotNull());
+
+            var release = await GetOrCreateReleaseAsync();
+
+            var uploadTasks = NuGetPackageFiles.Select(async x =>
+            {
+                await using var assetFile = File.OpenRead(x);
+                var asset = new ReleaseAssetUpload
+                {
+                    FileName = x.Name,
+                    ContentType = "application/octet-stream",
+                    RawData = assetFile
+                };
+                await GitHubTasks.GitHubClient.Repository.Release.UploadAsset(release, asset);
+            }).ToArray();
+
+            Task.WaitAll(uploadTasks);
+        });
+    
+    async Task<Release> GetOrCreateReleaseAsync()
+    {
+        try
+        {
+            return await GitHubTasks.GitHubClient.Repository.Release.Create(
+                GitRepository.GetGitHubOwner(),
+                GitRepository.GetGitHubName(),
+                new NewRelease(MajorMinorPatchVersion)
+                {
+                    Name = MajorMinorPatchVersion,
+                    Prerelease = Prerelease,
+                    Draft = Draft,
+                });
+
+        }
+        catch
+        {
+            return await GitHubTasks.GitHubClient.Repository.Release.Get(
+                GitRepository.GetGitHubOwner(),
+                GitRepository.GetGitHubName(),
+                MajorMinorPatchVersion);
+        }
+    }
 }

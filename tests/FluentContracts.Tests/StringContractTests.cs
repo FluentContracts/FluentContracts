@@ -7,13 +7,13 @@ namespace FluentContracts.Tests
 {
     [ContractTest("String")]
     public class StringContractTests : Tests
-    {
+    {   
         [Fact]
         public void Test_Must_BeNull()
         {
             TestContract<string, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetRandomString(),
+                DummyData.GetString(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -22,7 +22,7 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeNull()
         {
             TestContract<string, ArgumentNullException>(
-                DummyData.GetRandomString(),
+                DummyData.GetString(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,39 +31,36 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var sameArgument = DummyData.GetRandomString();
-            var otherArgument = DummyData.GetRandomString();
+            var pair = DummyData.GetStringPair();
             
             TestContract<string, ArgumentOutOfRangeException>(
-                sameArgument,
-                otherArgument,
-                (testArgument, message) => testArgument.Must().Be(sameArgument, message),
+                pair.TestArgument,
+                pair.DifferentArgument,
+                (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
                 "testArgument");
         }
 
         [Fact]
         public void Test_Must_NotBe()
         {
-            var sameArgument = DummyData.GetRandomString();
-            var otherArgument = DummyData.GetRandomString();
+            var pair = DummyData.GetStringPair();
             
             TestContract<string, ArgumentOutOfRangeException>(
-                otherArgument,
-                sameArgument,
-                (testArgument, message) => testArgument.Must().NotBe(sameArgument, message),
+                pair.DifferentArgument,
+                pair.TestArgument,
+                (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
                 "testArgument");
         }
         
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var included = DummyData.GetRandomString();
-            var excluded = DummyData.GetRandomString();
-            var array = DummyData.GetArray(DummyData.GetRandomString, included, excluded);
+            var pair = DummyData.GetStringPair();
+            var array = DummyData.GetArray(() => DummyData.GetString(), pair.TestArgument, pair.DifferentArgument);
             
             TestContract<string, ArgumentOutOfRangeException>(
-                included,
-                excluded,
+                pair.TestArgument,
+                pair.DifferentArgument,
                 (testArgument, message) => 
                     message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
                 "testArgument");
@@ -72,13 +69,12 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var included = DummyData.GetRandomString();
-            var excluded = DummyData.GetRandomString();
-            var array = DummyData.GetArray(DummyData.GetRandomString, included, excluded);
+            var pair = DummyData.GetStringPair();
+            var array = DummyData.GetArray(() => DummyData.GetString(), pair.TestArgument, pair.DifferentArgument);
 
             TestContract<string, ArgumentOutOfRangeException>(
-                excluded,
-                included,
+                pair.DifferentArgument,
+                pair.TestArgument,
                 (testArgument, message) => 
                     message == null ? testArgument.Must().NotBeAnyOf(array) : testArgument.Must().NotBeAnyOf(message, array),
                 "testArgument");
@@ -89,7 +85,7 @@ namespace FluentContracts.Tests
         {
             TestContract<string, ArgumentOutOfRangeException>(
                 string.Empty,
-                DummyData.GetRandomString(),
+                DummyData.GetString(),
                 (testArgument, message) => testArgument.Must().BeEmpty(message),
                 "testArgument");
         }
@@ -98,9 +94,159 @@ namespace FluentContracts.Tests
         public void Test_Must_NotBeEmpty()
         {
             TestContract<string, ArgumentOutOfRangeException>(
-                DummyData.GetRandomString(),
+                DummyData.GetString(),
                 string.Empty,
                 (testArgument, message) => testArgument.Must().NotBeEmpty(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeNullOrEmpty()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                string.Empty,
+                DummyData.GetString(),
+                (testArgument, message) => testArgument.Must().BeNullOrEmpty(message),
+                "testArgument");
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                null,
+                DummyData.GetString(),
+                (testArgument, message) => testArgument.Must().BeNullOrEmpty(message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotBeNullOrEmpty()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(),
+                string.Empty,
+                (testArgument, message) => testArgument.Must().NotBeNullOrEmpty(message),
+                "testArgument");
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(),
+                null,
+                (testArgument, message) => testArgument.Must().NotBeNullOrEmpty(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeNullOrWhiteSpace()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.WhiteSpace),
+                DummyData.GetString(),
+                (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
+                "testArgument");
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                null,
+                DummyData.GetString(),
+                (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotBeNullOrWhiteSpace()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(),
+                DummyData.GetString(StringOption.WhiteSpace),
+                (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
+                "testArgument");
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(),
+                null,
+                (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeWhiteSpace()
+        {   
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.WhiteSpace),
+                DummyData.GetString(),
+                (testArgument, message) => testArgument.Must().BeWhiteSpace(message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotBeWhiteSpace()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(),
+                DummyData.GetString(StringOption.WhiteSpace),
+                (testArgument, message) => testArgument.Must().NotBeWhiteSpace(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeUppercase()
+        {   
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.Uppercase),
+                DummyData.GetString(StringOption.Lowercase),
+                (testArgument, message) => testArgument.Must().BeUppercase(message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotBeUppercase()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.Lowercase),
+                DummyData.GetString(StringOption.Uppercase),
+                (testArgument, message) => testArgument.Must().NotBeUppercase(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_BeLowercase()
+        {   
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.Lowercase),
+                DummyData.GetString(StringOption.Uppercase),
+                (testArgument, message) => testArgument.Must().BeLowercase(message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotBeLowercase()
+        {
+            TestContract<string, ArgumentOutOfRangeException>(
+                DummyData.GetString(StringOption.Uppercase),
+                DummyData.GetString(StringOption.Lowercase),
+                (testArgument, message) => testArgument.Must().NotBeLowercase(message),
+                "testArgument");
+        }
+        
+        [Fact]
+        public void Test_Must_Contain()
+        {
+            var pair = DummyData.GetStringPair(PairOption.Containing);
+            var notContaining = DummyData.GetString();
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                pair.TestArgument,
+                notContaining,
+                (testArgument, message) => testArgument.Must().Contain(pair.DifferentArgument, message),
+                "testArgument");
+        }
+
+        [Fact]
+        public void Test_Must_NotContain()
+        {
+            var pair = DummyData.GetStringPair(PairOption.Containing);
+            var notContaining = DummyData.GetString();
+            
+            TestContract<string, ArgumentOutOfRangeException>(
+                notContaining,
+                pair.TestArgument,
+                (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message),
                 "testArgument");
         }
     }

@@ -1,33 +1,35 @@
-﻿namespace FluentContracts.Infrastructure
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace FluentContracts.Infrastructure
 {
     internal static class Validator
     {
-        public static void CheckForNotNull<T, TException>(T value)
+        public static void CheckForNotNull<T, TException>([NotNull] T value)
             where TException: Exception, new()
         {
-            if (value != null) return;
+            if (value is not null) return;
 
             ThrowHelper.ThrowUserDefinedException<TException>();
         }
         
-        public static void CheckForNotNull<T, TException>(T value, string message)
+        public static void CheckForNotNull<T, TException>([NotNull] T argumentValue, string message)
             where TException: Exception, new()
         {
-            if (value != null) return;
+            if (argumentValue is not null) return;
 
             ThrowHelper.ThrowUserDefinedException<TException>(message);
         }
         
-        public static void CheckForNotNull<T>(T value, string argumentName, string? message = null)
+        public static void CheckForNotNull<T>([NotNull] T value, string argumentName, string? message = null)
         {
-            if (value != null) return;
+            if (value is not null) return;
 
             ThrowHelper.ThrowArgumentNullException(argumentName, message);
         }
         
-        public static void CheckForNull<T>(T value, string argumentName, string? message = null)
+        public static void CheckForNull<T>(T? value, string argumentName, string? message = null)
         {
-            if (value == null) return;
+            if (value is null) return;
     
             ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
         }
@@ -58,6 +60,22 @@
             if (value.IsEqualTo(argumentValue)) return;
 
             ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+        }
+        
+        public static void CheckForSpecificValue<T, TException>(T value, T argumentValue)
+            where TException: Exception, new()
+        {
+            if (value.IsEqualTo(argumentValue)) return;
+
+            ThrowHelper.ThrowUserDefinedException<TException>();
+        }
+        
+        public static void CheckForSpecificValue<T, TException>(T value, T argumentValue, string message)
+            where TException: Exception, new()
+        {
+            if (value.IsEqualTo(argumentValue)) return;
+
+            ThrowHelper.ThrowUserDefinedException<TException>(message);
         }
         
         public static void CheckForNotSpecificValue<T>(T value, T argumentValue, string argumentName, string? message = null)

@@ -19,7 +19,7 @@ name: dev-macos
 on:
   push:
     branches:
-      - dev
+      - develop
 
 jobs:
   macos-latest:

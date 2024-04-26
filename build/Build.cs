@@ -2,6 +2,7 @@ using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 
+// ReSharper disable AllUnderscoreLocalParameterName
 // ReSharper disable InconsistentNaming
 partial class Build : NukeBuild
 {   
@@ -13,4 +14,8 @@ partial class Build : NukeBuild
 
     AbsolutePath OutputDirectory => RootDirectory / "output";
     AbsolutePath SourceDirectory => RootDirectory / "src";
+
+    Target Full => _ => _
+        .DependsOn(Clean, Test, ReportCoverage, Pack)
+        .Unlisted();
 }

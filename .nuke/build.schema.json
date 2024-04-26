@@ -6,6 +6,9 @@
     "build": {
       "type": "object",
       "properties": {
+        "AutoStash": {
+          "type": "boolean"
+        },
         "Configuration": {
           "type": "string",
           "enum": [
@@ -18,6 +21,10 @@
           "description": "Indicates to continue a previously failed build attempt"
         },
         "CoverallRepoKey": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
+        "GitHubToken": {
           "type": "string",
           "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
@@ -45,6 +52,9 @@
             "VisualStudio",
             "VSCode"
           ]
+        },
+        "Major": {
+          "type": "boolean"
         },
         "NoLogo": {
           "type": "boolean",
@@ -84,8 +94,12 @@
             "enum": [
               "Clean",
               "Compile",
+              "CreateGitHubRelease",
+              "Full",
+              "Hotfix",
               "Pack",
               "Publish",
+              "Release",
               "ReportCoverage",
               "Restore",
               "Test"
@@ -104,8 +118,12 @@
             "enum": [
               "Clean",
               "Compile",
+              "CreateGitHubRelease",
+              "Full",
+              "Hotfix",
               "Pack",
               "Publish",
+              "Release",
               "ReportCoverage",
               "Restore",
               "Test"
