@@ -265,6 +265,34 @@ namespace FluentContracts
         }
         
         /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type <see cref="sbyte"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<sbyte> Must(
+            this sbyte argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<sbyte>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="sbyte"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<sbyte?> Must(
+            this sbyte? argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<sbyte?>(argument, argumentName);
+        }
+        
+        /// <summary>
         /// Indicates a start in the fluent chain of validations for an argument of type <see cref="float"/>
         /// </summary>
         /// <param name="argument">Argument to be validated</param>
