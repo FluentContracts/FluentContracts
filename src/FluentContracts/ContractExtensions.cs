@@ -131,11 +131,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<int> Must(
+        public static ComparableContract<int> Must(
             this int argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<int>(argument, argumentName);
+            return new ComparableContract<int>(argument, argumentName);
         }
         
         /// <summary>
@@ -145,11 +145,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<int?> Must(
+        public static ComparableContract<int?> Must(
             this int? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<int?>(argument, argumentName);
+            return new ComparableContract<int?>(argument, argumentName);
         }
         
         /// <summary>
@@ -159,11 +159,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<decimal> Must(
+        public static ComparableContract<decimal> Must(
             this decimal argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<decimal>(argument, argumentName);
+            return new ComparableContract<decimal>(argument, argumentName);
         }
         
         /// <summary>
@@ -173,11 +173,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<decimal?> Must(
+        public static ComparableContract<decimal?> Must(
             this decimal? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<decimal?>(argument, argumentName);
+            return new ComparableContract<decimal?>(argument, argumentName);
         }
         
         /// <summary>
@@ -187,11 +187,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<double> Must(
+        public static ComparableContract<double> Must(
             this double argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<double>(argument, argumentName);
+            return new ComparableContract<double>(argument, argumentName);
         }
         
         /// <summary>
@@ -201,11 +201,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<double?> Must(
+        public static ComparableContract<double?> Must(
             this double? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<double?>(argument, argumentName);
+            return new ComparableContract<double?>(argument, argumentName);
         }
         
         /// <summary>
@@ -215,11 +215,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<short> Must(
+        public static ComparableContract<short> Must(
             this short argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<short>(argument, argumentName);
+            return new ComparableContract<short>(argument, argumentName);
         }
         
         /// <summary>
@@ -229,11 +229,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<short?> Must(
+        public static ComparableContract<short?> Must(
             this short? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<short?>(argument, argumentName);
+            return new ComparableContract<short?>(argument, argumentName);
         }
         
         /// <summary>
@@ -243,11 +243,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<byte> Must(
+        public static ComparableContract<byte> Must(
             this byte argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<byte>(argument, argumentName);
+            return new ComparableContract<byte>(argument, argumentName);
         }
         
         /// <summary>
@@ -257,11 +257,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<byte?> Must(
+        public static ComparableContract<byte?> Must(
             this byte? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<byte?>(argument, argumentName);
+            return new ComparableContract<byte?>(argument, argumentName);
         }
         
         /// <summary>
@@ -271,11 +271,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<float> Must(
+        public static ComparableContract<float> Must(
             this float argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<float>(argument, argumentName);
+            return new ComparableContract<float>(argument, argumentName);
         }
         
         /// <summary>
@@ -285,11 +285,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<float?> Must(
+        public static ComparableContract<float?> Must(
             this float? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<float?>(argument, argumentName);
+            return new ComparableContract<float?>(argument, argumentName);
         }
         
         /// <summary>
@@ -299,11 +299,11 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<long> Must(
+        public static ComparableContract<long> Must(
             this long argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<long>(argument, argumentName);
+            return new ComparableContract<long>(argument, argumentName);
         }
         
         /// <summary>
@@ -313,11 +313,39 @@ namespace FluentContracts
         /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
         /// <returns>A new instance of the StringContract class.</returns>
         [Pure]
-        public static NumberContract<long?> Must(
+        public static ComparableContract<long?> Must(
             this long? argument,
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
-            return new NumberContract<long?>(argument, argumentName);
+            return new ComparableContract<long?>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateTime"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static DateTimeContract Must(
+            this DateTime argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new DateTimeContract(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static NullableDateTimeContract Must(
+            this DateTime? argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new NullableDateTimeContract(argument, argumentName);
         }
     }
 }
