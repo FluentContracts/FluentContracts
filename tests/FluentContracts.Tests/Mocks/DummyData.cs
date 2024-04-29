@@ -243,6 +243,84 @@ public static class DummyData
 
         return new Pair<byte>(testArgument, differentArgument);
     }
+    
+    public static DateTime GetDateTime(DateTimeOption option = DateTimeOption.Utc, int specificMonth = 1, DayOfWeek specificWeekday = DayOfWeek.Wednesday)
+    {
+        switch (option)
+        {
+            case DateTimeOption.Utc:
+            {
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                return new DateTime(date, time, DateTimeKind.Utc);
+            }
+            case DateTimeOption.Local:
+            {
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                return new DateTime(date, time, DateTimeKind.Local);
+            }
+            case DateTimeOption.InDaylightSaving:
+            {
+                return new DateTime(2024, 5, 5);
+            }
+            case DateTimeOption.NotInDaylightSaving:
+            {
+                return new DateTime(2024, 2, 6);
+            }
+            case DateTimeOption.LeapYear:
+            {
+                var month = Faker.Value.Random.Int(1, 12);
+                var day = Faker.Value.Random.Int(1, 29);
+                
+                return new DateTime(2024, month, day);
+            }
+            case DateTimeOption.NotLeapYear:
+            {
+                var month = Faker.Value.Random.Int(1, 12);
+                var day = Faker.Value.Random.Int(1, 28);
+                
+                return new DateTime(2023, month, day);
+            }
+            case DateTimeOption.SpecificMonth:
+            {
+                var year = Faker.Value.Random.Int(1800, 2500);
+                var day = Faker.Value.Random.Int(1, 28);
+                
+                return new DateTime(year, specificMonth, day);
+            }
+            case DateTimeOption.SpecificWeekday:
+            {
+                var year = Faker.Value.Random.Int(1800, 2500);
+                var day = Faker.Value.Random.Int(1, 28);
+                var date = new DateTime(year, specificMonth, day);
+
+                if (date.DayOfWeek == specificWeekday) return date;
+                
+                int daysUntilDesiredDay = ((int)specificWeekday - (int)date.DayOfWeek + 7) % 7;
+
+                return date.AddDays(daysUntilDesiredDay);
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(option), option, null);
+        }
+    }
+    
+    public static Pair<DateTime> GetDateTimePair(DateTimeOption option = DateTimeOption.Utc)
+    {
+        var kind = option == DateTimeOption.Utc ? DateTimeKind.Utc : DateTimeKind.Local;
+        var now = DateTime.SpecifyKind(DateTime.Now, kind);
+        var nextToNow = now.AddDays(1);
+        
+        var testArgument = 
+            DateTime.SpecifyKind(Faker.Value.Date.Between(DateTime.MinValue, now), kind);
+        var differentArgument = 
+            DateTime.SpecifyKind(Faker.Value.Date.Between(nextToNow, DateTime.MaxValue), kind);
+
+        return new Pair<DateTime>(testArgument, differentArgument);
+    }
 
     public static Person GetPerson()
     {

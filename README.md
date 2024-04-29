@@ -8,16 +8,6 @@ API for defining argument validation contracts in a fluent manner.
 
 Inspired by [FluentAssertions](https://github.com/fluentassertions/fluentassertions)
 
-## Builds
-
-|     Type      | Status                                                                                                                                                                                                                                                                 |
-|:-------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
-|   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                      |
-|   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
-| Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/FluentContracts/FluentContracts?branch=dev&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/FluentContracts/FluentContracts)                                             |
-|    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/FluentContracts/FluentContracts/actions) |
-
 ## Why another validation library
 
 I am  perfectly aware of the other libraries out there, that are doing the same stuff.
@@ -82,19 +72,41 @@ This will throw an instance of `OrderNullException` if `myOrder` is `null`.
 
 ## Supported contracts
 
-| Type      |  Extends  | Contracts                                                                                                                                                                                                                                 |
-|-----------|:---------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Generic` |     -     | `Be`, `NotBe`, `BeNull`, `NotBeNull`, `BeAnyOf`, `NotBeAnyOf`, `Satisfy`                                                                                                                                                                  |
-| `Numbers` | `Generic` | `BeBetween`, `BeGreaterThan`, `BeGreaterOrEqualTo`, `BeLessThan`, `BeLessOrEqualTo`                                                                                                                                                       |
-| `bool`    | `Generic` | `BeTrue`, `BeFalse`                                                                                                                                                                                                                       |
-| `char`    | `Numbers` | `BeDigit`, `NotBeDigit`, `BeLetter`, `NotBeLetter`, `BeLowercase`, `NotBeLowercase`, `BeUppercase`, `NotBeUppercase`, `BeWhiteSpace`, `NotBeWhiteSpace`, `BeAscii`, `NotBeAscii`                                                          |
-| `Guid`    | `Generic` | `BeEmpty`, `NotBeEmpty`                                                                                                                                                                                                                   |
-| `string`  | `Generic` | `BeEmpty`, `NotBeEmpty`, `BeNullOrEmpty`, `NotBeNullOrEmpty`, `BeWhiteSpace`, `NotBeWhiteSpace`, `BeNullOrWhiteSpace`, `NotBeNullOrWhiteSpace`, `BeUppercase`, `NotBeUppercase`, `BeLowercase`, `NotBeLowercase`, `Contain`, `NotContain` |
+|     Type      |    Extends    | Contracts                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|:-------------:|:-------------:|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   `Generic`   |       -       | `(Not)Be`, `(Not)BeNull`, `(Not)BeAnyOf`, `Satisfy`                                                                                                                                                                                                                                                                                                                                                                                             |
+| `Comparables` |   `Generic`   | `BeBetween`, `BeGreaterThan`, `BeGreaterOrEqualTo`, `BeLessThan`, `BeLessOrEqualTo`                                                                                                                                                                                                                                                                                                                                                             |
+|    `bool`     |   `Generic`   | `BeTrue`, `BeFalse`                                                                                                                                                                                                                                                                                                                                                                                                                             |
+|    `char`     | `Comparables` | `(Not)BeDigit`, `(Not)BeLetter`, `(Not)BeLowercase`, `(Not)BeUppercase`, `(Not)BeWhiteSpace`, `(Not)BeAscii`                                                                                                                                                                                                                                                                                                                                    |
+|    `Guid`     |   `Generic`   | `(Not)BeEmpty`                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+|   `string`    |   `Generic`   | `(Not)BeEmpty`, `(Not)BeNullOrEmpty`, `(Not)BeWhiteSpace`, `(Not)BeNullOrWhiteSpace`, `(Not)BeUppercase`, `(Not)BeLowercase`, `(Not)Contain`                                                                                                                                                                                                                                                                                                    |
+|  `DateTime`   | `Comparables` | `(Not)BeInDaylightSaving`, `(Not)BeLeapYear`, `(Not)BeInJanuary`, `(Not)BeInFebruary`, `(Not)BeInMarch`, `(Not)BeInApril`, `(Not)BeInMay`, `(Not)BeInJune`, `(Not)BeInJuly`, `(Not)BeInAugust`, `(Not)BeInSeptember`, `(Not)BeInOctober`, `(Not)BeInNovember`, `(Not)BeInDecember`, `(Not)BeUtc`, `(Not)BeLocal`, `(Not)BeMonday`, `(Not)BeTuesday`, `(Not)BeWednesday`, `(Not)BeThursday`, `(Not)BeFriday`, `(Not)BeSaturday`, `(Not)BeSunday` |
 
 ## Help needed 🙏
 
 My goal for this project is to become as exhaustive, safe and stable as possible, so people can use it in production and on big projects.
 So I need some help. If you are interested in helping out just send a pull request, open an issue, etc.
+
+## Repository 🚧
+
+### Builds
+
+|     Type      | Status                                                                                                                                                                                                                                                                 |
+|:-------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
+|   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                      |
+|   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
+| Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/FluentContracts/FluentContracts?branch=dev&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/FluentContracts/FluentContracts)                                             |
+|    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/FluentContracts/FluentContracts/actions) |
+
+### Status
+
+![Alt](https://repobeats.axiom.co/api/embed/5aeeab6e5ce07439108408d66453df63f9379eeb.svg "Repobeats analytics image")
+
+### How to build locally
+
+- Clone repos
+- Run `build.cmd`
 
 ## Where to find me 🕵️
 
@@ -104,6 +116,9 @@ So I need some help. If you are interested in helping out just send a pull reque
 [![Mastodon](https://img.shields.io/badge/Mastodon-%40totollygeek@infosec.exchange-darkblue.svg?style=for-the-badge&logo=mastodon&logoColor=white)](https://infosec.exchange/@totollygeek)
 [![Threads](https://img.shields.io/badge/Threads-%40totollygeek-red.svg?style=for-the-badge&logo=threads&logoColor=white)](https://www.threads.net/@totollygeek)
 [![BlueSky](https://img.shields.io/badge/BlueSky-totollygeek.com-lightblue.svg?style=for-the-badge&logo=bluesky&logoColor=white)](https://bsky.app/profile/totollygeek.com)
+[![Linktree](https://img.shields.io/badge/Linktree-totollygeek-yellow.svg?style=for-the-badge&logo=linktree&logoColor=white)](https://linktr.ee/totollygeek)
+[![Email](https://img.shields.io/badge/Email-fluentcontracts@pm.me-blue.svg?style=for-the-badge&logo=proton&logoColor=white)](mailto://fluentcontracts@pm.me)
+
 
 ## Credits 🙇‍♂️
 
