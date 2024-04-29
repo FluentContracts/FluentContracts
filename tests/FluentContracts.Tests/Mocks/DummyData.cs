@@ -228,6 +228,22 @@ public static class DummyData
         return new Pair<short>(testArgument, differentArgument);
     }
     
+    public static ushort GetUshort()
+    {
+        return Faker.Value.Random.UShort(1_000, 40_000);
+    }
+    
+    public static Pair<ushort> GetUshortPair()
+    {
+        const ushort middle = ushort.MaxValue / 2;
+        const ushort nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.UShort(ushort.MinValue, middle);
+        var differentArgument = Faker.Value.Random.UShort(nextToMiddle, ushort.MaxValue);
+
+        return new Pair<ushort>(testArgument, differentArgument);
+    }
+    
     public static byte GetByte()
     {
         return Faker.Value.Random.Byte(50, 100);
@@ -242,6 +258,22 @@ public static class DummyData
         var differentArgument = Faker.Value.Random.Byte(nextToMiddle, byte.MaxValue);
 
         return new Pair<byte>(testArgument, differentArgument);
+    }
+    
+    public static sbyte GetSbyte()
+    {
+        return Faker.Value.Random.SByte(-80, 80);
+    }
+    
+    public static Pair<sbyte> GetSbytePair()
+    {
+        const sbyte middle = sbyte.MaxValue / 2;
+        const sbyte nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.SByte(sbyte.MinValue, middle);
+        var differentArgument = Faker.Value.Random.SByte(nextToMiddle, sbyte.MaxValue);
+
+        return new Pair<sbyte>(testArgument, differentArgument);
     }
     
     public static DateTime GetDateTime(DateTimeOption option = DateTimeOption.Utc, int specificMonth = 1, DayOfWeek specificWeekday = DayOfWeek.Wednesday)
