@@ -122,6 +122,22 @@ public static class DummyData
 
         return new Pair<int>(testArgument, differentArgument);
     }
+    
+    public static uint GetUint()
+    {
+        return Faker.Value.Random.UInt(500_000U, 1_000_000U);
+    }
+    
+    public static Pair<uint> GetUintPair()
+    {
+        const uint middle = uint.MaxValue / 2;
+        const uint nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.UInt(uint.MinValue, middle);
+        var differentArgument = Faker.Value.Random.UInt(nextToMiddle, uint.MaxValue);
+
+        return new Pair<uint>(testArgument, differentArgument);
+    }
 
     public static T[] GetArray<T>(Func<T> valueFactory, T includedValue, T excludedValue, int size = ArraySize)
     {
@@ -194,6 +210,22 @@ public static class DummyData
         var differentArgument = Faker.Value.Random.Long(nextToMiddle, long.MaxValue);
 
         return new Pair<long>(testArgument, differentArgument);
+    }
+    
+    public static ulong GetUlong()
+    {
+        return Faker.Value.Random.ULong(1_000_000UL, 10_000_000UL);
+    }
+    
+    public static Pair<ulong> GetUlongPair()
+    {
+        const ulong middle = ulong.MaxValue / 2;
+        const ulong nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.ULong(ulong.MinValue, middle);
+        var differentArgument = Faker.Value.Random.ULong(nextToMiddle, ulong.MaxValue);
+
+        return new Pair<ulong>(testArgument, differentArgument);
     }
     
     public static float GetFloat()
