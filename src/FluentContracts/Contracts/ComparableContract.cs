@@ -3,7 +3,7 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts;
 
-public class NumberContract<T>(T argumentValue, string argumentName) 
+public class ComparableContract<T>(T argumentValue, string argumentName) 
     : BaseContract<T>(argumentValue, argumentName)
 {
     [Pure]

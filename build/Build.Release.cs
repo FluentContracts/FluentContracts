@@ -1,8 +1,12 @@
+using System.IO;
 using JetBrains.Annotations;
 using Nuke.Common;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.GitVersion;
+using Serilog;
+using static Nuke.Common.ChangeLog.ChangelogTasks;
 using static Nuke.Common.Tools.Git.GitTasks;
 using static Nuke.Common.Tools.GitVersion.GitVersionTasks;
 
@@ -12,9 +16,25 @@ partial class Build
     [Parameter] readonly bool AutoStash = true;
     [Parameter] readonly bool Major;
     
+    AbsolutePath ChangelogFile => RootDirectory / "CHANGELOG.md";
+    
+    [UsedImplicitly]
+    Target Changelog => _ => _
+        .Unlisted()
+        .OnlyWhenStatic(() => GitRepository.IsOnReleaseBranch() || GitRepository.IsOnHotfixBranch())
+        .Executes(() =>
+        {
+            FinalizeChangelog(ChangelogFile, MajorMinorPatchVersion, GitRepository);
+            Log.Information("Please review CHANGELOG.md and press any key to continue ...");
+            System.Console.ReadKey();
+
+            Git($"add {ChangelogFile}");
+            Git($"commit -m \"chore: {Path.GetFileName(ChangelogFile)} for {MajorMinorPatchVersion}\"");
+        });
     
     [UsedImplicitly]
     Target Hotfix => _ => _
+        .DependsOn(Changelog)
         .Requires(() => !GitRepository.IsOnHotfixBranch() || GitHasCleanWorkingCopy())
         .Executes(() =>
         {
@@ -36,6 +56,7 @@ partial class Build
     
     [UsedImplicitly]
     Target Release => _ => _
+        .DependsOn(Changelog)
         .Requires(() => !GitRepository.IsOnReleaseBranch() || GitHasCleanWorkingCopy())
         .Executes(() =>
         {

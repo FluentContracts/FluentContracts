@@ -7,7 +7,7 @@ public class NullableCharContract(char? argumentValue, string argumentName)
     : BaseContract<char?>(argumentValue, argumentName) {}
 
 public class CharContract(char argumentValue, string argumentName)
-    : NumberContract<char>(argumentValue, argumentName)
+    : ComparableContract<char>(argumentValue, argumentName)
 {
     /// <summary>
     /// Checks if the value of the <see cref="char"/> argument is a digit
