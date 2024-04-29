@@ -1,5 +1,4 @@
 using System;
-using FluentContracts.Enums;
 using FluentContracts.Infrastructure;
 using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;

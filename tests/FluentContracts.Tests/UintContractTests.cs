@@ -5,15 +5,15 @@ using Xunit;
 
 namespace FluentContracts.Tests
 {
-    [ContractTest("Int")]
-    public class IntContractTests : Tests
+    [ContractTest("Uint")]
+    public class UintContractTests : Tests
     {
         [Fact]
         public void Test_Must_BeNull()
         {
-            TestContract<int?, ArgumentOutOfRangeException>(
+            TestContract<uint?, ArgumentOutOfRangeException>(
                 null,
-                DummyData.GetInt(),
+                DummyData.GetUint(),
                 (testArgument, message) => testArgument.Must().BeNull(message),
                 "testArgument");
         }
@@ -21,8 +21,8 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeNull()
         {
-            TestContract<int?, ArgumentNullException>(
-                DummyData.GetInt(),
+            TestContract<uint?, ArgumentNullException>(
+                DummyData.GetUint(),
                 null,
                 (testArgument, message) => testArgument.Must().NotBeNull(message),
                 "testArgument");
@@ -31,9 +31,9 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_Be()
         {
-            var pair = DummyData.GetIntPair();
+            var pair = DummyData.GetUintPair();
             
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 pair.TestArgument,
                 pair.DifferentArgument,
                 (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -43,9 +43,9 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBe()
         {
-            var pair = DummyData.GetIntPair();
+            var pair = DummyData.GetUintPair();
             
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
                 pair.TestArgument,
                 (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -55,10 +55,10 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeAnyOf()
         {
-            var pair = DummyData.GetIntPair();
-            var array = DummyData.GetArray(DummyData.GetInt, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetUintPair();
+            var array = DummyData.GetArray(DummyData.GetUint, pair.TestArgument, pair.DifferentArgument);
             
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 pair.TestArgument,
                 pair.DifferentArgument,
                 (testArgument, message) => 
@@ -69,10 +69,10 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_NotBeAnyOf()
         {
-            var pair = DummyData.GetIntPair();
-            var array = DummyData.GetArray(DummyData.GetInt, pair.TestArgument, pair.DifferentArgument);
+            var pair = DummyData.GetUintPair();
+            var array = DummyData.GetArray(DummyData.GetUint, pair.TestArgument, pair.DifferentArgument);
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 pair.DifferentArgument,
                 pair.TestArgument,
                 (testArgument, message) => 
@@ -83,12 +83,12 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeBetween()
         {
-            var success = DummyData.GetInt();
+            var success = DummyData.GetUint();
             var lower = success - 10;
             var higher = success + 10;
             var outOfRange = higher + 10;
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 success,
                 outOfRange,
                 (testArgument, message) => 
@@ -99,11 +99,11 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterThan()
         {
-            var success = DummyData.GetInt();
+            var success = DummyData.GetUint();
             var lower = success - 10;
             var outOfRange = lower - 10;
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 success,
                 outOfRange,
                 (testArgument, message) => 
@@ -114,10 +114,10 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeGreaterOrEqualThan()
         {
-            var success = DummyData.GetInt();
+            var success = DummyData.GetUint();
             var outOfRange = success - 10;
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 success,
                 outOfRange,
                 (testArgument, message) => 
@@ -128,11 +128,11 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessThan()
         {
-            var success = DummyData.GetInt();
+            var success = DummyData.GetUint();
             var higher = success + 10;
             var outOfRange = higher + 10;
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 success,
                 outOfRange,
                 (testArgument, message) => 
@@ -143,10 +143,10 @@ namespace FluentContracts.Tests
         [Fact]
         public void Test_Must_BeLessOrEqualThan()
         {
-            var success = DummyData.GetInt();
+            var success = DummyData.GetUint();
             var outOfRange = success + 10;
 
-            TestContract<int, ArgumentOutOfRangeException>(
+            TestContract<uint, ArgumentOutOfRangeException>(
                 success,
                 outOfRange,
                 (testArgument, message) => 

@@ -153,6 +153,34 @@ namespace FluentContracts
         }
         
         /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type <see cref="uint"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<uint> Must(
+            this uint argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<uint>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="uint"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<uint?> Must(
+            this uint? argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<uint?>(argument, argumentName);
+        }
+        
+        /// <summary>
         /// Indicates a start in the fluent chain of validations for an argument of type <see cref="decimal"/>
         /// </summary>
         /// <param name="argument">Argument to be validated</param>
@@ -234,6 +262,34 @@ namespace FluentContracts
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
             return new ComparableContract<short?>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type <see cref="ushort"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<ushort> Must(
+            this ushort argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<ushort>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="ushort"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<ushort?> Must(
+            this ushort? argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<ushort?>(argument, argumentName);
         }
         
         /// <summary>
@@ -346,6 +402,34 @@ namespace FluentContracts
             [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
         {
             return new ComparableContract<long?>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type <see cref="ulong"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<ulong> Must(
+            this ulong argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<ulong>(argument, argumentName);
+        }
+        
+        /// <summary>
+        /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="ulong"/>
+        /// </summary>
+        /// <param name="argument">Argument to be validated</param>
+        /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+        /// <returns>A new instance of the StringContract class.</returns>
+        [Pure]
+        public static ComparableContract<ulong?> Must(
+            this ulong? argument,
+            [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        {
+            return new ComparableContract<ulong?>(argument, argumentName);
         }
         
         /// <summary>
