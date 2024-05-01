@@ -1,4 +1,7 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 
 namespace FluentContracts.Tests.Mocks;
@@ -65,8 +68,10 @@ public static class DummyData
     {
         return Faker.Value.Random.Char('a', 'z');
     }
+
+    public static string GetString() => GetString(StringOption.Normal);
     
-    public static string GetString(StringOption option = StringOption.Normal)
+    public static string GetString(StringOption option)
     {
         if (option == StringOption.WhiteSpace) return WhiteSpaceString;
 
@@ -139,9 +144,15 @@ public static class DummyData
         return new Pair<uint>(testArgument, differentArgument);
     }
 
-    public static T[] GetArray<T>(Func<T> valueFactory, T includedValue, T excludedValue, int size = ArraySize)
+    public static T[] GetArray<T>(
+        Func<T> valueFactory, 
+        T? includedValue = default, 
+        T? excludedValue = default, 
+        int size = ArraySize)
     {
-        if (excludedValue.Equals(includedValue))
+        if (excludedValue != null 
+            && includedValue != null
+            && excludedValue.Equals(includedValue))
         {
             throw new InvalidOperationException("Exclusive and inclusive values are the same");
         }
@@ -149,11 +160,16 @@ public static class DummyData
         var result = new T[size];
         int mid = size / 2;
 
+        includedValue ??= valueFactory();
+
         for (var i = 0; i < size; i++)
         {
-            var value = i == mid ? includedValue : valueFactory();
+            var value = 
+                i == mid 
+                    ? includedValue 
+                    : valueFactory();
 
-            if (value.Equals(excludedValue))
+            if (excludedValue != null && value!.Equals(excludedValue))
             {
                 value = valueFactory();
             }
@@ -162,6 +178,27 @@ public static class DummyData
         }
 
         return result;
+    }
+    
+    public static Pair<T[]> GetArrayPair<T>(Func<T> valueFactory)
+    {
+        var testArgument = GetArray(valueFactory);
+        var differentArgument = GetArray(valueFactory); 
+        return new Pair<T[]>(testArgument, differentArgument);
+    }
+
+    public static List<T> GetList<T>(
+        Func<T> valueFactory,
+        T? includedValue = default,
+        T? excludedValue = default,
+        int size = ArraySize) => 
+        GetArray(valueFactory, includedValue, excludedValue, size).ToList();
+    
+    public static Pair<List<T>> GetListPair<T>(Func<T> valueFactory)
+    {
+        var testArgument = GetList(valueFactory);
+        var differentArgument = GetList(valueFactory); 
+        return new Pair<List<T>>(testArgument, differentArgument);
     }
     
     public static decimal GetDecimal()

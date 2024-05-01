@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `ushort` contracts
 - Added `ulong` contracts
 - Added `uint` contracts
+- Added contracts for `Array`
+- Added contracts for `List<T>`
 
 ## [1.2.0] / 2024-04-29
 - Added a `CAHNGELOG` (this one right here 😏)
