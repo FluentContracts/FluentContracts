@@ -100,4 +100,64 @@ public class ArrayContractTests : Tests
             (testArgument, message) => testArgument.Must().NotBeWithCount(size, message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_Contain()
+    {
+        var success = DummyData.GetArray(DummyData.GetString, size: 20);
+        var fail = DummyData.GetArray(DummyData.GetString, size: 20);
+        var list = success[10..15];
+
+        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().Contain(list, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_Contain_Single()
+    {
+        var included = DummyData.GetString();
+        
+        var success = DummyData.GetArray(DummyData.GetString, included);
+        var fail = DummyData.GetArray(DummyData.GetString, excludedValue: included);
+        
+        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, _) => testArgument.Must().Contain(included),
+            "testArgument", 
+            true);
+    }
+    
+    [Fact]
+    public void Test_Must_NotContain()
+    {
+        var fail = DummyData.GetArray(DummyData.GetString, size: 20);
+        var success = DummyData.GetArray(DummyData.GetString, size: 20);
+        var list = fail[10..15];
+
+        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotContain(list, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotContain_Single()
+    {
+        var included = DummyData.GetString();
+        
+        var success = DummyData.GetArray(DummyData.GetString, excludedValue: included);
+        var fail = DummyData.GetArray(DummyData.GetString, included);
+        
+        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, _) => testArgument.Must().NotContain(included),
+            "testArgument",
+            true);
+    }
 }
