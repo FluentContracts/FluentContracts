@@ -12,7 +12,8 @@ public abstract class Tests
         T successfulArgument,
         T failingArgument,
         Func<T, string, Linker<TContract>> contractAction,
-        string argumentName)
+        string argumentName,
+        bool skipMessageThrow = false)
         where TException : ArgumentException
     {   
         var satisfied =
@@ -27,10 +28,12 @@ public abstract class Tests
             .Should()
             .Throw<TException>()
             .WithParameterName(argumentName);
+
+        if (skipMessageThrow) return;
         
         var expectedError = DummyData.GetRandomErrorMessage(argumentName);
 
-        var notSatisfiedWithMessage = 
+        var notSatisfiedWithMessage =
             () => contractAction(failingArgument, expectedError.Message);
 
         notSatisfiedWithMessage

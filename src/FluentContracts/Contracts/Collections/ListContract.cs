@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 
@@ -15,32 +14,57 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     }
     
     /// <summary>
-    /// Checks if <see cref="containedString"/> is part of the value of the <see cref="string"/> argument.
+    /// Checks if <see cref="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
-    /// <param name="containedString">A string to check for being part of the argument</param>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     [Pure]
     public Linker<ListContract<T>> Contain(params T[] containedElements)
     {
+        return Contain(containedElements, null);
+    }
+    
+    /// <summary>
+    /// Checks if <see cref="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
+    /// </summary>
+    /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<ListContract<T>> Contain(IEnumerable<T> containedElements, string? message = null)
+    {
+        
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForContaining(containedElements, ArgumentValue, ArgumentName);
+        Validator.CheckForContaining(containedElements, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
     /// <summary>
-    /// Checks if <see cref="containedString"/> is not part of the value of the <see cref="string"/> argument.
+    /// Checks if <see cref="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
-    /// <param name="containedString">A string to check for being part of the argument</param>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     [Pure]
-    public Linker<ListContract<T>> NotContain(params T[] containedElements)
+    public Linker<ListContract<T>> NotContain(params T[] notContainedElements)
+    {
+        return NotContain(notContainedElements, null);
+    }
+
+    /// <summary>
+    /// Checks if <see cref="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
+    /// </summary>
+    /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<ListContract<T>> NotContain(IEnumerable<T> notContainedElements, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForNotContaining(containedElements, ArgumentValue, ArgumentName);
+        Validator.CheckForNotContaining(notContainedElements, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }
