@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using FluentContracts.Contracts;
 using FluentContracts.Infrastructure;
 using FluentContracts.Tests.Mocks;
 
@@ -7,10 +8,10 @@ namespace FluentContracts.Tests;
 
 public abstract class Tests
 {
-    protected static void TestContract<T, TException>(
+    protected static void TestContract<T, TContract, TException>(
         T successfulArgument,
         T failingArgument,
-        Func<T, string, Linker<T>> contractAction,
+        Func<T, string, Linker<TContract>> contractAction,
         string argumentName)
         where TException : ArgumentException
     {   
@@ -39,11 +40,11 @@ public abstract class Tests
             .WithMessage(expectedError.ExceptionMessage);
     }
     
-    protected static void TestContract<T, TException>(
+    protected static void TestContract<T, TContract, TException>(
         T successfulArgument,
         T failingArgument,
         string errorMessage,
-        Func<T, string, Linker<T>> contractAction)
+        Func<T, string, Linker<TContract>> contractAction)
         where TException : Exception
     {   
         var satisfied =
