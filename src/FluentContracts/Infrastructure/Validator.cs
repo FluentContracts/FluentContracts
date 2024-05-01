@@ -33,6 +33,34 @@ internal static class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
+    
+    public static void CheckForContaining<T>(
+        IEnumerable<T> containedElements, 
+        IEnumerable<T> collection, 
+        string argumentName,
+        string? message = null)
+    {
+        var sourceHash = new HashSet<T>(collection);
+        var containedHash = new HashSet<T>(containedElements);
+        
+        if (sourceHash.IsSupersetOf(containedHash)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForNotContaining<T>(
+        IEnumerable<T> containedElements, 
+        IEnumerable<T> collection, 
+        string argumentName,
+        string? message = null)
+    {
+        var sourceHash = new HashSet<T>(collection);
+        var containedHash = new HashSet<T>(containedElements);
+        
+        if (!sourceHash.IsSupersetOf(containedHash)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
 
     public static void CheckGenericCondition<T>(Func<T, bool> genericCondition, T argumentValue, string argumentName,
         string? message = null)
