@@ -4,9 +4,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts;
 
-public abstract class CollectionContract<TArgument, TContract> : EqualityContract<TArgument, TContract>
-    where TContract : CollectionContract<TArgument, TContract>
-    where TArgument : ICollection
+public abstract class CollectionContract<TElement, TArgument, TContract> : EqualityContract<TArgument, TContract>
+    where TContract : CollectionContract<TElement, TArgument, TContract>
+    where TArgument : ICollection<TElement>
 {
     private readonly Linker<TContract> _linker;
 
