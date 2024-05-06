@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.0] / 2024-05-06
+- Added `sbyte` contracts
+- Added `ushort` contracts
+- Added `ulong` contracts
+- Added `uint` contracts
+- Added contracts for `Array`
+- Added contracts for `List<T>`
+- Added contracts for `Enums`
+- Added contracts for `Streams`
+
 ## [1.2.0] / 2024-04-29
 - Added a `CAHNGELOG` (this one right here 😏)
 - Added `DateTimeContracts` for validating arguments of type `DateTime`
@@ -19,7 +29,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] / 23-04-2024
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/1.3.0...HEAD
+[1.3.0]: https://github.com/FluentContracts/FluentContracts/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/FluentContracts/FluentContracts/compare/1.1.1...1.2.0
 [1.1.1]: https://github.com/FluentContracts/FluentContracts/compare/1.0.1...1.1.1
 [1.0.1]: https://github.com/FluentContracts/FluentContracts/tree/1.0.1
