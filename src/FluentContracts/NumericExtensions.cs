@@ -1,10 +1,11 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Numeric;
+using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
-public static partial class ContractExtensions
+public static class NumericExtensions
 {
     #region int
     
@@ -17,7 +18,7 @@ public static partial class ContractExtensions
     [Pure]
     public static IntContract Must(
         this int argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new IntContract(argument, argumentName);
     }
@@ -31,7 +32,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableIntContract Must(
         this int? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableIntContract(argument, argumentName);
     }
@@ -45,7 +46,7 @@ public static partial class ContractExtensions
     [Pure]
     public static UintContract Must(
         this uint argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new UintContract(argument, argumentName);
     }
@@ -59,7 +60,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableUintContract Must(
         this uint? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableUintContract(argument, argumentName);
     }
@@ -77,7 +78,7 @@ public static partial class ContractExtensions
     [Pure]
     public static DecimalContract Must(
         this decimal argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new DecimalContract(argument, argumentName);
     }
@@ -91,7 +92,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableDecimalContract Must(
         this decimal? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableDecimalContract(argument, argumentName);
     }
@@ -109,7 +110,7 @@ public static partial class ContractExtensions
     [Pure]
     public static DoubleContract Must(
         this double argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new DoubleContract(argument, argumentName);
     }
@@ -123,7 +124,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableDoubleContract Must(
         this double? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableDoubleContract(argument, argumentName);
     }
@@ -141,7 +142,7 @@ public static partial class ContractExtensions
     [Pure]
     public static ShortContract Must(
         this short argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ShortContract(argument, argumentName);
     }
@@ -155,7 +156,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableShortContract Must(
         this short? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableShortContract(argument, argumentName);
     }
@@ -169,7 +170,7 @@ public static partial class ContractExtensions
     [Pure]
     public static UshortContract Must(
         this ushort argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new UshortContract(argument, argumentName);
     }
@@ -183,7 +184,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableUshortContract Must(
         this ushort? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableUshortContract(argument, argumentName);
     }
@@ -201,7 +202,7 @@ public static partial class ContractExtensions
     [Pure]
     public static ByteContract Must(
         this byte argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ByteContract(argument, argumentName);
     }
@@ -215,7 +216,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableByteContract Must(
         this byte? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableByteContract(argument, argumentName);
     }
@@ -229,7 +230,7 @@ public static partial class ContractExtensions
     [Pure]
     public static SbyteContract Must(
         this sbyte argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new SbyteContract(argument, argumentName);
     }
@@ -243,7 +244,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableSbyteContract Must(
         this sbyte? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableSbyteContract(argument, argumentName);
     }
@@ -261,7 +262,7 @@ public static partial class ContractExtensions
     [Pure]
     public static FloatContract Must(
         this float argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new FloatContract(argument, argumentName);
     }
@@ -275,7 +276,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableFloatContract Must(
         this float? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableFloatContract(argument, argumentName);
     }
@@ -293,7 +294,7 @@ public static partial class ContractExtensions
     [Pure]
     public static LongContract Must(
         this long argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new LongContract(argument, argumentName);
     }
@@ -307,7 +308,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableLongContract Must(
         this long? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableLongContract(argument, argumentName);
     }
@@ -321,7 +322,7 @@ public static partial class ContractExtensions
     [Pure]
     public static UlongContract Must(
         this ulong argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new UlongContract(argument, argumentName);
     }
@@ -335,7 +336,7 @@ public static partial class ContractExtensions
     [Pure]
     public static NullableUlongContract Must(
         this ulong? argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new NullableUlongContract(argument, argumentName);
     }

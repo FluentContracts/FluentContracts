@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `uint` contracts
 - Added contracts for `Array`
 - Added contracts for `List<T>`
+- Added contracts for `Enums`
+- Added contracts for `Streams`
 
 ## [1.2.0] / 2024-04-29
 - Added a `CAHNGELOG` (this one right here 😏)

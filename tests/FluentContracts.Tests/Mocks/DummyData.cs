@@ -111,6 +111,12 @@ public static class DummyData
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
     }
+
+    public static T GetEnumValue<T>(T? exclude = null)
+        where T : struct, Enum
+    {
+        return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
+    }
     
     public static int GetInt()
     {
