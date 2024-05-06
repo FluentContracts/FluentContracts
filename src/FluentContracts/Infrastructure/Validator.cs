@@ -153,6 +153,18 @@ internal static class Validator
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
 
+    public static void CheckForEmailAddress(string argumentValue, string argumentName, string? message = null)
+    {
+        try
+        {
+            _ = new System.Net.Mail.MailAddress(argumentValue);
+        }
+        catch
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+        }
+    }
+
     private static bool IsEqualTo<T>(this T a, T b)
     {
         return EqualityComparer<T>.Default.Equals(a, b);
