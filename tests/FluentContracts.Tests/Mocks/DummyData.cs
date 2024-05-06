@@ -192,17 +192,36 @@ public static class DummyData
             var value = 
                 i == mid 
                     ? includedValue 
-                    : valueFactory();
-
-            if (excludedValue != null && value!.Equals(excludedValue))
-            {
-                value = valueFactory();
-            }
+                    : GetNotMatchingValue(valueFactory, excludedValue);
 
             result[i] = value;
         }
 
         return result;
+    }
+
+    private const int MaxFallbackCounter = 100;
+    private static T GetNotMatchingValue<T>(
+        Func<T> valueFactory,
+        T? excludedValue)
+    {
+        if (excludedValue == null)
+            return valueFactory();
+        
+        var fallbackCounter = 0;
+        var differentValue = valueFactory();
+        
+        while (differentValue == null 
+               || differentValue.Equals(excludedValue))
+        {
+            fallbackCounter++;
+            differentValue = valueFactory();
+            
+            if (fallbackCounter == MaxFallbackCounter)
+                break;
+        }
+
+        return differentValue;
     }
     
     public static Pair<T[]> GetArrayPair<T>(Func<T> valueFactory)
