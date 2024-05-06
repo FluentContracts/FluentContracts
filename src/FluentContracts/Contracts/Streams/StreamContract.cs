@@ -181,7 +181,7 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     public Linker<StreamContract<TStream>> NotBeWithLength(long unexpectedLength, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(unexpectedLength, ArgumentValue.Position, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(unexpectedLength, ArgumentValue.Length, ArgumentName, message);
         return _linker;
     }
 }
