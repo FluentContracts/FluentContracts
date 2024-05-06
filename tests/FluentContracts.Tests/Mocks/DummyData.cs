@@ -26,6 +26,11 @@ public static class DummyData
         var exceptionMessage = $"{message} (Parameter '{parameterName}')";
         return (message, exceptionMessage);
     }
+
+    public static string GetEmailAddress()
+    {
+        return Faker.Value.Internet.Email();
+    }
     
     public static Guid GetGuid()
     {
@@ -103,7 +108,21 @@ public static class DummyData
             case PairOption.Containing:
             {
                 var testArgument = Faker.Value.Random.String(10, 30, '0', 'z');
-                var differentArgument = testArgument.Substring(2, 5);
+                var differentArgument = testArgument[2..5];
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            case PairOption.StartWith:
+            {
+                var testArgument = Faker.Value.Random.String(10, 30, '0', 'z');
+                var differentArgument = testArgument[..5];
+
+                return new Pair<string>(testArgument, differentArgument);
+            }
+            case PairOption.EndWith:
+            {
+                var testArgument = Faker.Value.Random.String(10, 30, '0', 'z');
+                var differentArgument = testArgument[5..];
 
                 return new Pair<string>(testArgument, differentArgument);
             }
