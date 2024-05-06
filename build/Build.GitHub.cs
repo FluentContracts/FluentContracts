@@ -60,7 +60,7 @@ partial class Build
     [UsedImplicitly]
     Target CreateGitHubRelease => _ => _
         .Requires(() => GitHubActions.Instance.Token != null)
-        .TriggeredBy(Publish)
+        //.TriggeredBy(Publish)
         .ProceedAfterFailure()
         .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
         .Executes(async () =>
