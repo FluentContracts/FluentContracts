@@ -252,4 +252,97 @@ public class StringContractTests : Tests
             (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_BeEmailAddress()
+    {
+        var success = DummyData.GetEmailAddress();
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeEmailAddress(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeMatching()
+    {
+        const string pattern = "^JediMaster\\d{2}$";
+        const string success = "JediMaster42";
+        const string fail = "SithLord007";
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeMatching(pattern, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeMatching()
+    {
+        const string pattern = "^JediMaster\\d{2}$";
+        const string success = "SithLord007";
+        const string fail = "JediMaster42";
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeMatching(pattern, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_StartWith()
+    {
+        var pair = DummyData.GetStringPair(PairOption.StartWith);
+        var notStartingWith = DummyData.GetString();
+
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            notStartingWith,
+            (testArgument, message) => testArgument.Must().StartWith(pair.DifferentArgument, message: message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotStartWith()
+    {
+        var pair = DummyData.GetStringPair(PairOption.StartWith);
+        var notStartingWith = DummyData.GetString();
+
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            notStartingWith,
+            pair.TestArgument,
+            (testArgument, message) => testArgument.Must().NotStartWith(pair.DifferentArgument, message: message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_EndWith()
+    {
+        var pair = DummyData.GetStringPair(PairOption.EndWith);
+        var notStartingWith = DummyData.GetString();
+
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            notStartingWith,
+            (testArgument, message) => testArgument.Must().EndWith(pair.DifferentArgument, message: message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotEndWith()
+    {
+        var pair = DummyData.GetStringPair(PairOption.EndWith);
+        var notStartingWith = DummyData.GetString();
+
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            notStartingWith,
+            pair.TestArgument,
+            (testArgument, message) => testArgument.Must().NotEndWith(pair.DifferentArgument, message: message),
+            "testArgument");
+    }
 }

@@ -4,4 +4,6 @@ public enum PairOption
 {
     Different,
     Containing,
+    StartWith,
+    EndWith
 }
