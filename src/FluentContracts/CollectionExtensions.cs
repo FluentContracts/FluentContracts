@@ -1,10 +1,11 @@
 using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Collections;
+using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
-public static partial class ContractExtensions
+public static class CollectionExtensions
 {
     #region List
     
@@ -17,7 +18,7 @@ public static partial class ContractExtensions
     [Pure]
     public static ListContract<T> Must<T>(
         this IList<T> argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ListContract<T>(argument, argumentName);
     }
@@ -31,7 +32,7 @@ public static partial class ContractExtensions
     [Pure]
     public static ListContract<T> Must<T>(
         this List<T> argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ListContract<T>(argument, argumentName);
     }
@@ -49,7 +50,7 @@ public static partial class ContractExtensions
     [Pure]
     public static ListContract<T> Must<T>(
         this T[] argument,
-        [CallerArgumentExpression("argument")] string argumentName = DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ListContract<T>(argument, argumentName);
     }
