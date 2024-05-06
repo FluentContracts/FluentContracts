@@ -6,7 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+- Added `BeEmailAddress` in `StringContract` for validating if a string is an email address. [suggested by [@matkoch87](https://x.com/matkoch87/status/1787511006085705889)]
+- Added `(Not)BeMatching` in `StringContract` to validate an argument against a regex pattern
+- Added `(Not)StartWith` and `(Not)EndWith` in `StringContract`
+ 
 ## [1.3.0] / 2024-05-06
 - Added `sbyte` contracts
 - Added `ushort` contracts

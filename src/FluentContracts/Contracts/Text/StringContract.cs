@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Text.RegularExpressions;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Text;
@@ -198,6 +199,150 @@ public class StringContract : ComparableContract<string?, StringContract>
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !a.Contains(containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is a valid email address.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> BeEmailAddress(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForEmailAddress(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is a match against a regex pattern
+    /// </summary>
+    /// <param name="pattern">The regex pattern to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> BeMatching(string pattern, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => Regex.IsMatch(a, pattern, RegexOptions.CultureInvariant), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not a match against a regex pattern
+    /// </summary>
+    /// <param name="unexpectedPattern">The regex pattern to NOT match the string</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> NotBeMatching(string unexpectedPattern, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => !Regex.IsMatch(a, unexpectedPattern, RegexOptions.CultureInvariant), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is starting with a specific value
+    /// </summary>
+    /// <param name="startingWith">Value that the argument must start with</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> StartWith(
+        string startingWith, 
+        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => a.StartsWith(startingWith, comparisonType), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not starting with a specific value
+    /// </summary>
+    /// <param name="startingWith">Value that the argument must not start with</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> NotStartWith(
+        string startingWith, 
+        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => !a.StartsWith(startingWith, comparisonType), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is ending with a specific value
+    /// </summary>
+    /// <param name="endingWith">Value that the argument must end with</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> EndWith(
+        string endingWith, 
+        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => a.EndsWith(endingWith, comparisonType), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not ending with a specific value
+    /// </summary>
+    /// <param name="endingWith">Value that the argument must not end with</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<StringContract> NotEndWith(
+        string endingWith, 
+        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => !a.EndsWith(endingWith, comparisonType), 
+            ArgumentValue,
+            ArgumentName, 
+            message);
         return _linker;
     }
 }
