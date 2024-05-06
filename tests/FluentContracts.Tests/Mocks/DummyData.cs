@@ -1,4 +1,7 @@
+#nullable enable
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Bogus;
 
 namespace FluentContracts.Tests.Mocks;
@@ -65,8 +68,10 @@ public static class DummyData
     {
         return Faker.Value.Random.Char('a', 'z');
     }
+
+    public static string GetString() => GetString(StringOption.Normal);
     
-    public static string GetString(StringOption option = StringOption.Normal)
+    public static string GetString(StringOption option)
     {
         if (option == StringOption.WhiteSpace) return WhiteSpaceString;
 
@@ -106,6 +111,12 @@ public static class DummyData
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
     }
+
+    public static T GetEnumValue<T>(T? exclude = null)
+        where T : struct, Enum
+    {
+        return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
+    }
     
     public static int GetInt()
     {
@@ -122,10 +133,32 @@ public static class DummyData
 
         return new Pair<int>(testArgument, differentArgument);
     }
-
-    public static T[] GetArray<T>(Func<T> valueFactory, T includedValue, T excludedValue, int size = ArraySize)
+    
+    public static uint GetUint()
     {
-        if (excludedValue.Equals(includedValue))
+        return Faker.Value.Random.UInt(500_000U, 1_000_000U);
+    }
+    
+    public static Pair<uint> GetUintPair()
+    {
+        const uint middle = uint.MaxValue / 2;
+        const uint nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.UInt(uint.MinValue, middle);
+        var differentArgument = Faker.Value.Random.UInt(nextToMiddle, uint.MaxValue);
+
+        return new Pair<uint>(testArgument, differentArgument);
+    }
+
+    public static T[] GetArray<T>(
+        Func<T> valueFactory, 
+        T? includedValue = default, 
+        T? excludedValue = default, 
+        int size = ArraySize)
+    {
+        if (excludedValue != null 
+            && includedValue != null
+            && excludedValue.Equals(includedValue))
         {
             throw new InvalidOperationException("Exclusive and inclusive values are the same");
         }
@@ -133,11 +166,16 @@ public static class DummyData
         var result = new T[size];
         int mid = size / 2;
 
+        includedValue ??= valueFactory();
+
         for (var i = 0; i < size; i++)
         {
-            var value = i == mid ? includedValue : valueFactory();
+            var value = 
+                i == mid 
+                    ? includedValue 
+                    : valueFactory();
 
-            if (value.Equals(excludedValue))
+            if (excludedValue != null && value!.Equals(excludedValue))
             {
                 value = valueFactory();
             }
@@ -146,6 +184,27 @@ public static class DummyData
         }
 
         return result;
+    }
+    
+    public static Pair<T[]> GetArrayPair<T>(Func<T> valueFactory)
+    {
+        var testArgument = GetArray(valueFactory);
+        var differentArgument = GetArray(valueFactory); 
+        return new Pair<T[]>(testArgument, differentArgument);
+    }
+
+    public static List<T> GetList<T>(
+        Func<T> valueFactory,
+        T? includedValue = default,
+        T? excludedValue = default,
+        int size = ArraySize) => 
+        GetArray(valueFactory, includedValue, excludedValue, size).ToList();
+    
+    public static Pair<List<T>> GetListPair<T>(Func<T> valueFactory)
+    {
+        var testArgument = GetList(valueFactory);
+        var differentArgument = GetList(valueFactory); 
+        return new Pair<List<T>>(testArgument, differentArgument);
     }
     
     public static decimal GetDecimal()
@@ -196,6 +255,22 @@ public static class DummyData
         return new Pair<long>(testArgument, differentArgument);
     }
     
+    public static ulong GetUlong()
+    {
+        return Faker.Value.Random.ULong(1_000_000UL, 10_000_000UL);
+    }
+    
+    public static Pair<ulong> GetUlongPair()
+    {
+        const ulong middle = ulong.MaxValue / 2;
+        const ulong nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.ULong(ulong.MinValue, middle);
+        var differentArgument = Faker.Value.Random.ULong(nextToMiddle, ulong.MaxValue);
+
+        return new Pair<ulong>(testArgument, differentArgument);
+    }
+    
     public static float GetFloat()
     {
         return Faker.Value.Random.Float(-1_000_000, 1_000_000);
@@ -228,6 +303,22 @@ public static class DummyData
         return new Pair<short>(testArgument, differentArgument);
     }
     
+    public static ushort GetUshort()
+    {
+        return Faker.Value.Random.UShort(1_000, 40_000);
+    }
+    
+    public static Pair<ushort> GetUshortPair()
+    {
+        const ushort middle = ushort.MaxValue / 2;
+        const ushort nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.UShort(ushort.MinValue, middle);
+        var differentArgument = Faker.Value.Random.UShort(nextToMiddle, ushort.MaxValue);
+
+        return new Pair<ushort>(testArgument, differentArgument);
+    }
+    
     public static byte GetByte()
     {
         return Faker.Value.Random.Byte(50, 100);
@@ -242,6 +333,22 @@ public static class DummyData
         var differentArgument = Faker.Value.Random.Byte(nextToMiddle, byte.MaxValue);
 
         return new Pair<byte>(testArgument, differentArgument);
+    }
+    
+    public static sbyte GetSbyte()
+    {
+        return Faker.Value.Random.SByte(-80, 80);
+    }
+    
+    public static Pair<sbyte> GetSbytePair()
+    {
+        const sbyte middle = sbyte.MaxValue / 2;
+        const sbyte nextToMiddle = middle + 1;
+        
+        var testArgument = Faker.Value.Random.SByte(sbyte.MinValue, middle);
+        var differentArgument = Faker.Value.Random.SByte(nextToMiddle, sbyte.MaxValue);
+
+        return new Pair<sbyte>(testArgument, differentArgument);
     }
     
     public static DateTime GetDateTime(DateTimeOption option = DateTimeOption.Utc, int specificMonth = 1, DayOfWeek specificWeekday = DayOfWeek.Wednesday)
