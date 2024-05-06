@@ -88,6 +88,8 @@ This will throw an instance of `OrderNullException` if `myOrder` is `null`.
 |    `Enum`    |  `Equality`   | `(Not)HaveFlag`                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 |   `Stream`   |  `Nullable`   | `(Not)BeSeekable`, `(Not)BeReadable`, `(Not)BeWriteable`, `(Not)BeAbleToTimeout`, `(Not)BeAtPosition`, `(Not)BeWithLength`                                                                                                                                                                                                                                                                                                                      |
 
+> Note: Check the [CHANGELOG](CHANGELOG.md) to see which of the methods above are released and which ones are still in the making.
+
 ## Help needed 🙏
 
 My goal for this project is to become as exhaustive, safe and stable as possible, so people can use it in production and on big projects.
