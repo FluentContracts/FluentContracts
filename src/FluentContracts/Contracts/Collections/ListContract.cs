@@ -67,4 +67,18 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
         Validator.CheckForNotContaining(notContainedElements, ArgumentValue, ArgumentName, message);
         return _linker;
     }
+    
+    /// <summary>
+    /// Checks if all the elements of the <see cref="IList{T}"/> argument are of type <see cref="TElement"/>.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    [Pure]
+    public Linker<ListContract<T>> HaveElementsOfType<TElement>(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        Validator.CheckForType<T, TElement>(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
 }
