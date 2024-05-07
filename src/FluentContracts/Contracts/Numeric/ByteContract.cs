@@ -1,13 +1,25 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableByteContract(byte? argumentValue, string argumentName)
-    : ComparableContract<byte?, NullableByteContract>(argumentValue, argumentName);
+    : NumberContract<byte?, NullableByteContract>(argumentValue, argumentName)
+{
+    protected override byte? Zero => 0;
+}
 
 public class ByteContract(byte argumentValue, string argumentName)
-    : ComparableContract<byte, ByteContract>(argumentValue, argumentName);
+    : NumberContract<byte, ByteContract>(argumentValue, argumentName)
+{
+    protected override byte Zero => 0;
+}
 
 public class NullableSbyteContract(sbyte? argumentValue, string argumentName)
-    : ComparableContract<sbyte?, NullableSbyteContract>(argumentValue, argumentName);
+    : NumberContract<sbyte?, NullableSbyteContract>(argumentValue, argumentName)
+{
+    protected override sbyte? Zero => 0;
+}
 
 public class SbyteContract(sbyte argumentValue, string argumentName) 
-    : ComparableContract<sbyte, SbyteContract>(argumentValue, argumentName);
+    : NumberContract<sbyte, SbyteContract>(argumentValue, argumentName)
+{
+    protected override sbyte Zero => 0;
+}

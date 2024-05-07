@@ -1,7 +1,13 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableDecimalContract(decimal? argumentValue, string argumentName)
-    : ComparableContract<decimal?, NullableDecimalContract>(argumentValue, argumentName);
+    : NumberContract<decimal?, NullableDecimalContract>(argumentValue, argumentName)
+{
+    protected override decimal? Zero => 0;
+}
 
 public class DecimalContract(decimal argumentValue, string argumentName) 
-    : ComparableContract<decimal, DecimalContract>(argumentValue, argumentName);
+    : NumberContract<decimal, DecimalContract>(argumentValue, argumentName)
+{
+    protected override decimal Zero => 0;
+}

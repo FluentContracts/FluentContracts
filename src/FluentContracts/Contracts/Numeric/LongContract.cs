@@ -1,13 +1,25 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableLongContract(long? argumentValue, string argumentName)
-    : ComparableContract<long?, NullableLongContract>(argumentValue, argumentName);
+    : NumberContract<long?, NullableLongContract>(argumentValue, argumentName)
+{
+    protected override long? Zero => 0;
+}
 
 public class LongContract(long argumentValue, string argumentName)
-    : ComparableContract<long, LongContract>(argumentValue, argumentName);
+    : NumberContract<long, LongContract>(argumentValue, argumentName)
+{
+    protected override long Zero => 0;
+}
 
 public class NullableUlongContract(ulong? argumentValue, string argumentName)
-    : ComparableContract<ulong?, NullableUlongContract>(argumentValue, argumentName);
+    : NumberContract<ulong?, NullableUlongContract>(argumentValue, argumentName)
+{
+    protected override ulong? Zero => 0;
+}
 
 public class UlongContract(ulong argumentValue, string argumentName) 
-    : ComparableContract<ulong, UlongContract>(argumentValue, argumentName);
+    : NumberContract<ulong, UlongContract>(argumentValue, argumentName)
+{
+    protected override ulong Zero => 0;
+}

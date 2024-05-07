@@ -165,6 +165,16 @@ internal static class Validator
         }
     }
 
+    public static void CheckForType<TElements, TCheck>(
+        IEnumerable<TElements> collection,
+        string argumentName,
+        string? message = null)
+    {
+        if (collection.All(e => e is TCheck)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
     private static bool IsEqualTo<T>(this T a, T b)
     {
         return EqualityComparer<T>.Default.Equals(a, b);

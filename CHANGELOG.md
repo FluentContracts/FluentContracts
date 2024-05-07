@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `BeEmailAddress` in `StringContract` for validating if a string is an email address. [suggested by [@matkoch87](https://x.com/matkoch87/status/1787511006085705889)]
 - Added `(Not)BeMatching` in `StringContract` to validate an argument against a regex pattern
 - Added `(Not)StartWith` and `(Not)EndWith` in `StringContract`
+- Added `(Not)BePositive`, `(Not)BeNegative` and `(Not)BeZero` for all numeric contracts
+- Added `HaveElementsOfType<TElement>` to `ListContract`
  
 ## [1.3.0] / 2024-05-06
 - Added `sbyte` contracts
