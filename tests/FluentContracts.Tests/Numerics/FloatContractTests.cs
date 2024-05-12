@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Numeric;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -57,7 +57,7 @@ public class FloatContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetFloatPair();
-        var array = DummyData.GetArray(DummyData.GetFloat, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetFloat(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -71,7 +71,7 @@ public class FloatContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetFloatPair();
-        var array = DummyData.GetArray(DummyData.GetFloat, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetFloat(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -154,6 +154,100 @@ public class FloatContractTests : Tests
             outOfRange,
             (testArgument, message) =>
                 testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeZero()
+    {
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            0F,
+            0.42F,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+        
+        
+        TestContract<float?, NullableFloatContract, ArgumentOutOfRangeException>(
+            0F,
+            0.42F,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeZero()
+    {
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            0.69F,
+            0F,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+        
+        
+        TestContract<float?, NullableFloatContract, ArgumentOutOfRangeException>(
+            0.69F,
+            0F,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BePositive()
+    {
+        var success = DummyData.GetFloat(NumberOption.Positive);
+        var fail = DummyData.GetFloat(NumberOption.Negative);
+
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBePositive()
+    {
+        var success = DummyData.GetFloat(NumberOption.Negative);
+        var fail = DummyData.GetFloat(NumberOption.Positive);
+
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeNegative()
+    {
+        var success = DummyData.GetFloat(NumberOption.Negative);
+        var fail = DummyData.GetFloat(NumberOption.Positive);
+
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BeNegative(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeNegative()
+    {
+        var success = DummyData.GetFloat(NumberOption.Positive);
+        var fail = DummyData.GetFloat(NumberOption.Negative);
+
+        TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
 }

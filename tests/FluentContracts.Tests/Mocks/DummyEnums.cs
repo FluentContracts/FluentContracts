@@ -1,6 +1,6 @@
 using System;
 
-namespace FluentContracts.Tests.Mocks;
+namespace FluentContracts.Tests.Mocks.Data;
 
 [Flags]
 public enum StarWarsCharacter

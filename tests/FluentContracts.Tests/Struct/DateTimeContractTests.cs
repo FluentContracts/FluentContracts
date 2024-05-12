@@ -1,7 +1,7 @@
 using System;
 using FluentContracts.Contracts.Struct;
 using FluentContracts.Infrastructure;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 

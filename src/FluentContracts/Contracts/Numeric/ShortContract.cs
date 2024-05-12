@@ -1,13 +1,13 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableShortContract(short? argumentValue, string argumentName)
-    : NumberContract<short?, NullableShortContract>(argumentValue, argumentName)
+    : SignedNumberContract<short?, NullableShortContract>(argumentValue, argumentName)
 {
     protected override short? Zero => 0;
 }
 
 public class ShortContract(short argumentValue, string argumentName)
-    : NumberContract<short, ShortContract>(argumentValue, argumentName)
+    : SignedNumberContract<short, ShortContract>(argumentValue, argumentName)
 {
     protected override short Zero => 0;
 }

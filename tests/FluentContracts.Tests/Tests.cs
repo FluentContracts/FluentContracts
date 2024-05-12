@@ -2,7 +2,7 @@ using System;
 using FluentAssertions;
 using FluentContracts.Contracts;
 using FluentContracts.Infrastructure;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 
 namespace FluentContracts.Tests;
 

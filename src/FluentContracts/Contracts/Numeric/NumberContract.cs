@@ -16,54 +16,6 @@ public abstract class NumberContract<TArgument, TContract> : ComparableContract<
     }
     
     /// <summary>
-    /// Checks if the value of the argument is greater than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    [Pure]
-    public Linker<TContract> BePositive(string? message = null)
-    {
-        Validator.CheckForGreaterThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is not greater than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    [Pure]
-    public Linker<TContract> NotBePositive(string? message = null)
-    {
-        Validator.CheckForLessOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is less than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    [Pure]
-    public Linker<TContract> BeNegative(string? message = null)
-    {
-        Validator.CheckForLessThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is not less than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    [Pure]
-    public Linker<TContract> NotBeNegative(string? message = null)
-    {
-        Validator.CheckForGreaterOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
     /// Checks if the value of the argument is equal to zero
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>

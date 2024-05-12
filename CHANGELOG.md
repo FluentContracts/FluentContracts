@@ -27,12 +27,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `DateTimeContracts` for validating arguments of type `DateTime`
 - Renamed `NumberContract` to `ComparableContract`
 
-## [1.1.1] / 26-04-2024
+## [1.1.1] / 2024-04-26
 - Added contracts for `char`
 - Add user defined exceptions for `Be`
 - Added `[NotNull]` attribute to arguments of `BeNotNull` so compiler knows it was checked afterwards
 
-## [1.0.1] / 23-04-2024
+## [1.0.1] / 2024-04-23
+- Initial release
 
 [Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/1.3.0...HEAD
 [1.3.0]: https://github.com/FluentContracts/FluentContracts/compare/1.2.0...1.3.0

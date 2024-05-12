@@ -1,4 +1,4 @@
-namespace FluentContracts.Tests.Mocks;
+namespace FluentContracts.Tests.Mocks.Data;
 
 public enum DateTimeOption
 {

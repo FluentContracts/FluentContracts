@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Numeric;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -154,6 +154,35 @@ public class UlongContractTests : Tests
             outOfRange,
             (testArgument, message) =>
                 testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeZero()
+    {
+        TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
+            0,
+            42,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+        
+        TestContract<ulong?, NullableUlongContract, ArgumentOutOfRangeException>(
+            0,
+            42,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeZero()
+    {
+        TestContract<ulong?, NullableUlongContract, ArgumentOutOfRangeException>(
+            69,
+            0,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
             "testArgument");
     }
 }

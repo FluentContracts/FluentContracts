@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Bogus;
 using FluentContracts.Contracts.Collections;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -158,6 +160,20 @@ public class ListContractTests : Tests
             success,
             fail,
             (testArgument, _) => testArgument.Must().NotContain(included),
+            "testArgument",
+            true);
+    }
+    
+    [Fact]
+    public void Test_Must_HaveElementsOfType()
+    {
+        var success = new List<Person>(DummyData.GetArray(DummyData.GetEmployee));
+        var fail = DummyData.GetArray(DummyData.GetPerson).ToList();
+        
+        TestContract<List<Person>, ListContract<Person>, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, _) => testArgument.Must().HaveElementsOfType<Employee>(),
             "testArgument",
             true);
     }

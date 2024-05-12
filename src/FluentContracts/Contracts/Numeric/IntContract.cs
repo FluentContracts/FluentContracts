@@ -1,13 +1,13 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableIntContract(int? argumentValue, string argumentName)
-    : NumberContract<int?, NullableIntContract>(argumentValue, argumentName)
+    : SignedNumberContract<int?, NullableIntContract>(argumentValue, argumentName)
 {
     protected override int? Zero => 0;
 }
 
 public class IntContract(int argumentValue, string argumentName)
-    : NumberContract<int, IntContract>(argumentValue, argumentName)
+    : SignedNumberContract<int, IntContract>(argumentValue, argumentName)
 {
     protected override int Zero => 0;
 }

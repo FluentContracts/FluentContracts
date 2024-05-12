@@ -1,13 +1,13 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableLongContract(long? argumentValue, string argumentName)
-    : NumberContract<long?, NullableLongContract>(argumentValue, argumentName)
+    : SignedNumberContract<long?, NullableLongContract>(argumentValue, argumentName)
 {
     protected override long? Zero => 0;
 }
 
 public class LongContract(long argumentValue, string argumentName)
-    : NumberContract<long, LongContract>(argumentValue, argumentName)
+    : SignedNumberContract<long, LongContract>(argumentValue, argumentName)
 {
     protected override long Zero => 0;
 }

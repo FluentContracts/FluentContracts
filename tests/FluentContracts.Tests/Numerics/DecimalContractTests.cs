@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Numeric;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -57,7 +57,7 @@ public class DecimalContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetDecimalPair();
-        var array = DummyData.GetArray(DummyData.GetDecimal, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetDecimal(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -71,7 +71,7 @@ public class DecimalContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetDecimalPair();
-        var array = DummyData.GetArray(DummyData.GetDecimal, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetDecimal(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -154,6 +154,98 @@ public class DecimalContractTests : Tests
             outOfRange,
             (testArgument, message) =>
                 testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeZero()
+    {
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            0M,
+            0.42M,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+        
+        TestContract<decimal?, NullableDecimalContract, ArgumentOutOfRangeException>(
+            0M,
+            0.42M,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeZero()
+    {
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            0.69M,
+            0M,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+        
+        TestContract<decimal?, NullableDecimalContract, ArgumentOutOfRangeException>(
+            0.69M,
+            0M,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BePositive()
+    {
+        var success = DummyData.GetDecimal(NumberOption.Positive);
+        var fail = DummyData.GetDecimal(NumberOption.Negative);
+
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBePositive()
+    {
+        var success = DummyData.GetDecimal(NumberOption.Negative);
+        var fail = DummyData.GetDecimal(NumberOption.Positive);
+
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeNegative()
+    {
+        var success = DummyData.GetDecimal(NumberOption.Negative);
+        var fail = DummyData.GetDecimal(NumberOption.Positive);
+
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BeNegative(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeNegative()
+    {
+        var success = DummyData.GetDecimal(NumberOption.Positive);
+        var fail = DummyData.GetDecimal(NumberOption.Negative);
+
+        TestContract<decimal, DecimalContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
 }
