@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace FluentContracts.Tests.Mocks;
+namespace FluentContracts.Tests.Mocks.Data;
 
 public class MockStream(
     bool canRead = true, 

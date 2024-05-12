@@ -13,13 +13,13 @@ public class ByteContract(byte argumentValue, string argumentName)
 }
 
 public class NullableSbyteContract(sbyte? argumentValue, string argumentName)
-    : NumberContract<sbyte?, NullableSbyteContract>(argumentValue, argumentName)
+    : SignedNumberContract<sbyte?, NullableSbyteContract>(argumentValue, argumentName)
 {
     protected override sbyte? Zero => 0;
 }
 
 public class SbyteContract(sbyte argumentValue, string argumentName) 
-    : NumberContract<sbyte, SbyteContract>(argumentValue, argumentName)
+    : SignedNumberContract<sbyte, SbyteContract>(argumentValue, argumentName)
 {
     protected override sbyte Zero => 0;
 }

@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Text;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
