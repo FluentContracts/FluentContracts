@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Text;
@@ -19,7 +18,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> BeEmpty(string? message = null)
     {
         Validator.CheckForSpecificValue(string.Empty, ArgumentValue, ArgumentName, message);
@@ -31,7 +29,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> NotBeEmpty(string? message = null)
     {
         Validator.CheckForNotSpecificValue(string.Empty, ArgumentValue, ArgumentName, message);
@@ -43,7 +40,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> BeNullOrEmpty(string? message = null)
     {
         Validator.CheckGenericCondition(string.IsNullOrEmpty, ArgumentValue, ArgumentName, message);
@@ -55,7 +51,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> NotBeNullOrEmpty(string? message = null)
     {
         Validator.CheckGenericCondition(a => !string.IsNullOrEmpty(a), ArgumentValue, ArgumentName, message);
@@ -68,7 +63,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> BeWhiteSpace(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -82,7 +76,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotBeWhiteSpace(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -95,7 +88,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> BeNullOrWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(string.IsNullOrWhiteSpace, ArgumentValue, ArgumentName, message);
@@ -107,7 +99,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<StringContract> NotBeNullOrWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(a => !string.IsNullOrWhiteSpace(a), ArgumentValue, ArgumentName, message);
@@ -120,7 +111,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> BeUppercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -134,7 +124,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotBeUppercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -148,7 +137,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> BeLowercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -162,7 +150,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotBeLowercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -177,7 +164,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> Contain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -193,7 +179,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotContain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -208,7 +193,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> BeEmailAddress(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -223,7 +207,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> BeMatching(string pattern, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -242,7 +225,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotBeMatching(string unexpectedPattern, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -262,7 +244,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> StartWith(
         string startingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
@@ -285,7 +266,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotStartWith(
         string startingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
@@ -308,7 +288,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> EndWith(
         string endingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
@@ -331,7 +310,6 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<StringContract> NotEndWith(
         string endingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 

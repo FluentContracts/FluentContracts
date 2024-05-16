@@ -1,7 +1,6 @@
 using System.Collections;
-using System.Diagnostics.Contracts;
-using FluentContracts.Infrastructure;
 
+using FluentContracts.Infrastructure;
 namespace FluentContracts.Contracts;
 
 public abstract class CollectionContract<TElement, TArgument, TContract> : EqualityContract<TArgument, TContract>
@@ -21,7 +20,6 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeEmpty(string? message = null)
     {
         Validator.CheckForSpecificValue(0, ArgumentValue.Count, ArgumentName, message);
@@ -33,7 +31,6 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeEmpty(string? message = null)
     {
         Validator.CheckForNotSpecificValue(0, ArgumentValue.Count, ArgumentName, message);
@@ -46,7 +43,6 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <param name="expectedCount">Expected count of the elements in the collection</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeWithCount(int expectedCount, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedCount, ArgumentValue.Count, ArgumentName, message);
@@ -59,7 +55,6 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <param name="notExpectedCount">Count which is not expected to be equal to the elements in the collection</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeWithCount(int notExpectedCount, string? message = null)
     {
         Validator.CheckForNotSpecificValue(notExpectedCount, ArgumentValue.Count, ArgumentName, message);

@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Struct;
@@ -23,7 +22,6 @@ public class EnumContract<TEnum> : EqualityContract<TEnum, EnumContract<TEnum>>
     /// <param name="flag">The flag to check against the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<EnumContract<TEnum>> HaveFlag(TEnum flag, string? message = null)
     {
         Validator.CheckGenericCondition(a => a.HasFlag(flag), ArgumentValue, ArgumentName, message);
@@ -36,7 +34,6 @@ public class EnumContract<TEnum> : EqualityContract<TEnum, EnumContract<TEnum>>
     /// <param name="flag">The flag to check against the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<EnumContract<TEnum>> NotHaveFlag(TEnum flag, string? message = null)
     {
         Validator.CheckGenericCondition(a => !a.HasFlag(flag), ArgumentValue, ArgumentName, message);

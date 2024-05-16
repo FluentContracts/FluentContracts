@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Numeric;
@@ -20,7 +19,6 @@ public abstract class NumberContract<TArgument, TContract> : ComparableContract<
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeZero(string? message = null)
     {
         Validator.CheckForSpecificValue(Zero, ArgumentValue, ArgumentName, message);
@@ -32,7 +30,6 @@ public abstract class NumberContract<TArgument, TContract> : ComparableContract<
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeZero(string? message = null)
     {
         Validator.CheckForNotSpecificValue(Zero, ArgumentValue, ArgumentName, message);

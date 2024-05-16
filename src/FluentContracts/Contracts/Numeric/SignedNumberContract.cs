@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Numeric;
@@ -19,7 +18,6 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BePositive(string? message = null)
     {
         Validator.CheckForGreaterThan(Zero, ArgumentValue, ArgumentName, message);
@@ -31,7 +29,6 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBePositive(string? message = null)
     {
         Validator.CheckForLessOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
@@ -43,7 +40,6 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeNegative(string? message = null)
     {
         Validator.CheckForLessThan(Zero, ArgumentValue, ArgumentName, message);
@@ -55,7 +51,6 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeNegative(string? message = null)
     {
         Validator.CheckForGreaterOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
