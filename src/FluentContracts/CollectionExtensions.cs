@@ -1,4 +1,4 @@
-using System.Diagnostics.Contracts;
+
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Collections;
 using FluentContracts.Infrastructure;
@@ -15,7 +15,7 @@ public static class CollectionExtensions
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
-    [Pure]
+    
     public static ListContract<T> Must<T>(
         this IList<T> argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
@@ -29,7 +29,7 @@ public static class CollectionExtensions
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
-    [Pure]
+    
     public static ListContract<T> Must<T>(
         this List<T> argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
@@ -47,7 +47,7 @@ public static class CollectionExtensions
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
-    [Pure]
+    
     public static ListContract<T> Must<T>(
         this T[] argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)

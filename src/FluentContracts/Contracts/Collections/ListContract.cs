@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 using Microsoft.VisualBasic;
 
@@ -20,7 +19,6 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<ListContract<T>> Contain(params T[] containedElements)
     {
         return Contain(containedElements, null);
@@ -33,7 +31,6 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<ListContract<T>> Contain(IEnumerable<T> containedElements, string? message = null)
     {
         
@@ -48,7 +45,6 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<ListContract<T>> NotContain(params T[] notContainedElements)
     {
         return NotContain(notContainedElements, null);
@@ -61,7 +57,6 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<ListContract<T>> NotContain(IEnumerable<T> notContainedElements, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
@@ -75,7 +70,6 @@ public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    [Pure]
     public Linker<ListContract<T>> HaveElementsOfType<TElement>(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);

@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Struct;
@@ -23,7 +22,6 @@ public class BoolContract : ComparableContract<bool, BoolContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<BoolContract> BeTrue(string? message = null)
     {
         Validator.CheckForSpecificValue(true, ArgumentValue, ArgumentName, message);
@@ -35,7 +33,6 @@ public class BoolContract : ComparableContract<bool, BoolContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<BoolContract> BeFalse(string? message = null)
     {
         Validator.CheckForSpecificValue(false, ArgumentValue, ArgumentName, message);

@@ -1,4 +1,4 @@
-using System.Diagnostics.Contracts;
+
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Streams;
 using FluentContracts.Infrastructure;
@@ -13,7 +13,7 @@ public static class StreamExtensions
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the StreamContract class.</returns>
-    [Pure]
+    
     public static StreamContract<Stream> Must(
         this Stream argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)

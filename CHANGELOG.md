@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `(Not)StartWith` and `(Not)EndWith` in `StringContract`
 - Added `(Not)BePositive`, `(Not)BeNegative` and `(Not)BeZero` for all numeric contracts
 - Added `HaveElementsOfType<TElement>` to `ListContract`
+- Added `(Not)BeOnDate` to `DateTimeContracts`
+- Removed `PureAttribute` from all contract methods, as it was producing an unpleasant compiler warning - [CA1806](https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1806)
  
 ## [1.3.0] / 2024-05-06
 - Added `sbyte` contracts

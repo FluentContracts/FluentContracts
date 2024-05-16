@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Contracts;
-using FluentContracts.Infrastructure;
+﻿using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Contracts.Struct;
 
@@ -23,7 +22,6 @@ public class GuidContract : ComparableContract<Guid, GuidContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<GuidContract> BeEmpty(string? message = null)
     {
         Validator.CheckForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
@@ -35,7 +33,6 @@ public class GuidContract : ComparableContract<Guid, GuidContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<GuidContract> NotBeEmpty(string? message = null)
     {
         Validator.CheckForNotSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
