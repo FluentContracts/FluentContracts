@@ -6,24 +6,29 @@ public static partial class DummyData
 {
     #region Int
 
-    public static int GetInt(NumberOption option = NumberOption.Normal)
+    public static int GetInt(
+        NumberOption option = NumberOption.Normal,
+        int minValue = -1_000_000,
+        int maxValue = 1_000_000)
     {
         return option switch
         {
-            NumberOption.Normal => Faker.Value.Random.Int(-1_000_000, 1_000_000),
-            NumberOption.Negative => Faker.Value.Random.Int(-1_000_000, -1),
-            NumberOption.Positive => Faker.Value.Random.Int(1, 1_000_000),
+            NumberOption.Normal => Faker.Value.Random.Int(minValue, maxValue),
+            NumberOption.Negative => Faker.Value.Random.Int(minValue, -1),
+            NumberOption.Positive => Faker.Value.Random.Int(1, maxValue),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
     }
 
-    public static Pair<int> GetIntPair()
+    public static Pair<int> GetIntPair(
+        int minValue = -1_000_000,
+        int maxValue = 1_000_000)
     {
-        const int middle = int.MaxValue / 2;
-        const int nextToMiddle = middle + 1;
+        int middle = (maxValue - minValue) / 2 + minValue;
+        int nextToMiddle = middle + 1;
 
-        var testArgument = Faker.Value.Random.Int(int.MinValue, middle);
-        var differentArgument = Faker.Value.Random.Int(nextToMiddle, int.MaxValue);
+        var testArgument = Faker.Value.Random.Int(minValue, middle);
+        var differentArgument = Faker.Value.Random.Int(nextToMiddle, maxValue);
 
         return new Pair<int>(testArgument, differentArgument);
     }
@@ -39,7 +44,7 @@ public static partial class DummyData
         const uint nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.UInt(uint.MinValue, middle);
-        var differentArgument = Faker.Value.Random.UInt(nextToMiddle, uint.MaxValue);
+        var differentArgument = Faker.Value.Random.UInt(nextToMiddle);
 
         return new Pair<uint>(testArgument, differentArgument);
     }
@@ -65,7 +70,7 @@ public static partial class DummyData
         const decimal nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.Decimal(0m, middle);
-        var differentArgument = Faker.Value.Random.Decimal(nextToMiddle, 1m);
+        var differentArgument = Faker.Value.Random.Decimal(nextToMiddle);
 
         return new Pair<decimal>(testArgument, differentArgument);
     }
@@ -117,7 +122,7 @@ public static partial class DummyData
         const long nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.Long(long.MinValue, middle);
-        var differentArgument = Faker.Value.Random.Long(nextToMiddle, long.MaxValue);
+        var differentArgument = Faker.Value.Random.Long(nextToMiddle);
 
         return new Pair<long>(testArgument, differentArgument);
     }
@@ -133,7 +138,7 @@ public static partial class DummyData
         const ulong nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.ULong(ulong.MinValue, middle);
-        var differentArgument = Faker.Value.Random.ULong(nextToMiddle, ulong.MaxValue);
+        var differentArgument = Faker.Value.Random.ULong(nextToMiddle);
 
         return new Pair<ulong>(testArgument, differentArgument);
     }
@@ -185,7 +190,7 @@ public static partial class DummyData
         const short nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.Short(short.MinValue, middle);
-        var differentArgument = Faker.Value.Random.Short(nextToMiddle, short.MaxValue);
+        var differentArgument = Faker.Value.Random.Short(nextToMiddle);
 
         return new Pair<short>(testArgument, differentArgument);
     }
@@ -201,7 +206,7 @@ public static partial class DummyData
         const ushort nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.UShort(ushort.MinValue, middle);
-        var differentArgument = Faker.Value.Random.UShort(nextToMiddle, ushort.MaxValue);
+        var differentArgument = Faker.Value.Random.UShort(nextToMiddle);
 
         return new Pair<ushort>(testArgument, differentArgument);
     }
@@ -221,7 +226,7 @@ public static partial class DummyData
         const byte nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.Byte(byte.MinValue, middle);
-        var differentArgument = Faker.Value.Random.Byte(nextToMiddle, byte.MaxValue);
+        var differentArgument = Faker.Value.Random.Byte(nextToMiddle);
 
         return new Pair<byte>(testArgument, differentArgument);
     }
@@ -243,7 +248,7 @@ public static partial class DummyData
         const sbyte nextToMiddle = middle + 1;
 
         var testArgument = Faker.Value.Random.SByte(sbyte.MinValue, middle);
-        var differentArgument = Faker.Value.Random.SByte(nextToMiddle, sbyte.MaxValue);
+        var differentArgument = Faker.Value.Random.SByte(nextToMiddle);
 
         return new Pair<sbyte>(testArgument, differentArgument);
     }
