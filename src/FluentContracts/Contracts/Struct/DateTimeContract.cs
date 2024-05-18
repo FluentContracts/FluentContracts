@@ -525,38 +525,41 @@ public class DateTimeContract : ComparableContract<DateTime, DateTimeContract>
     /// <summary>
     /// Checks if the value of the <see cref="DateTime"/> is on date with specific <paramref name="day"/>, <paramref name="month"/> and <paramref name="year"/>
     /// </summary>
-    /// <param name="day">Specific day of the month to match against</param>
-    /// <param name="month">Specific month to match against</param>
     /// <param name="year">Specific year to match against</param>
+    /// <param name="month">Specific month to match against</param>
+    /// <param name="day">Specific day of the month to match against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<DateTimeContract> BeOnDate(int day, int month, int year, string? message = null)
+    public Linker<DateTimeContract> BeOnDate(int year, int month, int day, string? message = null)
     {
-        day.Must().BeBetween(1, 31);
+        year.Must().BeBetween(1, 9999);
         month.Must().BeBetween(1, 12);
+        day.Must().BeBetween(1, 31);
 
-        Validator.CheckForSpecificValue(day, ArgumentValue.Day, ArgumentName, message);
-        Validator.CheckForSpecificValue(month, ArgumentValue.Month, ArgumentName, message);
         Validator.CheckForSpecificValue(year, ArgumentValue.Year, ArgumentName, message);
+        Validator.CheckForSpecificValue(month, ArgumentValue.Month, ArgumentName, message);
+        Validator.CheckForSpecificValue(day, ArgumentValue.Day, ArgumentName, message);
+        
         return _linker;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="DateTime"/> is not on date with specific <paramref name="day"/>, <paramref name="month"/> and <paramref name="year"/>
     /// </summary>
-    /// <param name="day">Specific day of the month to match against</param>
-    /// <param name="month">Specific month to match against</param>
     /// <param name="year">Specific year to match against</param>
+    /// <param name="month">Specific month to match against</param>
+    /// <param name="day">Specific day of the month to match against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<DateTimeContract> NotBeOnDate(int day, int month, int year, string? message = null)
+    public Linker<DateTimeContract> NotBeOnDate(int year, int month, int day, string? message = null)
     {
-        day.Must().BeBetween(1, 31);
+        year.Must().BeBetween(1, 9999);
         month.Must().BeBetween(1, 12);
+        day.Must().BeBetween(1, 31);
 
-        Validator.CheckForNotSpecificValue(day, ArgumentValue.Day, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(month, ArgumentValue.Month, ArgumentName, message);
         Validator.CheckForNotSpecificValue(year, ArgumentValue.Year, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(month, ArgumentValue.Month, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(day, ArgumentValue.Day, ArgumentName, message);
         return _linker;
     }
 }

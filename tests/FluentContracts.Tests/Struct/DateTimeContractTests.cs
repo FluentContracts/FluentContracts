@@ -305,7 +305,7 @@ public class DateTimeContractTests : Tests
         for (var i = 0; i < days.Length; i++)
         {
             var day = days[i].Day;
-            var differentDay = (DayOfWeek)(day == DayOfWeek.Monday ? day - 1 : day + 1);
+            var differentDay = day == DayOfWeek.Monday ? day - 1 : day + 1;
 
             var success = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: day);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: differentDay);
@@ -335,7 +335,7 @@ public class DateTimeContractTests : Tests
         for (var i = 0; i < days.Length; i++)
         {
             var day = days[i].Day;
-            var differentDay = (DayOfWeek)(day == DayOfWeek.Monday ? day - 1 : day + 1);
+            var differentDay = day == DayOfWeek.Monday ? day - 1 : day + 1;
 
             var success = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: differentDay);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: day);
@@ -351,7 +351,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_BeUtc()
     {
-        var success = DummyData.GetDateTime(DateTimeOption.Utc);
+        var success = DummyData.GetDateTime();
         var fail = DummyData.GetDateTime(DateTimeOption.Local);
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
@@ -366,7 +366,7 @@ public class DateTimeContractTests : Tests
     public void Test_Must_NotBeUtc()
     {
         var success = DummyData.GetDateTime(DateTimeOption.Local);
-        var fail = DummyData.GetDateTime(DateTimeOption.Utc);
+        var fail = DummyData.GetDateTime();
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
             success,
@@ -380,7 +380,7 @@ public class DateTimeContractTests : Tests
     public void Test_Must_BeLocal()
     {
         var success = DummyData.GetDateTime(DateTimeOption.Local);
-        var fail = DummyData.GetDateTime(DateTimeOption.Utc);
+        var fail = DummyData.GetDateTime();
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
             success,
@@ -393,7 +393,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_NotBeLocal()
     {
-        var success = DummyData.GetDateTime(DateTimeOption.Utc);
+        var success = DummyData.GetDateTime();
         var fail = DummyData.GetDateTime(DateTimeOption.Local);
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
@@ -401,6 +401,76 @@ public class DateTimeContractTests : Tests
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeLocal(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeOnDate()
+    {
+        var day = DummyData.GetIntPair(1, 28);
+        var month = DummyData.GetIntPair(1, 12);
+        var year = DummyData.GetIntPair(1900, 2024);
+
+        var success = new DateTime(year.TestArgument, month.TestArgument, day.TestArgument);
+        
+        var failYear = new DateTime(year.DifferentArgument, month.TestArgument, day.TestArgument);
+        var failMonth = new DateTime(year.TestArgument, month.DifferentArgument, day.TestArgument);
+        var failDay = new DateTime(year.TestArgument, month.TestArgument, day.DifferentArgument);
+
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failYear,
+            (testArgument, message) =>
+                testArgument.Must().BeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
+            "testArgument");
+        
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failMonth,
+            (testArgument, message) =>
+                testArgument.Must().BeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
+            "testArgument");
+        
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failDay,
+            (testArgument, message) =>
+                testArgument.Must().BeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOnDate()
+    {
+        var day = DummyData.GetIntPair(1, 28);
+        var month = DummyData.GetIntPair(1, 12);
+        var year = DummyData.GetIntPair(1900, 2024);
+
+        var success = new DateTime(year.DifferentArgument, month.DifferentArgument, day.DifferentArgument);
+        
+        var failYear = new DateTime(year.TestArgument, month.DifferentArgument, day.DifferentArgument);
+        var failMonth = new DateTime(year.DifferentArgument, month.TestArgument, day.DifferentArgument);
+        var failDay = new DateTime(year.DifferentArgument, month.DifferentArgument, day.TestArgument);
+
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failYear,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
+            "testArgument");
+        
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failMonth,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
+            "testArgument");
+        
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            failDay,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
             "testArgument");
     }
 }
