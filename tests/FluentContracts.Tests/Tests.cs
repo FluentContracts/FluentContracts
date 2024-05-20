@@ -2,7 +2,7 @@ using System;
 using FluentAssertions;
 using FluentContracts.Contracts;
 using FluentContracts.Infrastructure;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 
 namespace FluentContracts.Tests;
 
@@ -19,14 +19,16 @@ public abstract class Tests
         var satisfied =
             () => contractAction(successfulArgument, null);
 
-        satisfied.Should().NotThrow();
+        satisfied
+            .Should()
+            .NotThrow($"Success argument \"{successfulArgument}\" must not throw");
         
         var notSatisfied =
             () => contractAction(failingArgument, null);
 
         notSatisfied
             .Should()
-            .Throw<TException>()
+            .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"")
             .WithParameterName(argumentName);
 
         if (skipMessageThrow) return;
@@ -38,7 +40,7 @@ public abstract class Tests
 
         notSatisfiedWithMessage
             .Should()
-            .Throw<TException>()
+            .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"")
             .WithParameterName(argumentName)
             .WithMessage(expectedError.ExceptionMessage);
     }
@@ -53,14 +55,16 @@ public abstract class Tests
         var satisfied =
             () => contractAction(successfulArgument, null);
 
-        satisfied.Should().NotThrow();
+        satisfied
+            .Should()
+            .NotThrow($"Success argument \"{successfulArgument}\" must not throw");
         
         var notSatisfied =
             () => contractAction(failingArgument, null);
 
         notSatisfied
             .Should()
-            .Throw<TException>();
+            .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"");
 
         var notSatisfiedWithMessage = 
             () => contractAction(failingArgument, errorMessage);
@@ -69,14 +73,14 @@ public abstract class Tests
         {
             notSatisfiedWithMessage
                 .Should()
-                .Throw<TException>()
+                .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"")
                 .WithMessage(errorMessage);
         }
         else
         {
             notSatisfiedWithMessage
                 .Should()
-                .Throw<TException>();
+                .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"");
         }
     }
 }

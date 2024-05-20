@@ -1,5 +1,5 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Text;
 
@@ -21,7 +21,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeDigit(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsDigit, ArgumentValue, ArgumentName, message);
@@ -33,7 +32,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeDigit(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsDigit(v), ArgumentValue, ArgumentName, message);
@@ -45,7 +43,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeLetter(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsLetter, ArgumentValue, ArgumentName, message);
@@ -57,10 +54,31 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeLetter(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsLetter(v), ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="char"/> argument is alphanumeric
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<CharContract> BeAlphanumeric(string? message = null)
+    {
+        Validator.CheckGenericCondition(char.IsLetterOrDigit, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="char"/> argument is not alphanumeric
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<CharContract> NotBeAlphanumeric(string? message = null)
+    {
+        Validator.CheckGenericCondition(v => !char.IsLetterOrDigit(v), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -69,7 +87,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeLowercase(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsLower, ArgumentValue, ArgumentName, message);
@@ -81,7 +98,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeLowercase(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsLower(v), ArgumentValue, ArgumentName, message);
@@ -93,7 +109,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeUppercase(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsUpper, ArgumentValue, ArgumentName, message);
@@ -105,7 +120,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeUppercase(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsUpper(v), ArgumentValue, ArgumentName, message);
@@ -117,7 +131,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsWhiteSpace, ArgumentValue, ArgumentName, message);
@@ -129,7 +142,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsWhiteSpace(v), ArgumentValue, ArgumentName, message);
@@ -141,7 +153,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> BeAscii(string? message = null)
     {
         Validator.CheckGenericCondition(char.IsAscii, ArgumentValue, ArgumentName, message);
@@ -153,7 +164,6 @@ public class CharContract : ComparableContract<char, CharContract>
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<CharContract> NotBeAscii(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsAscii(v), ArgumentValue, ArgumentName, message);

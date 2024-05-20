@@ -1,5 +1,5 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
@@ -20,7 +20,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> Be(TArgument expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
@@ -34,7 +33,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <typeparam name="TException">Type of the exception to throw</typeparam>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> Be<TException>(TArgument expectedValue, string? message = null)
         where TException : Exception, new()
     {
@@ -52,7 +50,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBe(TArgument expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
@@ -64,7 +61,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeAnyOf(params TArgument[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
@@ -76,7 +72,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeAnyOf(string? message, params TArgument[] expectedValues)
     {
         Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
@@ -88,7 +83,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeAnyOf(params TArgument[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
@@ -100,7 +94,6 @@ public abstract class EqualityContract<TArgument, TContract> : NullableContract<
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeAnyOf(string? message, params TArgument[] expectedValues)
     {
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);

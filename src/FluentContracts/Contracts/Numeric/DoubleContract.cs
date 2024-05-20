@@ -1,7 +1,13 @@
 namespace FluentContracts.Contracts.Numeric;
 
 public class NullableDoubleContract(double? argumentValue, string argumentName)
-    : ComparableContract<double?, NullableDoubleContract>(argumentValue, argumentName);
+    : SignedNumberContract<double?, NullableDoubleContract>(argumentValue, argumentName)
+{
+    protected override double? Zero => 0;
+}
 
 public class DoubleContract(double argumentValue, string argumentName) 
-    : ComparableContract<double, DoubleContract>(argumentValue, argumentName);
+    : SignedNumberContract<double, DoubleContract>(argumentValue, argumentName)
+{
+    protected override double Zero => 0;
+}
