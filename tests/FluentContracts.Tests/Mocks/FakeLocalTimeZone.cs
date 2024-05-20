@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace FluentContracts.Tests.Mocks.Data;
+namespace FluentContracts.Tests.Mocks;
 
 // Code found here: https://stackoverflow.com/questions/44413407/mock-the-country-timezone-you-are-running-unit-test-from
 public class FakeLocalTimeZone : IDisposable

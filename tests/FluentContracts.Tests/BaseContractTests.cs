@@ -3,6 +3,7 @@ using Bogus;
 using FluentAssertions;
 using FluentContracts.Contracts;
 using FluentContracts.Contracts.Numeric;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;

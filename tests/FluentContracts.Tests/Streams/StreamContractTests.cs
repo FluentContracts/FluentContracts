@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using FluentContracts.Contracts.Streams;
+using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;

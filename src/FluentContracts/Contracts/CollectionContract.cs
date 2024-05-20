@@ -1,6 +1,7 @@
 using System.Collections;
-
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
+
 namespace FluentContracts.Contracts;
 
 public abstract class CollectionContract<TElement, TArgument, TContract> : EqualityContract<TArgument, TContract>

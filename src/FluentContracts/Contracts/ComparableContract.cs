@@ -1,4 +1,5 @@
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
@@ -46,7 +47,7 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> BeGreaterOrEqualTo(TArgument value, string? message = null)
     {
-        Validator.CheckForGreaterOrEqualThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -70,7 +71,7 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> BeLessOrEqualTo(TArgument value, string? message = null)
     {
-        Validator.CheckForLessOrEqualThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }

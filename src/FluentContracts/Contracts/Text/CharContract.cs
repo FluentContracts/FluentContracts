@@ -1,4 +1,5 @@
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Text;
 
@@ -56,6 +57,28 @@ public class CharContract : ComparableContract<char, CharContract>
     public Linker<CharContract> NotBeLetter(string? message = null)
     {
         Validator.CheckGenericCondition(v => !char.IsLetter(v), ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="char"/> argument is alphanumeric
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<CharContract> BeAlphanumeric(string? message = null)
+    {
+        Validator.CheckGenericCondition(char.IsLetterOrDigit, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="char"/> argument is not alphanumeric
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<CharContract> NotBeAlphanumeric(string? message = null)
+    {
+        Validator.CheckGenericCondition(v => !char.IsLetterOrDigit(v), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
