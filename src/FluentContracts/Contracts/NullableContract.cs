@@ -1,5 +1,5 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
@@ -22,7 +22,6 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeNull(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -35,7 +34,6 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <typeparam name="TException">Type of the exception to throw</typeparam>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> NotBeNull<TException>(string? message = null)
         where TException : Exception, new()
     {
@@ -52,7 +50,6 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeNull(string? message = null)
     {
         Validator.CheckForNull(ArgumentValue, ArgumentName, message);

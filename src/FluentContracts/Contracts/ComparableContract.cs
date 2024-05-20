@@ -1,5 +1,5 @@
-using System.Diagnostics.Contracts;
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
@@ -21,7 +21,6 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <param name="end">Value that must be greater or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeBetween(TArgument start, TArgument end, string? message = null)
     {
         Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
@@ -34,7 +33,6 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <param name="value">Value that must be lower than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeGreaterThan(TArgument value, string? message = null)
     {
         Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
@@ -47,10 +45,9 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <param name="value">Value that must be lower or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeGreaterOrEqualTo(TArgument value, string? message = null)
     {
-        Validator.CheckForGreaterOrEqualThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -60,7 +57,6 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <param name="value">Value that must be greater than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeLessThan(TArgument value, string? message = null)
     {
         Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
@@ -73,10 +69,9 @@ public abstract class ComparableContract<TArgument, TContract> : EqualityContrac
     /// <param name="value">Value that must be lower or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> BeLessOrEqualTo(TArgument value, string? message = null)
     {
-        Validator.CheckForLessOrEqualThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }

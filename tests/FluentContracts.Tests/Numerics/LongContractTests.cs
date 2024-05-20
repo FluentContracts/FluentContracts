@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Numeric;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -57,7 +57,7 @@ public class LongContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetLongPair();
-        var array = DummyData.GetArray(DummyData.GetLong, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetLong(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<long, LongContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -71,7 +71,7 @@ public class LongContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetLongPair();
-        var array = DummyData.GetArray(DummyData.GetLong, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetLong(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<long, LongContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -154,6 +154,99 @@ public class LongContractTests : Tests
             outOfRange,
             (testArgument, message) =>
                 testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeZero()
+    {
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            0,
+            42,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+        
+        
+        TestContract<long?, NullableLongContract, ArgumentOutOfRangeException>(
+            0,
+            42,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeZero()
+    {
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            69,
+            0,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+        
+        TestContract<long?, NullableLongContract, ArgumentOutOfRangeException>(
+            69,
+            0,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BePositive()
+    {
+        var success = DummyData.GetLong(NumberOption.Positive);
+        var fail = DummyData.GetLong(NumberOption.Negative);
+
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBePositive()
+    {
+        var success = DummyData.GetLong(NumberOption.Negative);
+        var fail = DummyData.GetLong(NumberOption.Positive);
+
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeNegative()
+    {
+        var success = DummyData.GetLong(NumberOption.Negative);
+        var fail = DummyData.GetLong(NumberOption.Positive);
+
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BeNegative(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeNegative()
+    {
+        var success = DummyData.GetLong(NumberOption.Positive);
+        var fail = DummyData.GetLong(NumberOption.Negative);
+
+        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
 }

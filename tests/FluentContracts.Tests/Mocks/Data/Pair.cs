@@ -1,4 +1,4 @@
-namespace FluentContracts.Tests.Mocks;
+namespace FluentContracts.Tests.Mocks.Data;
 
 public readonly struct Pair<T>(T testArgument, T differentArgument)
 {

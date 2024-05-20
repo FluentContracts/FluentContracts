@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.Contracts;
-using FluentContracts.Infrastructure;
+﻿using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
@@ -24,7 +24,6 @@ public abstract class BaseContract<TArgument, TContract>
     /// <param name="customCondition">The custom condition to check.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    [Pure]
     public Linker<TContract> Satisfy(Func<TArgument, bool> customCondition, string? message = null)
     {
         Validator.CheckGenericCondition(customCondition, ArgumentValue, ArgumentName, message);

@@ -1,6 +1,6 @@
 using System;
 using FluentContracts.Contracts.Numeric;
-using FluentContracts.Tests.Mocks;
+using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
 using Xunit;
 
@@ -57,7 +57,7 @@ public class DoubleContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetDoublePair();
-        var array = DummyData.GetArray(DummyData.GetDouble, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetDouble(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -71,7 +71,7 @@ public class DoubleContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetDoublePair();
-        var array = DummyData.GetArray(DummyData.GetDouble, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetDouble(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -154,6 +154,98 @@ public class DoubleContractTests : Tests
             outOfRange,
             (testArgument, message) =>
                 testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeZero()
+    {
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            0D,
+            0.42D,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+        
+        TestContract<double?, NullableDoubleContract, ArgumentOutOfRangeException>(
+            0D,
+            0.42D,
+            (testArgument, message) =>
+                testArgument.Must().BeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeZero()
+    {
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            0.69D,
+            0D,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+        
+        TestContract<double?, NullableDoubleContract, ArgumentOutOfRangeException>(
+            0.69D,
+            0D,
+            (testArgument, message) =>
+                testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BePositive()
+    {
+        var success = DummyData.GetDouble(NumberOption.Positive);
+        var fail = DummyData.GetDouble(NumberOption.Negative);
+
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBePositive()
+    {
+        var success = DummyData.GetDouble(NumberOption.Negative);
+        var fail = DummyData.GetDouble(NumberOption.Positive);
+
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBePositive(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeNegative()
+    {
+        var success = DummyData.GetDouble(NumberOption.Negative);
+        var fail = DummyData.GetDouble(NumberOption.Positive);
+
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BeNegative(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeNegative()
+    {
+        var success = DummyData.GetDouble(NumberOption.Positive);
+        var fail = DummyData.GetDouble(NumberOption.Negative);
+
+        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
 }

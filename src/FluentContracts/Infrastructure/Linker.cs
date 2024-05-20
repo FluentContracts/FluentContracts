@@ -1,4 +1,6 @@
-﻿namespace FluentContracts.Infrastructure;
+﻿using FluentContracts.Validators;
+
+namespace FluentContracts.Infrastructure;
 
 /// <summary>
 /// The Linker class is used for chaining contract checks and adding more checks to existing contracts.
