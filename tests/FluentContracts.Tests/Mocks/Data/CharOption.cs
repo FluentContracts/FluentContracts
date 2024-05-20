@@ -1,11 +1,15 @@
 namespace FluentContracts.Tests.Mocks.Data;
 
-public enum StringOption
+public enum CharOption
 {
     Normal,
     Uppercase,
     Lowercase,
     WhiteSpace,
     Ascii,
-    NonAscii
+    NonAscii,
+    Digit,
+    Letter,
+    Alphanumeric,
+    SpecialCharacter,
 }
