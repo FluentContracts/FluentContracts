@@ -1,4 +1,5 @@
 using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
@@ -31,7 +32,7 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> NotBePositive(string? message = null)
     {
-        Validator.CheckForLessOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(Zero, ArgumentValue, ArgumentName, message);
         return _linker;
     }
     
@@ -53,7 +54,7 @@ public abstract class SignedNumberContract<TArgument, TContract> : NumberContrac
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> NotBeNegative(string? message = null)
     {
-        Validator.CheckForGreaterOrEqualThan(Zero, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(Zero, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }

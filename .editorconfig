@@ -131,5 +131,5 @@ csharp_space_between_square_brackets = false
 # Shell scripts
 [*.sh]
 end_of_line = lf
-[*.{cmd, bat}]
+[*.{cmd,bat}]
 end_of_line = crlf

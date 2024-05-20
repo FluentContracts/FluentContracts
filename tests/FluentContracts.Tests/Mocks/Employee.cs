@@ -1,6 +1,6 @@
 using Bogus;
 
-namespace FluentContracts.Tests.Mocks.Data;
+namespace FluentContracts.Tests.Mocks;
 
 public class Employee(Role role) : Person
 {

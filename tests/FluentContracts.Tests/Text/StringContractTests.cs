@@ -267,6 +267,19 @@ public class StringContractTests : Tests
     }
     
     [Fact]
+    public void Test_Must_NotBeEmailAddress()
+    {
+        var success = DummyData.GetString();
+        var fail = DummyData.GetEmailAddress();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeEmailAddress(message),
+            "testArgument");
+    }
+    
+    [Fact]
     public void Test_Must_BeMatching()
     {
         const string pattern = "^JediMaster\\d{2}$";
@@ -343,6 +356,264 @@ public class StringContractTests : Tests
             notStartingWith,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotEndWith(pair.DifferentArgument, message: message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BePalindrome()
+    {
+        var success = DummyData.GetString(StringOption.Palindrome);
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BePalindrome(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBePalindrome()
+    {
+        var success = DummyData.GetString();
+        var fail = DummyData.GetString(StringOption.Palindrome);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBePalindrome(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeUrl()
+    {
+        var success = DummyData.GetString(StringOption.Url);
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeUrl(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeUrl()
+    {
+        var success = DummyData.GetString();
+        var fail = DummyData.GetString(StringOption.Url);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeUrl(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_HaveLengthEqualTo()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength);
+        var fail = DummyData.GetString(targetLength + 10);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthEqualTo(targetLength, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotHaveLengthEqualTo()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength + 10);
+        var fail = DummyData.GetString(targetLength);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotHaveLengthEqualTo(targetLength, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_HaveLengthGreaterThan()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength + 10);
+        var fail = DummyData.GetString(targetLength - 10);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthGreaterThan(targetLength, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_HaveLengthGreaterOrEqualTo()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength);
+        var success2 = DummyData.GetString(targetLength + 10);
+        var fail = DummyData.GetString(targetLength - 10);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthGreaterOrEqualTo(targetLength, message),
+            "testArgument");
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success2,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthGreaterOrEqualTo(targetLength, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_HaveLengthLessThan()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength - 10);
+        var fail = DummyData.GetString(targetLength + 10);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthLessThan(targetLength, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_HaveLengthLessOrEqualTo()
+    {
+        const int targetLength = 42;
+        var success = DummyData.GetString(targetLength);
+        var success2 = DummyData.GetString(targetLength - 10);
+        var fail = DummyData.GetString(targetLength + 10);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthLessOrEqualTo(targetLength, message),
+            "testArgument");
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success2,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthLessOrEqualTo(targetLength, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveLengthBetween()
+    {
+        const int targetLengthLow = 42;
+        const int targetLengthHigh = 69;
+        
+        var success = DummyData.GetString(targetLengthLow + 8);
+        var fail = DummyData.GetString(targetLengthHigh + 1);
+
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().HaveLengthBetween(targetLengthLow, targetLengthHigh, message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeAlphanumeric()
+    {
+        var success = DummyData.GetString(StringOption.Alphanumeric);
+        var fail = DummyData.GetString(StringOption.SpecialCharacters);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeAlphanumeric(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeAlphanumeric()
+    {
+        var success = DummyData.GetString(StringOption.SpecialCharacters);
+        var fail = DummyData.GetString(StringOption.Alphanumeric);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeAlphanumeric(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeIpAddress()
+    {
+        var success4 = DummyData.GetString(StringOption.IpAddressV4);
+        var success6 = DummyData.GetString(StringOption.IpAddressV6);
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success4,
+            fail,
+            (testArgument, message) => testArgument.Must().BeIpAddress(message),
+            "testArgument");
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success6,
+            fail,
+            (testArgument, message) => testArgument.Must().BeIpAddress(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeIpAddress()
+    {
+        var success = DummyData.GetString();
+        var fail4 = DummyData.GetString(StringOption.IpAddressV4);
+        var fail6 = DummyData.GetString(StringOption.IpAddressV6);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail4,
+            (testArgument, message) => testArgument.Must().NotBeIpAddress(message),
+            "testArgument");
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail6,
+            (testArgument, message) => testArgument.Must().NotBeIpAddress(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeGuid()
+    {
+        var success = DummyData.GetString(StringOption.Guid);
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeGuid(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeGuid()
+    {
+        var success = DummyData.GetString();
+        var fail = DummyData.GetString(StringOption.Guid);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeGuid(message),
             "testArgument");
     }
 }
