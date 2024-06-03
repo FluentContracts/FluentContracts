@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using FluentContracts.Contracts.Text;
 using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
@@ -7,8 +9,11 @@ using Xunit;
 namespace FluentContracts.Tests.Text;
 
 [ContractTest("String")]
-public class StringContractTests : Tests
+public class StringContractTests : Tests, IDisposable
 {
+    private readonly List<string> _filesToDelete = [];
+    private readonly List<string> _directoriesToDelete = [];
+    
     [Fact]
     public void Test_Must_BeNull()
     {
@@ -615,5 +620,160 @@ public class StringContractTests : Tests
             fail,
             (testArgument, message) => testArgument.Must().NotBeGuid(message),
             "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeBase64()
+    {
+        var success = DummyData.GetString(StringOption.Base64);
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeBase64(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeBase64()
+    {
+        var success = DummyData.GetString();
+        var fail = DummyData.GetString(StringOption.Base64);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeBase64(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeHexadecimal()
+    {
+        var success = DummyData.GetString(StringOption.Hexadecimal);
+        var fail = DummyData.GetString(StringOption.SpecialCharacters);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeHexadecimal(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeHexadecimal()
+    {
+        var success = DummyData.GetString(StringOption.SpecialCharacters);
+        var fail = DummyData.GetString(StringOption.Hexadecimal);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeHexadecimal(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeCreditCardNumber()
+    {
+        var success = DummyData.GetString(StringOption.CreditCardNumber);
+        var fail = DummyData.GetString(length: 16);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeCreditCardNumber(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeCreditCardNumber()
+    {
+        var success = DummyData.GetString(length: 16);
+        var fail = DummyData.GetString(StringOption.CreditCardNumber);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeCreditCardNumber(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeExistingFile()
+    {
+        var success = DummyData.GetFilePath();
+        _filesToDelete.Add(success);
+        
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeExistingFile(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeExistingFile()
+    {
+        var success = DummyData.GetString();
+        
+        var fail = DummyData.GetFilePath();
+        _filesToDelete.Add(fail);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeExistingFile(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeExistingDirectory()
+    {
+        var success = DummyData.GetDirectoryPath();
+        _directoriesToDelete.Add(success);
+        
+        var fail = DummyData.GetString();
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().BeExistingDirectory(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeExistingDirectory()
+    {
+        var success = DummyData.GetString();
+        
+        var fail = DummyData.GetDirectoryPath();
+        _directoriesToDelete.Add(fail);
+        
+        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) => testArgument.Must().NotBeExistingDirectory(message),
+            "testArgument");
+    }
+
+    public void Dispose()
+    {
+        foreach (var file in _filesToDelete)
+        {
+            File.Delete(file);
+        }
+        
+        _filesToDelete.Clear();
+        
+        foreach (var dir in _directoriesToDelete)
+        {
+            Directory.Delete(dir);
+        }
+        
+        _directoriesToDelete.Clear();
     }
 }

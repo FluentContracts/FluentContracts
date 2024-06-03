@@ -54,6 +54,27 @@ internal static partial class Validator
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
 
+    public static void CheckGenericCondition<T, TException>(
+        Func<T, bool> genericCondition, 
+        T argumentValue)
+        where TException : Exception, new()
+    {
+        if (genericCondition(argumentValue)) return;
+
+        ThrowHelper.ThrowUserDefinedException<TException>();
+    }
+
+    public static void CheckGenericCondition<T, TException>(
+        Func<T, bool> genericCondition, 
+        T argumentValue, 
+        string message)
+        where TException : Exception, new()
+    {
+        if (genericCondition(argumentValue)) return;
+
+        ThrowHelper.ThrowUserDefinedException<TException>(message);
+    }
+
     public static void CheckForAnyOf<T>(
         IEnumerable<T> values, 
         T argumentValue, 
