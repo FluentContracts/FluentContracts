@@ -6,6 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### `BaseContract`
+- Added `Satisfy<TException>` that can throw custom exceptions
+
+### `StringContract`
+- Added `(Not)BeExistingFile`
+- Added `(Not)BeExistingDirectory`
+- Added `(Not)BeHexadecimal`
+- Added `(Not)BeBase64`
+- Added `(Not)BeCreditCardNumber`
+
+### `CollectionContract`
+- Renamed `(Not)BeWithCount` to `(Not)HaveCountEqualTo` to match the others like that
+- Added `HaveCountGreaterThan`, `HaveCountGreaterOrEqualTo`, `HaveCountLessThan`, `HaveCountLessOrEqualTo` and `HaveCountBetween` to validate the count of elements in a collection.
+
+### `DateTimeContract`
+- Added `(Not)BeOnDate` with `DateTime` parameter
+- Added `(Not)BeInThePast`
+- Added `(Not)BeInTheFuture`
+- Added `(Not)BeToday`
+- Added `(Not)BeTomorrow`
+- Added `(Not)BeYesterday`
+- Added `(Not)BeInMonth`
+- Added `(Not)BeOnDay`
+- Added `(Not)BeInYear`
+- Added `(Not)BeOnCurrentDay`
+- Added `(Not)BeInCurrentMonth`
+- Added `(Not)BeInCurrentYear`
+- Added `(Not)BeOnDayOfYear`
+- Added `(Not)BeWeekend`
+- Added `(Not)BeWeekday`
 
 ## [1.4.0] / 2024-05-20
 - Added `(Not)BeEmailAddress` for validating if a string is an email address. [suggested by [@matkoch87](https://x.com/matkoch87/status/1787511006085705889)]

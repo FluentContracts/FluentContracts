@@ -478,7 +478,7 @@ public class StringContract : ComparableContract<string?, StringContract>
     /// Checks if the length of the <see cref="string"/> argument is inclusively between <paramref name="start"/> and <paramref name="end"/>
     /// </summary>
     /// <param name="start">Start of range</param>
-    /// <param name="end">end of range</param>
+    /// <param name="end">End of range</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
@@ -564,6 +564,136 @@ public class StringContract : ComparableContract<string?, StringContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.Guid, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is an existing file path
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> BeExistingFile(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(File.Exists, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not an existing file path
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> NotBeExistingFile(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !File.Exists(a), ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is an existing file path
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> BeExistingDirectory(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(Directory.Exists, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is an existing file path
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> NotBeExistingDirectory(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !Directory.Exists(a), ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is a valid base64
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> BeBase64(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForParsed(ParseOptions.Base64, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not a valid base64
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> NotBeBase64(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotParsed(ParseOptions.Base64, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is a valid hexadecimal (without 0x prefix)
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> BeHexadecimal(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForParsed(ParseOptions.Hexadecimal, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not a valid hexadecimal (without 0x prefix)
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> NotBeHexadecimal(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotParsed(ParseOptions.Hexadecimal, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is a valid credit card number
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> BeCreditCardNumber(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForCreditCardNumber(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the <see cref="string"/> argument is not a valid credit card number
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<StringContract> NotBeCreditCardNumber(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotCreditCardNumber(ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }
