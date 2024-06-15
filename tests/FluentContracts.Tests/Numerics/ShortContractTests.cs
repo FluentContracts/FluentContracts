@@ -12,7 +12,7 @@ public class ShortContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<short?, NullableShortContract, ArgumentOutOfRangeException>(
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetShort(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class ShortContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<short?, NullableShortContract, ArgumentNullException>(
+        TestContract<short?, ShortContract, ArgumentNullException>(
             DummyData.GetShort(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class ShortContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<short?, NullableShortContract, ArgumentOutOfRangeException>(
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -185,7 +185,7 @@ public class ShortContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<short?, NullableShortContract, ArgumentOutOfRangeException>(
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

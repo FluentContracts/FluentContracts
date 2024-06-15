@@ -11,7 +11,7 @@ public abstract class Tests
     protected static void TestContract<T, TContract, TException>(
         T successfulArgument,
         T failingArgument,
-        Func<T, string, Linker<TContract>> contractAction,
+        Func<T, string?, Linker<TContract>> contractAction,
         string argumentName,
         bool skipMessageThrow = false)
         where TException : ArgumentException
@@ -48,8 +48,8 @@ public abstract class Tests
     protected static void TestContract<T, TContract, TException>(
         T successfulArgument,
         T failingArgument,
-        string errorMessage,
-        Func<T, string, Linker<TContract>> contractAction)
+        string? errorMessage,
+        Func<T, string?, Linker<TContract>> contractAction)
         where TException : Exception
     {   
         var satisfied =

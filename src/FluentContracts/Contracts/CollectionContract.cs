@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts;
 
 public abstract class CollectionContract<TElement, TArgument, TContract> : EqualityContract<TArgument, TContract>
     where TContract : CollectionContract<TElement, TArgument, TContract>
-    where TArgument : ICollection<TElement>
+    where TArgument : ICollection<TElement>?
 {
     private readonly Linker<TContract> _linker;
 

@@ -8,14 +8,14 @@ public abstract class BaseContract<TArgument, TContract>
 {
     private readonly Linker<TContract> _linker;
 
-    protected BaseContract(TArgument argumentValue, string argumentName)
+    protected BaseContract(TArgument? argumentValue, string argumentName)
     {
         _linker = new Linker<TContract>((TContract)this);
         ArgumentName = argumentName;
         ArgumentValue = argumentValue;
     }
 
-    protected TArgument ArgumentValue { get; }
+    protected TArgument? ArgumentValue { get; }
     protected string ArgumentName { get; }
 
     /// <summary>
@@ -24,9 +24,12 @@ public abstract class BaseContract<TArgument, TContract>
     /// <param name="customCondition">The custom condition to check.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Satisfy(Func<TArgument, bool> customCondition, string? message = null)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> Satisfy<T>(Func<T, bool> customCondition, string? message = null)
+        where T : TArgument
     {
-        Validator.CheckGenericCondition(customCondition, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(customCondition, (T)ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -35,10 +38,13 @@ public abstract class BaseContract<TArgument, TContract>
     /// </summary>
     /// <param name="customCondition">The custom condition to check.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Satisfy<TException>(Func<TArgument, bool> customCondition)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> Satisfy<T, TException>(Func<T, bool> customCondition)
         where TException : Exception, new()
+        where T : TArgument
     {
-        Validator.CheckGenericCondition<TArgument, TException>(customCondition, ArgumentValue);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        Validator.CheckGenericCondition<T, TException>(customCondition, (T)ArgumentValue);
         return _linker;
     }
 
@@ -48,10 +54,13 @@ public abstract class BaseContract<TArgument, TContract>
     /// <param name="customCondition">The custom condition to check.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Satisfy<TException>(Func<TArgument, bool> customCondition, string message)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> Satisfy<T, TException>(Func<T, bool> customCondition, string message)
         where TException : Exception, new()
+        where T : TArgument
     {
-        Validator.CheckGenericCondition<TArgument, TException>(customCondition, ArgumentValue, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        Validator.CheckGenericCondition<T, TException>(customCondition, (T)ArgumentValue, message);
         return _linker;
     }
 }

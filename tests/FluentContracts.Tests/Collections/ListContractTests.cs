@@ -16,7 +16,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>?, ListContract<string>, ArgumentOutOfRangeException>(
             null,
             DummyData.GetList(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -26,7 +26,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<List<string>, ListContract<string>, ArgumentNullException>(
+        TestContract<List<string>?, ListContract<string>, ArgumentNullException>(
             DummyData.GetList(DummyData.GetString),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

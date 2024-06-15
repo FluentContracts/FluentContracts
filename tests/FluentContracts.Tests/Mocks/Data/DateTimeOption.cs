@@ -10,4 +10,6 @@ public enum DateTimeOption
     NotLeapYear,
     SpecificMonth,
     SpecificWeekday,
+    SpecificDay,
+    SpecificYear,
 }

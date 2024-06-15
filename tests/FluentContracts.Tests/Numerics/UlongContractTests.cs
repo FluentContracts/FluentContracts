@@ -12,7 +12,7 @@ public class UlongContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<ulong?, NullableUlongContract, ArgumentOutOfRangeException>(
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetUlong(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class UlongContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<ulong?, NullableUlongContract, ArgumentNullException>(
+        TestContract<ulong?, UlongContract, ArgumentNullException>(
             DummyData.GetUlong(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class UlongContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<ulong?, NullableUlongContract, ArgumentOutOfRangeException>(
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -178,7 +178,7 @@ public class UlongContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<ulong?, NullableUlongContract, ArgumentOutOfRangeException>(
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

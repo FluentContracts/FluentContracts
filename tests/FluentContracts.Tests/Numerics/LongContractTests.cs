@@ -12,7 +12,7 @@ public class LongContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<long?, NullableLongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetLong(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class LongContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<long?, NullableLongContract, ArgumentNullException>(
+        TestContract<long?, LongContract, ArgumentNullException>(
             DummyData.GetLong(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -168,7 +168,7 @@ public class LongContractTests : Tests
             "testArgument");
         
         
-        TestContract<long?, NullableLongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -186,7 +186,7 @@ public class LongContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<long?, NullableLongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

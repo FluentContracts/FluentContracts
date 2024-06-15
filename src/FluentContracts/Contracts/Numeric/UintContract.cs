@@ -3,64 +3,20 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
-public class ShortContract(short? argumentValue, string argumentName)
-    : ShortContract<ShortContract>(argumentValue, argumentName);
+public class UintContract(uint? argumentValue, string argumentName)
+    : UintContract<UintContract>(argumentValue, argumentName);
 
-public class ShortContract<TContract> : NullableContract<short?, TContract>
-    where TContract : ShortContract<TContract>
+public class UintContract<TContract> : NullableContract<uint?, TContract>
+    where TContract : UintContract<TContract>
 {
-    private const short Zero = 0;
+    private const uint Zero = 0;
     private readonly Linker<TContract> _linker;
 
-    protected ShortContract(short? argumentValue, string argumentName)
+    protected UintContract(uint? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
         _linker = new Linker<TContract>((TContract) this);
     }
-    
-    /// <summary>
-    /// Checks if the value of the argument is greater than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BePositive(string? message = null)
-    {
-        Validator.CheckForGreaterThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is not greater than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBePositive(string? message = null)
-    {
-        Validator.CheckForLessOrEqualTo(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is less than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeNegative(string? message = null)
-    {
-        Validator.CheckForLessThan(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
-    
-    /// <summary>
-    /// Checks if the value of the argument is not less than zero
-    /// </summary>
-    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNegative(string? message = null)
-    {
-        Validator.CheckForGreaterOrEqualTo(Zero, ArgumentValue, ArgumentName, message);
-        return _linker;
-    }
 
     /// <summary>
     /// Checks if the specified argument is equal to the expected value.
@@ -68,7 +24,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(short expectedValue, string? message = null)
+    public Linker<TContract> Be(uint expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -80,7 +36,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(short? expectedValue, string? message = null)
+    public Linker<TContract> Be(uint? expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -92,7 +48,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(short expectedValue, string? message = null)
+    public Linker<TContract> NotBe(uint expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -104,7 +60,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(short? expectedValue, string? message = null)
+    public Linker<TContract> NotBe(uint? expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -115,7 +71,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params short[] expectedValues)
+    public Linker<TContract> BeAnyOf(params uint[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -125,7 +81,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params short?[] expectedValues)
+    public Linker<TContract> BeAnyOf(params uint?[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -136,7 +92,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params short[] expectedValues)
+    public Linker<TContract> BeAnyOf(string? message, params uint[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
@@ -149,7 +105,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params short?[] expectedValues)
+    public Linker<TContract> BeAnyOf(string? message, params uint?[] expectedValues)
     {
         Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -160,7 +116,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params short[] expectedValues)
+    public Linker<TContract> NotBeAnyOf(params uint[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -170,7 +126,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params short?[] expectedValues)
+    public Linker<TContract> NotBeAnyOf(params uint?[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -181,7 +137,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params short[] expectedValues)
+    public Linker<TContract> NotBeAnyOf(string? message, params uint[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
@@ -194,7 +150,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params short?[] expectedValues)
+    public Linker<TContract> NotBeAnyOf(string? message, params uint?[] expectedValues)
     {
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
         return _linker;
@@ -208,7 +164,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeBetween(short start, short end, string? message = null)
+    public Linker<TContract> BeBetween(uint start, uint end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
@@ -223,7 +179,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeBetween(short? start, short? end, string? message = null)
+    public Linker<TContract> BeBetween(uint? start, uint? end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
@@ -237,7 +193,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterThan(short value, string? message = null)
+    public Linker<TContract> BeGreaterThan(uint value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
@@ -251,7 +207,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterThan(short? value, string? message = null)
+    public Linker<TContract> BeGreaterThan(uint? value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
@@ -265,7 +221,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterOrEqualTo(short value, string? message = null)
+    public Linker<TContract> BeGreaterOrEqualTo(uint value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
@@ -279,7 +235,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterOrEqualTo(short? value, string? message = null)
+    public Linker<TContract> BeGreaterOrEqualTo(uint? value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
@@ -293,7 +249,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessThan(short value, string? message = null)
+    public Linker<TContract> BeLessThan(uint value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
@@ -307,7 +263,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessThan(short? value, string? message = null)
+    public Linker<TContract> BeLessThan(uint? value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
@@ -321,7 +277,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessOrEqualTo(short value, string? message = null)
+    public Linker<TContract> BeLessOrEqualTo(uint value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
@@ -335,7 +291,7 @@ public class ShortContract<TContract> : NullableContract<short?, TContract>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessOrEqualTo(short? value, string? message = null)
+    public Linker<TContract> BeLessOrEqualTo(uint? value, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);

@@ -12,7 +12,7 @@ public class UintContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<uint?, NullableUintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetUint(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class UintContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<uint?, NullableUintContract, ArgumentNullException>(
+        TestContract<uint?, UintContract, ArgumentNullException>(
             DummyData.GetUint(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class UintContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<uint?, NullableUintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -185,7 +185,7 @@ public class UintContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<uint?, NullableUintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

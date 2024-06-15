@@ -13,7 +13,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<StarWarsCharacter?, NullableEnumContract<StarWarsCharacter?>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
             null,
             StarWarsCharacter.LukeSkywalker,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -23,7 +23,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<StarWarsCharacter?, NullableEnumContract<StarWarsCharacter?>, ArgumentNullException>(
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentNullException>(
             StarWarsCharacter.LukeSkywalker,
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

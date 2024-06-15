@@ -12,7 +12,7 @@ public class FloatContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<float?, NullableFloatContract, ArgumentOutOfRangeException>(
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetFloat(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class FloatContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<float?, NullableFloatContract, ArgumentNullException>(
+        TestContract<float?, FloatContract, ArgumentNullException>(
             DummyData.GetFloat(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -168,7 +168,7 @@ public class FloatContractTests : Tests
             "testArgument");
         
         
-        TestContract<float?, NullableFloatContract, ArgumentOutOfRangeException>(
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             0F,
             0.42F,
             (testArgument, message) =>
@@ -187,7 +187,7 @@ public class FloatContractTests : Tests
             "testArgument");
         
         
-        TestContract<float?, NullableFloatContract, ArgumentOutOfRangeException>(
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             0.69F,
             0F,
             (testArgument, message) =>

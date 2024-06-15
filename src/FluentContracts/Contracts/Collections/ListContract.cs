@@ -3,11 +3,11 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Collections;
 
-public class ListContract<T> : CollectionContract<T, IList<T>, ListContract<T>>
+public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
 {
     private readonly Linker<ListContract<T>> _linker;
 
-    public ListContract(IList<T> argumentValue, string argumentName)
+    public ListContract(IList<T>? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
         _linker = new Linker<ListContract<T>>(this);
