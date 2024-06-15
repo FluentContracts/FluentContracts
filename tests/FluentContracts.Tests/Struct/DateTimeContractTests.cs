@@ -577,7 +577,7 @@ public class DateTimeContractTests : Tests
             success,
             fail,
             (testArgument, message) =>
-                testArgument.Must().NotBeInThePast(message),
+                testArgument.Must(dateTimeProvider: new MockDateTimeProvider(date)).NotBeInThePast(message),
             "testArgument");
     }
 }

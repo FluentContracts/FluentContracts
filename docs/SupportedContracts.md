@@ -33,15 +33,22 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Char` (extends `Comparable`)
+## `Char` (extends `Nullable`)
 
+- `(Not)Be`
 - `(Not)BeAlphanumeric`
+- `(Not)BeAnyOf`
 - `(Not)BeAscii`
 - `(Not)BeDigit`
 - `(Not)BeLetter`
 - `(Not)BeLowercase`
 - `(Not)BeUppercase`
 - `(Not)BeWhiteSpace`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
 ## `String` (extends `Comparable`)
 
@@ -73,13 +80,17 @@
 - `HaveLengthLessOrEqualTo`
 - `HaveLengthLessThan`
 
-## `Bool` (extends `Comparable`)
+## `Bool` (extends `Nullable`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `BeFalse`
 - `BeTrue`
 
-## `DateTime` (extends `Comparable`)
+## `DateTime` (extends `Base`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `(Not)BeFriday`
 - `(Not)BeInApril`
 - `(Not)BeInAugust`
@@ -103,6 +114,7 @@
 - `(Not)BeLeapYear`
 - `(Not)BeLocal`
 - `(Not)BeMonday`
+- `(Not)BeNull`
 - `(Not)BeOnCurrentDay`
 - `(Not)BeOnDate`
 - `(Not)BeOnDay`
@@ -118,14 +130,28 @@
 - `(Not)BeWeekday`
 - `(Not)BeWeekend`
 - `(Not)BeYesterday`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
-## `Enum` (extends `Equality`)
+## `Enum` (extends `Nullable`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `(Not)HaveFlag`
 
-## `Guid` (extends `Comparable`)
+## `Guid` (extends `Nullable`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `(Not)BeEmpty`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
 ## `Stream` (extends `Nullable`)
 
@@ -136,14 +162,140 @@
 - `(Not)BeWithLength`
 - `(Not)BeWriteable`
 
-## `Number` (extends `Comparable`)
+## `Byte` (extends `Nullable`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
-## `SignedNumber` (extends `Number`)
+## `Decimal` (extends `Nullable`)
 
+- `(Not)Be`
+- `(Not)BeAnyOf`
 - `(Not)BeNegative`
 - `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Double` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Float` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Int` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Long` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Sbyte` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Short` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Uint` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Ulong` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Ushort` (extends `Nullable`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
 ## `List` (extends `Collection`)
 
