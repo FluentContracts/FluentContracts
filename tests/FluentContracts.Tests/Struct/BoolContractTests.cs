@@ -12,7 +12,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<bool?, NullableBoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
             null,
             true,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<bool?, NullableBoolContract, ArgumentNullException>(
+        TestContract<bool?, BoolContract, ArgumentNullException>(
             true,
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

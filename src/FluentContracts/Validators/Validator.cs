@@ -5,7 +5,7 @@ namespace FluentContracts.Validators;
 
 internal static partial class Validator
 {
-    public static void CheckForNotNull<T, TException>([NotNull] T value)
+    public static void CheckForNotNull<T, TException>([NotNull] T? value)
         where TException : Exception, new()
     {
         if (value is not null) return;
@@ -14,7 +14,7 @@ internal static partial class Validator
     }
 
     public static void CheckForNotNull<T, TException>(
-        [NotNull] T argumentValue, 
+        [NotNull] T? argumentValue, 
         string message)
         where TException : Exception, new()
     {
@@ -56,9 +56,11 @@ internal static partial class Validator
 
     public static void CheckGenericCondition<T, TException>(
         Func<T, bool> genericCondition, 
-        T argumentValue)
+        [NotNull] T argumentValue)
         where TException : Exception, new()
     {
+        CheckForNotNull<T, TException>(argumentValue);
+        
         if (genericCondition(argumentValue)) return;
 
         ThrowHelper.ThrowUserDefinedException<TException>();
@@ -66,10 +68,12 @@ internal static partial class Validator
 
     public static void CheckGenericCondition<T, TException>(
         Func<T, bool> genericCondition, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string message)
         where TException : Exception, new()
     {
+        CheckForNotNull<T, TException>(argumentValue, message);
+        
         if (genericCondition(argumentValue)) return;
 
         ThrowHelper.ThrowUserDefinedException<TException>(message);

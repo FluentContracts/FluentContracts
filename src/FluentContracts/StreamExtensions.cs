@@ -14,10 +14,10 @@ public static class StreamExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the StreamContract class.</returns>
     
-    public static StreamContract<Stream> Must(
-        this Stream argument,
+    public static StreamContract Must(
+        this Stream? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new StreamContract<Stream>(argument, argumentName);
+        return new StreamContract(argument, argumentName);
     }
 }

@@ -30,11 +30,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableIntContract class.</returns>
     
-    public static NullableIntContract Must(
+    public static IntContract Must(
         this int? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableIntContract(argument, argumentName);
+        return new IntContract(argument, argumentName);
     }
 
     /// <summary>
@@ -58,11 +58,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableUintContract class.</returns>
     
-    public static NullableUintContract Must(
+    public static UintContract Must(
         this uint? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableUintContract(argument, argumentName);
+        return new UintContract(argument, argumentName);
     }
     
     #endregion
@@ -90,11 +90,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableDecimalContract class.</returns>
     
-    public static NullableDecimalContract Must(
+    public static DecimalContract Must(
         this decimal? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableDecimalContract(argument, argumentName);
+        return new DecimalContract(argument, argumentName);
     }
 
     #endregion
@@ -122,11 +122,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableDoubleContract class.</returns>
     
-    public static NullableDoubleContract Must(
+    public static DoubleContract Must(
         this double? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableDoubleContract(argument, argumentName);
+        return new DoubleContract(argument, argumentName);
     }
 
     #endregion
@@ -154,11 +154,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableShortContract class.</returns>
     
-    public static NullableShortContract Must(
+    public static ShortContract Must(
         this short? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableShortContract(argument, argumentName);
+        return new ShortContract(argument, argumentName);
     }
 
     /// <summary>
@@ -182,11 +182,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableUshortContract class.</returns>
     
-    public static NullableUshortContract Must(
+    public static UshortContract Must(
         this ushort? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableUshortContract(argument, argumentName);
+        return new UshortContract(argument, argumentName);
     }
 
     #endregion
@@ -214,11 +214,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableByteContract class.</returns>
     
-    public static NullableByteContract Must(
+    public static ByteContract Must(
         this byte? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableByteContract(argument, argumentName);
+        return new ByteContract(argument, argumentName);
     }
 
     /// <summary>
@@ -242,11 +242,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableSbyteContract class.</returns>
     
-    public static NullableSbyteContract Must(
+    public static SbyteContract Must(
         this sbyte? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableSbyteContract(argument, argumentName);
+        return new SbyteContract(argument, argumentName);
     }
 
     #endregion
@@ -274,11 +274,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableFloatContract class.</returns>
     
-    public static NullableFloatContract Must(
+    public static FloatContract Must(
         this float? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableFloatContract(argument, argumentName);
+        return new FloatContract(argument, argumentName);
     }
 
     #endregion
@@ -306,11 +306,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableLongContract class.</returns>
     
-    public static NullableLongContract Must(
+    public static LongContract Must(
         this long? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableLongContract(argument, argumentName);
+        return new LongContract(argument, argumentName);
     }
 
     /// <summary>
@@ -334,11 +334,11 @@ public static class NumericExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableUlongContract class.</returns>
     
-    public static NullableUlongContract Must(
+    public static UlongContract Must(
         this ulong? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableUlongContract(argument, argumentName);
+        return new UlongContract(argument, argumentName);
     }
 
     #endregion

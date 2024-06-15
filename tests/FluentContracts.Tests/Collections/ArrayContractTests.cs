@@ -12,7 +12,7 @@ public class ArrayContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[]?, ListContract<string>, ArgumentOutOfRangeException>(
             null,
             DummyData.GetArray(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class ArrayContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<string[], ListContract<string>, ArgumentNullException>(
+        TestContract<string[]?, ListContract<string>, ArgumentNullException>(
             DummyData.GetArray(DummyData.GetString),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

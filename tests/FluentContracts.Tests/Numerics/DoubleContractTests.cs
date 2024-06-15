@@ -12,7 +12,7 @@ public class DoubleContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<double?, NullableDoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetDouble(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class DoubleContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<double?, NullableDoubleContract, ArgumentNullException>(
+        TestContract<double?, DoubleContract, ArgumentNullException>(
             DummyData.GetDouble(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class DoubleContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<double?, NullableDoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
             0D,
             0.42D,
             (testArgument, message) =>
@@ -185,7 +185,7 @@ public class DoubleContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<double?, NullableDoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
             0.69D,
             0D,
             (testArgument, message) =>

@@ -31,7 +31,7 @@ public static class CollectionExtensions
     /// <returns>A new instance of the ListContract class.</returns>
     
     public static ListContract<T> Must<T>(
-        this List<T> argument,
+        this List<T>? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ListContract<T>(argument, argumentName);
@@ -49,7 +49,7 @@ public static class CollectionExtensions
     /// <returns>A new instance of the ListContract class.</returns>
     
     public static ListContract<T> Must<T>(
-        this T[] argument,
+        this T[]? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new ListContract<T>(argument, argumentName);
