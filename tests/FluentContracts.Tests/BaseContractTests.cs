@@ -17,21 +17,52 @@ public class BaseContractTests : Tests
     public void Test_Must_Satisfy()
     {
         var success = DummyData.GetPerson();
-        var failing = DummyData.GetPerson();
+        var fail = DummyData.GetPerson();
         Func<Person, bool> testCondition = p => p.Email == success.Email;
-
-        TestContract<Person, NullableContract<Person>, ArgumentOutOfRangeException>(
+            
+        TestContract<Person, NullableContract<object>, ArgumentOutOfRangeException>(
             success,
-            failing,
+            fail,
             (testArgument, message) =>
                 testArgument.Must().Satisfy(testCondition, message),
             "testArgument");
     }
 
     [Fact]
+    public void Test_Must_Satisfy_Own_Exception()
+    {
+        var success = DummyData.GetPerson();
+        var fail = DummyData.GetPerson();
+        Func<Person, bool> testCondition = p => p.Email == success.Email;
+        
+        TestContract<Person, NullableContract<object>, MockException>(
+            success,
+            fail,
+            null,
+            (testArgument, _) => 
+                testArgument.Must().Satisfy<Person, MockException>(testCondition));
+    }
+
+    [Fact]
+    public void Test_Must_Satisfy_Own_Exception_With_Message()
+    {
+        var errorMessage = DummyData.GetRandomMessage();
+        var success = DummyData.GetPerson();
+        var fail = DummyData.GetPerson();
+        Func<Person, bool> testCondition = p => p.Email == success.Email;
+
+        TestContract<Person, NullableContract<object>, MockException>(
+            success,
+            fail,
+            errorMessage,
+            (testArgument, message) => 
+                testArgument.Must().Satisfy<Person, MockException>(testCondition, message!));
+    }
+
+    [Fact]
     public void Test_And_Linker_Throws_On_The_First_Only()
     {
-        string nullString = null;
+        string? nullString = null;
 
         var action =
             // ReSharper disable once ExpressionIsAlwaysNull
@@ -61,7 +92,7 @@ public class BaseContractTests : Tests
     [Fact]
     public void Test_NotBeNull_Own_Exception()
     {
-        TestContract<int?, NullableIntContract, MockException>(
+        TestContract<int?, IntContract, MockException>(
             DummyData.GetInt(),
             null,
             null,
@@ -73,35 +104,10 @@ public class BaseContractTests : Tests
     {
         var errorMessage = DummyData.GetRandomMessage();
 
-        TestContract<int?, NullableIntContract, MockException>(
+        TestContract<int?, IntContract, MockException>(
             DummyData.GetInt(),
             null,
             errorMessage,
             (testArgument, message) => testArgument.Must().NotBeNull<MockException>(message));
-    }
-
-    [Fact]
-    public void Test_Be_Own_Exception()
-    {
-        var pair = DummyData.GetIntPair();
-
-        TestContract<int, IntContract, MockException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            null,
-            (testArgument, _) => testArgument.Must().Be<MockException>(pair.TestArgument));
-    }
-
-    [Fact]
-    public void Test_Be_Own_Exception_With_Message()
-    {
-        var pair = DummyData.GetIntPair();
-        var errorMessage = DummyData.GetRandomMessage();
-
-        TestContract<int?, NullableIntContract, MockException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            errorMessage,
-            (testArgument, message) => testArgument.Must().Be<MockException>(pair.TestArgument, message));
     }
 }

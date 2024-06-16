@@ -12,7 +12,7 @@ public class ByteContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<byte?, NullableByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetByte(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class ByteContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<byte?, NullableByteContract, ArgumentNullException>(
+        TestContract<byte?, ByteContract, ArgumentNullException>(
             DummyData.GetByte(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class ByteContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<byte?, NullableByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -185,7 +185,7 @@ public class ByteContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<byte?, NullableByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

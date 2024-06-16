@@ -16,11 +16,11 @@ public static class StructExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableGuidContract class.</returns>
     
-    public static NullableGuidContract Must(
+    public static GuidContract Must(
         this Guid? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableGuidContract(argument, argumentName);
+        return new GuidContract(argument, argumentName);
     }
 
     /// <summary>
@@ -48,11 +48,11 @@ public static class StructExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableBoolContract class.</returns>
     
-    public static NullableBoolContract Must(
+    public static BoolContract Must(
         this bool? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableBoolContract(argument, argumentName);
+        return new BoolContract(argument, argumentName);
     }
 
     /// <summary>
@@ -78,13 +78,15 @@ public static class StructExtensions
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting DateTime.Now and DateTime.Today</param>
     /// <returns>A new instance of the DateTimeContract class.</returns>
     
     public static DateTimeContract Must(
         this DateTime argument,
-        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
+        IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateTimeContract(argument, argumentName);
+        return new DateTimeContract(argument, argumentName, dateTimeProvider);
     }
 
     /// <summary>
@@ -92,13 +94,15 @@ public static class StructExtensions
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting DateTime.Now and DateTime.Today</param>
     /// <returns>A new instance of the NullableDateTimeContract class.</returns>
     
-    public static NullableDateTimeContract Must(
+    public static DateTimeContract Must(
         this DateTime? argument,
-        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName, 
+        IDateTimeProvider? dateTimeProvider = null)
     {
-        return new NullableDateTimeContract(argument, argumentName);
+        return new DateTimeContract(argument, argumentName, dateTimeProvider);
     }
 
     #endregion
@@ -112,12 +116,12 @@ public static class StructExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the EnumContract class.</returns>
     
-    public static NullableEnumContract<TEnum?> Must<TEnum>(
-        this TEnum? argument,
+    public static EnumContract<TEnum> Must<TEnum>(
+        this TEnum argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
         where TEnum : struct, Enum
     {
-        return new NullableEnumContract<TEnum?>(argument, argumentName);
+        return new EnumContract<TEnum>(argument, argumentName);
     }
 
     /// <summary>
@@ -128,7 +132,7 @@ public static class StructExtensions
     /// <returns>A new instance of the EnumContract class.</returns>
     
     public static EnumContract<TEnum> Must<TEnum>(
-        this TEnum argument,
+        this TEnum? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
         where TEnum : struct, Enum
     {

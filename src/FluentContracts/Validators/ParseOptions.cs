@@ -5,5 +5,7 @@ public enum ParseOptions
     EmailAddress,
     Url,
     IpAddress,
-    Guid
+    Guid,
+    Base64,
+    Hexadecimal
 }

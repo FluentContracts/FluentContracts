@@ -25,7 +25,7 @@ internal static class ThrowHelper
     }
 
     [DoesNotReturn]
-    public static void ThrowUserDefinedException<TException>([NotNull] string message)
+    public static void ThrowUserDefinedException<TException>(string message)
         where TException : Exception, new()
     {
         var ex = Activator.CreateInstance<TException>();

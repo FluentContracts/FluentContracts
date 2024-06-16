@@ -12,7 +12,7 @@ public class DecimalContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<decimal?, NullableDecimalContract, ArgumentOutOfRangeException>(
+        TestContract<decimal?, DecimalContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetDecimal(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class DecimalContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<decimal?, NullableDecimalContract, ArgumentNullException>(
+        TestContract<decimal?, DecimalContract, ArgumentNullException>(
             DummyData.GetDecimal(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -167,7 +167,7 @@ public class DecimalContractTests : Tests
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<decimal?, NullableDecimalContract, ArgumentOutOfRangeException>(
+        TestContract<decimal?, DecimalContract, ArgumentOutOfRangeException>(
             0M,
             0.42M,
             (testArgument, message) =>
@@ -185,7 +185,7 @@ public class DecimalContractTests : Tests
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<decimal?, NullableDecimalContract, ArgumentOutOfRangeException>(
+        TestContract<decimal?, DecimalContract, ArgumentOutOfRangeException>(
             0.69M,
             0M,
             (testArgument, message) =>

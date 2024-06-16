@@ -14,11 +14,10 @@ public static class ObjectExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableContract class.</returns>
     
-    public static NullableContract<T> Must<T>(
-        this T argument,
+    public static NullableContract<object> Must(
+        this object? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
-        where T : class
     {
-        return new NullableContract<T>(argument, argumentName);
+        return new NullableContract<object>(argument, argumentName);
     }
 }

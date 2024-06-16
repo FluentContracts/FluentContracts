@@ -8,7 +8,8 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 // ReSharper disable AllUnderscoreLocalParameterName
 partial class Build
 {
-    AbsolutePath[] PublishProjects => new[] { SourceDirectory / "FluentContracts" };
+    AbsolutePath[] PublishProjects => [SourceDirectory / "FluentContracts"];
+    AbsolutePath PublishDirectory => OutputDirectory / "publish";
     
     Target Restore => _ => _
         .Executes(() =>
@@ -48,7 +49,8 @@ partial class Build
                     .SetInformationalVersion(GitVersion.InformationalVersion)
                     .SetRepositoryUrl(GitRepository.HttpsUrl)
                     .CombineWith(PublishProjects, (_, p) => _
-                        .SetProject(p)),
+                        .SetProject(p)
+                        .SetOutput(PublishDirectory / p.Name)),
                 PublishDegreeOfParallelism);
         });
 }
