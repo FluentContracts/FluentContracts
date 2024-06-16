@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 
 namespace FluentContracts.Tests.Mocks.Data;
 
@@ -19,8 +20,11 @@ public static partial class DummyData
         {
             StringOption.Alphanumeric => Faker.Value.Random.AlphaNumeric(length),
             StringOption.Ascii => Faker.Value.Random.String(length, (char)0, (char)127),
-            StringOption.Digits => Faker.Value.Random.Digits(length).ToString(),
+            StringOption.Base64 => Convert.ToBase64String(Encoding.UTF8.GetBytes(Faker.Value.Random.String(length))),
+            StringOption.Digits => Faker.Value.Random.Digits(length).ToString()!,
+            StringOption.CreditCardNumber => Faker.Value.Finance.CreditCardNumber(),
             StringOption.Guid => Faker.Value.Random.Guid().ToString(),
+            StringOption.Hexadecimal => Faker.Value.Random.Hexadecimal(length, ""),
             StringOption.IpAddressV4 => Faker.Value.Internet.IpAddress().ToString(),
             StringOption.IpAddressV6 => Faker.Value.Internet.Ipv6Address().ToString(),
             StringOption.Letters => Faker.Value.Random.String(length, 'a', 'z'),

@@ -4,8 +4,11 @@ public enum StringOption
 {
     Alphanumeric,
     Ascii,
+    Base64,
     Digits,
+    CreditCardNumber,
     Guid,
+    Hexadecimal,
     IpAddressV4,
     IpAddressV6,
     Letters,
@@ -16,5 +19,5 @@ public enum StringOption
     SpecialCharacters,
     Uppercase,
     Url,
-    WhiteSpace
+    WhiteSpace,
 }

@@ -3,7 +3,8 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
-public class NullableContract<TArgument>(TArgument argumentValue, string argumentName)
+
+public class NullableContract<TArgument>(TArgument? argumentValue, string argumentName)
     : NullableContract<TArgument, NullableContract<TArgument>>(argumentValue, argumentName);
 
 public abstract class NullableContract<TArgument, TContract> : BaseContract<TArgument, TContract>
@@ -11,7 +12,7 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
 {
     private readonly Linker<TContract> _linker;
 
-    protected NullableContract(TArgument argumentValue, string argumentName)
+    protected NullableContract(TArgument? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
         _linker = new Linker<TContract>((TContract)this);

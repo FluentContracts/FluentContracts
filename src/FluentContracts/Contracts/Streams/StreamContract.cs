@@ -3,15 +3,19 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Streams;
 
-public class StreamContract<TStream> : NullableContract<TStream, StreamContract<TStream>>
-    where TStream : Stream
-{
-    private readonly Linker<StreamContract<TStream>> _linker;
+public class StreamContract(Stream? argumentValue, string argumentName)
+    : StreamContract<Stream?, StreamContract>(argumentValue, argumentName);
 
-    public StreamContract(TStream argumentValue, string argumentName)
+public abstract class StreamContract<TStream, TContract> : NullableContract<TStream, TContract>
+    where TStream : Stream?
+    where TContract : StreamContract<TStream, TContract>
+{
+    private readonly Linker<TContract> _linker;
+
+    protected StreamContract(TStream argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<StreamContract<TStream>>(this);
+        _linker = new Linker<TContract>((TContract) this);
     }
 
     /// <summary>
@@ -20,10 +24,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeSeekable(string? message = null)
+    public Linker<TContract> BeSeekable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.CanSeek, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.CanSeek, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -33,10 +37,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> NotBeSeekable(string? message = null)
+    public Linker<TContract> NotBeSeekable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.CanSeek, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a!.CanSeek, ArgumentValue, ArgumentName, message);
         return _linker;
     }
     
@@ -46,10 +50,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeReadable(string? message = null)
+    public Linker<TContract> BeReadable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.CanRead, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.CanRead, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -58,10 +62,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<StreamContract<TStream>> NotBeReadable(string? message = null)
+    public Linker<TContract> NotBeReadable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.CanRead, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a!.CanRead, ArgumentValue, ArgumentName, message);
         return _linker;
     }
     
@@ -71,10 +75,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeAbleToTimeout(string? message = null)
+    public Linker<TContract> BeAbleToTimeout(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.CanTimeout, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.CanTimeout, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -84,10 +88,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> NotBeAbleToTimeout(string? message = null)
+    public Linker<TContract> NotBeAbleToTimeout(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.CanTimeout, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a!.CanTimeout, ArgumentValue, ArgumentName, message);
         return _linker;
     }
     
@@ -97,10 +101,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeWriteable(string? message = null)
+    public Linker<TContract> BeWriteable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.CanWrite, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.CanWrite, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -110,10 +114,10 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> NotBeWriteable(string? message = null)
+    public Linker<TContract> NotBeWriteable(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.CanWrite, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a!.CanWrite, ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -124,7 +128,7 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeAtPosition(long expectedPosition, string? message = null)
+    public Linker<TContract> BeAtPosition(long expectedPosition, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForSpecificValue(expectedPosition, ArgumentValue.Position, ArgumentName, message);
@@ -138,7 +142,7 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> NotBeAtPosition(long unexpectedPosition, string? message = null)
+    public Linker<TContract> NotBeAtPosition(long unexpectedPosition, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotSpecificValue(unexpectedPosition, ArgumentValue.Position, ArgumentName, message);
@@ -152,7 +156,7 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> BeWithLength(long expectedLength, string? message = null)
+    public Linker<TContract> BeWithLength(long expectedLength, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForSpecificValue(expectedLength, ArgumentValue.Length, ArgumentName, message);
@@ -166,7 +170,7 @@ public class StreamContract<TStream> : NullableContract<TStream, StreamContract<
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<StreamContract<TStream>> NotBeWithLength(long unexpectedLength, string? message = null)
+    public Linker<TContract> NotBeWithLength(long unexpectedLength, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotSpecificValue(unexpectedLength, ArgumentValue.Length, ArgumentName, message);

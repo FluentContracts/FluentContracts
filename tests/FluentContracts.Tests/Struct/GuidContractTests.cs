@@ -12,7 +12,7 @@ public class GuidContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<Guid?, NullableGuidContract, ArgumentOutOfRangeException>(
+        TestContract<Guid?, GuidContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetGuid(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class GuidContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<Guid?, NullableGuidContract, ArgumentNullException>(
+        TestContract<Guid?, GuidContract, ArgumentNullException>(
             DummyData.GetGuid(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

@@ -12,7 +12,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<char?, NullableCharContract, ArgumentOutOfRangeException>(
+        TestContract<char?, CharContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetChar(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<char?, NullableCharContract, ArgumentNullException>(
+        TestContract<char?, CharContract, ArgumentNullException>(
             DummyData.GetChar(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),

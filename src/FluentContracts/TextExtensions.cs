@@ -1,4 +1,3 @@
-
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Text;
 using FluentContracts.Infrastructure;
@@ -8,7 +7,7 @@ namespace FluentContracts;
 public static class TextExtensions
 {
     #region string
-
+    
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="string"/>
     /// </summary>
@@ -17,12 +16,12 @@ public static class TextExtensions
     /// <returns>A new instance of the StringContract class.</returns>
     
     public static StringContract Must(
-        this string argument,
+        this string? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
         return new StringContract(argument, argumentName);
     }
-
+    
     #endregion
 
     #region char
@@ -34,11 +33,11 @@ public static class TextExtensions
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableCharContract class.</returns>
     
-    public static NullableCharContract Must(
+    public static CharContract Must(
         this char? argument,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new NullableCharContract(argument, argumentName);
+        return new CharContract(argument, argumentName);
     }
     
     /// <summary>

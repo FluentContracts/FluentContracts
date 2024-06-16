@@ -12,7 +12,7 @@ public class IntContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<int?, NullableIntContract, ArgumentOutOfRangeException>(
+        TestContract<int?, IntContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetInt(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class IntContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<int?, NullableIntContract, ArgumentNullException>(
+        TestContract<int?, IntContract, ArgumentNullException>(
             DummyData.GetInt(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -168,7 +168,7 @@ public class IntContractTests : Tests
             "testArgument");
         
         
-        TestContract<int?, NullableIntContract, ArgumentOutOfRangeException>(
+        TestContract<int?, IntContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -187,7 +187,7 @@ public class IntContractTests : Tests
             "testArgument");
         
         
-        TestContract<int?, NullableIntContract, ArgumentOutOfRangeException>(
+        TestContract<int?, IntContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>

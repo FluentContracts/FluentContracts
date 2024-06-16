@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -103,6 +102,8 @@ public static partial class DummyData
     public static DateTime GetDateTime(
         DateTimeOption option = DateTimeOption.Utc, 
         int specificMonth = 1, 
+        int specificDay = 1, 
+        int specificYear = 1900, 
         DayOfWeek specificWeekday = DayOfWeek.Wednesday)
     {
         switch (option)
@@ -143,6 +144,13 @@ public static partial class DummyData
                 
                 return new DateTime(2023, month, day);
             }
+            case DateTimeOption.SpecificYear:
+            {
+                var month = Faker.Value.Random.Int(1, 12);
+                var day = Faker.Value.Random.Int(1, 28);
+                
+                return new DateTime(specificYear, month, day);
+            }
             case DateTimeOption.SpecificMonth:
             {
                 var year = Faker.Value.Random.Int(1800, 2500);
@@ -150,17 +158,43 @@ public static partial class DummyData
                 
                 return new DateTime(year, specificMonth, day);
             }
+            case DateTimeOption.SpecificDay:
+            {
+                var year = Faker.Value.Random.Int(1800, 2500);
+                var month = Faker.Value.Random.Int(1, 12);
+                
+                return new DateTime(year, month, specificDay);
+            }
             case DateTimeOption.SpecificWeekday:
             {
                 var year = Faker.Value.Random.Int(1800, 2500);
                 var day = Faker.Value.Random.Int(1, 28);
-                var date = new DateTime(year, specificMonth, day);
+                var month = Faker.Value.Random.Int(1, 12);
+                var date = new DateTime(year, month, day);
 
                 if (date.DayOfWeek == specificWeekday) return date;
                 
                 int daysUntilDesiredDay = ((int)specificWeekday - (int)date.DayOfWeek + 7) % 7;
 
                 return date.AddDays(daysUntilDesiredDay);
+            }
+            case DateTimeOption.Weekend:
+            {   
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                var dateTime = new DateTime(date, time);
+                int daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)dateTime.DayOfWeek + 7) % 7;
+                return dateTime.AddDays(daysUntilSaturday);
+            }
+            case DateTimeOption.Weekday:
+            {   
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                var dateTime = new DateTime(date, time);
+                int daysUntilMonday = ((int)DayOfWeek.Monday - (int)dateTime.DayOfWeek + 7) % 7;
+                return dateTime.AddDays(daysUntilMonday);
             }
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);

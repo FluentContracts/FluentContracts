@@ -12,7 +12,7 @@ public class SbyteContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<sbyte?, NullableSbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
             null,
             DummyData.GetSbyte(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -22,7 +22,7 @@ public class SbyteContractTests : Tests
     [Fact]
     public void Test_Must_NotBeNull()
     {
-        TestContract<sbyte?, NullableSbyteContract, ArgumentNullException>(
+        TestContract<sbyte?, SbyteContract, ArgumentNullException>(
             DummyData.GetSbyte(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNull(message),
@@ -168,7 +168,7 @@ public class SbyteContractTests : Tests
             "testArgument");
         
         
-        TestContract<sbyte?, NullableSbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
             0,
             42,
             (testArgument, message) =>
@@ -187,7 +187,7 @@ public class SbyteContractTests : Tests
             "testArgument");
         
         
-        TestContract<sbyte?, NullableSbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
             69,
             0,
             (testArgument, message) =>
