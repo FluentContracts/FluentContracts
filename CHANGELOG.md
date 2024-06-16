@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [2.0.0] / 2024-06-16
 ### General
 - Enabled `<Nullable>` on the project for the library, as I had forgotten about it and this was causing a lot of the contracts to be missing on nullable types
 - This led to a major refactoring, as it turned out I was not inheriting the contracts correctly. This was causing many extension to not work or to cause compiler warnings.
@@ -81,7 +83,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/1.4.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/FluentContracts/FluentContracts/compare/1.4.0...2.0.0
 [1.4.0]: https://github.com/FluentContracts/FluentContracts/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/FluentContracts/FluentContracts/compare/1.2.0...1.3.0
 [1.2.0]: https://github.com/FluentContracts/FluentContracts/compare/1.1.1...1.2.0
