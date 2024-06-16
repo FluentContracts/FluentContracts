@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### General
+- Enabled `<Nullable>` on the project for the library, as I had forgotten about it and this was causing a lot of the contracts to be missing on nullable types
+- This led to a major refactoring, as it turned out I was not inheriting the contracts correctly. This was causing many extension to not work or to cause compiler warnings.
+- Removed `Be<TException>` since it did not seem to fit in the general idea. Most likely I will enable custom exceptions in general. Stay tuned for that. For now it is only available on `NotNull` and `Satisfy` contracts.
+
 ### `BaseContract`
 - Added `Satisfy<TException>` that can throw custom exceptions
 

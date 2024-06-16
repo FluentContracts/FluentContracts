@@ -12,4 +12,6 @@ public enum DateTimeOption
     SpecificWeekday,
     SpecificDay,
     SpecificYear,
+    Weekend,
+    Weekday
 }

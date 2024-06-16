@@ -1028,7 +1028,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public Linker<TContract> NotBeInThePast(string? message = null)
     {
-        return NotBeInThePast(_dateTimeProvider.Now, message);
+        return BeInTheFuture(_dateTimeProvider.Now, message);
     }
 
     /// <summary>
@@ -1076,7 +1076,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public Linker<TContract> NotBeInTheFuture(string? message = null)
     {
-        return BeInTheFuture(_dateTimeProvider.Now, message);
+        return BeInThePast(_dateTimeProvider.Now, message);
     }
 
     /// <summary>
@@ -1122,9 +1122,14 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
 
         var today = _dateTimeProvider.Today;
         
-        Validator.CheckForNotSpecificValue(today.Year, ArgumentValue.Value.Year, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(today.Month, ArgumentValue.Value.Month, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(today.Day, ArgumentValue.Value.Day, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => 
+                a.Day != today.Day 
+                || a.Month != today.Month 
+                || a.Year != today.Year,
+            ArgumentValue.Value,
+            ArgumentName,
+            message);
         
         return _linker;
     }
@@ -1160,9 +1165,14 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
 
         var tomorrow = _dateTimeProvider.Today.AddDays(1);
         
-        Validator.CheckForNotSpecificValue(tomorrow.Year, ArgumentValue.Value.Year, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(tomorrow.Month, ArgumentValue.Value.Month, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(tomorrow.Day, ArgumentValue.Value.Day, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => 
+                a.Day != tomorrow.Day 
+                || a.Month != tomorrow.Month 
+                || a.Year != tomorrow.Year,
+            ArgumentValue.Value,
+            ArgumentName,
+            message);
         
         return _linker;
     }
@@ -1198,9 +1208,14 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
 
         var yesterday = _dateTimeProvider.Today.AddDays(-1);
         
-        Validator.CheckForNotSpecificValue(yesterday.Year, ArgumentValue.Value.Year, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(yesterday.Month, ArgumentValue.Value.Month, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(yesterday.Day, ArgumentValue.Value.Day, ArgumentName, message);
+        Validator.CheckGenericCondition(
+            a => 
+                a.Day != yesterday.Day 
+                || a.Month != yesterday.Month 
+                || a.Year != yesterday.Year,
+            ArgumentValue.Value,
+            ArgumentName,
+            message);
         
         return _linker;
     }

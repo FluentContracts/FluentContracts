@@ -178,6 +178,24 @@ public static partial class DummyData
 
                 return date.AddDays(daysUntilDesiredDay);
             }
+            case DateTimeOption.Weekend:
+            {   
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                var dateTime = new DateTime(date, time);
+                int daysUntilSaturday = ((int)DayOfWeek.Saturday - (int)dateTime.DayOfWeek + 7) % 7;
+                return dateTime.AddDays(daysUntilSaturday);
+            }
+            case DateTimeOption.Weekday:
+            {   
+                var date = Faker.Value.Date.BetweenDateOnly(DateOnly.MinValue.AddYears(1), DateOnly.MaxValue.AddYears(-1));
+                var time = Faker.Value.Date.BetweenTimeOnly(TimeOnly.MinValue, TimeOnly.MaxValue);
+
+                var dateTime = new DateTime(date, time);
+                int daysUntilMonday = ((int)DayOfWeek.Monday - (int)dateTime.DayOfWeek + 7) % 7;
+                return dateTime.AddDays(daysUntilMonday);
+            }
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
