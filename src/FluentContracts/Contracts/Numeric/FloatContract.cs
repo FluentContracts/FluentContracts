@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class FloatContract(float? argumentValue, string argumentName)
     : FloatContract<FloatContract>(argumentValue, argumentName);
 
-public class FloatContract<TContract> : NullableContract<float?, TContract>
+public class FloatContract<TContract> : ObjectContract<float?, TContract>
     where TContract : FloatContract<TContract>
 {
     private readonly Linker<TContract> _linker;

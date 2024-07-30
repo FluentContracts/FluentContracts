@@ -6,11 +6,13 @@
 
 - `Satisfy`
 
-## `Nullable` (extends `Base`)
+## `Object` (extends `Base`)
 
+- `(Not)BeAssignableTo`
 - `(Not)BeNull`
+- `(Not)BeOfType`
 
-## `Equality` (extends `Nullable`)
+## `Equality` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -25,15 +27,7 @@
 - `HaveCountLessOrEqualTo`
 - `HaveCountLessThan`
 
-## `Comparable` (extends `Equality`)
-
-- `BeBetween`
-- `BeGreaterOrEqualTo`
-- `BeGreaterThan`
-- `BeLessOrEqualTo`
-- `BeLessThan`
-
-## `Char` (extends `Nullable`)
+## `Char` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAlphanumeric`
@@ -50,7 +44,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `String` (extends `Comparable`)
+## `String` (extends `Equality`)
 
 - `(Not)BeAlphanumeric`
 - `(Not)BeBase64`
@@ -80,7 +74,7 @@
 - `HaveLengthLessOrEqualTo`
 - `HaveLengthLessThan`
 
-## `Bool` (extends `Nullable`)
+## `Bool` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -136,24 +130,19 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Enum` (extends `Nullable`)
+## `Enum` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
 - `(Not)HaveFlag`
 
-## `Guid` (extends `Nullable`)
+## `Guid` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
 - `(Not)BeEmpty`
-- `BeBetween`
-- `BeGreaterOrEqualTo`
-- `BeGreaterThan`
-- `BeLessOrEqualTo`
-- `BeLessThan`
 
-## `Stream` (extends `Nullable`)
+## `Stream` (extends `Object`)
 
 - `(Not)BeAbleToTimeout`
 - `(Not)BeAtPosition`
@@ -162,7 +151,7 @@
 - `(Not)BeWithLength`
 - `(Not)BeWriteable`
 
-## `Byte` (extends `Nullable`)
+## `Byte` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -173,20 +162,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Decimal` (extends `Nullable`)
-
-- `(Not)Be`
-- `(Not)BeAnyOf`
-- `(Not)BeNegative`
-- `(Not)BePositive`
-- `(Not)BeZero`
-- `BeBetween`
-- `BeGreaterOrEqualTo`
-- `BeGreaterThan`
-- `BeLessOrEqualTo`
-- `BeLessThan`
-
-## `Double` (extends `Nullable`)
+## `Decimal` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -199,7 +175,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Float` (extends `Nullable`)
+## `Double` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -212,7 +188,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Int` (extends `Nullable`)
+## `Float` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -225,7 +201,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Long` (extends `Nullable`)
+## `Int` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -238,7 +214,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Sbyte` (extends `Nullable`)
+## `Long` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -251,7 +227,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Short` (extends `Nullable`)
+## `Sbyte` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -264,7 +240,20 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Uint` (extends `Nullable`)
+## `Short` (extends `Object`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeNegative`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Uint` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -275,7 +264,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Ulong` (extends `Nullable`)
+## `Ulong` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
@@ -286,7 +275,7 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
-## `Ushort` (extends `Nullable`)
+## `Ushort` (extends `Object`)
 
 - `(Not)Be`
 - `(Not)BeAnyOf`

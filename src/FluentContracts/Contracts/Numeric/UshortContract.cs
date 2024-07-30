@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class UshortContract(ushort? argumentValue, string argumentName)
     : UshortContract<UshortContract>(argumentValue, argumentName);
 
-public class UshortContract<TContract> : NullableContract<ushort?, TContract>
+public class UshortContract<TContract> : ObjectContract<ushort?, TContract>
     where TContract : UshortContract<TContract>
 {
     private const ushort Zero = 0;

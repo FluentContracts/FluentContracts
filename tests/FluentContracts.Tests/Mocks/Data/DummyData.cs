@@ -16,8 +16,19 @@ public static partial class DummyData
     {
         return Faker.Value.Random.Guid();
     }
+    
+    public static Guid? GetNullableGuid()
+    {
+        return Faker.Value.Random.Guid();
+    }
 
     public static T GetEnumValue<T>(T? exclude = null)
+        where T : struct, Enum
+    {
+        return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
+    }
+
+    public static T? GetNullableEnumValue<T>(T? exclude = null)
         where T : struct, Enum
     {
         return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
@@ -98,6 +109,14 @@ public static partial class DummyData
         var differentArgument = GetList(valueFactory); 
         return new Pair<List<T>>(testArgument, differentArgument);
     }
+
+    public static DateTime? GetNullableDateTime(
+        DateTimeOption option = DateTimeOption.Utc,
+        int specificMonth = 1,
+        int specificDay = 1,
+        int specificYear = 1900,
+        DayOfWeek specificWeekday = DayOfWeek.Wednesday) =>
+        GetDateTime(option, specificMonth, specificDay, specificYear, specificWeekday);
     
     public static DateTime GetDateTime(
         DateTimeOption option = DateTimeOption.Utc, 
@@ -199,6 +218,13 @@ public static partial class DummyData
             default:
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
+    }
+
+    public static Pair<DateTime?> GetNullableDateTimePair(DateTimeOption option = DateTimeOption.Utc)
+    {
+        var pair = GetDateTimePair(option);
+        
+        return new Pair<DateTime?>(pair.TestArgument, pair.DifferentArgument);
     }
     
     public static Pair<DateTime> GetDateTimePair(DateTimeOption option = DateTimeOption.Utc)

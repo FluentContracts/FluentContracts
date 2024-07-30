@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Struct;
 public class BoolContract(bool? argumentValue, string argumentName)
     : BoolContract<BoolContract>(argumentValue, argumentName);
 
-public class BoolContract<TContract> : NullableContract<bool?, TContract>
+public class BoolContract<TContract> : ObjectContract<bool?, TContract>
     where TContract : BoolContract<TContract>
 {
     private readonly Linker<TContract> _linker;

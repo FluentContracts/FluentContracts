@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class DecimalContract(decimal? argumentValue, string argumentName)
     : DecimalContract<DecimalContract>(argumentValue, argumentName);
 
-public class DecimalContract<TContract> : NullableContract<decimal?, TContract>
+public class DecimalContract<TContract> : ObjectContract<decimal?, TContract>
     where TContract : DecimalContract<TContract>
 {
     private readonly Linker<TContract> _linker;

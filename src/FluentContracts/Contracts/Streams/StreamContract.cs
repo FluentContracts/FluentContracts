@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Streams;
 public class StreamContract(Stream? argumentValue, string argumentName)
     : StreamContract<Stream?, StreamContract>(argumentValue, argumentName);
 
-public abstract class StreamContract<TStream, TContract> : NullableContract<TStream, TContract>
+public abstract class StreamContract<TStream, TContract> : ObjectContract<TStream, TContract>
     where TStream : Stream?
     where TContract : StreamContract<TStream, TContract>
 {

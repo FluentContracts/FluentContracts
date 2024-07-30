@@ -7,7 +7,7 @@ namespace FluentContracts.Contracts.Text;
 public class StringContract(string? argumentValue, string argumentName)
     : StringContract<StringContract>(argumentValue, argumentName);
 
-public class StringContract<TContract> : ComparableContract<string?, TContract>
+public class StringContract<TContract> : EqualityContract<string?, TContract>
     where TContract : StringContract<TContract>
 {
     private readonly Linker<TContract> _linker;

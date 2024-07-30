@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class UlongContract(ulong? argumentValue, string argumentName)
     : UlongContract<UlongContract>(argumentValue, argumentName);
 
-public class UlongContract<TContract> : NullableContract<ulong?, TContract>
+public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     where TContract : UlongContract<TContract>
 {
     private readonly Linker<TContract> _linker;

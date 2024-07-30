@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class SbyteContract(sbyte? argumentValue, string argumentName)
     : SbyteContract<SbyteContract>(argumentValue, argumentName);
 
-public class SbyteContract<TContract> : NullableContract<sbyte?, TContract>
+public class SbyteContract<TContract> : ObjectContract<sbyte?, TContract>
     where TContract : SbyteContract<TContract>
 {
     private const sbyte Zero = 0;

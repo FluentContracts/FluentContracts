@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class LongContract(long? argumentValue, string argumentName)
     : LongContract<LongContract>(argumentValue, argumentName);
 
-public class LongContract<TContract> : NullableContract<long?, TContract>
+public class LongContract<TContract> : ObjectContract<long?, TContract>
     where TContract : LongContract<TContract>
 {
     private readonly Linker<TContract> _linker;

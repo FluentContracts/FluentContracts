@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class UintContract(uint? argumentValue, string argumentName)
     : UintContract<UintContract>(argumentValue, argumentName);
 
-public class UintContract<TContract> : NullableContract<uint?, TContract>
+public class UintContract<TContract> : ObjectContract<uint?, TContract>
     where TContract : UintContract<TContract>
 {
     private const uint Zero = 0;

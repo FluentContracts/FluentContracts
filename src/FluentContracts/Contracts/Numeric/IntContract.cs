@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class IntContract(int? argumentValue, string argumentName)
     : IntContract<IntContract>(argumentValue, argumentName);
 
-public class IntContract<TContract> : NullableContract<int?, TContract>
+public class IntContract<TContract> : ObjectContract<int?, TContract>
     where TContract : IntContract<TContract>
 {
     private readonly Linker<TContract> _linker;

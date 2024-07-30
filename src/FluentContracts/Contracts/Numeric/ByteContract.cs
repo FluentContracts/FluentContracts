@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class ByteContract(byte? argumentValue, string argumentName)
     : ByteContract<ByteContract>(argumentValue, argumentName);
 
-public class ByteContract<TContract> : NullableContract<byte?, TContract>
+public class ByteContract<TContract> : ObjectContract<byte?, TContract>
     where TContract : ByteContract<TContract>
 {
     private const byte Zero = 0;

@@ -124,10 +124,10 @@ public class ListContractTests : Tests
     {
         var included = DummyData.GetString();
         
-        var success = DummyData.GetList(DummyData.GetString, included);
-        var fail = DummyData.GetList(DummyData.GetString, excludedValue: included);
+        IList<string> success = DummyData.GetList(DummyData.GetString, included);
+        IList<string> fail = DummyData.GetList(DummyData.GetString, excludedValue: included);
         
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<IList<string>, ListContract<string>, ArgumentOutOfRangeException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().Contain(included),
