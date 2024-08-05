@@ -42,11 +42,35 @@ public class FloatContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_Be_Nullable()
+    {
+        var pair = DummyData.GetNullableFloatPair();
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBe()
     {
         var pair = DummyData.GetFloatPair();
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBe_Nullable()
+    {
+        var pair = DummyData.GetNullableFloatPair();
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -60,6 +84,20 @@ public class FloatContractTests : Tests
         var array = DummyData.GetArray(() => DummyData.GetFloat(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) =>
+                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableFloatPair();
+        var array = DummyData.GetArray(() => DummyData.GetNullableFloat(), pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
@@ -84,6 +122,22 @@ public class FloatContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_NotBeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableFloatPair();
+        var array = DummyData.GetArray(() => DummyData.GetNullableFloat(), pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) =>
+                message == null
+                    ? testArgument.Must().NotBeAnyOf(array)
+                    : testArgument.Must().NotBeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeBetween()
     {
         var success = DummyData.GetFloat();
@@ -98,7 +152,23 @@ public class FloatContractTests : Tests
                 testArgument.Must().BeBetween(lower, higher, message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_BeBetween_Nullable()
+    {
+        var success = DummyData.GetNullableFloat();
+        var lower = success - 10;
+        var higher = success + 10;
+        var outOfRange = higher + 10;
 
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeBetween(lower, higher, message),
+            "testArgument");
+    }
+    
     [Fact]
     public void Test_Must_BeGreaterThan()
     {
@@ -113,6 +183,21 @@ public class FloatContractTests : Tests
                 testArgument.Must().BeGreaterThan(lower, message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_BeGreaterThan_Nullable()
+    {
+        var success = DummyData.GetNullableFloat();
+        var lower = success - 10;
+        var outOfRange = lower - 10;
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterThan(lower, message),
+            "testArgument");
+    }
 
     [Fact]
     public void Test_Must_BeGreaterOrEqualThan()
@@ -121,6 +206,20 @@ public class FloatContractTests : Tests
         var outOfRange = success - 10;
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeGreaterOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableFloat();
+        var outOfRange = success - 10;
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>
@@ -144,12 +243,41 @@ public class FloatContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeLessThan_Nullable()
+    {
+        var success = DummyData.GetNullableFloat();
+        var higher = success + 10;
+        var outOfRange = higher + 10;
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessThan(higher, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeLessOrEqualThan()
     {
         var success = DummyData.GetFloat();
         var outOfRange = success + 10;
 
         TestContract<float, FloatContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeLessOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableFloat();
+        var outOfRange = success + 10;
+
+        TestContract<float?, FloatContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>

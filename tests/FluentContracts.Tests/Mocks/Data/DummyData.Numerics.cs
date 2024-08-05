@@ -6,6 +6,11 @@ public static partial class DummyData
 {
     #region Int
 
+    public static int? GetNullableInt(
+        NumberOption option = NumberOption.Normal,
+        int minValue = -1_000_000,
+        int maxValue = 1_000_000) => GetInt(option, minValue, maxValue);
+
     public static int GetInt(
         NumberOption option = NumberOption.Normal,
         int minValue = -1_000_000,
@@ -18,6 +23,15 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Int(1, maxValue),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<int?> GetNullableIntPair(
+        int minValue = -1_000_000,
+        int maxValue = 1_000_000)
+    {
+        var pair = GetIntPair(minValue, maxValue);
+
+        return new Pair<int?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<int> GetIntPair(
@@ -33,9 +47,18 @@ public static partial class DummyData
         return new Pair<int>(testArgument, differentArgument);
     }
 
+    public static uint? GetNullableUint() => GetUint();
+    
     public static uint GetUint()
     {
         return Faker.Value.Random.UInt(500_000U, 1_000_000U);
+    }
+    
+    public static Pair<uint?> GetNullableUintPair()
+    {
+        var pair = GetUintPair();
+
+        return new Pair<uint?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<uint> GetUintPair()
@@ -53,6 +76,9 @@ public static partial class DummyData
 
     #region Decimal
 
+    public static decimal? GetNullableDecimal(NumberOption option = NumberOption.Normal) =>
+        GetDecimal(option);
+
     public static decimal GetDecimal(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -62,6 +88,13 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Decimal(1, 1_000_000M),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<decimal?> GetNullableDecimalPair()
+    {
+        var pair = GetDecimalPair();
+
+        return new Pair<decimal?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<decimal> GetDecimalPair()
@@ -79,6 +112,9 @@ public static partial class DummyData
 
     #region Double
 
+    public static double? GetNullableDouble(NumberOption option = NumberOption.Normal) =>
+        GetDouble(option);
+
     public static double GetDouble(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -88,6 +124,13 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Double(1D, 1_000_000D),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<double?> GetNullableDoublePair()
+    {
+        var pair = GetDoublePair();
+
+        return new Pair<double?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<double> GetDoublePair()
@@ -105,6 +148,9 @@ public static partial class DummyData
 
     #region Long
 
+    public static long? GetNullableLong(NumberOption option = NumberOption.Normal) =>
+        GetLong(option);
+    
     public static long GetLong(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -114,6 +160,13 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Long(1L, 1_000_000L),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<long?> GetNullableLongPair()
+    {
+        var pair = GetLongPair();
+
+        return new Pair<long?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<long> GetLongPair()
@@ -127,9 +180,18 @@ public static partial class DummyData
         return new Pair<long>(testArgument, differentArgument);
     }
 
+    public static ulong? GetNullableUlong() => GetUlong();
+
     public static ulong GetUlong()
     {
         return Faker.Value.Random.ULong(1_000_000UL, 10_000_000UL);
+    }
+    
+    public static Pair<ulong?> GetNullableUlongPair()
+    {
+        var pair = GetUlongPair();
+
+        return new Pair<ulong?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<ulong> GetUlongPair()
@@ -147,6 +209,9 @@ public static partial class DummyData
 
     #region Float
 
+    public static float? GetNullableFloat(NumberOption option = NumberOption.Normal) =>
+        GetFloat(option);
+
     public static float GetFloat(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -156,6 +221,13 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Float(1F, 1_000_000F),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<float?> GetNullableFloatPair()
+    {
+        var pair = GetFloatPair();
+
+        return new Pair<float?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<float> GetFloatPair()
@@ -173,6 +245,9 @@ public static partial class DummyData
 
     #region Short
 
+    public static short? GetNullableShort(NumberOption option = NumberOption.Normal) =>
+        GetShort(option);
+    
     public static short GetShort(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -182,6 +257,13 @@ public static partial class DummyData
             NumberOption.Positive => Faker.Value.Random.Short(1, 10_000),
             _ => throw new ArgumentOutOfRangeException(nameof(option), option, null)
         };
+    }
+
+    public static Pair<short?> GetNullableShortPair()
+    {
+        var pair = GetShortPair();
+
+        return new Pair<short?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<short> GetShortPair()
@@ -195,9 +277,18 @@ public static partial class DummyData
         return new Pair<short>(testArgument, differentArgument);
     }
 
+    public static ushort? GetNullableUshort() => GetUshort();
+    
     public static ushort GetUshort()
     {
         return Faker.Value.Random.UShort(1_000, 40_000);
+    }
+    
+    public static Pair<ushort?> GetNullableUshortPair()
+    {
+        var pair = GetUshortPair();
+
+        return new Pair<ushort?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<ushort> GetUshortPair()
@@ -215,9 +306,18 @@ public static partial class DummyData
 
     #region Byte
 
+    public static byte? GetNullableByte() => GetByte();
+    
     public static byte GetByte()
     {
         return Faker.Value.Random.Byte(50, 100);
+    }
+
+    public static Pair<byte?> GetNullableBytePair()
+    {
+        var pair = GetBytePair();
+
+        return new Pair<byte?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Pair<byte> GetBytePair()
@@ -231,6 +331,8 @@ public static partial class DummyData
         return new Pair<byte>(testArgument, differentArgument);
     }
 
+    public static sbyte? GetNullableSbyte(NumberOption option = NumberOption.Normal) => GetSbyte(option);
+    
     public static sbyte GetSbyte(NumberOption option = NumberOption.Normal)
     {
         return option switch
@@ -242,6 +344,13 @@ public static partial class DummyData
         };
     }
 
+    public static Pair<sbyte?> GetNullableSbytePair()
+    {
+        var pair = GetSbytePair();
+
+        return new Pair<sbyte?>(pair.TestArgument, pair.DifferentArgument);
+    }
+    
     public static Pair<sbyte> GetSbytePair()
     {
         const sbyte middle = sbyte.MaxValue / 2;

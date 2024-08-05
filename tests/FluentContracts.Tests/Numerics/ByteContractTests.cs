@@ -42,11 +42,35 @@ public class ByteContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_Be_Nullable()
+    {
+        var pair = DummyData.GetNullableBytePair();
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBe()
     {
         var pair = DummyData.GetBytePair();
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBe_Nullable()
+    {
+        var pair = DummyData.GetNullableBytePair();
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -68,12 +92,42 @@ public class ByteContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableBytePair();
+        var array = DummyData.GetArray(DummyData.GetNullableByte, pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) =>
+                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetBytePair();
         var array = DummyData.GetArray(DummyData.GetByte, pair.TestArgument, pair.DifferentArgument);
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) =>
+                message == null
+                    ? testArgument.Must().NotBeAnyOf(array)
+                    : testArgument.Must().NotBeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableBytePair();
+        var array = DummyData.GetArray(DummyData.GetNullableByte, pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -100,6 +154,22 @@ public class ByteContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeBetween_Nullable()
+    {
+        var success = DummyData.GetNullableByte();
+        var lower = (byte?)(success - 10);
+        var higher = (byte?)(success + 10);
+        var outOfRange = (byte?)(higher + 10);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeBetween(lower, higher, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeGreaterThan()
     {
         var success = DummyData.GetByte();
@@ -115,12 +185,41 @@ public class ByteContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeGreaterThan_Nullable()
+    {
+        var success = DummyData.GetNullableByte();
+        var lower = (byte?)(success - 10);
+        var outOfRange = (byte?)(lower - 10);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterThan(lower, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeGreaterOrEqualThan()
     {
         var success = DummyData.GetByte();
         var outOfRange = (byte)(success - 10);
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeGreaterOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableByte();
+        var outOfRange = (byte?)(success - 10);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>
@@ -144,12 +243,41 @@ public class ByteContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeLessThan_Nullable()
+    {
+        var success = DummyData.GetNullableByte();
+        var higher = (byte?)(success + 10);
+        var outOfRange = (byte?)(higher + 10);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessThan(higher, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeLessOrEqualThan()
     {
         var success = DummyData.GetByte();
         var outOfRange = (byte)(success + 10);
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeLessOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableByte();
+        var outOfRange = (byte?)(success + 10);
+
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>
