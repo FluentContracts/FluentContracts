@@ -286,6 +286,12 @@
 - `BeLessOrEqualTo`
 - `BeLessThan`
 
+## `Dictionary` (extends `Collection`)
+
+- `(Not)ContainKey`
+- `(Not)ContainKeyValuePair`
+- `(Not)ContainValue`
+
 ## `List` (extends `Collection`)
 
 - `(Not)Contain`

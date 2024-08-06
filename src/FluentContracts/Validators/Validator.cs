@@ -183,28 +183,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
-
-    public static void CheckForSpecificValue<T, TException>(
-        T value, 
-        T argumentValue)
-        where TException : Exception, new()
-    {
-        if (value.IsEqualTo(argumentValue)) return;
-
-        ThrowHelper.ThrowUserDefinedException<TException>();
-    }
-
-    public static void CheckForSpecificValue<T, TException>(
-        T value, 
-        T argumentValue, 
-        string message)
-        where TException : Exception, new()
-    {
-        if (value.IsEqualTo(argumentValue)) return;
-
-        ThrowHelper.ThrowUserDefinedException<TException>(message);
-    }
-
+    
     public static void CheckForNotSpecificValue<T>(
         T value, 
         T argumentValue, 

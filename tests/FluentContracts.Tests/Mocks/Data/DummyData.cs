@@ -110,6 +110,83 @@ public static partial class DummyData
         return new Pair<List<T>>(testArgument, differentArgument);
     }
 
+    public static Dictionary<T, T> GetDictionary<T>(
+        Func<T> valueFactory,
+        KeyValuePair<T, T>? includedPair = default,
+        KeyValuePair<T, T>? excludedPair = default,
+        int size = ArraySize) where T : notnull =>
+        GetDictionary(
+            () => new KeyValuePair<T, T>(valueFactory(), valueFactory()),
+            includedPair,
+            excludedPair, 
+            size);
+
+    public static Dictionary<TKey, TValue> GetDictionary<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory,
+        KeyValuePair<TKey, TValue>? includedPair = default, 
+        KeyValuePair<TKey, TValue>? excludedPair = default, 
+        int size = ArraySize) where TKey : notnull
+    {  
+        var result = new Dictionary<TKey, TValue>(size);
+        int mid = size / 2;
+
+        for (var i = 0; i < size; i++)
+        {
+            var pair = 
+                i == mid 
+                    ? includedPair ?? valueFactory() 
+                    : GetNotMatchingKeyValue(valueFactory, excludedPair);
+
+            result[pair.Key] = pair.Value;
+        }
+
+        return result;
+    }
+
+    public static Pair<Dictionary<T, T>> GetDictionaryPair<T>(Func<T> valueFactory) where T : notnull =>
+        GetDictionaryPair(() => new KeyValuePair<T, T>(valueFactory(), valueFactory()));
+    
+    public static Pair<Dictionary<TKey, TValue>> GetDictionaryPair<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory) where TKey : notnull
+    {
+        var testArgument = GetDictionary(valueFactory);
+        var differentArgument = GetDictionary(valueFactory); 
+        return new Pair<Dictionary<TKey, TValue>>(testArgument, differentArgument);
+    }
+
+    private static KeyValuePair<TKey, TValue> GetNotMatchingKeyValue<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory,
+        KeyValuePair<TKey, TValue>? excludedPair)
+    {
+        if (excludedPair == null)
+        {
+            return valueFactory();
+        }
+        
+           
+        var fallbackCounter = 0;
+        var differentPair = valueFactory();
+        
+        while (differentPair.Equals(excludedPair))
+        {
+            fallbackCounter++;
+            differentPair = valueFactory();
+            
+            if (fallbackCounter == MaxFallbackCounter)
+                break;
+        }
+
+        return differentPair;
+    }
+    
+    public static KeyValuePair<T, T> GetKeyValuePair<T>(
+        Func<T> factory) => new(factory(), factory());
+
+    public static KeyValuePair<TKey, TValue> GetKeyValuePair<TKey, TValue>(
+        Func<TKey> keyFactory,
+        Func<TValue> valueFactory) =>
+        new(keyFactory(), valueFactory());
+
     public static DateTime? GetNullableDateTime(
         DateTimeOption option = DateTimeOption.Utc,
         int specificMonth = 1,

@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `(Not)BeOfType<T>` and `(Not)BeOfType(type)`
 - Added `(Not)BeAssignableTo(type)` and `(Not)BeAssignableTo<T>`
 
+### `DictionaryContract`
+- Newly added contract type
+- Added `(Not)ContainKey` and `(Not)ContainValue`
+- Added `(Not)ContainKeyValuePair(KeyValuePair)` and `(Not)ContainKeyValuePair(key, value)`
+
 ## [2.0.0] / 2024-06-16
 ### General
 - Enabled `<Nullable>` on the project for the library, as I had forgotten about it and this was causing a lot of the contracts to be missing on nullable types
