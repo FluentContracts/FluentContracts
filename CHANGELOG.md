@@ -10,10 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `(Not)BeOfType<T>` and `(Not)BeOfType(type)`
 - Added `(Not)BeAssignableTo(type)` and `(Not)BeAssignableTo<T>`
 
-### `DictionaryContract`
-- Newly added contract type
+### `DictionaryContract` (newly added contract)
 - Added `(Not)ContainKey` and `(Not)ContainValue`
 - Added `(Not)ContainKeyValuePair(KeyValuePair)` and `(Not)ContainKeyValuePair(key, value)`
+
+### `FileInfoContract` (newly added contract)
+- Added `(Not)Exist`
+- Added `(Not)HaveExtension`
+- Added `(Not)BeReadOnly`
+- Added `(Not)BeHidden`
+- Added `(Not)BeEmpty`
 
 ## [2.0.0] / 2024-06-16
 ### General

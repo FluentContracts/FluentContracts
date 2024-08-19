@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using FluentAssertions;
 using FluentContracts.Contracts;
 using FluentContracts.Infrastructure;
@@ -8,6 +10,8 @@ namespace FluentContracts.Tests;
 
 public abstract class Tests
 {
+    private readonly List<string> _directoriesToDelete = [];
+    
     protected static void TestContract<T, TContract, TException>(
         T successfulArgument,
         T failingArgument,
@@ -82,5 +86,17 @@ public abstract class Tests
                 .Should()
                 .Throw<TException>($"Failing argument \"{failingArgument}\" must throw \"{nameof(TException)}\"");
         }
+    }
+
+    public void RegisterDirectory(string directoryPath) => _directoriesToDelete.Add(directoryPath);
+
+    public void Dispose()
+    {   
+        foreach (var dir in _directoriesToDelete)
+        {
+            Directory.Delete(dir, true);
+        }
+        
+        _directoriesToDelete.Clear();
     }
 }

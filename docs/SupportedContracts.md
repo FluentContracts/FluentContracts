@@ -6,10 +6,13 @@
 
 - `Satisfy`
 
-## `Object` (extends `Base`)
+## `Nullable` (extends `Base`)
+
+- `(Not)BeNull`
+
+## `Object` (extends `Nullable`)
 
 - `(Not)BeAssignableTo`
-- `(Not)BeNull`
 - `(Not)BeOfType`
 
 ## `Equality` (extends `Object`)
@@ -285,6 +288,14 @@
 - `BeGreaterThan`
 - `BeLessOrEqualTo`
 - `BeLessThan`
+
+## `FileInfo` (extends `Nullable`)
+
+- `(Not)BeEmpty`
+- `(Not)BeHidden`
+- `(Not)BeReadOnly`
+- `(Not)Exist`
+- `(Not)HaveExtension`
 
 ## `Dictionary` (extends `Collection`)
 
