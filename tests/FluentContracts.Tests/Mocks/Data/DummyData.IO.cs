@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace FluentContracts.Tests.Mocks.Data;
 
@@ -52,17 +53,25 @@ public static partial class DummyData
         bool hidden = false)
     {
         var directory = GetDirectoryPath(test);
-        var filePath = Path.Combine(directory, Faker.Value.System.FileName(extension));
+        var fileName = Faker.Value.System.FileName(extension);
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux) && hidden)
+        {
+            fileName = $".{fileName}";
+        }
+        
+        var filePath = Path.Combine(directory, fileName);
+        
         File.Create(filePath).Close();
 
         if (readOnly)
         {
-            File.SetAttributes(filePath, FileAttributes.ReadOnly);
+            File.SetAttributes(filePath, File.GetAttributes(filePath) | FileAttributes.ReadOnly);
         }
 
         if (hidden)
         {
-            File.SetAttributes(filePath, FileAttributes.Hidden);
+            File.SetAttributes(filePath, File.GetAttributes(filePath) | FileAttributes.Hidden);
         }
         
         return filePath;
