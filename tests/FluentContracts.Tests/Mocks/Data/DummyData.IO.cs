@@ -55,7 +55,7 @@ public static partial class DummyData
             case FileInfoOption.Existing:
             case FileInfoOption.Empty:
             {
-                var directoryInfo = new DirectoryInfo(GetDirectoryPath(test));
+                var directoryInfo = new DirectoryInfo(GetDirectoryPath(test, hidden));
 
                 SetDirectoryAttributes(directoryInfo, readOnly, hidden);
 
