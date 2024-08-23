@@ -118,6 +118,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
     public Linker<TContract> BeAnyOf(string? message, params DateTime[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
@@ -163,6 +164,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
     public Linker<TContract> NotBeAnyOf(string? message, params DateTime[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
@@ -257,7 +259,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <summary>
     /// Checks if the value of the argument is greater or equal to the <see cref="value"/>
     /// </summary>
-    /// <param name="value">Value that must be lower or equal to the argument</param>
+    /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
@@ -299,7 +301,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <summary>
     /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
     /// </summary>
-    /// <param name="value">Value that must be lower or equal to the argument</param>
+    /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
@@ -313,7 +315,7 @@ public class DateTimeContract<TContract> : BaseContract<DateTime?, TContract>
     /// <summary>
     /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
     /// </summary>
-    /// <param name="value">Value that must be lower or equal to the argument</param>
+    /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>

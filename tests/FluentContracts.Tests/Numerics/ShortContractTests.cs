@@ -376,4 +376,88 @@ public class ShortContractTests : Tests
                 testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_BeOdd()
+    {
+        var successful = DummyData.GetShort(NumberOption.Odd);
+        var failing = DummyData.GetShort(NumberOption.Even);
+        
+        TestContract<short, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+        
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOdd()
+    {
+        var successful = DummyData.GetShort(NumberOption.Even);
+        var failing = DummyData.GetShort(NumberOption.Odd);
+        
+        TestContract<short, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+        
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeEven()
+    {
+        var successful = DummyData.GetShort(NumberOption.Even);
+        var failing = DummyData.GetShort(NumberOption.Odd);
+        
+        TestContract<short, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+        
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeEven()
+    {
+        var successful = DummyData.GetShort(NumberOption.Odd);
+        var failing = DummyData.GetShort(NumberOption.Even);
+        
+        TestContract<short, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+        
+        TestContract<short?, ShortContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+    }
 }

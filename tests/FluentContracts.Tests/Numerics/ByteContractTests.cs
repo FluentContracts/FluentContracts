@@ -81,7 +81,7 @@ public class ByteContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetBytePair();
-        var array = DummyData.GetArray(DummyData.GetByte, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetByte(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -109,7 +109,7 @@ public class ByteContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetBytePair();
-        var array = DummyData.GetArray(DummyData.GetByte, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetByte(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -318,6 +318,90 @@ public class ByteContractTests : Tests
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeOdd()
+    {
+        var successful = DummyData.GetByte(NumberOption.Odd);
+        var failing = DummyData.GetByte(NumberOption.Even);
+        
+        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+        
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOdd()
+    {
+        var successful = DummyData.GetByte(NumberOption.Even);
+        var failing = DummyData.GetByte(NumberOption.Odd);
+        
+        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+        
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeEven()
+    {
+        var successful = DummyData.GetByte(NumberOption.Even);
+        var failing = DummyData.GetByte(NumberOption.Odd);
+        
+        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+        
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeEven()
+    {
+        var successful = DummyData.GetByte(NumberOption.Odd);
+        var failing = DummyData.GetByte(NumberOption.Even);
+        
+        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+        
+        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
             "testArgument");
     }
 }

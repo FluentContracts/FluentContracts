@@ -140,4 +140,36 @@ public static class StructExtensions
     }
 
     #endregion
+    
+    #region TimeSpan
+    
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the NullableDateTimeContract class.</returns>
+    
+    public static TimeSpanContract Must(
+        this TimeSpan argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+    {
+        return new TimeSpanContract(argument, argumentName);
+    }
+    
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the NullableDateTimeContract class.</returns>
+    
+    public static TimeSpanContract Must(
+        this TimeSpan? argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+    {
+        return new TimeSpanContract(argument, argumentName);
+    }
+
+    #endregion
 }

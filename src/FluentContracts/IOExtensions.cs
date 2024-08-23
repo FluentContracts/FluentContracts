@@ -20,4 +20,18 @@ public static class IOExtensions
     {
         return new FileInfoContract(argument, argumentName);
     }
+    
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DirectoryInfo"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the StreamContract class.</returns>
+    /// 
+    public static DirectoryInfoContract Must(
+        this DirectoryInfo? argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+    {
+        return new DirectoryInfoContract(argument, argumentName);
+    }
 }

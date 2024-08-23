@@ -4,5 +4,7 @@ public enum NumberOption
 {
     Normal,
     Positive,
-    Negative
+    Negative,
+    Odd,
+    Even
 }

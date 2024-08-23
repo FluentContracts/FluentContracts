@@ -81,7 +81,7 @@ public class UintContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetUintPair();
-        var array = DummyData.GetArray(DummyData.GetUint, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetUint(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<uint, UintContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -109,7 +109,7 @@ public class UintContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetUintPair();
-        var array = DummyData.GetArray(DummyData.GetUint, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetUint(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<uint, UintContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -318,6 +318,90 @@ public class UintContractTests : Tests
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeOdd()
+    {
+        var successful = DummyData.GetUint(NumberOption.Odd);
+        var failing = DummyData.GetUint(NumberOption.Even);
+        
+        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+        
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOdd()
+    {
+        var successful = DummyData.GetUint(NumberOption.Even);
+        var failing = DummyData.GetUint(NumberOption.Odd);
+        
+        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+        
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeEven()
+    {
+        var successful = DummyData.GetUint(NumberOption.Even);
+        var failing = DummyData.GetUint(NumberOption.Odd);
+        
+        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+        
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeEven()
+    {
+        var successful = DummyData.GetUint(NumberOption.Odd);
+        var failing = DummyData.GetUint(NumberOption.Even);
+        
+        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+        
+        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
             "testArgument");
     }
 }

@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `(Not)BeOfType<T>` and `(Not)BeOfType(type)`
 - Added `(Not)BeAssignableTo(type)` and `(Not)BeAssignableTo<T>`
 
+### `IntContract`, `UintContract`, `LongContract`, `UlongContract`, `ShortContract`, `UshortContract`, `ByteContract`, `SbyteContract`
+- Added `(Not)BeOdd`
+- Added `(Not)BeEven`
+
 ### `DictionaryContract` (newly added contract)
 - Added `(Not)ContainKey` and `(Not)ContainValue`
 - Added `(Not)ContainKeyValuePair(KeyValuePair)` and `(Not)ContainKeyValuePair(key, value)`
@@ -20,6 +24,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `(Not)BeReadOnly`
 - Added `(Not)BeHidden`
 - Added `(Not)BeEmpty`
+
+### `DirectoryInfoContract` (newly added contract)
+- Added `(Not)Exist`
+- Added `(Not)BeReadOnly`
+- Added `(Not)BeHidden`
+- Added `(Not)BeEmpty`
+
+### `TimeSpanContract` (newly added contract)
+- Added `(Not)Be`
+- Added `(Not)BeNull`
+- Added `(Not)BeShorterThan`
+- Added `(Not)BeLongerThan`
+- Added `(Not)BeEqualTo`
 
 ## [2.0.0] / 2024-06-16
 ### General

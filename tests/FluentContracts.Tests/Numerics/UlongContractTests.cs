@@ -81,7 +81,7 @@ public class UlongContractTests : Tests
     public void Test_Must_BeAnyOf()
     {
         var pair = DummyData.GetUlongPair();
-        var array = DummyData.GetArray(DummyData.GetUlong, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetUlong(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
@@ -109,7 +109,7 @@ public class UlongContractTests : Tests
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetUlongPair();
-        var array = DummyData.GetArray(DummyData.GetUlong, pair.TestArgument, pair.DifferentArgument);
+        var array = DummyData.GetArray(() => DummyData.GetUlong(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
@@ -311,6 +311,90 @@ public class UlongContractTests : Tests
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeOdd()
+    {
+        var successful = DummyData.GetUlong(NumberOption.Odd);
+        var failing = DummyData.GetUlong(NumberOption.Even);
+        
+        TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+        
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOdd()
+    {
+        var successful = DummyData.GetUlong(NumberOption.Even);
+        var failing = DummyData.GetUlong(NumberOption.Odd);
+        
+        TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+        
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeEven()
+    {
+        var successful = DummyData.GetUlong(NumberOption.Even);
+        var failing = DummyData.GetUlong(NumberOption.Odd);
+        
+        TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+        
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeEven()
+    {
+        var successful = DummyData.GetUlong(NumberOption.Odd);
+        var failing = DummyData.GetUlong(NumberOption.Even);
+        
+        TestContract<ulong, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+        
+        TestContract<ulong?, UlongContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
             "testArgument");
     }
 }

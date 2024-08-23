@@ -378,4 +378,88 @@ public class SbyteContractTests : Tests
                 testArgument.Must().NotBeNegative(message),
             "testArgument");
     }
+    
+    [Fact]
+    public void Test_Must_BeOdd()
+    {
+        var successful = DummyData.GetSbyte(NumberOption.Odd);
+        var failing = DummyData.GetSbyte(NumberOption.Even);
+        
+        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+        
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeOdd()
+    {
+        var successful = DummyData.GetSbyte(NumberOption.Even);
+        var failing = DummyData.GetSbyte(NumberOption.Odd);
+        
+        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+        
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOdd(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_BeEven()
+    {
+        var successful = DummyData.GetSbyte(NumberOption.Even);
+        var failing = DummyData.GetSbyte(NumberOption.Odd);
+        
+        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+        
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().BeEven(message),
+            "testArgument");
+    }
+    
+    [Fact]
+    public void Test_Must_NotBeEven()
+    {
+        var successful = DummyData.GetSbyte(NumberOption.Odd);
+        var failing = DummyData.GetSbyte(NumberOption.Even);
+        
+        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+        
+        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) =>
+                testArgument.Must().NotBeEven(message),
+            "testArgument");
+    }
 }

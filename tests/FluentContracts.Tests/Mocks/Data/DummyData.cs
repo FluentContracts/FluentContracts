@@ -318,6 +318,37 @@ public static partial class DummyData
         return new Pair<DateTime>(testArgument, differentArgument);
     }
 
+    public static TimeSpan GetTimeSpan(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var maxValue = (maxTimeSpan ?? TimeSpan.MaxValue).Ticks;
+        var minValue = (minTimeSpan ?? TimeSpan.MinValue).Ticks;
+
+        var ticks = Faker.Value.Random.Long(minValue, maxValue);
+        
+        return TimeSpan.FromTicks(ticks);
+    }
+
+    public static Pair<TimeSpan> GetTimeSpanPair(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var maxValue = (maxTimeSpan ?? TimeSpan.MaxValue).Ticks;
+        var minValue = (minTimeSpan ?? TimeSpan.MinValue).Ticks;
+        
+        long middle = (maxValue - minValue) / 2 + minValue;
+        long nextToMiddle = middle + 1;
+
+        var testArgument = Faker.Value.Date.Timespan(TimeSpan.FromTicks(middle));
+        var differentArgument = Faker.Value.Date.Timespan(TimeSpan.FromTicks(nextToMiddle));
+        
+        return new Pair<TimeSpan>(testArgument, differentArgument);
+    }
+    
+    public static Pair<TimeSpan?> GetNullableTimeSpanPair(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var pair = GetTimeSpanPair(maxTimeSpan, minTimeSpan);
+        
+        return new Pair<TimeSpan?>(pair.TestArgument, pair.DifferentArgument);
+    }
+
     public static Person GetPerson()
     {
         return new Person();

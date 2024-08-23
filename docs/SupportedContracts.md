@@ -145,6 +145,14 @@
 - `(Not)BeAnyOf`
 - `(Not)BeEmpty`
 
+## `TimeSpan` (extends `Base`)
+
+- `(Not)Be`
+- `(Not)BeEqualTo`
+- `(Not)BeLongerThan`
+- `(Not)BeNull`
+- `(Not)BeShorterThan`
+
 ## `Stream` (extends `Object`)
 
 - `(Not)BeAbleToTimeout`
@@ -158,6 +166,8 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
+- `(Not)BeOdd`
 - `(Not)BeZero`
 - `BeBetween`
 - `BeGreaterOrEqualTo`
@@ -208,7 +218,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
 - `(Not)BeNegative`
+- `(Not)BeOdd`
 - `(Not)BePositive`
 - `(Not)BeZero`
 - `BeBetween`
@@ -221,7 +233,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
 - `(Not)BeNegative`
+- `(Not)BeOdd`
 - `(Not)BePositive`
 - `(Not)BeZero`
 - `BeBetween`
@@ -234,7 +248,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
 - `(Not)BeNegative`
+- `(Not)BeOdd`
 - `(Not)BePositive`
 - `(Not)BeZero`
 - `BeBetween`
@@ -247,7 +263,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
 - `(Not)BeNegative`
+- `(Not)BeOdd`
 - `(Not)BePositive`
 - `(Not)BeZero`
 - `BeBetween`
@@ -260,6 +278,8 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
+- `(Not)BeOdd`
 - `(Not)BeZero`
 - `BeBetween`
 - `BeGreaterOrEqualTo`
@@ -271,6 +291,8 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
+- `(Not)BeOdd`
 - `(Not)BeZero`
 - `BeBetween`
 - `BeGreaterOrEqualTo`
@@ -282,12 +304,21 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeEven`
+- `(Not)BeOdd`
 - `(Not)BeZero`
 - `BeBetween`
 - `BeGreaterOrEqualTo`
 - `BeGreaterThan`
 - `BeLessOrEqualTo`
 - `BeLessThan`
+
+## `DirectoryInfo` (extends `Nullable`)
+
+- `(Not)BeEmpty`
+- `(Not)BeHidden`
+- `(Not)BeReadOnly`
+- `(Not)Exist`
 
 ## `FileInfo` (extends `Nullable`)
 
