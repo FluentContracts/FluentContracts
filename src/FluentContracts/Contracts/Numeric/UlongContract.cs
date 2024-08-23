@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class UlongContract(ulong? argumentValue, string argumentName)
     : UlongContract<UlongContract>(argumentValue, argumentName);
 
-public class UlongContract<TContract> : NullableContract<ulong?, TContract>
+public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     where TContract : UlongContract<TContract>
 {
     private readonly Linker<TContract> _linker;
@@ -317,5 +317,53 @@ public class UlongContract<TContract> : NullableContract<ulong?, TContract>
     {
         Validator.CheckForNotSpecificValue(0ul, ArgumentValue, ArgumentName, message);
         return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the argument has an odd value
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeOdd(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value % 2 != 0, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the argument does not have an odd value
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeOdd(string? message = null)
+    {
+        return BeEven(message);
+    }
+    
+    /// <summary>
+    /// Checks if the value of the argument has an even value
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeEven(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value % 2 == 0, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+    
+    /// <summary>
+    /// Checks if the value of the argument does not have an even value
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeEven(string? message = null)
+    {
+        return BeOdd(message);
     }
 }

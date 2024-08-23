@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.1.0] / 2024-08-23
+### `ObjectContract`
+- Added `(Not)BeOfType<T>` and `(Not)BeOfType(type)`
+- Added `(Not)BeAssignableTo(type)` and `(Not)BeAssignableTo<T>`
+
+### `IntContract`, `UintContract`, `LongContract`, `UlongContract`, `ShortContract`, `UshortContract`, `ByteContract`, `SbyteContract`
+- Added `(Not)BeOdd`
+- Added `(Not)BeEven`
+
+### `DictionaryContract` (newly added contract)
+- Added `(Not)ContainKey` and `(Not)ContainValue`
+- Added `(Not)ContainKeyValuePair(KeyValuePair)` and `(Not)ContainKeyValuePair(key, value)`
+
+### `FileInfoContract` (newly added contract)
+- Added `(Not)Exist`
+- Added `(Not)HaveExtension`
+- Added `(Not)BeReadOnly`
+- Added `(Not)BeHidden`
+- Added `(Not)BeEmpty`
+
+### `DirectoryInfoContract` (newly added contract)
+- Added `(Not)Exist`
+- Added `(Not)BeReadOnly`
+- Added `(Not)BeHidden`
+- Added `(Not)BeEmpty`
+
+### `TimeSpanContract` (newly added contract)
+- Added `(Not)Be`
+- Added `(Not)BeNull`
+- Added `(Not)BeShorterThan`
+- Added `(Not)BeLongerThan`
+- Added `(Not)BeEqualTo`
+
 ## [2.0.0] / 2024-06-16
 ### General
 - Enabled `<Nullable>` on the project for the library, as I had forgotten about it and this was causing a lot of the contracts to be missing on nullable types
@@ -83,7 +116,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/FluentContracts/FluentContracts/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/FluentContracts/FluentContracts/compare/1.4.0...2.0.0
 [1.4.0]: https://github.com/FluentContracts/FluentContracts/compare/1.3.0...1.4.0
 [1.3.0]: https://github.com/FluentContracts/FluentContracts/compare/1.2.0...1.3.0

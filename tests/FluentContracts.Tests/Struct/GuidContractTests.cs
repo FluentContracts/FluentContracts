@@ -43,12 +43,38 @@ public class GuidContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_Be_Nullable()
+    {
+        var sameArgument = DummyData.GetNullableGuid();
+        var otherArgument = DummyData.GetNullableGuid();
+
+        TestContract<Guid?, GuidContract, ArgumentOutOfRangeException>(
+            sameArgument,
+            otherArgument,
+            (testArgument, message) => testArgument.Must().Be(sameArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBe()
     {
         var sameArgument = DummyData.GetGuid();
         var otherArgument = DummyData.GetGuid();
 
         TestContract<Guid, GuidContract, ArgumentOutOfRangeException>(
+            otherArgument,
+            sameArgument,
+            (testArgument, message) => testArgument.Must().NotBe(sameArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBe_Nullable()
+    {
+        var sameArgument = DummyData.GetNullableGuid();
+        var otherArgument = DummyData.GetNullableGuid();
+
+        TestContract<Guid?, GuidContract, ArgumentOutOfRangeException>(
             otherArgument,
             sameArgument,
             (testArgument, message) => testArgument.Must().NotBe(sameArgument, message),
@@ -71,6 +97,21 @@ public class GuidContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeAnyOf_Nullable()
+    {
+        var included = DummyData.GetNullableGuid();
+        var excluded = DummyData.GetNullableGuid();
+        var array = DummyData.GetArray(DummyData.GetNullableGuid, included, excluded);
+
+        TestContract<Guid?, GuidContract, ArgumentOutOfRangeException>(
+            included,
+            excluded,
+            (testArgument, message) =>
+                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBeAnyOf()
     {
         var included = DummyData.GetGuid();
@@ -78,6 +119,23 @@ public class GuidContractTests : Tests
         var array = DummyData.GetArray(DummyData.GetGuid, included, excluded);
 
         TestContract<Guid, GuidContract, ArgumentOutOfRangeException>(
+            excluded,
+            included,
+            (testArgument, message) =>
+                message == null
+                    ? testArgument.Must().NotBeAnyOf(array)
+                    : testArgument.Must().NotBeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeAnyOf_Nullable()
+    {
+        var included = DummyData.GetNullableGuid();
+        var excluded = DummyData.GetNullableGuid();
+        var array = DummyData.GetArray(DummyData.GetNullableGuid, included, excluded);
+
+        TestContract<Guid?, GuidContract, ArgumentOutOfRangeException>(
             excluded,
             included,
             (testArgument, message) =>

@@ -10,10 +10,7 @@ namespace FluentContracts.Tests.Text;
 
 [ContractTest("String")]
 public class StringContractTests : Tests, IDisposable
-{
-    private readonly List<string> _filesToDelete = [];
-    private readonly List<string> _directoriesToDelete = [];
-    
+{   
     [Fact]
     public void Test_Must_BeNull()
     {
@@ -703,8 +700,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeExistingFile()
     {
-        var success = DummyData.GetFilePath();
-        _filesToDelete.Add(success);
+        var success = DummyData.GetFilePath(this);
         
         var fail = DummyData.GetString();
         
@@ -720,8 +716,7 @@ public class StringContractTests : Tests, IDisposable
     {
         var success = DummyData.GetString();
         
-        var fail = DummyData.GetFilePath();
-        _filesToDelete.Add(fail);
+        var fail = DummyData.GetFilePath(this);
         
         TestContract<string, StringContract, ArgumentOutOfRangeException>(
             success,
@@ -733,8 +728,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeExistingDirectory()
     {
-        var success = DummyData.GetDirectoryPath();
-        _directoriesToDelete.Add(success);
+        var success = DummyData.GetDirectoryPath(this);
         
         var fail = DummyData.GetString();
         
@@ -750,30 +744,12 @@ public class StringContractTests : Tests, IDisposable
     {
         var success = DummyData.GetString();
         
-        var fail = DummyData.GetDirectoryPath();
-        _directoriesToDelete.Add(fail);
+        var fail = DummyData.GetDirectoryPath(this);
         
         TestContract<string, StringContract, ArgumentOutOfRangeException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeExistingDirectory(message),
             "testArgument");
-    }
-
-    public void Dispose()
-    {
-        foreach (var file in _filesToDelete)
-        {
-            File.Delete(file);
-        }
-        
-        _filesToDelete.Clear();
-        
-        foreach (var dir in _directoriesToDelete)
-        {
-            Directory.Delete(dir);
-        }
-        
-        _directoriesToDelete.Clear();
     }
 }

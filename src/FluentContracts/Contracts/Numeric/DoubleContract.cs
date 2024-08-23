@@ -6,7 +6,7 @@ namespace FluentContracts.Contracts.Numeric;
 public class DoubleContract(double? argumentValue, string argumentName)
     : DoubleContract<DoubleContract>(argumentValue, argumentName);
 
-public class DoubleContract<TContract> : NullableContract<double?, TContract>
+public class DoubleContract<TContract> : ObjectContract<double?, TContract>
     where TContract : DoubleContract<TContract>
 {
     private readonly Linker<TContract> _linker;

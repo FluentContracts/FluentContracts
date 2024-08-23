@@ -3,7 +3,7 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
-public abstract class EqualityContract<TArgument, TContract> : NullableContract<TArgument, TContract>
+public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TArgument, TContract>
     where TContract : EqualityContract<TArgument, TContract>
 {
     private readonly Linker<TContract> _linker;

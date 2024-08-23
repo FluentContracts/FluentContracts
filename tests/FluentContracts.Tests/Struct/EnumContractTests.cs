@@ -41,12 +41,36 @@ public class EnumContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_Be_Nullable()
+    {
+        StarWarsCharacter? expectedValue = StarWarsCharacter.LukeSkywalker;
+        
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+            expectedValue,
+            StarWarsCharacter.DarthVader,
+            (testArgument, message) => testArgument.Must().Be(expectedValue, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBe()
     {
         TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
             StarWarsCharacter.DarthVader,
             StarWarsCharacter.LukeSkywalker,
             (testArgument, message) => testArgument.Must().NotBe(StarWarsCharacter.LukeSkywalker, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBe_Nullable()
+    {
+        StarWarsCharacter? expectedValue = StarWarsCharacter.LukeSkywalker;
+        
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+            StarWarsCharacter.DarthVader,
+            expectedValue,
+            (testArgument, message) => testArgument.Must().NotBe(expectedValue, message),
             "testArgument");
     }
 
@@ -67,6 +91,22 @@ public class EnumContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeAnyOf_Nullable()
+    {
+        var included = DummyData.GetNullableEnumValue<StarWarsCharacter>();
+        var excluded = DummyData.GetNullableEnumValue(included);
+        
+        var array = DummyData.GetArray(() => DummyData.GetNullableEnumValue<StarWarsCharacter>(), included, excluded);
+
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+            included,
+            excluded,
+            (testArgument, message) =>
+                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBeAnyOf()
     {
         var included = DummyData.GetEnumValue<StarWarsCharacter>();
@@ -75,6 +115,24 @@ public class EnumContractTests : Tests
         var array = DummyData.GetArray(() => DummyData.GetEnumValue<StarWarsCharacter>(), included, excluded);
 
         TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+            excluded,
+            included,
+            (testArgument, message) =>
+                message == null
+                    ? testArgument.Must().NotBeAnyOf(array)
+                    : testArgument.Must().NotBeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeAnyOf_Nullable()
+    {
+        var included = DummyData.GetNullableEnumValue<StarWarsCharacter>();
+        var excluded = DummyData.GetNullableEnumValue(included);
+        
+        var array = DummyData.GetArray(() => DummyData.GetNullableEnumValue<StarWarsCharacter>(), included, excluded);
+
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
             excluded,
             included,
             (testArgument, message) =>

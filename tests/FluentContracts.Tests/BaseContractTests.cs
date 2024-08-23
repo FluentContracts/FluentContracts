@@ -20,7 +20,7 @@ public class BaseContractTests : Tests
         var fail = DummyData.GetPerson();
         Func<Person, bool> testCondition = p => p.Email == success.Email;
             
-        TestContract<Person, NullableContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
             success,
             fail,
             (testArgument, message) =>
@@ -35,7 +35,7 @@ public class BaseContractTests : Tests
         var fail = DummyData.GetPerson();
         Func<Person, bool> testCondition = p => p.Email == success.Email;
         
-        TestContract<Person, NullableContract<object>, MockException>(
+        TestContract<Person, ObjectContract<object>, MockException>(
             success,
             fail,
             null,
@@ -51,7 +51,7 @@ public class BaseContractTests : Tests
         var fail = DummyData.GetPerson();
         Func<Person, bool> testCondition = p => p.Email == success.Email;
 
-        TestContract<Person, NullableContract<object>, MockException>(
+        TestContract<Person, ObjectContract<object>, MockException>(
             success,
             fail,
             errorMessage,

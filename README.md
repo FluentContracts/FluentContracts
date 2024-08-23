@@ -119,4 +119,9 @@ So I need some help. If you are interested in helping out just send a pull reque
 #### [Dennis Doomen](https://twitter.com/ddoomen)
 > The "[FluentAssertions](https://fluentassertions.com/)" guy. This whole project was inspired by how that library works and I might have copy-pasted also parts of his repo too 😏
 
+## Technology Sponsors 💻
+<img alt="JetBrains Logo" width="300px" src="https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains.png"/>
+
+> Special thanks to [JetBrains](https://www.jetbrains.com/) for supplying a free license for [Rider](https://www.jetbrains.com/rider/), which is my primary IDE of choice for this project!
+
 Icon made by [IconMonk](https://www.flaticon.com/authors/icon-monk) from [Flaticon](https://www.flaticon.com) 

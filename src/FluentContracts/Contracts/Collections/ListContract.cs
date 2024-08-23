@@ -32,8 +32,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public Linker<ListContract<T>> Contain(IEnumerable<T> containedElements, string? message = null)
-    {
-        
+    {   
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
         Validator.CheckForContaining(containedElements, ArgumentValue, ArgumentName, message);
         return _linker;

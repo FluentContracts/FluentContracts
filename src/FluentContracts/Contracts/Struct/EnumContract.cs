@@ -7,7 +7,7 @@ public class EnumContract<TEnum>(TEnum? argumentValue, string argumentName)
     : EnumContract<TEnum, EnumContract<TEnum>>(argumentValue, argumentName)
     where TEnum : struct, Enum;
 
-public class EnumContract<TEnum, TContract> : NullableContract<TEnum?, TContract>
+public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     where TEnum : struct, Enum
     where TContract : EnumContract<TEnum, TContract>
 {

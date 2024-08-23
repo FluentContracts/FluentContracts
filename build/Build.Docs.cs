@@ -43,7 +43,7 @@ partial class Build
                 builder.AppendLine();
                 builder.Append($"## `{c.Name}`");
 
-                if (!c.Extends.Equals("object", StringComparison.OrdinalIgnoreCase))
+                if (c.Extends != null)
                 {
                     builder.Append($" (extends `{c.Extends}`)");
                 }
@@ -103,7 +103,9 @@ partial class Build
         var index = name.IndexOf('`');
         var className = index == -1 ? name : name[..index];
 
-        return className.Replace("Contract", "");
+        return !className.EndsWith("Contract") 
+            ? null 
+            : className.Replace("Contract", "");
     }
     
     List<ContractInfo> TopologicalSort(List<ContractInfo> contracts)
@@ -131,7 +133,7 @@ partial class Build
     {
         if (tempMarks.Contains(contractInfo.Name))
         {
-            throw new InvalidOperationException("Cyclic dependency detected");
+            throw new InvalidOperationException($"Cyclic dependency detected: {contractInfo.Name}");
         }
 
         if (visited.Contains(contractInfo.Name)) return;

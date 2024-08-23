@@ -14,6 +14,8 @@ public static partial class DummyData
     public static string GetString() => GetString(StringOption.Normal);
     public static string GetString(int length) => GetString(StringOption.Normal, length);
 
+    public static string? GetNullableString(StringOption option, int length = 10) => GetString(option, length);
+
     public static string GetString(StringOption option, int length = 10)
     {
         return option switch
@@ -105,6 +107,8 @@ public static partial class DummyData
 
     #region Char
 
+    public static char? GetNullableChar(CharOption option = CharOption.Normal) => GetChar(option);
+
     public static char GetChar(CharOption option = CharOption.Normal)
     {
         if (option == CharOption.WhiteSpace) return WhiteSpaceChar;
@@ -125,6 +129,13 @@ public static partial class DummyData
         };
     }
 
+    public static Pair<char?> GetNullableCharPair()
+    {
+        var pair = GetCharPair();
+
+        return new Pair<char?>(pair.TestArgument, pair.DifferentArgument);
+    }
+    
     public static Pair<char> GetCharPair()
     {
         const char middle = (char)(char.MaxValue / 2);
