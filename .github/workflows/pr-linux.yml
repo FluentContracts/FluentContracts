@@ -9,15 +9,15 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_dev-linux --host GitHubActions
+#         nuke --generate-configuration GitHubActions_pr-linux --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: dev-linux
+name: pr-linux
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 

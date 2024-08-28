@@ -9,22 +9,22 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_dev-linux --host GitHubActions
+#         nuke --generate-configuration GitHubActions_pr-windows --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: dev-linux
+name: pr-windows
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 
 jobs:
-  ubuntu-latest:
-    name: ubuntu-latest
-    runs-on: ubuntu-latest
+  windows-latest:
+    name: windows-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
         with:

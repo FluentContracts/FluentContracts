@@ -14,16 +14,13 @@ using Octokit;
     "dev-linux",
     GitHubActionsImage.UbuntuLatest,
     OnPushBranches = [DevelopmentBranch],
-    OnPullRequestBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    ImportSecrets = [nameof(CoverallRepoKey)],
     InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "dev-windows",
     GitHubActionsImage.WindowsLatest,
     OnPushBranches = [DevelopmentBranch],
-    OnPullRequestBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
     ImportSecrets = [nameof(CoverallRepoKey)],
@@ -32,10 +29,29 @@ using Octokit;
     "dev-macos",
     GitHubActionsImage.MacOsLatest,
     OnPushBranches = [DevelopmentBranch],
+    FetchDepth = 0,
+    PublishArtifacts = false,
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
+[GitHubActions(
+    "pr-windows",
+    GitHubActionsImage.WindowsLatest,
     OnPullRequestBranches = [DevelopmentBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    ImportSecrets = [nameof(CoverallRepoKey)],
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
+[GitHubActions(
+    "pr-linux",
+    GitHubActionsImage.UbuntuLatest,
+    OnPullRequestBranches = [DevelopmentBranch],
+    FetchDepth = 0,
+    PublishArtifacts = false,
+    InvokedTargets = [nameof(Test), nameof(Pack)])]
+[GitHubActions(
+    "pr-macos",
+    GitHubActionsImage.MacOsLatest,
+    OnPullRequestBranches = [DevelopmentBranch],
+    FetchDepth = 0,
+    PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Pack)])]
 [GitHubActions(
     "master-release",
