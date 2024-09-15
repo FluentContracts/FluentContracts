@@ -3,10 +3,6 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
-
-public class NullableContract<TArgument>(TArgument? argumentValue, string argumentName)
-    : NullableContract<TArgument, NullableContract<TArgument>>(argumentValue, argumentName);
-
 public abstract class NullableContract<TArgument, TContract> : BaseContract<TArgument, TContract>
     where TContract : NullableContract<TArgument, TContract>
 {

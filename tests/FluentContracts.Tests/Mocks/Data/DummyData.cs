@@ -16,8 +16,19 @@ public static partial class DummyData
     {
         return Faker.Value.Random.Guid();
     }
+    
+    public static Guid? GetNullableGuid()
+    {
+        return Faker.Value.Random.Guid();
+    }
 
     public static T GetEnumValue<T>(T? exclude = null)
+        where T : struct, Enum
+    {
+        return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
+    }
+
+    public static T? GetNullableEnumValue<T>(T? exclude = null)
         where T : struct, Enum
     {
         return exclude != null ? Faker.Value.Random.Enum<T>(exclude.Value) : Faker.Value.Random.Enum<T>();
@@ -98,6 +109,91 @@ public static partial class DummyData
         var differentArgument = GetList(valueFactory); 
         return new Pair<List<T>>(testArgument, differentArgument);
     }
+
+    public static Dictionary<T, T> GetDictionary<T>(
+        Func<T> valueFactory,
+        KeyValuePair<T, T>? includedPair = default,
+        KeyValuePair<T, T>? excludedPair = default,
+        int size = ArraySize) where T : notnull =>
+        GetDictionary(
+            () => new KeyValuePair<T, T>(valueFactory(), valueFactory()),
+            includedPair,
+            excludedPair, 
+            size);
+
+    public static Dictionary<TKey, TValue> GetDictionary<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory,
+        KeyValuePair<TKey, TValue>? includedPair = default, 
+        KeyValuePair<TKey, TValue>? excludedPair = default, 
+        int size = ArraySize) where TKey : notnull
+    {  
+        var result = new Dictionary<TKey, TValue>(size);
+        int mid = size / 2;
+
+        for (var i = 0; i < size; i++)
+        {
+            var pair = 
+                i == mid 
+                    ? includedPair ?? valueFactory() 
+                    : GetNotMatchingKeyValue(valueFactory, excludedPair);
+
+            result[pair.Key] = pair.Value;
+        }
+
+        return result;
+    }
+
+    public static Pair<Dictionary<T, T>> GetDictionaryPair<T>(Func<T> valueFactory) where T : notnull =>
+        GetDictionaryPair(() => new KeyValuePair<T, T>(valueFactory(), valueFactory()));
+    
+    public static Pair<Dictionary<TKey, TValue>> GetDictionaryPair<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory) where TKey : notnull
+    {
+        var testArgument = GetDictionary(valueFactory);
+        var differentArgument = GetDictionary(valueFactory); 
+        return new Pair<Dictionary<TKey, TValue>>(testArgument, differentArgument);
+    }
+
+    private static KeyValuePair<TKey, TValue> GetNotMatchingKeyValue<TKey, TValue>(
+        Func<KeyValuePair<TKey, TValue>> valueFactory,
+        KeyValuePair<TKey, TValue>? excludedPair)
+    {
+        if (excludedPair == null)
+        {
+            return valueFactory();
+        }
+        
+           
+        var fallbackCounter = 0;
+        var differentPair = valueFactory();
+        
+        while (differentPair.Equals(excludedPair))
+        {
+            fallbackCounter++;
+            differentPair = valueFactory();
+            
+            if (fallbackCounter == MaxFallbackCounter)
+                break;
+        }
+
+        return differentPair;
+    }
+    
+    public static KeyValuePair<T, T> GetKeyValuePair<T>(
+        Func<T> factory) => new(factory(), factory());
+
+    public static KeyValuePair<TKey, TValue> GetKeyValuePair<TKey, TValue>(
+        Func<TKey> keyFactory,
+        Func<TValue> valueFactory) =>
+        new(keyFactory(), valueFactory());
+
+    public static DateTime? GetNullableDateTime(
+        DateTimeOption option = DateTimeOption.Utc,
+        int specificMonth = 1,
+        int specificDay = 1,
+        int specificYear = 1900,
+        DayOfWeek specificWeekday = DayOfWeek.Wednesday) =>
+        GetDateTime(option, specificMonth, specificDay, specificYear, specificWeekday);
     
     public static DateTime GetDateTime(
         DateTimeOption option = DateTimeOption.Utc, 
@@ -200,6 +296,13 @@ public static partial class DummyData
                 throw new ArgumentOutOfRangeException(nameof(option), option, null);
         }
     }
+
+    public static Pair<DateTime?> GetNullableDateTimePair(DateTimeOption option = DateTimeOption.Utc)
+    {
+        var pair = GetDateTimePair(option);
+        
+        return new Pair<DateTime?>(pair.TestArgument, pair.DifferentArgument);
+    }
     
     public static Pair<DateTime> GetDateTimePair(DateTimeOption option = DateTimeOption.Utc)
     {
@@ -213,6 +316,37 @@ public static partial class DummyData
             DateTime.SpecifyKind(Faker.Value.Date.Between(nextToNow, DateTime.MaxValue), kind);
 
         return new Pair<DateTime>(testArgument, differentArgument);
+    }
+
+    public static TimeSpan GetTimeSpan(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var maxValue = (maxTimeSpan ?? TimeSpan.MaxValue).Ticks;
+        var minValue = (minTimeSpan ?? TimeSpan.MinValue).Ticks;
+
+        var ticks = Faker.Value.Random.Long(minValue, maxValue);
+        
+        return TimeSpan.FromTicks(ticks);
+    }
+
+    public static Pair<TimeSpan> GetTimeSpanPair(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var maxValue = (maxTimeSpan ?? TimeSpan.MaxValue).Ticks;
+        var minValue = (minTimeSpan ?? TimeSpan.MinValue).Ticks;
+        
+        long middle = (maxValue - minValue) / 2 + minValue;
+        long nextToMiddle = middle + 1;
+
+        var testArgument = Faker.Value.Date.Timespan(TimeSpan.FromTicks(middle));
+        var differentArgument = Faker.Value.Date.Timespan(TimeSpan.FromTicks(nextToMiddle));
+        
+        return new Pair<TimeSpan>(testArgument, differentArgument);
+    }
+    
+    public static Pair<TimeSpan?> GetNullableTimeSpanPair(TimeSpan? maxTimeSpan = null, TimeSpan? minTimeSpan = null)
+    {
+        var pair = GetTimeSpanPair(maxTimeSpan, minTimeSpan);
+        
+        return new Pair<TimeSpan?>(pair.TestArgument, pair.DifferentArgument);
     }
 
     public static Person GetPerson()

@@ -1,10 +1,82 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using FluentContracts.Infrastructure;
 
 namespace FluentContracts.Validators;
 
 internal static partial class Validator
 {
+    public static void CheckForBeType<TArgument, TCheck>(
+        TArgument argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        if (argumentValue is TCheck) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForBeType<TArgument>(
+        Type type,
+        TArgument argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotNull(argumentValue, argumentName, message);
+        
+        if (argumentValue.GetType() == type) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForNotBeType<TArgument, TCheck>(
+        TArgument argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        if (argumentValue is not TCheck) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForNotBeType<TArgument>(
+        Type type,
+        TArgument argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotNull(argumentValue, argumentName, message);
+        
+        if (argumentValue.GetType() != type) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForBeAssignableTo<TArgument>(
+        [NotNull] TArgument argumentValue,
+        Type targetType,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotNull(argumentValue, argumentName, message);
+        
+        if (argumentValue.GetType().IsAssignableTo(targetType)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
+    public static void CheckForNotBeAssignableTo<TArgument>(
+        [NotNull] TArgument argumentValue,
+        Type targetType,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotNull(argumentValue, argumentName, message);
+        
+        if (!argumentValue.GetType().IsAssignableTo(targetType)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    
     public static void CheckForNotNull<T, TException>([NotNull] T? value)
         where TException : Exception, new()
     {

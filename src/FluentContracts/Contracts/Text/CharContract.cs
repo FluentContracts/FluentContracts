@@ -7,7 +7,7 @@ namespace FluentContracts.Contracts.Text;
 public class CharContract(char? argumentValue, string argumentName) 
     : CharContract<CharContract>(argumentValue, argumentName);
 
-public class CharContract<TContract> : NullableContract<char?, TContract>
+public class CharContract<TContract> : ObjectContract<char?, TContract>
     where TContract : CharContract<TContract>
 {
     private readonly Linker<TContract> _linker;

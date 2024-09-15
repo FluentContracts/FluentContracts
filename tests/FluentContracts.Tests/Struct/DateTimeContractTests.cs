@@ -44,11 +44,35 @@ public class DateTimeContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_Be_Nullable()
+    {
+        var pair = DummyData.GetNullableDateTimePair();
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBe()
     {
         var pair = DummyData.GetDateTimePair();
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBe_Nullable()
+    {
+        var pair = DummyData.GetNullableDateTimePair();
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,12 +94,42 @@ public class DateTimeContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableDateTimePair();
+        var array = DummyData.GetArray(() => DummyData.GetNullableDateTime(), pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+            pair.TestArgument,
+            pair.DifferentArgument,
+            (testArgument, message) =>
+                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_NotBeAnyOf()
     {
         var pair = DummyData.GetDateTimePair();
         var array = DummyData.GetArray(() => DummyData.GetDateTime(), pair.TestArgument, pair.DifferentArgument);
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            pair.DifferentArgument,
+            pair.TestArgument,
+            (testArgument, message) =>
+                message == null
+                    ? testArgument.Must().NotBeAnyOf(array)
+                    : testArgument.Must().NotBeAnyOf(message, array),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeAnyOf_Nullable()
+    {
+        var pair = DummyData.GetNullableDateTimePair();
+        var array = DummyData.GetArray(() => DummyData.GetNullableDateTime(), pair.TestArgument, pair.DifferentArgument);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -102,6 +156,28 @@ public class DateTimeContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeBetween_Nullable()
+    {
+        var success = DummyData.GetNullableDateTime();
+
+        if (!success.HasValue)
+        {
+            throw new InvalidOperationException("DateTime from dummy cannot be null");
+        }
+        
+        DateTime? lower = success.Value.AddDays(-1);
+        DateTime? higher = success.Value.AddDays(1);
+        DateTime? outOfRange = higher.Value.AddDays(1);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeBetween(lower, higher, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeGreaterThan()
     {
         var success = DummyData.GetDateTime();
@@ -117,12 +193,53 @@ public class DateTimeContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeGreaterThan_Nullable()
+    {
+        var success = DummyData.GetNullableDateTime();
+
+        if (!success.HasValue)
+        {
+            throw new InvalidOperationException("DateTime from dummy cannot be null");
+        }
+        
+        DateTime? lower = success.Value.AddDays(-1);
+        DateTime? outOfRange = lower.Value.AddDays(-1);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterThan(lower, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeGreaterOrEqualThan()
     {
         var success = DummyData.GetDateTime();
         var outOfRange = success.AddDays(-1);
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeGreaterOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeGreaterOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableDateTime();
+
+        if (!success.HasValue)
+        {
+            throw new InvalidOperationException("DateTime from dummy cannot be null");
+        }
+        
+        DateTime? outOfRange = success.Value.AddDays(-1);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>
@@ -146,12 +263,53 @@ public class DateTimeContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeLessThan_Nullable()
+    {
+        var success = DummyData.GetNullableDateTime();
+        
+        if (!success.HasValue)
+        {
+            throw new InvalidOperationException("DateTime from dummy cannot be null");
+        }
+        
+        DateTime? higher = success.Value.AddDays(1);
+        DateTime? outOfRange = higher.Value.AddDays(1);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessThan(higher, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeLessOrEqualThan()
     {
         var success = DummyData.GetDateTime();
         var outOfRange = success.AddDays(1);
 
         TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            outOfRange,
+            (testArgument, message) =>
+                testArgument.Must().BeLessOrEqualTo(success, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeLessOrEqualThan_Nullable()
+    {
+        var success = DummyData.GetNullableDateTime();
+
+        if (!success.HasValue)
+        {
+            throw new InvalidOperationException("DateTime from dummy cannot be null");
+        }
+        
+        var outOfRange = success.Value.AddDays(1);
+
+        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
             success,
             outOfRange,
             (testArgument, message) =>
@@ -928,6 +1086,34 @@ public class DateTimeContractTests : Tests
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeWeekday(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeOnDayOfYear()
+    {
+        var success = DummyData.GetDateTime();
+        var fail = success.AddDays(5);
+
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().BeOnDayOfYear(success.DayOfYear, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeOnDayOfYear()
+    {
+        var success = DummyData.GetDateTime();
+        var fail = success.AddDays(5);
+
+        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            success,
+            fail,
+            (testArgument, message) =>
+                testArgument.Must().NotBeOnDayOfYear(fail.DayOfYear, message),
             "testArgument");
     }
 }
