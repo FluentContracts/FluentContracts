@@ -110,4 +110,52 @@ public class BaseContractTests : Tests
             errorMessage,
             (testArgument, message) => testArgument.Must().NotBeNull<MockException>(message));
     }
+
+    [Fact]
+    public void Test_ThrowError_If_Property_NotExist()
+    {
+        var fail = DummyData.GetPerson();
+
+        Assert.Throws<ArgumentNullException>(() => fail.Must().HasProperty("Not EXIST"));
+    }
+
+    [Fact]
+    public void Test_Property_Exist()
+    {
+        var success = DummyData.GetPerson();
+
+        success.Must().HasProperty("Random");
+    }
+
+    [Fact]
+    public void Test_ThrowError_If_PropertyWithValue_NotExist()
+    {
+        var fail = DummyData.GetPerson();
+
+        Assert.Throws<ArgumentNullException>(() => fail.Must().HasPropertyWithValue("Random","Not EXIST"));
+    }
+
+    [Fact]
+    public void Test_If_PropertyWithValue_Exist()
+    {
+        var success = DummyData.GetPerson();
+
+        success.Must().HasPropertyWithValue("Random", success.Random);
+    }
+
+    [Fact]
+    public void Test_If_Method_Exist()
+    {
+        var success = DummyData.GetPerson();
+
+        success.Must().HasMethod("get_Random");
+    }
+
+    [Fact]
+    public void Test_ThrowError_If_Method_NotExist()
+    {
+        var success = DummyData.GetPerson();
+
+        Assert.Throws<ArgumentNullException>(() => success.Must().HasMethod("Not"));
+    }
 }

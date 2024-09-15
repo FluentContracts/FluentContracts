@@ -14,7 +14,7 @@ internal static partial class Validator
     }
 
     public static void CheckForNotNull<T, TException>(
-        [NotNull] T? argumentValue, 
+        [NotNull] T? argumentValue,
         string message)
         where TException : Exception, new()
     {
@@ -24,8 +24,8 @@ internal static partial class Validator
     }
 
     public static void CheckForNotNull<T>(
-        [NotNull] T value, 
-        string argumentName, 
+        [NotNull] T value,
+        string argumentName,
         string? message = null)
     {
         if (value is not null) return;
@@ -35,7 +35,7 @@ internal static partial class Validator
 
     public static void CheckForNull<T>(
         T? value,
-        string argumentName, 
+        string argumentName,
         string? message = null)
     {
         if (value is null) return;
@@ -44,8 +44,8 @@ internal static partial class Validator
     }
 
     public static void CheckGenericCondition<T>(
-        Func<T, bool> genericCondition, 
-        T argumentValue, 
+        Func<T, bool> genericCondition,
+        T argumentValue,
         string argumentName,
         string? message = null)
     {
@@ -55,33 +55,33 @@ internal static partial class Validator
     }
 
     public static void CheckGenericCondition<T, TException>(
-        Func<T, bool> genericCondition, 
+        Func<T, bool> genericCondition,
         [NotNull] T argumentValue)
         where TException : Exception, new()
     {
         CheckForNotNull<T, TException>(argumentValue);
-        
+
         if (genericCondition(argumentValue)) return;
 
         ThrowHelper.ThrowUserDefinedException<TException>();
     }
 
     public static void CheckGenericCondition<T, TException>(
-        Func<T, bool> genericCondition, 
-        [NotNull] T argumentValue, 
+        Func<T, bool> genericCondition,
+        [NotNull] T argumentValue,
         string message)
         where TException : Exception, new()
     {
         CheckForNotNull<T, TException>(argumentValue, message);
-        
+
         if (genericCondition(argumentValue)) return;
 
         ThrowHelper.ThrowUserDefinedException<TException>(message);
     }
 
     public static void CheckForAnyOf<T>(
-        IEnumerable<T> values, 
-        T argumentValue, 
+        IEnumerable<T> values,
+        T argumentValue,
         string argumentName,
         string? message = null)
     {
@@ -91,8 +91,8 @@ internal static partial class Validator
     }
 
     public static void CheckForNotAnyOf<T>(
-        IEnumerable<T> values, 
-        T argumentValue, 
+        IEnumerable<T> values,
+        T argumentValue,
         string argumentName,
         string? message = null)
     {
@@ -102,9 +102,9 @@ internal static partial class Validator
     }
 
     public static void CheckForSpecificValue<T>(
-        T value, 
-        T argumentValue, 
-        string argumentName, 
+        T value,
+        T argumentValue,
+        string argumentName,
         string? message = null)
     {
         if (value.IsEqualTo(argumentValue)) return;
@@ -113,7 +113,7 @@ internal static partial class Validator
     }
 
     public static void CheckForSpecificValue<T, TException>(
-        T value, 
+        T value,
         T argumentValue)
         where TException : Exception, new()
     {
@@ -123,8 +123,8 @@ internal static partial class Validator
     }
 
     public static void CheckForSpecificValue<T, TException>(
-        T value, 
-        T argumentValue, 
+        T value,
+        T argumentValue,
         string message)
         where TException : Exception, new()
     {
@@ -134,8 +134,8 @@ internal static partial class Validator
     }
 
     public static void CheckForNotSpecificValue<T>(
-        T value, 
-        T argumentValue, 
+        T value,
+        T argumentValue,
         string argumentName,
         string? message = null)
     {
@@ -145,10 +145,10 @@ internal static partial class Validator
     }
 
     public static void CheckForBetween<T>(
-        T start, 
-        T end, 
-        T argumentValue, 
-        string argumentName, 
+        T start,
+        T end,
+        T argumentValue,
+        string argumentName,
         string? message = null)
     {
         if (argumentValue.IsGreaterOrEqualTo(start) && argumentValue.IsLessOrEqualTo(end)) return;
@@ -157,9 +157,9 @@ internal static partial class Validator
     }
 
     public static void CheckForGreaterThan<T>(
-        T value, 
-        T argumentValue, 
-        string argumentName, 
+        T value,
+        T argumentValue,
+        string argumentName,
         string? message = null)
     {
         if (argumentValue.IsGreaterThan(value)) return;
@@ -168,8 +168,8 @@ internal static partial class Validator
     }
 
     public static void CheckForGreaterOrEqualTo<T>(
-        T value, 
-        T argumentValue, 
+        T value,
+        T argumentValue,
         string argumentName,
         string? message = null)
     {
@@ -179,9 +179,9 @@ internal static partial class Validator
     }
 
     public static void CheckForLessThan<T>(
-        T value, 
-        T argumentValue, 
-        string argumentName, 
+        T value,
+        T argumentValue,
+        string argumentName,
         string? message = null)
     {
         if (argumentValue.IsLessThan(value)) return;
@@ -190,14 +190,43 @@ internal static partial class Validator
     }
 
     public static void CheckForLessOrEqualTo<T>(
-        T value, 
-        T argumentValue, 
-        string argumentName, 
+        T value,
+        T argumentValue,
+        string argumentName,
         string? message = null)
     {
         if (argumentValue.IsLessOrEqualTo(value)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+    public static void ContainsPropertyByName(object element, string propertyName, string? message = null)
+    {
+        var property = element.GetType().GetProperty(propertyName);
+
+        if (property is not null) return;
+
+        ThrowHelper.ThrowArgumentNullException(propertyName, message);
+    }
+
+    public static void ContainsPropertyWithValue(object element, string propertyName, object value, string? message = null)
+    {
+        var property = element.GetType()
+            .GetProperty(propertyName);
+
+        var propertyValue = property!.GetValue(element);
+
+        if (propertyValue == value) return;
+
+        ThrowHelper.ThrowArgumentNullException(propertyName, message);
+    }
+
+    public static void ContainsMethod(object element, string methodName, string? message = null)
+    {
+        var method = element.GetType().GetMethod(methodName);
+
+        if (method is not null) return;
+
+        ThrowHelper.ThrowArgumentNullException(methodName, message);
     }
 
     private static bool IsEqualTo<T>(this T a, T b)
