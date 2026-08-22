@@ -172,7 +172,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     public Linker<TContract> Contain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Contains(containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message);
         return _linker;
     }
@@ -187,7 +187,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     public Linker<TContract> NotContain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Contains(containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message);
         return _linker;
     }

@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Packaging
+- Target frameworks changed from `net6.0` (end of support) to `netstandard2.0` and `net8.0`.
+  `netstandard2.0` widens support to .NET Framework 4.6.1+, Mono and Unity consumers.
+  The package still has no runtime dependencies.
+
 ### `FileInfoContract`
 - Added `HaveSizeEqualTo`
 - Added `HaveSizeLessThan`

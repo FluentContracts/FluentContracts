@@ -450,7 +450,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     public Linker<TContract> BeAscii(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -462,7 +462,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     public Linker<TContract> NotBeAscii(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }

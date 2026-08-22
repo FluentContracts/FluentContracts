@@ -25,10 +25,10 @@ partial class Build
             ReportGenerator(_ => _
                 .SetReports(TestResultDirectory / "*.xml")
                 .AddReportTypes(ReportTypes.Xml, ReportTypes.lcov)
-                .When(IsLocalBuild, _ => _
+                .When(_ => IsLocalBuild, _ => _
                     .AddReportTypes(ReportTypes.Html))
                 .SetTargetDirectory(CoverageReportDirectory)
-                .SetFramework("netcoreapp2.1"));
+                .SetFramework("net10.0"));
 
             if (IsLocalBuild) return;
 

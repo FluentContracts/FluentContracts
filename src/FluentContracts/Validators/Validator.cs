@@ -59,7 +59,7 @@ internal static partial class Validator
     {
         CheckForNotNull(argumentValue, argumentName, message);
         
-        if (argumentValue.GetType().IsAssignableTo(targetType)) return;
+        if (targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
@@ -72,7 +72,7 @@ internal static partial class Validator
     {
         CheckForNotNull(argumentValue, argumentName, message);
         
-        if (!argumentValue.GetType().IsAssignableTo(targetType)) return;
+        if (!targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
