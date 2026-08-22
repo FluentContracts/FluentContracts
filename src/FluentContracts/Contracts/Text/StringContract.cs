@@ -163,7 +163,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     }
 
     /// <summary>
-    /// Checks if <see cref="containedString"/> is part of the value of the <see cref="string"/> argument.
+    /// Checks if <paramref name="containedString"/> is part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -178,7 +178,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     }
 
     /// <summary>
-    /// Checks if <see cref="containedString"/> is not part of the value of the <see cref="string"/> argument.
+    /// Checks if <paramref name="containedString"/> is not part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
