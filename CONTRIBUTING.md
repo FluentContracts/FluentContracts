@@ -61,7 +61,10 @@ In your own interest of getting a pull-request merged (timely):
 
 `master` is the only long-lived branch, and **every merge into it is released**: the
 `release` workflow tests, packs, pushes the package to NuGet and creates the matching
-GitHub release and tag.
+GitHub release and tag. Publishing uses
+[Trusted Publishing](https://learn.microsoft.com/en-us/nuget/nuget-org/trusted-publishing),
+so there is no NuGet API key stored in the repository: the workflow exchanges a GitHub
+OIDC token for a key that lasts an hour.
 
 The version is worked out by GitVersion from the most recent tag, and the patch is
 incremented by default. To release a minor or major version instead, include a directive
@@ -71,6 +74,9 @@ in the merge commit message:
 +semver: minor
 +semver: major
 ```
+
+> Take care when writing about these directives in a **commit message**: GitVersion reads
+> them out of commit messages, so quoting one there will actually request that bump.
 
 Release notes are generated automatically from the merged pull-request titles, so give
 your pull-request a title that reads well in a changelog. `CHANGELOG.md` is kept as a

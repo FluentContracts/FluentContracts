@@ -13,6 +13,8 @@ This file is the curated summary of notable changes on top of those.
 ### Changed
 - `master` is now the only long-lived branch. Releases are produced automatically on every
   merge into it, replacing the manual GitFlow release process.
+- Packages are published with NuGet Trusted Publishing (OIDC), so no long-lived NuGet API
+  key is stored in the repository.
 
 ### Fixed
 - Ordering comparisons no longer accept a `null` argument. `BeNegative` and `NotBePositive` used to

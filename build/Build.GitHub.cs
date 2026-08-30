@@ -19,16 +19,18 @@ using Octokit;
     FetchDepth = 0,
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Pack)])]
-[GitHubActions(
+[NuGetTrustedPublishing(
     "release",
     GitHubActionsImage.UbuntuLatest,
     OnPushBranches = [MainBranch],
     FetchDepth = 0,
     PublishArtifacts = true,
     EnableGitHubToken = true,
-    WritePermissions = [GitHubActionsPermissions.Contents],
+    // Contents: create the release and its tag. IdToken: exchange an OIDC token for a
+    // short-lived nuget.org key, so no long-lived NuGet API key is stored anywhere.
+    WritePermissions = [GitHubActionsPermissions.Contents, GitHubActionsPermissions.IdToken],
     InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack), nameof(Publish)],
-    ImportSecrets = [nameof(NuGetApiKey), nameof(CoverallRepoKey)])]
+    ImportSecrets = [nameof(CoverallRepoKey)])]
 partial class Build
 {
     /// The single long-lived branch. Every merge into it is released.
