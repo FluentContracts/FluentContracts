@@ -20,7 +20,7 @@ partial class Build
                 .SetNoBuild(SucceededTargets.Contains(Compile))
                 .SetOutputDirectory(PackagesDirectory)
                 .SetRepositoryUrl(GitRepository.HttpsUrl)
-                .SetVersion(GitVersion.SemVer));
+                .SetVersion(MajorMinorPatchVersion));
 
             ReportSummary(_ => _
                 .AddPair("Packages", PackagesDirectory.GlobFiles("*.nupkg").Count.ToString()));

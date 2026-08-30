@@ -24,16 +24,13 @@
     "ExecutableTarget": {
       "type": "string",
       "enum": [
-        "Changelog",
         "Clean",
         "Compile",
         "CreateGitHubRelease",
         "Full",
         "GenerateSupportedContracts",
-        "Hotfix",
         "Pack",
         "Publish",
-        "Release",
         "ReportCoverage",
         "Restore",
         "Test"
@@ -110,9 +107,6 @@
   "allOf": [
     {
       "properties": {
-        "AutoStash": {
-          "type": "boolean"
-        },
         "Configuration": {
           "type": "string",
           "enum": [
@@ -123,9 +117,6 @@
         "CoverallRepoKey": {
           "type": "string",
           "default": "Secrets must be entered via 'nuke :secrets [profile]'"
-        },
-        "Major": {
-          "type": "boolean"
         },
         "NuGetApiKey": {
           "type": "string",

@@ -10,7 +10,7 @@ Evaluate whether your topic is going to be a valid issue:
 
 - Is your issue more of a question? Ask on [GitHub discussions](https://github.com/FluentContracts/FluentContracts/discussions))!
 - Have you checked existing/closed issues? Is your version behind?
-- Have you read the relevant [changelog notes](https://github.com/FluentContracts/FluentContracts/blob/develop/CHANGELOG.md)?
+- Have you read the relevant [changelog notes](https://github.com/FluentContracts/FluentContracts/blob/master/CHANGELOG.md)?
 
 ### When creating an issue
 
@@ -37,7 +37,7 @@ In your own interest of getting a pull-request merged (timely):
 
 - Discuss non-trivial changes in an [issue](https://github.com/FluentContracts/FluentContracts/issues/new/choose)
 - Make sure your employer allows contributions
-- Branch your work off from the `develop` branch
+- Branch your work off from the `master` branch
 - Get familiar with the coding conventions
 
 ### When working on a pull-request
@@ -56,3 +56,22 @@ In your own interest of getting a pull-request merged (timely):
 
 - Don't bother to rebase your pull-request if commits have been force-pushed
 - [Don't "push" your pull-request](https://www.igvita.com/2011/12/19/dont-push-your-pull-requests/)
+
+## Releases
+
+`master` is the only long-lived branch, and **every merge into it is released**: the
+`release` workflow tests, packs, pushes the package to NuGet and creates the matching
+GitHub release and tag.
+
+The version is worked out by GitVersion from the most recent tag, and the patch is
+incremented by default. To release a minor or major version instead, include a directive
+in the merge commit message:
+
+```
++semver: minor
++semver: major
+```
+
+Release notes are generated automatically from the merged pull-request titles, so give
+your pull-request a title that reads well in a changelog. `CHANGELOG.md` is kept as a
+curated summary of notable changes on top of that.

@@ -9,17 +9,20 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_pr-linux --host GitHubActions
+#         nuke --generate-configuration GitHubActions_release --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: pr-linux
+name: release
 
 on:
-  pull_request:
+  push:
     branches:
-      - develop
+      - master
+
+permissions:
+  contents: write
 
 jobs:
   ubuntu-latest:
@@ -36,5 +39,19 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj', '**/Directory.Packages.props') }}
-      - name: 'Run: Test, Pack'
-        run: ./build.cmd Test Pack
+      - name: 'Run: Test, ReportCoverage, Pack, Publish'
+        run: ./build.cmd Test ReportCoverage Pack Publish
+        env:
+          NuGetApiKey: ${{ secrets.NUGET_API_KEY }}
+          CoverallRepoKey: ${{ secrets.COVERALL_REPO_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: 'Publish: test-results'
+        uses: actions/upload-artifact@v5
+        with:
+          name: test-results
+          path: output/test-results
+      - name: 'Publish: packages'
+        uses: actions/upload-artifact@v5
+        with:
+          name: packages
+          path: output/packages

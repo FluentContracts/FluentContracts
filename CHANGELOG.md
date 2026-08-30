@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+Every merge into `master` is released, and the per-release notes are generated from the
+merged pull-requests on the [releases page](https://github.com/FluentContracts/FluentContracts/releases).
+This file is the curated summary of notable changes on top of those.
+
 ## [Unreleased]
+### Changed
+- `master` is now the only long-lived branch. Releases are produced automatically on every
+  merge into it, replacing the manual GitFlow release process.
+
 ### Fixed
 - Ordering comparisons no longer accept a `null` argument. `BeNegative` and `NotBePositive` used to
   pass silently for `null`, because `Comparer<T>` orders `null` below every other value, while

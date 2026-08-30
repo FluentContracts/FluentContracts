@@ -29,7 +29,7 @@ partial class Build
         .Executes(() =>
         {
             ReportSummary(_ => _
-                    .AddPair("Version", GitVersion.SemVer));
+                    .AddPair("Version", MajorMinorPatchVersion));
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)

@@ -1,4 +1,4 @@
-<img alt="Logo" width="100px" src="https://github.com/FluentContracts/FluentContracts/raw/develop/assets/icon.png"/>
+<img alt="Logo" width="100px" src="https://github.com/FluentContracts/FluentContracts/raw/master/assets/icon.png"/>
 
 # FluentContracts
 [![NuGet Version](https://img.shields.io/nuget/v/FluentContracts?style=for-the-badge&logo=nuget&logoColor=white&color=green)](https://www.nuget.org/packages/FluentContracts/)
@@ -83,13 +83,13 @@ So I need some help. If you are interested in helping out just send a pull reque
 
 ### Builds
 
-|     Type      | Status                                                                                                                                                                                                                                                                 |
-|:-------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-|   Dev Build   | [![Dev Linux](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-linux.yml?branch=dev&style=for-the-badge&logo=linux&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
-|   Dev Build   | [![Dev Windows](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-windows.yml?branch=dev&style=for-the-badge&logo=windows10&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                      |
-|   Dev Build   | [![Dev MacOS](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/dev-macos.yml?branch=dev&style=for-the-badge&logo=Apple&logoColor=white)](https://github.com/FluentContracts/FluentContracts/actions)                              |
-| Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/FluentContracts/FluentContracts?branch=dev&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/FluentContracts/FluentContracts)                                             |
-|    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/master-release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=NuGet%20Packages)](https://github.com/FluentContracts/FluentContracts/actions) |
+|     Type      | Status                                                                                                                                                                                                                                                     |
+|:-------------:|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|    Release    | [![Release](https://img.shields.io/github/actions/workflow/status/FluentContracts/FluentContracts/release.yml?branch=master&style=for-the-badge&logo=nuget&logoColor=white&label=Build%20%26%20Release)](https://github.com/FluentContracts/FluentContracts/actions/workflows/release.yml) |
+| Code Coverage | [![Coveralls](https://img.shields.io/coverallsCoverage/github/FluentContracts/FluentContracts?branch=master&style=for-the-badge&logo=coveralls&logoColor=white)](https://coveralls.io/github/FluentContracts/FluentContracts)                                |
+
+Pull requests are built and tested on Linux, Windows and macOS by the
+[`pr`](https://github.com/FluentContracts/FluentContracts/actions/workflows/pr.yml) workflow.
 
 ### Status
 

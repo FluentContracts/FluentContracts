@@ -20,6 +20,8 @@ partial class Build
         .DependsOn(Test)
         .Consumes(Test)
         .Requires(() => IsLocalBuild || !CoverallRepoKey.IsNullOrEmpty())
+        // Reporting coverage is not worth blocking a release over.
+        .ProceedAfterFailure()
         .Executes(() =>
         {
             ReportGenerator(_ => _
@@ -32,10 +34,27 @@ partial class Build
 
             if (IsLocalBuild) return;
 
+            // Coveralls ships one reporter binary per OS. The release agent runs Linux;
+            // Windows stays supported for anyone invoking this target on a Windows agent.
+            var (assetName, executableName) = EnvironmentInfo.Platform switch
+            {
+                PlatformFamily.Windows => ("coveralls-windows.exe", "coveralls.exe"),
+                PlatformFamily.Linux => ("coveralls-linux", "coveralls"),
+                _ => (null, null)
+            };
+
+            if (assetName == null)
+            {
+                Serilog.Log.Error(
+                    "Coveralls does not publish a reporter for {Platform}.",
+                    EnvironmentInfo.Platform);
+                Environment.Exit(1);
+            }
+
             var coverallsApp =
                 OutputDirectory.CreateDownloadableTool(
-                    "https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-windows.exe",
-                    "coveralls.exe");
+                    $"https://github.com/coverallsapp/coverage-reporter/releases/latest/download/{assetName}",
+                    executableName);
 
             if (coverallsApp == null)
             {
