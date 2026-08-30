@@ -33,15 +33,15 @@ partial class Build
                         .SetNoBuild(SucceededTargets.Contains(Compile))
                         .ResetVerbosity()
                         .SetResultsDirectory(TestResultDirectory)
-                        .When(InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
+                        .When(_ => InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
                             .EnableCollectCoverage()
                             .SetCoverletOutputFormat(CoverletOutputFormat.cobertura))
                         .CombineWith(TestProjects, (_, v) => _
                                 .SetProjectFile(v)
                                 .AddLoggers($"trx;LogFileName={v.Name}.trx")
-                                .When(IsLocalBuild, _ => _
+                                .When(_ => IsLocalBuild, _ => _
                                     .AddLoggers($"html;LogFileName={v.Name}.html"))
-                                .When(InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
+                                .When(_ => InvokedTargets.Contains(ReportCoverage) || InvokedTargets.Contains(Full), _ => _
                                     .SetCoverletOutput(TestResultDirectory / $"{v.Name}.xml"))),
                     completeOnFailure: true,
                     degreeOfParallelism: TestDegreeOfParallelism);
@@ -66,11 +66,17 @@ partial class Build
         var failedTests = outcomes.Count(x => x == "Failed");
         var skippedTests = outcomes.Count(x => x == "NotExecuted");
 
-        ReportSummary(_ => _
-            .When(failedTests > 0, _ => _
-                .AddPair("Failed", failedTests.ToString()))
-            .AddPair("Passed", passedTests.ToString())
-            .When(skippedTests > 0, _ => _
-                .AddPair("Skipped", skippedTests.ToString())));
+        ReportSummary(summary =>
+        {
+            if (failedTests > 0)
+                summary = summary.AddPair("Failed", failedTests.ToString());
+
+            summary = summary.AddPair("Passed", passedTests.ToString());
+
+            if (skippedTests > 0)
+                summary = summary.AddPair("Skipped", skippedTests.ToString());
+
+            return summary;
+        });
     }
 }

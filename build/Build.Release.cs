@@ -40,11 +40,11 @@ partial class Build
         .Executes(() =>
         {
             var masterVersion = GitVersion(s => s
-                .SetFramework("netcoreapp3.1")
+                .SetFramework("net10.0")
                 .SetUrl(RootDirectory)
                 .SetBranch(MasterBranch)
                 .EnableNoFetch()
-                .DisableProcessLogOutput()).Result;
+                .DisableProcessOutputLogging()).Result;
 
             if (!GitRepository.IsOnHotfixBranch())
                 Checkout($"{HotfixBranchPrefix}/{masterVersion.Major}.{masterVersion.Minor}.{masterVersion.Patch + 1}", start: MasterBranch);

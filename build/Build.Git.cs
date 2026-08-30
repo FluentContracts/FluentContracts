@@ -9,7 +9,7 @@ partial class Build
     [Required] 
     GitRepository GitRepository;
         
-    [GitVersion(Framework = "net5.0", NoFetch = true)]
+    [GitVersion(Framework = "net10.0", NoFetch = true)]
     [Required]
     GitVersion GitVersion;
 }

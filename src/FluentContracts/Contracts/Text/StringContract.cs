@@ -163,7 +163,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     }
 
     /// <summary>
-    /// Checks if <see cref="containedString"/> is part of the value of the <see cref="string"/> argument.
+    /// Checks if <paramref name="containedString"/> is part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -172,13 +172,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     public Linker<TContract> Contain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Contains(containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
     /// <summary>
-    /// Checks if <see cref="containedString"/> is not part of the value of the <see cref="string"/> argument.
+    /// Checks if <paramref name="containedString"/> is not part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -187,7 +187,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     public Linker<TContract> NotContain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Contains(containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message);
         return _linker;
     }

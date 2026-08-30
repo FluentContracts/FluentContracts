@@ -157,7 +157,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
     
     /// <summary>
-    /// Checks if the value of the argument is inclusively between the values of <see cref="start"/> and <see cref="end"/>
+    /// Checks if the value of the argument is inclusively between the values of <paramref name="start"/> and <paramref name="end"/>
     /// </summary>
     /// <param name="start">Value that must be less or equal to the argument</param>
     /// <param name="end">Value that must be greater or equal to the argument</param>
@@ -172,7 +172,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
     
     /// <summary>
-    /// Checks if the value of the argument is inclusively between the values of <see cref="start"/> and <see cref="end"/>
+    /// Checks if the value of the argument is inclusively between the values of <paramref name="start"/> and <paramref name="end"/>
     /// </summary>
     /// <param name="start">Value that must be less or equal to the argument</param>
     /// <param name="end">Value that must be greater or equal to the argument</param>
@@ -187,7 +187,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater than <see cref="value"/>
+    /// Checks if the value of the argument is greater than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -201,7 +201,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater than <see cref="value"/>
+    /// Checks if the value of the argument is greater than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -215,7 +215,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is greater or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be lower or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -229,7 +229,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is greater or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -243,7 +243,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower than <see cref="value"/>
+    /// Checks if the value of the argument is lower than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be greater than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -257,7 +257,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower than <see cref="value"/>
+    /// Checks if the value of the argument is lower than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be greater than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -271,7 +271,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is lower or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be lower or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -285,7 +285,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is lower or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be lower or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -450,7 +450,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     public Linker<TContract> BeAscii(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 
@@ -462,7 +462,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     public Linker<TContract> NotBeAscii(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
         return _linker;
     }
 }
