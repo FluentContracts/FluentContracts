@@ -11,7 +11,8 @@ public static partial class DummyData
         FileInfoOption options = FileInfoOption.Existing,
         string fileExtension = "txt",
         bool readOnly = false,
-        bool hidden = false)
+        bool hidden = false,
+        long fileSize = 1024)
     {
         switch (options)
         {
@@ -29,8 +30,10 @@ public static partial class DummyData
             case FileInfoOption.NotEmpty:
             {
                 var filePath = GetFilePath(test, fileExtension, false, hidden);
-                var contents = Faker.Value.Lorem.Paragraphs();
-                File.WriteAllText(filePath, contents);
+                using (var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write))
+                {
+                    fs.SetLength(fileSize);
+                }
                 
                 if (readOnly)
                 {

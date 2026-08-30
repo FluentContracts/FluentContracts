@@ -156,7 +156,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is inclusively between the values of <see cref="start"/> and <see cref="end"/>
+    /// Checks if the value of the argument is inclusively between the values of <paramref name="start"/> and <paramref name="end"/>
     /// </summary>
     /// <param name="start">Value that must be less or equal to the argument</param>
     /// <param name="end">Value that must be greater or equal to the argument</param>
@@ -171,7 +171,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is inclusively between the values of <see cref="start"/> and <see cref="end"/>
+    /// Checks if the value of the argument is inclusively between the values of <paramref name="start"/> and <paramref name="end"/>
     /// </summary>
     /// <param name="start">Value that must be less or equal to the argument</param>
     /// <param name="end">Value that must be greater or equal to the argument</param>
@@ -186,7 +186,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater than <see cref="value"/>
+    /// Checks if the value of the argument is greater than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -200,7 +200,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater than <see cref="value"/>
+    /// Checks if the value of the argument is greater than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -214,7 +214,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is greater or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -228,7 +228,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is greater or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is greater or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -242,7 +242,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is less than <see cref="value"/>
+    /// Checks if the value of the argument is less than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be greater than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -256,7 +256,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is less than <see cref="value"/>
+    /// Checks if the value of the argument is less than <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be greater than the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -270,7 +270,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is lower or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -284,7 +284,7 @@ public class UlongContract<TContract> : ObjectContract<ulong?, TContract>
     }
 
     /// <summary>
-    /// Checks if the value of the argument is lower or equal to the <see cref="value"/>
+    /// Checks if the value of the argument is lower or equal to the <paramref name="value"/>
     /// </summary>
     /// <param name="value">Value that must be less or equal to the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>

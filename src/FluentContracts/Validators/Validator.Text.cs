@@ -1,5 +1,4 @@
 using System.Net;
-using System.Net.Mail;
 using System.Text.RegularExpressions;
 using FluentContracts.Infrastructure;
 
@@ -36,16 +35,12 @@ internal static partial class Validator
     {
         return options switch
         {
-            ParseOptions.EmailAddress => MailAddress.TryCreate(value, out _),
+            ParseOptions.EmailAddress => Compat.IsMailAddress(value),
             ParseOptions.Url => Uri.TryCreate(value, UriKind.Absolute, out _),
             ParseOptions.IpAddress => IPAddress.TryParse(value, out _),
             ParseOptions.Guid => Guid.TryParse(value, out _),
             ParseOptions.Hexadecimal => _hexadecimalRegex.IsMatch(value),
-            ParseOptions.Base64 => 
-                Convert.TryFromBase64String(
-                    value, 
-                    new Span<byte>(new byte[value.Length]), 
-                    out _),
+            ParseOptions.Base64 => Compat.IsBase64(value),
             _ => throw new ArgumentOutOfRangeException(nameof(options), options, null)
         };
     }

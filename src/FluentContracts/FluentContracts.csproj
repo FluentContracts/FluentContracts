@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <!--General-->
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFrameworks>netstandard2.0;net8.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
@@ -20,7 +20,16 @@
         <Description>API for contract validation using fluent style.</Description>
         <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageIcon>icon.png</PackageIcon>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
 
+        <!-- Ship the XML docs so the summaries show up in consumers' IntelliSense. -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <!-- CS1591: every contract check is documented, but the base types, constructors and
+             inherited members are not yet. Documenting those is tracked separately; until then
+             do not fail the build over them. -->
+        <NoWarn>$(NoWarn);CS1591</NoWarn>
+
+        <!-- Source Link is provided by the .NET SDK (8.0+); no package reference required. -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -28,9 +37,12 @@
 
     <ItemGroup>
         <None Include="..\..\assets\icon.png" Pack="true" PackagePath="\" />
+        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
     </ItemGroup>
-    
-    <ItemGroup>
-        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+
+    <!-- Polyfills language/BCL attributes (CallerArgumentExpression, nullable analysis) for netstandard2.0. -->
+    <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     </ItemGroup>
+
 </Project>

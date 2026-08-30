@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using Nuke.Common;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Utilities;
@@ -33,7 +34,20 @@ public static class Extensions
         }
 			
         toolPath = TryGetToolAbsolutePath(executableFileName, directory);
-        return toolPath != null ? ToolResolver.GetPathTool(toolPath) : null;
+        if (toolPath == null)
+            return null;
+
+        // Downloaded files are not executable on Unix, so the tool would fail to launch.
+        if (!EnvironmentInfo.IsWin)
+        {
+            File.SetUnixFileMode(
+                toolPath,
+                UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute |
+                UnixFileMode.GroupRead | UnixFileMode.GroupExecute |
+                UnixFileMode.OtherRead | UnixFileMode.OtherExecute);
+        }
+
+        return ToolResolver.GetPathTool(toolPath);
     }
     
     private static AbsolutePath CreateToolDirectory(AbsolutePath toolDirectory, string executableFileName)

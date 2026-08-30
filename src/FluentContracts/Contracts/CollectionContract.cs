@@ -43,7 +43,7 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     }
 
     /// <summary>
-    /// Checks if the <see cref="ICollection"/> has <see cref="expectedCount"/> elements count.
+    /// Checks if the <see cref="ICollection"/> has <paramref name="expectedCount"/> elements count.
     /// </summary>
     /// <param name="expectedCount">Expected count of the elements in the collection</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
@@ -57,7 +57,7 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     }
 
     /// <summary>
-    /// Checks if the <see cref="ICollection"/> has different than <see cref="notExpectedCount"/> elements count.
+    /// Checks if the <see cref="ICollection"/> has different than <paramref name="notExpectedCount"/> elements count.
     /// </summary>
     /// <param name="notExpectedCount">Count which is not expected to be equal to the elements in the collection</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>

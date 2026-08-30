@@ -327,6 +327,11 @@
 - `(Not)BeReadOnly`
 - `(Not)Exist`
 - `(Not)HaveExtension`
+- `(Not)HaveSizeEqualTo`
+- `HaveSizeGreaterOrEqualTo`
+- `HaveSizeGreaterThan`
+- `HaveSizeLessOrEqualTo`
+- `HaveSizeLessThan`
 
 ## `Dictionary` (extends `Collection`)
 

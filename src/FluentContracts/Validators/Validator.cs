@@ -59,7 +59,7 @@ internal static partial class Validator
     {
         CheckForNotNull(argumentValue, argumentName, message);
         
-        if (argumentValue.GetType().IsAssignableTo(targetType)) return;
+        if (targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
@@ -72,7 +72,7 @@ internal static partial class Validator
     {
         CheckForNotNull(argumentValue, argumentName, message);
         
-        if (!argumentValue.GetType().IsAssignableTo(targetType)) return;
+        if (!targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
@@ -198,10 +198,12 @@ internal static partial class Validator
     public static void CheckForBetween<T>(
         T start, 
         T end, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string argumentName, 
         string? message = null)
     {
+        CheckForNotNull(argumentValue, argumentName, message);
+
         if (argumentValue.IsGreaterOrEqualTo(start) && argumentValue.IsLessOrEqualTo(end)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
@@ -209,10 +211,12 @@ internal static partial class Validator
 
     public static void CheckForGreaterThan<T>(
         T value, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string argumentName, 
         string? message = null)
     {
+        CheckForNotNull(argumentValue, argumentName, message);
+
         if (argumentValue.IsGreaterThan(value)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
@@ -220,10 +224,12 @@ internal static partial class Validator
 
     public static void CheckForGreaterOrEqualTo<T>(
         T value, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string argumentName,
         string? message = null)
     {
+        CheckForNotNull(argumentValue, argumentName, message);
+
         if (argumentValue.IsGreaterOrEqualTo(value)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
@@ -231,10 +237,12 @@ internal static partial class Validator
 
     public static void CheckForLessThan<T>(
         T value, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string argumentName, 
         string? message = null)
     {
+        CheckForNotNull(argumentValue, argumentName, message);
+
         if (argumentValue.IsLessThan(value)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
@@ -242,10 +250,12 @@ internal static partial class Validator
 
     public static void CheckForLessOrEqualTo<T>(
         T value, 
-        T argumentValue, 
+        [NotNull] T argumentValue, 
         string argumentName, 
         string? message = null)
     {
+        CheckForNotNull(argumentValue, argumentName, message);
+
         if (argumentValue.IsLessOrEqualTo(value)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);

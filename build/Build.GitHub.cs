@@ -11,44 +11,30 @@ using Octokit;
 
 // ReSharper disable once AllUnderscoreLocalParameterName
 [GitHubActions(
-    "dev-linux",
+    "pr",
     GitHubActionsImage.UbuntuLatest,
-    OnPushBranches = [DevelopmentBranch],
-    FetchDepth = 0,
-    PublishArtifacts = false,
-    ImportSecrets = [nameof(CoverallRepoKey)],
-    InvokedTargets = [nameof(Test), nameof(Pack)])]
-[GitHubActions(
-    "dev-windows",
     GitHubActionsImage.WindowsLatest,
-    OnPushBranches = [DevelopmentBranch],
-    FetchDepth = 0,
-    PublishArtifacts = false,
-    ImportSecrets = [nameof(CoverallRepoKey)],
-    InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack)])]
-[GitHubActions(
-    "dev-macos",
     GitHubActionsImage.MacOsLatest,
-    OnPushBranches = [DevelopmentBranch],
+    OnPullRequestBranches = [MainBranch],
     FetchDepth = 0,
     PublishArtifacts = false,
-    ImportSecrets = [nameof(CoverallRepoKey)],
     InvokedTargets = [nameof(Test), nameof(Pack)])]
-[GitHubActions(
-    "master-release",
+[NuGetTrustedPublishing(
+    "release",
     GitHubActionsImage.UbuntuLatest,
+    OnPushBranches = [MainBranch],
     FetchDepth = 0,
-    OnPushBranches = [MasterBranch],
     PublishArtifacts = true,
     EnableGitHubToken = true,
-    InvokedTargets = [nameof(Test), nameof(Pack), nameof(Publish)],
-    ImportSecrets = [nameof(NuGetApiKey)])]
+    // Contents: create the release and its tag. IdToken: exchange an OIDC token for a
+    // short-lived nuget.org key, so no long-lived NuGet API key is stored anywhere.
+    WritePermissions = [GitHubActionsPermissions.Contents, GitHubActionsPermissions.IdToken],
+    InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack), nameof(Publish)],
+    ImportSecrets = [nameof(CoverallRepoKey)])]
 partial class Build
 {
-    const string MasterBranch = "master";
-    const string DevelopmentBranch = "develop";
-    const string ReleaseBranchPrefix = "release";
-    const string HotfixBranchPrefix = "hotfix";
+    /// The single long-lived branch. Every merge into it is released.
+    const string MainBranch = "master";
     
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
@@ -60,9 +46,9 @@ partial class Build
     [UsedImplicitly]
     Target CreateGitHubRelease => _ => _
         .Requires(() => GitHubActions.Instance.Token != null)
-        //.TriggeredBy(Publish)
+        .TriggeredBy(Publish)
         .ProceedAfterFailure()
-        .OnlyWhenStatic(() => GitRepository.IsOnMasterBranch())
+        .OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
         .Executes(async () =>
         {
             var token = GitHubActions.Instance.Token;
@@ -95,6 +81,10 @@ partial class Build
                 new NewRelease(MajorMinorPatchVersion)
                 {
                     Name = MajorMinorPatchVersion,
+                    // Creating the release also creates the tag at this commit, so the
+                    // pipeline never has to push to the protected branch itself.
+                    TargetCommitish = GitVersion.Sha,
+                    GenerateReleaseNotes = true,
                     Prerelease = Prerelease,
                     Draft = Draft,
                 });

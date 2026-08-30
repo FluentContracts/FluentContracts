@@ -14,7 +14,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
     
     /// <summary>
-    /// Checks if <see cref="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
     /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
@@ -25,7 +25,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
     
     /// <summary>
-    /// Checks if <see cref="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
     /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
     /// <param name="message">The optional error message to include in the exception.</param>
@@ -39,7 +39,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
 
     /// <summary>
-    /// Checks if <see cref="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
     /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
     /// <returns>Linker for chaining more checks</returns>
@@ -50,7 +50,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
 
     /// <summary>
-    /// Checks if <see cref="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
     /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
     /// <param name="message">The optional error message to include in the exception.</param>
@@ -64,7 +64,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
     
     /// <summary>
-    /// Checks if all the elements of the <see cref="IList{T}"/> argument are of type <see cref="TElement"/>.
+    /// Checks if all the elements of the <see cref="IList{T}"/> argument are of type <typeparamref name="TElement"/>.
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>

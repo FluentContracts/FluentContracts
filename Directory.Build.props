@@ -2,7 +2,7 @@
     <!--General
     properties-->
     <PropertyGroup>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>latest</LangVersion>
         <DebugType>portable</DebugType>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>

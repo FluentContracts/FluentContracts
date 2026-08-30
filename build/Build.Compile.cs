@@ -10,6 +10,10 @@ partial class Build
 {
     AbsolutePath[] PublishProjects => [SourceDirectory / "FluentContracts"];
     AbsolutePath PublishDirectory => OutputDirectory / "publish";
+
+    // FluentContracts multi-targets, but publishing (and the docs generator that reads
+    // its output) needs a single framework. Keep this on the newest target.
+    const string PublishFramework = "net8.0";
     
     Target Restore => _ => _
         .Executes(() =>
@@ -25,12 +29,12 @@ partial class Build
         .Executes(() =>
         {
             ReportSummary(_ => _
-                    .AddPair("Version", GitVersion.NuGetVersionV2));
+                    .AddPair("Version", MajorMinorPatchVersion));
 
             DotNetBuild(_ => _
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .When(IsServerBuild, _ => _
+                .When(_ => IsServerBuild, _ => _
                     .EnableContinuousIntegrationBuild())
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
@@ -40,9 +44,10 @@ partial class Build
 
             DotNetPublish(_ => _
                     .SetConfiguration(Configuration)
+                    .SetFramework(PublishFramework)
                     .EnableNoBuild()
                     .EnableNoLogo()
-                    .When(IsServerBuild, _ => _
+                    .When(_ => IsServerBuild, _ => _
                         .EnableContinuousIntegrationBuild())
                     .SetAssemblyVersion(GitVersion.AssemblySemVer)
                     .SetFileVersion(GitVersion.AssemblySemFileVer)

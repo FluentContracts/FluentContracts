@@ -25,6 +25,9 @@ partial class Build
             DotNetNuGetPush(_ => _
                     .SetSource(NuGetSource)
                     .SetApiKey(NuGetApiKey)
+                    // Every merge releases, so a re-run of a workflow must not fail
+                    // just because that version already exists.
+                    .EnableSkipDuplicate()
                     .CombineWith(NuGetPackageFiles, (_, v) => _
                         .SetTargetPath(v)),
                 PushDegreeOfParallelism,

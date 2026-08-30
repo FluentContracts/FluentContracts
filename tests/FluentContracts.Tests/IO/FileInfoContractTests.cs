@@ -165,4 +165,74 @@ public class FileInfoContractTests : Tests
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
             "testArgument");
     }
+
+    [Fact]
+    public void Test_Must_HaveSizeEqualTo()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
+        
+        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().HaveSizeEqualTo(fileSize, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveSizeLessThan()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize - 512L);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
+        
+        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().HaveSizeLessThan(fileSize, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveSizeLessOrEqualTo()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
+        
+        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().HaveSizeLessOrEqualTo(fileSize, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveSizeGreaterOrEqualTo()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize - 512L);
+        
+        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().HaveSizeGreaterOrEqualTo(fileSize, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveSizeGreaterThan()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize - 512L);
+        
+        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().HaveSizeGreaterThan(fileSize, message),
+            "testArgument");
+    }
 }

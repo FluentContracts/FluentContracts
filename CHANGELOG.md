@@ -5,7 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+Every merge into `master` is released, and the per-release notes are generated from the
+merged pull-requests on the [releases page](https://github.com/FluentContracts/FluentContracts/releases).
+This file is the curated summary of notable changes on top of those.
+
 ## [Unreleased]
+### Breaking
+- Ordering comparisons now reject a `null` argument with `ArgumentNullException`. Previously
+  `BeNegative` and `NotBePositive` accepted `null` and **passed silently**, while `BePositive`
+  and `NotBeNegative` threw `ArgumentOutOfRangeException`. Code that relied on either of those
+  behaviours will now see `ArgumentNullException` instead. Equality and null checks are
+  unchanged and still accept `null`. Affects the `Int`, `Long`, `Short`, `Sbyte`, `Double`,
+  `Float` and `Decimal` contracts. The guard now lives inside the `Validator` ordering methods,
+  so it cannot be forgotten by a future check.
+
+  Note that the change of target frameworks below is *not* breaking for consumers: a `net6.0`
+  or `net7.0` project resolves the `netstandard2.0` assets.
+
+### Changed
+- `master` is now the only long-lived branch. Releases are produced automatically on every
+  merge into it, replacing the manual GitFlow release process.
+- Packages are published with NuGet Trusted Publishing (OIDC), so no long-lived NuGet API
+  key is stored in the repository.
+
+### Packaging
+- Target frameworks changed from `net6.0` (end of support) to `netstandard2.0` and `net8.0`.
+  `netstandard2.0` widens support to .NET Framework 4.6.1+, Mono and Unity consumers.
+  The package still has no runtime dependencies.
+- The package now ships XML documentation, so the contract summaries appear in IntelliSense.
+- The README is now included in the package and rendered on the nuget.org listing.
+- Fixed 166 XML doc references that pointed at parameters with `cref` instead of `paramref`,
+  which previously left them unresolved in the generated documentation.
+
+### `FileInfoContract`
+- Added `HaveSizeEqualTo`
+- Added `HaveSizeLessThan`
+- Added `HaveSizeLessOrEqualTo`
+- Added `HaveSizeGreaterThan`
+- Added `HaveSizeGreaterOrEqualTo`
 
 ## [2.1.0] / 2024-08-23
 ### `ObjectContract`

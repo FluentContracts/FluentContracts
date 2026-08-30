@@ -154,4 +154,88 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
         Validator.CheckGenericCondition(a => a.Length != 0, ArgumentValue, ArgumentName, message);
         return _linker;
     }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, equal to <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> HaveSizeEqualTo(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, not equal to <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> NotHaveSizeEqualTo(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, less than <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> HaveSizeLessThan(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessThan(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, less than or equal to <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> HaveSizeLessOrEqualTo(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, greater than <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> HaveSizeGreaterThan(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterThan(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the file, described by the argument, has size in bytes, greater than or equal to <paramref name="byteSize"/>
+    /// </summary>
+    /// <param name="byteSize">Size in bytes to check against</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<FileInfoContract> HaveSizeGreaterOrEqualTo(long byteSize, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message);
+        return _linker;
+    }
 }
