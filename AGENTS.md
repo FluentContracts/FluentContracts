@@ -181,6 +181,12 @@ silently, and now throws `ArgumentNullException`" tells them exactly what to che
 The notes on the releases page are generated from pull request titles. `CHANGELOG.md` is the curated
 account that sits on top of them, so the two are not duplicates of each other.
 
+> [!NOTE]
+> Renaming `## [Unreleased]` to the version that just shipped is still done by hand, and a fresh empty
+> `## [Unreleased]` is left above it. If it is skipped, the next release's entries merge into the
+> previous one's and the history stops being usable. Automating this in the release workflow is
+> pending.
+
 ## Housekeeping
 
 - `docs/SupportedContracts.md` is produced by the `GenerateSupportedContracts` target on

@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [3.1.0] / 2026-08-30
 ### Added
 - `UriContract` (`Uri.Must()`): `(Not)BeAbsolute`, `(Not)HaveScheme`, `(Not)BeHttps`, `(Not)HaveHost`,
   `(Not)HavePort`, `(Not)BeLoopback` and `(Not)BeFile`, plus the inherited equality and null checks.
@@ -30,16 +32,22 @@ This file is the curated summary of notable changes on top of those.
   `Exception` ended up with no message at all. Exceptions without such a constructor keep the previous
   behaviour, so no message is lost.
 
-### Internal
-- `AGENTS.md` now requires every pull request to add a changelog entry, and says which heading to use
-  and how to word it.
-
 ### Packaging
 - The nuget.org listing now uses its own readme (`docs/PackageReadme.md`). The repository README relies
   on raw HTML, relative links and images from domains nuget.org does not render, so it appeared mangled
   on the package page.
 
+### Internal
+- `AGENTS.md` now requires every pull request to add a changelog entry, and says which heading to use
+  and how to word it.
+- `DummyData.GetDateTime(SpecificDay)` picked a month at random and then asked for the requested day
+  inside it, which throws when that month never reaches it: a 31st failed about 42% of the time. It now
+  picks among the months that can hold the day.
+- Tests run serially. `DummyData` draws from a single `Faker` seeded with a fixed number, which only
+  yields reproducible data when one test draws at a time, and `System.Random` is not safe to share
+  across threads.
 
+## [3.0.0] / 2026-08-30
 ### Breaking
 - Ordering comparisons now reject a `null` argument with `ArgumentNullException`. Previously
   `BeNegative` and `NotBePositive` accepted `null` and **passed silently**, while `BePositive`
@@ -183,7 +191,9 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/2.1.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...HEAD
+[3.1.0]: https://github.com/FluentContracts/FluentContracts/compare/3.0.0...3.1.0
+[3.0.0]: https://github.com/FluentContracts/FluentContracts/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/FluentContracts/FluentContracts/compare/2.0.0...2.1.0
 [2.0.0]: https://github.com/FluentContracts/FluentContracts/compare/1.4.0...2.0.0
 [1.4.0]: https://github.com/FluentContracts/FluentContracts/compare/1.3.0...1.4.0
