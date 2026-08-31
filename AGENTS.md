@@ -62,6 +62,31 @@ This is the part most likely to surprise you.
 - **Pull requests are squash-merged, so the pull request title becomes the commit message.**
 - **Every pull request updates `CHANGELOG.md`** — see [Changelog](#changelog).
 
+### Merging without releasing
+
+Not every change belongs in a package. Put `[skip release]` in the **pull request title** and the merge
+is still built and tested on `master`, but nothing is packed, published, tagged or released, and the
+version does not move:
+
+```
+Tidy up the contributing guide [skip release]
+```
+
+This is ours, not GitHub's `[skip ci]`, which would skip every workflow including the tests.
+
+> [!WARNING]
+> Markers are read out of the **whole commit message, body included** — by GitHub for `[skip ci]`
+> and by this build for the release one, exactly as GitVersion reads `+semver:` directives. Writing
+> one in a commit message while merely *describing* it will trigger it: a body that explains
+> `[skip ci]` silently stops CI from running on the pull request at all, and the pull request just
+> sits there with no checks. Mention the syntax in a file (like this one), never in a commit
+> message or a pull request title.
+
+> [!CAUTION]
+> Two files look like documentation but ship **inside the package**: `docs/PackageReadme.md`, which
+> becomes the nuget.org listing, and `assets/icon.png`. A published readme cannot be corrected in
+> place, so a change to either only reaches anyone through a release — do not skip one.
+
 ### Choosing the version
 
 The version is computed by GitVersion from the most recent tag, and the **patch** is
@@ -76,9 +101,9 @@ Drop the Linker allocation from every check +semver: major
 Most pull requests need no directive at all — a patch release is the default.
 
 > [!WARNING]
-> GitVersion reads these directives out of commit messages. Quoting one in a commit message
-> or pull request title while merely *writing about* it will actually request that bump. If
-> you need to mention the syntax, do it in a file (like this one), not in a commit message.
+> GitVersion reads these directives out of commit messages, so the rule above applies here too:
+> quoting one in a commit message or pull request title while merely *writing about* it will
+> actually request that bump.
 
 Release notes are generated automatically from merged pull request titles, so write titles
 that read well in a changelog.
@@ -135,11 +160,18 @@ Publishing uses [Trusted Publishing](https://learn.microsoft.com/en-us/nuget/nug
 the workflow exchanges a GitHub OIDC token for a NuGet key that lasts an hour, so there is
 no long-lived API key in the repository.
 
+The `release` workflow also mints a short-lived token for a GitHub App, which is what pushes the
+finalised changelog back to `master`. The built-in `GITHUB_TOKEN` cannot: `master` is protected, and
+`github-actions[bot]` cannot be granted a bypass — GitHub keeps it off the bypass list on purpose,
+since the permission would not be scoped to one branch. An App can be granted one. Two repository
+secrets hold its credentials, `CHANGELOG_APP_ID` and `CHANGELOG_APP_PRIVATE_KEY`; if either is
+missing the release still publishes and the build says the changelog was not pushed.
+
 > [!IMPORTANT]
-> **The workflow YAML is generated.** It comes from the `[GitHubActions]` and
-> `[NuGetTrustedPublishing]` attributes in `build/Build.GitHub.cs`, and NUKE rewrites the
-> files whenever the build runs. Editing `.github/workflows/*.yml` by hand will be undone —
-> change the attributes instead, then run `./build.sh Test` to regenerate.
+> **The workflow YAML is generated.** It comes from the `[GitHubActions]` and `[ReleaseWorkflow]`
+> attributes in `build/Build.GitHub.cs`, and NUKE rewrites the files whenever the build runs.
+> Editing `.github/workflows/*.yml` by hand will be undone — change the attributes instead, then run
+> `./build.sh Test` to regenerate.
 
 ## The two readmes
 
@@ -181,11 +213,12 @@ silently, and now throws `ArgumentNullException`" tells them exactly what to che
 The notes on the releases page are generated from pull request titles. `CHANGELOG.md` is the curated
 account that sits on top of them, so the two are not duplicates of each other.
 
-> [!NOTE]
-> Renaming `## [Unreleased]` to the version that just shipped is still done by hand, and a fresh empty
-> `## [Unreleased]` is left above it. If it is skipped, the next release's entries merge into the
-> previous one's and the history stops being usable. Automating this in the release workflow is
-> pending.
+You do not need to rename the section yourself. After a successful publish, the release workflow
+renames `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty `## [Unreleased]`
+above it, updates the comparison links, and commits that back to `master`. That commit carries both
+`[skip ci]` and `[skip release]`: it is generated, it changes nothing but Markdown, and the tree it
+sits on has already been tested by the merge it documents. The step does nothing when the section is
+empty, and nothing when that version already has a section, so a re-run is harmless.
 
 ## Housekeeping
 

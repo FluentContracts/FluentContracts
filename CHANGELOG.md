@@ -10,8 +10,17 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Internal
+- The release workflow now finalises `CHANGELOG.md` itself: after a successful publish it renames
+  `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty section above it,
+  updates the comparison links and commits that back to `master`. The commit is pushed with a
+  short-lived GitHub App token, because the built-in `GITHUB_TOKEN` cannot be given a bypass on a
+  protected branch; without the app's secrets the release still publishes and only the changelog
+  commit is skipped.
+- A pull request whose title contains `[skip release]` is built and tested on `master` but not
+  packed, published or tagged, so changes that do not belong in a package no longer force a version.
 
-## [3.1.0] / 2026-08-30
+## [3.1.0] / 2026-08-31
 ### Added
 - `UriContract` (`Uri.Must()`): `(Not)BeAbsolute`, `(Not)HaveScheme`, `(Not)BeHttps`, `(Not)HaveHost`,
   `(Not)HavePort`, `(Not)BeLoopback` and `(Not)BeFile`, plus the inherited equality and null checks.

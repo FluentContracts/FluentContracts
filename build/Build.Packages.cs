@@ -20,6 +20,8 @@ partial class Build
     Target Publish => _ => _
         .DependsOn(Test, Pack)
         .Requires(() => NuGetApiKey)
+        // A merge can opt out of releasing; the build and tests still run.
+        .OnlyWhenDynamic(() => !SkipRelease)
         .Executes(() =>
         {
             DotNetNuGetPush(_ => _
