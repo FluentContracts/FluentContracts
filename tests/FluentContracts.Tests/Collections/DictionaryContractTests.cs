@@ -290,4 +290,28 @@ public class DictionaryContractTests : Tests
             (testArgument, message) => testArgument.Must().NotContainKeyValuePair(pair.Key, pair.Value, message),
             "testArgument");
     }
+
+    /// <summary>
+    /// The checks added on <c>CollectionContract</c> reach a dictionary too, where an element is a
+    /// <see cref="KeyValuePair{TKey,TValue}"/>.
+    /// </summary>
+    [Fact]
+    public void Test_Must_AllSatisfy()
+    {
+        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentOutOfRangeException>(
+            new Dictionary<string, int> { ["a"] = 2, ["b"] = 4 },
+            new Dictionary<string, int> { ["a"] = 2, ["b"] = 5 },
+            (testArgument, message) => testArgument.Must().AllSatisfy(x => x.Value % 2 == 0, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_AnySatisfy()
+    {
+        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentOutOfRangeException>(
+            new Dictionary<string, int> { ["a"] = 1, ["b"] = 9 },
+            new Dictionary<string, int> { ["a"] = 1, ["b"] = 2 },
+            (testArgument, message) => testArgument.Must().AnySatisfy(x => x.Value > 5, message),
+            "testArgument");
+    }
 }

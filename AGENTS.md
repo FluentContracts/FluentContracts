@@ -121,6 +121,20 @@ contracts.
 **Checks do not throw directly.** They delegate to a `Validator.*` method, which throws via
 `ThrowHelper`. Keep new checks in that shape.
 
+**Overload shape for multi-value checks.** A check taking several values comes as a pair — see
+`ListContract.Contain`:
+
+```csharp
+public Linker<TContract> Contain(params T[] elements);
+public Linker<TContract> Contain(IEnumerable<T> elements, string? message = null);
+```
+
+Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds
+`Check("a", "b")` to that overload and silently swallows `"a"` as the message, so the check runs
+against the wrong set. `EqualityContract.BeAnyOf` and `NotBeAnyOf` still have that shape and are
+wrong for `StringContract`; correcting it changes what already-compiling code means, so it is held
+for the next major version.
+
 **Null policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException`; the guard lives
 inside the `Validator` ordering methods, not at the call sites. Equality checks and the

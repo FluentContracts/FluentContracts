@@ -10,6 +10,22 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- Five checks on `CollectionContract`, so they are available on every collection contract — `List`,
+  `Array` and `Dictionary` alike: `ContainAnyOf` (at least one of the given elements is present),
+  `HaveUniqueItems`, `NotContainNull`, `AllSatisfy` and `AnySatisfy`. `AllSatisfy` and `AnySatisfy`
+  take a predicate over the element type; on a dictionary that element is a `KeyValuePair<TKey, TValue>`.
+  An empty collection satisfies `AllSatisfy` and fails `AnySatisfy`, and a collection of a non-nullable
+  value type always satisfies `NotContainNull`.
+
+### Fixed
+- `NotContain` on a list no longer accepts a collection that holds *some* of the given elements. It was
+  implemented as the negation of `Contain`, which asks whether the collection holds them **all**, so
+  `list.Must().NotContain(2, 99)` passed for `[1, 2, 3]` — the forbidden `2` was present and the
+  contract was silently not enforced. It now fails if *any* of the elements is present. Passing a single
+  element was always correct and is unchanged, as is `Contain`, which still requires every element.
+  Calling `NotContain()` with no elements now passes instead of throwing, matching `Contain()`.
+
 ### Internal
 - The release workflow now finalises `CHANGELOG.md` itself: after a successful publish it renames
   `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty section above it,
