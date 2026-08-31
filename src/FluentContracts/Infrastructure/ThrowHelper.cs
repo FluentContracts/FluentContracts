@@ -28,16 +28,40 @@ internal static class ThrowHelper
     public static void ThrowUserDefinedException<TException>(string message)
         where TException : Exception, new()
     {
-        var ex = Activator.CreateInstance<TException>();
+        throw CreateUserDefinedException<TException>(message);
+    }
 
-        var internalFieldInfo =
-            typeof(TException).GetField(
+    /// <summary>
+    /// Builds <typeparamref name="TException"/> carrying <paramref name="message"/>, preferring the
+    /// conventional <c>(string message)</c> constructor.
+    /// </summary>
+    /// <remarks>
+    /// Constructing the exception properly matters: assigning the message to a field would skip the
+    /// constructor, so anything it does — deriving an error code, validating, setting other members —
+    /// would silently not happen, and an exception that stores its message itself rather than deferring
+    /// to <see cref="Exception"/> would lose the message entirely.
+    /// <para>
+    /// When no such constructor exists there is nothing to call, so fall back to writing the private
+    /// field on <see cref="Exception"/>, which is at least no worse than losing the message.
+    /// </para>
+    /// </remarks>
+    private static TException CreateUserDefinedException<TException>(string message)
+        where TException : Exception, new()
+    {
+        var messageConstructor = typeof(TException).GetConstructor([typeof(string)]);
+
+        if (messageConstructor != null)
+            return (TException)messageConstructor.Invoke([message]);
+
+        var exception = new TException();
+
+        var messageField =
+            typeof(Exception).GetField(
                 "_message",
                 BindingFlags.NonPublic | BindingFlags.Instance);
 
-        if (internalFieldInfo != null)
-            internalFieldInfo.SetValue(ex, message);
+        messageField?.SetValue(exception, message);
 
-        throw ex;
+        return exception;
     }
 }

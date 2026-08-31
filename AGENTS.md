@@ -26,6 +26,7 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | `tests/FluentContracts.Tests` | xUnit test suite |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
+| `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
 | `docs/SupportedContracts.md` | **Generated** by the build — never hand-edit |
 
 ## Prerequisites
@@ -59,6 +60,7 @@ This is the part most likely to surprise you.
 - **Every merge into `master` is released**: the `release` workflow packs, publishes to
   nuget.org and creates a GitHub release and tag.
 - **Pull requests are squash-merged, so the pull request title becomes the commit message.**
+- **Every pull request updates `CHANGELOG.md`** — see [Changelog](#changelog).
 
 ### Choosing the version
 
@@ -139,9 +141,53 @@ no long-lived API key in the repository.
 > files whenever the build runs. Editing `.github/workflows/*.yml` by hand will be undone —
 > change the attributes instead, then run `./build.sh Test` to regenerate.
 
+## The two readmes
+
+`README.md` is the GitHub landing page. `docs/PackageReadme.md` is what nuget.org shows, and it is the
+file packed into the package as `README.md`.
+
+They are deliberately separate. nuget.org renders CommonMark only — **no raw HTML** — it resolves no
+relative links, and it renders images only from
+[an allow-list of domains](https://learn.microsoft.com/en-us/nuget/nuget-org/package-readme-on-nuget-org#allowed-domains-for-images-and-badges).
+The repository README breaks all three rules: it uses `<img>` tags, links to files by relative path, and
+pulls images from `github.com/.../raw/...`, `repobeats.axiom.co` and `resources.jetbrains.com`, none of
+which are trusted. Pointing `PackageReadmeFile` back at `README.md` would put the mangled listing back.
+
+When editing `docs/PackageReadme.md`, keep to plain CommonMark, use absolute `https://` links, and only
+use images from allowed domains (`img.shields.io` and `raw.githubusercontent.com` cover most needs). A
+published readme cannot be corrected in place — it takes a new package version.
+
+## Changelog
+
+**Every pull request updates `CHANGELOG.md`.** There is no automation for this and no reviewer
+will add it for you — an entry that is not written when the change is made is never written.
+
+Add it under `## [Unreleased]`, in the heading that fits, creating the heading if it is missing:
+
+| Heading | For |
+| --- | --- |
+| `Breaking` | anything that can change the behaviour of code that compiles today |
+| `Added` | new contracts and new checks |
+| `Fixed` | bug fixes |
+| `Changed` | behaviour that changed without breaking |
+| `Packaging` | target frameworks, package contents, metadata |
+| `Internal` | build, CI and repository tooling, with no effect on the package |
+
+Write for someone deciding whether to upgrade. Name the contracts affected, and for a behaviour
+change say **what the old behaviour was** — that is what tells a reader whether their code is
+affected. "Fixed a null bug" tells them nothing; "`BeNegative` used to accept `null` and pass
+silently, and now throws `ArgumentNullException`" tells them exactly what to check.
+
+The notes on the releases page are generated from pull request titles. `CHANGELOG.md` is the curated
+account that sits on top of them, so the two are not duplicates of each other.
+
+> [!NOTE]
+> Renaming `## [Unreleased]` to the version that just shipped is still done by hand, and a fresh empty
+> `## [Unreleased]` is left above it. If it is skipped, the next release's entries merge into the
+> previous one's and the history stops being usable. Automating this in the release workflow is
+> pending.
+
 ## Housekeeping
 
-- `CHANGELOG.md` is a curated summary of notable changes. Per-release notes are generated
-  on the releases page, so only add entries that are worth calling out.
 - `docs/SupportedContracts.md` is produced by the `GenerateSupportedContracts` target on
   local builds. Never edit it by hand; change the contracts and rebuild.

@@ -30,6 +30,16 @@
 - `HaveCountLessOrEqualTo`
 - `HaveCountLessThan`
 
+## `Uri` (extends `Equality`)
+
+- `(Not)BeAbsolute`
+- `(Not)BeFile`
+- `(Not)BeHttps`
+- `(Not)BeLoopback`
+- `(Not)HaveHost`
+- `(Not)HavePort`
+- `(Not)HaveScheme`
+
 ## `Char` (extends `Object`)
 
 - `(Not)Be`
@@ -127,6 +137,18 @@
 - `(Not)BeWeekday`
 - `(Not)BeWeekend`
 - `(Not)BeYesterday`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `DateTimeOffset` (extends `Equality`)
+
+- `(Not)BeInTheFuture`
+- `(Not)BeInThePast`
+- `(Not)BeUtc`
+- `(Not)HaveOffset`
 - `BeBetween`
 - `BeGreaterOrEqualTo`
 - `BeGreaterThan`

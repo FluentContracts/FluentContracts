@@ -106,6 +106,40 @@ public static class StructExtensions
     }
 
     #endregion
+
+    #region DateTimeOffset
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateTimeOffset"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting the current moment</param>
+    /// <returns>A new instance of the DateTimeOffsetContract class.</returns>
+    public static DateTimeOffsetContract Must(
+        this DateTimeOffset argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
+        IDateTimeProvider? dateTimeProvider = null)
+    {
+        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider);
+    }
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTimeOffset"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting the current moment</param>
+    /// <returns>A new instance of the DateTimeOffsetContract class.</returns>
+    public static DateTimeOffsetContract Must(
+        this DateTimeOffset? argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
+        IDateTimeProvider? dateTimeProvider = null)
+    {
+        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider);
+    }
+
+    #endregion
     
     #region Enum
     

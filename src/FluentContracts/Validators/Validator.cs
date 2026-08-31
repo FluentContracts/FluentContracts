@@ -77,6 +77,37 @@ internal static partial class Validator
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
     
+    /// <summary>
+    /// Returns <paramref name="argumentValue"/> as <typeparamref name="T"/>, failing the contract when
+    /// it is something else. Casting directly would surface an <see cref="InvalidCastException"/> from
+    /// inside the library rather than a contract failure naming the argument.
+    /// </summary>
+    public static T CheckForTypeAndConvert<TArgument, T>(
+        TArgument argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        if (argumentValue is T typedValue) return typedValue;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+        return default!;
+    }
+
+    /// <inheritdoc cref="CheckForTypeAndConvert{TArgument,T}"/>
+    public static T CheckForTypeAndConvert<TArgument, T, TException>(
+        TArgument argumentValue,
+        string? message = null)
+        where TException : Exception, new()
+    {
+        if (argumentValue is T typedValue) return typedValue;
+
+        if (message is null)
+            ThrowHelper.ThrowUserDefinedException<TException>();
+
+        ThrowHelper.ThrowUserDefinedException<TException>(message);
+        return default!;
+    }
+
     public static void CheckForNotNull<T, TException>([NotNull] T? value)
         where TException : Exception, new()
     {

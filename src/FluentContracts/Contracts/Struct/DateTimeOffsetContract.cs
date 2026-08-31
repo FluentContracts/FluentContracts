@@ -1,0 +1,222 @@
+using FluentContracts.Infrastructure;
+using FluentContracts.Validators;
+
+namespace FluentContracts.Contracts.Struct;
+
+public class DateTimeOffsetContract(
+    DateTimeOffset? argumentValue,
+    string argumentName,
+    IDateTimeProvider? dateTimeProvider = null)
+    : DateTimeOffsetContract<DateTimeOffsetContract>(argumentValue, argumentName, dateTimeProvider);
+
+public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset?, TContract>
+    where TContract : DateTimeOffsetContract<TContract>
+{
+    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly Linker<TContract> _linker;
+
+    protected DateTimeOffsetContract(
+        DateTimeOffset? argumentValue,
+        string argumentName,
+        IDateTimeProvider? dateTimeProvider = null)
+        : base(argumentValue, argumentName)
+    {
+        _dateTimeProvider = dateTimeProvider ?? new DotNetDateTimeProvider();
+        _linker = new Linker<TContract>((TContract)this);
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is greater than <paramref name="value"/>
+    /// </summary>
+    /// <param name="value">Value that the argument must be greater than</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeGreaterThan(DateTimeOffset value, string? message = null)
+    {
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is greater than or equal to <paramref name="value"/>
+    /// </summary>
+    /// <param name="value">Value that the argument must be greater than or equal to</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeGreaterOrEqualTo(DateTimeOffset value, string? message = null)
+    {
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is less than <paramref name="value"/>
+    /// </summary>
+    /// <param name="value">Value that the argument must be less than</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeLessThan(DateTimeOffset value, string? message = null)
+    {
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is less than or equal to <paramref name="value"/>
+    /// </summary>
+    /// <param name="value">Value that the argument must be less than or equal to</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeLessOrEqualTo(DateTimeOffset value, string? message = null)
+    {
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is inclusively between <paramref name="start"/> and <paramref name="end"/>
+    /// </summary>
+    /// <param name="start">Value that must be less or equal to the argument</param>
+    /// <param name="end">Value that must be greater or equal to the argument</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeBetween(DateTimeOffset start, DateTimeOffset end, string? message = null)
+    {
+        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument has a zero offset from UTC.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeUtc(string? message = null) => HaveOffset(TimeSpan.Zero, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument does not have a zero offset from UTC.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeUtc(string? message = null) => NotHaveOffset(TimeSpan.Zero, message);
+
+    /// <summary>
+    /// Checks if the offset of the <see cref="DateTimeOffset"/> argument is <paramref name="offset"/>.
+    /// </summary>
+    /// <param name="offset">The expected offset from UTC</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> HaveOffset(TimeSpan offset, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the offset of the <see cref="DateTimeOffset"/> argument is not <paramref name="offset"/>.
+    /// </summary>
+    /// <param name="offset">The offset from UTC the argument must not have</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotHaveOffset(TimeSpan offset, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is in the past.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeInThePast(string? message = null) => BeInThePast(Now, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is in the past from
+    /// <paramref name="referenceDate"/>
+    /// </summary>
+    /// <param name="referenceDate">Reference date to be used as a point for evaluation of the argument</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeInThePast(DateTimeOffset referenceDate, string? message = null) =>
+        BeLessThan(referenceDate, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is not in the past.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeInThePast(string? message = null) => NotBeInThePast(Now, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is not in the past from
+    /// <paramref name="referenceDate"/>
+    /// </summary>
+    /// <param name="referenceDate">Reference date to be used as a point for evaluation of the argument</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeInThePast(DateTimeOffset referenceDate, string? message = null) =>
+        BeGreaterOrEqualTo(referenceDate, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is in the future.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeInTheFuture(string? message = null) => BeInTheFuture(Now, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is in the future from
+    /// <paramref name="referenceDate"/>
+    /// </summary>
+    /// <param name="referenceDate">Reference date to be used as a point for evaluation of the argument</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> BeInTheFuture(DateTimeOffset referenceDate, string? message = null) =>
+        BeGreaterThan(referenceDate, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is not in the future.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeInTheFuture(string? message = null) => NotBeInTheFuture(Now, message);
+
+    /// <summary>
+    /// Checks if the value of the <see cref="DateTimeOffset"/> argument is not in the future from
+    /// <paramref name="referenceDate"/>
+    /// </summary>
+    /// <param name="referenceDate">Reference date to be used as a point for evaluation of the argument</param>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<TContract> NotBeInTheFuture(DateTimeOffset referenceDate, string? message = null) =>
+        BeLessOrEqualTo(referenceDate, message);
+
+    /// <summary>
+    /// The current moment, taken from the injected <see cref="IDateTimeProvider"/> so tests can control it.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="IDateTimeProvider.Now"/> returns a local <see cref="DateTime"/>, and converting it keeps
+    /// that local offset, so comparisons stay correct regardless of the argument's own offset.
+    /// </remarks>
+    private DateTimeOffset Now => new(_dateTimeProvider.Now);
+}
