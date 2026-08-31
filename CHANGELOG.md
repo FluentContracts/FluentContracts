@@ -10,6 +10,24 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Fixed
+- The release workflow finalises `CHANGELOG.md` again. The commit message was assembled with quotes of
+  our own around values that the build's argument handler also quotes, so `git commit -m` received a
+  nested pair, took the tail of the message as pathspecs and failed. 3.2.0 published normally but its
+  `## [Unreleased]` section was left unrenamed, and the release run went red after the package was
+  already out.
+- Finalising no longer rewrites `## [Unreleased]` where an entry quotes it in prose. The heading was
+  matched anywhere in the file rather than at the start of a line, so the entry describing this very
+  step was mangled when the section was renamed.
+
+### Internal
+- A failure while finalising the changelog can no longer fail the release. The step already ran after
+  the package was pushed, but its exception still left the workflow red, which reads as a failed
+  release; it now reports the problem and leaves the run green.
+- The changelog push is logged again. Only the command carrying the app token is hidden, so a rejected
+  push says why instead of failing silently.
+
+## [3.2.0] / 2026-08-31
 ### Added
 - Five checks on `CollectionContract`, so they are available on every collection contract — `List`,
   `Array` and `Dictionary` alike: `ContainAnyOf` (at least one of the given elements is present),
@@ -226,7 +244,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...HEAD
+[3.2.0]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/FluentContracts/FluentContracts/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/FluentContracts/FluentContracts/compare/2.1.0...3.0.0
 [2.1.0]: https://github.com/FluentContracts/FluentContracts/compare/2.0.0...2.1.0
