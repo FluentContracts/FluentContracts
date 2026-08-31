@@ -4,6 +4,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for <see cref="string"/> and <see cref="char"/>.
+/// </summary>
 public static class TextExtensions
 {
     #region string

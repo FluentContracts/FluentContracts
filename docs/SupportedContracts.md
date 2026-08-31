@@ -24,11 +24,16 @@
 
 - `(Not)BeEmpty`
 - `(Not)HaveCountEqualTo`
+- `AllSatisfy`
+- `AnySatisfy`
+- `ContainAnyOf`
 - `HaveCountBetween`
 - `HaveCountGreaterOrEqualTo`
 - `HaveCountGreaterThan`
 - `HaveCountLessOrEqualTo`
 - `HaveCountLessThan`
+- `HaveUniqueItems`
+- `NotContainNull`
 
 ## `Uri` (extends `Equality`)
 

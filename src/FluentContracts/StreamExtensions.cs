@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for <see cref="System.IO.Stream"/>.
+/// </summary>
 public static class StreamExtensions
 {
     /// <summary>

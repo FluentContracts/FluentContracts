@@ -121,6 +121,20 @@ contracts.
 **Checks do not throw directly.** They delegate to a `Validator.*` method, which throws via
 `ThrowHelper`. Keep new checks in that shape.
 
+**Overload shape for multi-value checks.** A check taking several values comes as a pair — see
+`ListContract.Contain`:
+
+```csharp
+public Linker<TContract> Contain(params T[] elements);
+public Linker<TContract> Contain(IEnumerable<T> elements, string? message = null);
+```
+
+Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds
+`Check("a", "b")` to that overload and silently swallows `"a"` as the message, so the check runs
+against the wrong set. `EqualityContract.BeAnyOf` and `NotBeAnyOf` still have that shape and are
+wrong for `StringContract`; correcting it changes what already-compiling code means, so it is held
+for the next major version.
+
 **Null policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException`; the guard lives
 inside the `Validator` ordering methods, not at the call sites. Equality checks and the
@@ -132,10 +146,17 @@ unavailable on `netstandard2.0`, add a guarded helper to `Infrastructure/Compat.
 than scattering `#if` through the contracts. `PolySharp` supplies the missing language and
 nullable-analysis attributes.
 
-**XML documentation.** Every public check needs a `<summary>` and `<param>` entries; the
-package ships the generated XML. Refer to a parameter with `<paramref name="x"/>` and to a
-type parameter with `<typeparamref name="T"/>` — `<see cref="x"/>` does not resolve to
-parameters and silently produces broken documentation.
+**XML documentation.** Every public member needs it — types, constructors and properties as well as
+checks. A `<summary>`, a `<param>` for each parameter and a `<typeparam>` for each type parameter. The
+package ships the generated XML, so an undocumented public member is a blank in every consumer's
+IntelliSense.
+
+Refer to a parameter with `<paramref name="x"/>` and to a type parameter with `<typeparamref name="T"/>`
+— `<see cref="x"/>` does not resolve to parameters and silently produces broken documentation.
+
+**The compiler enforces this**, so there is nothing to remember: an undocumented public member raises
+CS1591, and warnings are errors here, so the build fails. Nothing suppresses it — do not add it back to
+`NoWarn` to get a green build.
 
 ## Tests
 

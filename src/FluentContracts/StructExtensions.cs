@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for the built-in value types — dates, times, spans, booleans, enums and <see cref="System.Guid"/>.
+/// </summary>
 public static class StructExtensions
 {
     #region Guid

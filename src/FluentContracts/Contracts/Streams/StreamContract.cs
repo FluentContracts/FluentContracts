@@ -3,15 +3,31 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Streams;
 
+/// <summary>
+/// The entry point for checks on a <see cref="System.IO.Stream"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class StreamContract(Stream? argumentValue, string argumentName)
     : StreamContract<Stream?, StreamContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for a <see cref="System.IO.Stream"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TStream">The stream type being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public abstract class StreamContract<TStream, TContract> : ObjectContract<TStream, TContract>
     where TStream : Stream?
     where TContract : StreamContract<TStream, TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected StreamContract(TStream argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

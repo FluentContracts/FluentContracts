@@ -24,10 +24,6 @@
 
         <!-- Ship the XML docs so the summaries show up in consumers' IntelliSense. -->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <!-- CS1591: every contract check is documented, but the base types, constructors and
-             inherited members are not yet. Documenting those is tracked separately; until then
-             do not fail the build over them. -->
-        <NoWarn>$(NoWarn);CS1591</NoWarn>
 
         <!-- Source Link is provided by the .NET SDK (8.0+); no package reference required. -->
         <PublishRepositoryUrl>true</PublishRepositoryUrl>

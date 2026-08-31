@@ -3,11 +3,21 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
+/// <summary>
+/// Adds the two checks that every argument has, whatever its type: <c>BeNull</c> and <c>NotBeNull</c>.
+/// </summary>
+/// <typeparam name="TArgument">The type of the argument being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public abstract class NullableContract<TArgument, TContract> : BaseContract<TArgument, TContract>
     where TContract : NullableContract<TArgument, TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected NullableContract(TArgument? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

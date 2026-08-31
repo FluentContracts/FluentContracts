@@ -3,12 +3,23 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Collections;
 
+/// <summary>
+/// The inheritable contract for an <see cref="System.Collections.Generic.IDictionary{TKey,TValue}"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TKey">The dictionary's key type.</typeparam>
+/// <typeparam name="TValue">The dictionary's value type.</typeparam>
 public class DictionaryContract<TKey, TValue>
     : CollectionContract<KeyValuePair<TKey, TValue>, IDictionary<TKey, TValue>?, DictionaryContract<TKey, TValue>>
 {
     
     private readonly Linker<DictionaryContract<TKey, TValue>> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     public DictionaryContract(IDictionary<TKey, TValue>? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

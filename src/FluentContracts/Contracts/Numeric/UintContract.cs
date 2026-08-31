@@ -3,15 +3,30 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
+/// <summary>
+/// The entry point for checks on a <see cref="uint"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class UintContract(uint? argumentValue, string argumentName)
     : UintContract<UintContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for a <see cref="uint"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class UintContract<TContract> : ObjectContract<uint?, TContract>
     where TContract : UintContract<TContract>
 {
     private const uint Zero = 0;
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected UintContract(uint? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

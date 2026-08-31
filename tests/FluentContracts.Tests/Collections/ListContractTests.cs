@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Bogus;
+using FluentAssertions;
 using FluentContracts.Contracts.Collections;
 using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.Mocks.Data;
@@ -263,5 +264,87 @@ public class ListContractTests : Tests
             fail,
             (testArgument, message) => testArgument.Must().HaveCountBetween(targetLengthLow, targetLengthHigh, message),
             "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_ContainAnyOf()
+    {
+        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+            [1, 2, 3],
+            [7, 8, 9],
+            (testArgument, message) => testArgument.Must().ContainAnyOf([2, 99], message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_HaveUniqueItems()
+    {
+        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+            [1, 2, 3],
+            [1, 2, 2],
+            (testArgument, message) => testArgument.Must().HaveUniqueItems(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotContainNull()
+    {
+        TestContract<List<string?>, ListContract<string?>, ArgumentOutOfRangeException>(
+            ["a", "b"],
+            ["a", null],
+            (testArgument, message) => testArgument.Must().NotContainNull(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_AllSatisfy()
+    {
+        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+            [2, 4, 6],
+            [2, 3, 6],
+            (testArgument, message) => testArgument.Must().AllSatisfy(x => x % 2 == 0, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_AnySatisfy()
+    {
+        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+            [1, 2, 3],
+            [1, 1, 1],
+            (testArgument, message) => testArgument.Must().AnySatisfy(x => x > 2, message),
+            "testArgument");
+    }
+
+    /// <summary>
+    /// The empty collection is the edge both quantifiers turn on: everything holds of no elements, and
+    /// nothing does.
+    /// </summary>
+    [Fact]
+    public void Test_Must_AllSatisfy_And_AnySatisfy_On_An_Empty_Collection()
+    {
+        List<int> testArgument = [];
+
+        FluentActions
+            .Invoking(() => testArgument.Must().AllSatisfy(x => x > 100))
+            .Should()
+            .NotThrow("every element of an empty collection satisfies any condition");
+
+        FluentActions
+            .Invoking(() => testArgument.Must().AnySatisfy(x => x > 100))
+            .Should()
+            .Throw<ArgumentOutOfRangeException>("no element of an empty collection satisfies anything");
+    }
+
+    [Fact]
+    public void Test_Must_AllSatisfy_Rejects_A_Null_Condition()
+    {
+        List<int> testArgument = [1, 2, 3];
+
+        FluentActions
+            .Invoking(() => testArgument.Must().AllSatisfy(null!))
+            .Should()
+            .Throw<ArgumentNullException>()
+            .WithParameterName("condition");
     }
 }
