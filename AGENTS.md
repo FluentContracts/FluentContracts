@@ -62,6 +62,23 @@ This is the part most likely to surprise you.
 - **Pull requests are squash-merged, so the pull request title becomes the commit message.**
 - **Every pull request updates `CHANGELOG.md`** — see [Changelog](#changelog).
 
+### Merging without releasing
+
+Not every change belongs in a package. Put `[skip release]` in the **pull request title** and the merge
+is still built and tested on `master`, but nothing is packed, published, tagged or released, and the
+version does not move:
+
+```
+Tidy up the contributing guide [skip release]
+```
+
+This is ours, not GitHub's `[skip ci]`, which would skip every workflow including the tests.
+
+> [!CAUTION]
+> Two files look like documentation but ship **inside the package**: `docs/PackageReadme.md`, which
+> becomes the nuget.org listing, and `assets/icon.png`. A published readme cannot be corrected in
+> place, so a change to either only reaches anyone through a release — do not skip one.
+
 ### Choosing the version
 
 The version is computed by GitVersion from the most recent tag, and the **patch** is
@@ -181,11 +198,11 @@ silently, and now throws `ArgumentNullException`" tells them exactly what to che
 The notes on the releases page are generated from pull request titles. `CHANGELOG.md` is the curated
 account that sits on top of them, so the two are not duplicates of each other.
 
-> [!NOTE]
-> Renaming `## [Unreleased]` to the version that just shipped is still done by hand, and a fresh empty
-> `## [Unreleased]` is left above it. If it is skipped, the next release's entries merge into the
-> previous one's and the history stops being usable. Automating this in the release workflow is
-> pending.
+You do not need to rename the section yourself. After a successful publish, the release workflow
+renames `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty `## [Unreleased]`
+above it, updates the comparison links, and commits that back to `master` — with `[skip release]` in
+the message, so it does not release itself. It does nothing when the section is empty, and nothing
+when that version already has a section, so a re-run is harmless.
 
 ## Housekeeping
 

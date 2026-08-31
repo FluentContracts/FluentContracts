@@ -49,6 +49,7 @@ partial class Build
         .TriggeredBy(Publish)
         .ProceedAfterFailure()
         .OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
+        .OnlyWhenDynamic(() => !SkipRelease)
         .Executes(async () =>
         {
             var token = GitHubActions.Instance.Token;

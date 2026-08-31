@@ -27,6 +27,7 @@
         "Clean",
         "Compile",
         "CreateGitHubRelease",
+        "FinalizeChangelog",
         "Full",
         "GenerateSupportedContracts",
         "Pack",
