@@ -257,9 +257,17 @@ public static partial class DummyData
             case DateTimeOption.SpecificDay:
             {
                 var year = Faker.Value.Random.Int(1800, 2500);
-                var month = Faker.Value.Random.Int(1, 12);
-                
-                return new DateTime(year, month, specificDay);
+
+                // Not every month reaches a 29th, 30th or 31st, and asking for one that does not
+                // exist throws. Pick among the months that can actually hold the requested day, so
+                // the generated date really does fall on it.
+                var monthsWithThatDay =
+                    Enumerable
+                        .Range(1, 12)
+                        .Where(month => DateTime.DaysInMonth(year, month) >= specificDay)
+                        .ToArray();
+
+                return new DateTime(year, Faker.Value.PickRandom(monthsWithThatDay), specificDay);
             }
             case DateTimeOption.SpecificWeekday:
             {

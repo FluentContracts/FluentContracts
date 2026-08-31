@@ -29,7 +29,8 @@ public abstract class BaseContract<TArgument, TContract>
         where T : TArgument
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(customCondition, (T)ArgumentValue, ArgumentName, message);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T>(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(customCondition, typedValue, ArgumentName, message);
         return _linker;
     }
 
@@ -44,7 +45,8 @@ public abstract class BaseContract<TArgument, TContract>
         where T : TArgument
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckGenericCondition<T, TException>(customCondition, (T)ArgumentValue);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T, TException>(ArgumentValue);
+        Validator.CheckGenericCondition<T, TException>(customCondition, typedValue);
         return _linker;
     }
 
@@ -60,7 +62,8 @@ public abstract class BaseContract<TArgument, TContract>
         where T : TArgument
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckGenericCondition<T, TException>(customCondition, (T)ArgumentValue, message);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T, TException>(ArgumentValue, message);
+        Validator.CheckGenericCondition<T, TException>(customCondition, typedValue, message);
         return _linker;
     }
 }
