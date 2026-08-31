@@ -37,7 +37,9 @@
 
     <ItemGroup>
         <None Include="..\..\assets\icon.png" Pack="true" PackagePath="\" />
-        <None Include="..\..\README.md" Pack="true" PackagePath="\" />
+        <!-- The nuget.org listing gets its own readme: the repository README relies on raw
+             HTML and images from domains nuget.org does not render. -->
+        <None Include="..\..\docs\PackageReadme.md" Pack="true" PackagePath="\README.md" />
     </ItemGroup>
 
     <!-- Polyfills language/BCL attributes (CallerArgumentExpression, nullable analysis) for netstandard2.0. -->

@@ -10,6 +10,12 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Packaging
+- The nuget.org listing now uses its own readme (`docs/PackageReadme.md`). The repository README relies
+  on raw HTML, relative links and images from domains nuget.org does not render, so it appeared mangled
+  on the package page.
+
+
 ### Breaking
 - Ordering comparisons now reject a `null` argument with `ArgumentNullException`. Previously
   `BeNegative` and `NotBePositive` accepted `null` and **passed silently**, while `BePositive`
