@@ -3,11 +3,24 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
+/// <summary>
+/// The root of the contract hierarchy. It holds the argument and its name, which is all every
+/// check needs; the checks themselves are added by the contracts deriving from it, in the order
+/// <see cref="NullableContract{TArgument,TContract}"/>, <see cref="ObjectContract{TArgument,TContract}"/>,
+/// <see cref="EqualityContract{TArgument,TContract}"/> and then one contract per type.
+/// </summary>
+/// <typeparam name="TArgument">The type of the argument being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public abstract class BaseContract<TArgument, TContract>
     where TContract : BaseContract<TArgument, TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected BaseContract(TArgument? argumentValue, string argumentName)
     {
         _linker = new Linker<TContract>((TContract)this);
@@ -15,7 +28,12 @@ public abstract class BaseContract<TArgument, TContract>
         ArgumentValue = argumentValue;
     }
 
+    /// <summary>The argument being checked, as it was handed to <c>Must()</c>.</summary>
     protected TArgument? ArgumentValue { get; }
+    /// <summary>
+    /// The argument's name, captured by <c>[CallerArgumentExpression]</c> at the call to <c>Must()</c>
+    /// and reported as the parameter name when a check fails.
+    /// </summary>
     protected string ArgumentName { get; }
 
     /// <summary>

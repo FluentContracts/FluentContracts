@@ -4,6 +4,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for <see cref="System.Uri"/>.
+/// </summary>
 public static class UriExtensions
 {
     /// <summary>

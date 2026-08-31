@@ -3,14 +3,29 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
+/// <summary>
+/// The entry point for checks on an <see cref="int"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class IntContract(int? argumentValue, string argumentName)
     : IntContract<IntContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for an <see cref="int"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class IntContract<TContract> : ObjectContract<int?, TContract>
     where TContract : IntContract<TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected IntContract(int? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

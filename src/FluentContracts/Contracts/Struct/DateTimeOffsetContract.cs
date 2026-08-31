@@ -3,18 +3,35 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Struct;
 
+/// <summary>
+/// The entry point for checks on a <see cref="System.DateTimeOffset"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
+/// <param name="dateTimeProvider">Supplies the current moment to the checks that need one. Defaults to the system clock.</param>
 public class DateTimeOffsetContract(
     DateTimeOffset? argumentValue,
     string argumentName,
     IDateTimeProvider? dateTimeProvider = null)
     : DateTimeOffsetContract<DateTimeOffsetContract>(argumentValue, argumentName, dateTimeProvider);
 
+/// <summary>
+/// The inheritable contract for a <see cref="System.DateTimeOffset"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset?, TContract>
     where TContract : DateTimeOffsetContract<TContract>
 {
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
+    /// <param name="dateTimeProvider">Supplies the current moment to the checks that need one. Defaults to the system clock.</param>
     protected DateTimeOffsetContract(
         DateTimeOffset? argumentValue,
         string argumentName,

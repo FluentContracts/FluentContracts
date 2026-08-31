@@ -4,12 +4,25 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
+/// <summary>
+/// Adds the checks shared by every collection — counting, emptiness, uniqueness and the quantifiers —
+/// so a list, an array and a dictionary all get them. Each check first requires the argument itself
+/// not to be null.
+/// </summary>
+/// <typeparam name="TElement">The element type of the collection.</typeparam>
+/// <typeparam name="TArgument">The collection type being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public abstract class CollectionContract<TElement, TArgument, TContract> : EqualityContract<TArgument, TContract>
     where TContract : CollectionContract<TElement, TArgument, TContract>
     where TArgument : ICollection<TElement>?
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected CollectionContract(TArgument argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

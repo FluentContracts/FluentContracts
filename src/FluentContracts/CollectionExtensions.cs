@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for lists, arrays and dictionaries.
+/// </summary>
 public static class CollectionExtensions
 {
     #region List

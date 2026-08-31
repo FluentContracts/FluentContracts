@@ -3,15 +3,30 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
+/// <summary>
+/// The entry point for checks on an <see cref="sbyte"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class SbyteContract(sbyte? argumentValue, string argumentName)
     : SbyteContract<SbyteContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for an <see cref="sbyte"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class SbyteContract<TContract> : ObjectContract<sbyte?, TContract>
     where TContract : SbyteContract<TContract>
 {
     private const sbyte Zero = 0;
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected SbyteContract(sbyte? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

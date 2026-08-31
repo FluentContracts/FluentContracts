@@ -3,14 +3,29 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Web;
 
+/// <summary>
+/// The entry point for checks on a <see cref="System.Uri"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class UriContract(Uri? argumentValue, string argumentName)
     : UriContract<UriContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for a <see cref="System.Uri"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     where TContract : UriContract<TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected UriContract(Uri? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

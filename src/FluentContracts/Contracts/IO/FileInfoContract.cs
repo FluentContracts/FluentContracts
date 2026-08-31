@@ -3,10 +3,19 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.IO;
 
+/// <summary>
+/// The inheritable contract for a <see cref="System.IO.FileInfo"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
 public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
 {
     private readonly Linker<FileInfoContract> _linker;
     
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     public FileInfoContract(FileInfo? argumentValue, string argumentName) 
         : base(argumentValue, argumentName)
     {

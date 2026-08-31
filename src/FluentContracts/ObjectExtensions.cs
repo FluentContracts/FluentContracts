@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for any object, plus the generic checks every contract inherits.
+/// </summary>
 public static class ObjectExtensions
 {
     /// <summary>

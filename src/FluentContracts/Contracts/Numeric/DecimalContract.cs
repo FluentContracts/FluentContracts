@@ -3,14 +3,29 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Numeric;
 
+/// <summary>
+/// The entry point for checks on a <see cref="decimal"/> argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class DecimalContract(decimal? argumentValue, string argumentName)
     : DecimalContract<DecimalContract>(argumentValue, argumentName);
 
+/// <summary>
+/// The inheritable contract for a <see cref="decimal"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class DecimalContract<TContract> : ObjectContract<decimal?, TContract>
     where TContract : DecimalContract<TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected DecimalContract(decimal? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

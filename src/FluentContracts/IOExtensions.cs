@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 namespace FluentContracts;
 
 // ReSharper disable once InconsistentNaming
+/// <summary>
+/// The <c>Must()</c> entry points for <see cref="System.IO.FileInfo"/> and <see cref="System.IO.DirectoryInfo"/>.
+/// </summary>
 public static class IOExtensions
 {
     /// <summary>

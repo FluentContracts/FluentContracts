@@ -5,6 +5,9 @@ using FluentContracts.Infrastructure;
 
 namespace FluentContracts;
 
+/// <summary>
+/// The <c>Must()</c> entry points for the numeric types.
+/// </summary>
 public static class NumericExtensions
 {
     #region int

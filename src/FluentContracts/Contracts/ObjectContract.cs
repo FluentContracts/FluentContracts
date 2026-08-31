@@ -3,14 +3,31 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
 
+/// <summary>
+/// The entry point for checks on an argument of any type, obtained by calling <c>Must()</c> on it.
+/// </summary>
+/// <typeparam name="TArgument">The type of the argument being checked.</typeparam>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class ObjectContract<TArgument>(TArgument? argumentValue, string argumentName)
     : ObjectContract<TArgument, ObjectContract<TArgument>>(argumentValue, argumentName);
 
+/// <summary>
+/// Adds the checks that need nothing of the argument but its runtime type — <c>BeOfType</c>,
+/// <c>BeAssignableTo</c> and their negations — along with <c>Satisfy</c> for an arbitrary condition.
+/// </summary>
+/// <typeparam name="TArgument">The type of the argument being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public abstract class ObjectContract<TArgument, TContract> : NullableContract<TArgument, TContract>
     where TContract : ObjectContract<TArgument, TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected ObjectContract(TArgument? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

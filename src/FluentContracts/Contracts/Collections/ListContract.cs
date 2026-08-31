@@ -3,10 +3,20 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Collections;
 
+/// <summary>
+/// The inheritable contract for an <see cref="System.Collections.Generic.IList{T}"/> argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="T">The element type.</typeparam>
 public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
 {
     private readonly Linker<ListContract<T>> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     public ListContract(IList<T>? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

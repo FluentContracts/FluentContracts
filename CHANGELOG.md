@@ -26,10 +26,17 @@ This file is the curated summary of notable changes on top of those.
   element was always correct and is unchanged, as is `Contain`, which still requires every element.
   Calling `NotContain()` with no elements now passes instead of throwing, matching `Contain()`.
 
+### Packaging
+- The XML documentation shipped in the package now covers **every** public member. Only the checks
+  were documented before, so the contract types, their constructors, `BaseContract`'s `ArgumentValue`
+  and `ArgumentName`, the `Must()` extension classes, `Month`, `ParseOptions` and `IDateTimeProvider`
+  all appeared blank in consumers' IntelliSense. That is 118 members newly documented, and the
+  package's XML goes from 735 entries to 882.
+
 ### Internal
-- `AGENTS.md` now requires XML documentation on every public member, not only on the checks, and
-  records that the `CS1591` suppression in the library project is a backlog marker for the 140
-  members that predate the rule rather than permission to skip it.
+- `AGENTS.md` now requires XML documentation on every public member rather than only on the checks,
+  and `CS1591` is no longer suppressed in the library project, so an undocumented public member fails
+  the build rather than silently shipping a blank.
 - The release workflow now finalises `CHANGELOG.md` itself: after a successful publish it renames
   `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty section above it,
   updates the comparison links and commits that back to `master`. The commit is pushed with a

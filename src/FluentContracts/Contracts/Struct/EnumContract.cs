@@ -3,16 +3,33 @@ using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts.Struct;
 
+/// <summary>
+/// The entry point for checks on an enum argument. Obtained by calling <c>Must()</c>.
+/// </summary>
+/// <typeparam name="TEnum">The enum type being checked.</typeparam>
+/// <param name="argumentValue">The value being checked.</param>
+/// <param name="argumentName">The name reported when a check fails.</param>
 public class EnumContract<TEnum>(TEnum? argumentValue, string argumentName)
     : EnumContract<TEnum, EnumContract<TEnum>>(argumentValue, argumentName)
     where TEnum : struct, Enum;
 
+/// <summary>
+/// The inheritable contract for an enum argument. A custom contract deriving from it
+/// gets every check below and keeps them chainable.
+/// </summary>
+/// <typeparam name="TEnum">The enum type being checked.</typeparam>
+/// <typeparam name="TContract">The concrete contract type, so every check can return it and keep the chain typed.</typeparam>
 public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     where TEnum : struct, Enum
     where TContract : EnumContract<TEnum, TContract>
 {
     private readonly Linker<TContract> _linker;
 
+    /// <summary>
+    /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
+    /// </summary>
+    /// <param name="argumentValue">The value being checked.</param>
+    /// <param name="argumentName">The name reported when a check fails.</param>
     protected EnumContract(TEnum? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {

@@ -154,12 +154,9 @@ IntelliSense.
 Refer to a parameter with `<paramref name="x"/>` and to a type parameter with `<typeparamref name="T"/>`
 — `<see cref="x"/>` does not resolve to parameters and silently produces broken documentation.
 
-The compiler enforces this as CS1591, which is currently listed in `NoWarn` in
-`src/FluentContracts/FluentContracts.csproj` because 140 members predate the rule: the contract types,
-their constructors and the base-class properties. **That suppression is a backlog marker, not
-permission.** Document everything you add, and document what is missing on any type you are already
-editing. Deleting the `NoWarn` entry is what finishes the job, and it cannot be deleted until the count
-reaches zero — warnings are errors here.
+**The compiler enforces this**, so there is nothing to remember: an undocumented public member raises
+CS1591, and warnings are errors here, so the build fails. Nothing suppresses it — do not add it back to
+`NoWarn` to get a green build.
 
 ## Tests
 
