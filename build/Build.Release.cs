@@ -6,6 +6,7 @@ using Nuke.Common;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Utilities;
 using Serilog;
 using static Nuke.Common.Tools.Git.GitTasks;
@@ -27,6 +28,13 @@ partial class Build
     const string SkipReleaseToken = "[skip release]";
 
     /// <summary>
+    /// GitHub's own marker, which skips every workflow. Only the changelog commit uses it: it is
+    /// generated, touches nothing but Markdown, and has already been through CI as part of the
+    /// merge it documents.
+    /// </summary>
+    const string SkipCiToken = "[skip ci]";
+
+    /// <summary>
     /// Whether the commit being built asked not to be released. Pull requests are squash-merged, so
     /// the pull request title is what ends up in this message.
     /// </summary>
@@ -37,6 +45,15 @@ partial class Build
         Git("log -1 --pretty=%B", logOutput: false, logInvocation: false)
             .Select(x => x.Text)
             .JoinNewLine();
+
+    /// <summary>
+    /// An installation token for the GitHub App that is allowed to push to <see cref="MainBranch"/>.
+    /// Minted by the release workflow — see <see cref="ReleaseWorkflowAttribute"/>.
+    /// </summary>
+    [Parameter] [Secret] string ChangelogPushToken;
+
+    /// <summary>The app's slug, used to name the author of the changelog commit.</summary>
+    [Parameter] string ChangelogPushAppSlug;
 
     /// <summary>
     /// Renames the <c>[Unreleased]</c> section to the version that was just published and leaves a
@@ -57,15 +74,35 @@ partial class Build
                 return;
             }
 
-            Git("config user.name \"github-actions[bot]\"");
-            Git("config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"");
-            Git($"add {ChangelogFile}");
-            Git($"commit -m \"Finalise the changelog for {MajorMinorPatchVersion} {SkipReleaseToken}\"");
+            if (ChangelogPushToken.IsNullOrWhiteSpace())
+            {
+                // The package is already out; say what is missing rather than failing the release.
+                Log.Warning(
+                    "{File} was updated but not pushed: no {Parameter}. The next release will fold "
+                    + "these entries into its own section unless someone finalises them by hand.",
+                    ChangelogFile.Name,
+                    nameof(ChangelogPushToken));
+                return;
+            }
 
-            // The checkout is detached at the commit that triggered this run, so push explicitly.
-            // A push made with GITHUB_TOKEN does not start another workflow run, and the marker in
-            // the message keeps it from releasing even if that ever changes.
-            Git($"push origin HEAD:{MainBranch}");
+            var committer = ChangelogPushAppSlug.IsNullOrWhiteSpace()
+                ? "github-actions"
+                : ChangelogPushAppSlug;
+
+            Git($"config user.name \"{committer}[bot]\"");
+            Git($"config user.email \"{committer}[bot]@users.noreply.github.com\"");
+            Git($"add {ChangelogFile}");
+            Git($"commit -m \"Finalise the changelog for {MajorMinorPatchVersion} {SkipCiToken} {SkipReleaseToken}\"");
+
+            // The checkout is detached at the commit that triggered this run, and its credentials are
+            // the workflow's GITHUB_TOKEN, which the branch protection on MainBranch rejects. Push to
+            // an explicit URL carrying the app token instead. Unlike GITHUB_TOKEN, an app's push does
+            // start another workflow run, which the markers in the message are there to stop.
+            var remote =
+                $"https://x-access-token:{ChangelogPushToken}@github.com/"
+                + $"{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git";
+
+            Git($"push {remote} HEAD:{MainBranch}", logOutput: false, logInvocation: false);
 
             Log.Information("Changelog finalized for {Version}", MajorMinorPatchVersion);
         });

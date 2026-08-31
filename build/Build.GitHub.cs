@@ -19,7 +19,7 @@ using Octokit;
     FetchDepth = 0,
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Pack)])]
-[NuGetTrustedPublishing(
+[ReleaseWorkflow(
     "release",
     GitHubActionsImage.UbuntuLatest,
     OnPushBranches = [MainBranch],
@@ -30,7 +30,10 @@ using Octokit;
     // short-lived nuget.org key, so no long-lived NuGet API key is stored anywhere.
     WritePermissions = [GitHubActionsPermissions.Contents, GitHubActionsPermissions.IdToken],
     InvokedTargets = [nameof(Test), nameof(ReportCoverage), nameof(Pack), nameof(Publish)],
-    ImportSecrets = [nameof(CoverallRepoKey)])]
+    ImportSecrets = [nameof(CoverallRepoKey)],
+    // The changelog commit goes back to the protected main branch, which GITHUB_TOKEN may not do.
+    AppIdSecret = "CHANGELOG_APP_ID",
+    AppPrivateKeySecret = "CHANGELOG_APP_PRIVATE_KEY")]
 partial class Build
 {
     /// The single long-lived branch. Every merge into it is released.

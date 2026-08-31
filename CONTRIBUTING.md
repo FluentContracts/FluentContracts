@@ -88,4 +88,5 @@ like documentation, so changes to those do need a release to reach anyone.
 Release notes are generated automatically from the merged pull-request titles, so give
 your pull-request a title that reads well in a changelog. `CHANGELOG.md` is kept as a
 curated summary of notable changes on top of that: add your entry under `## [Unreleased]`,
-and the release workflow renames that section to the published version for you.
+and the release workflow renames that section to the published version for you and commits
+the result back to `master`.

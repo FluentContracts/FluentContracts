@@ -108,6 +108,13 @@
   "allOf": [
     {
       "properties": {
+        "ChangelogPushAppSlug": {
+          "type": "string"
+        },
+        "ChangelogPushToken": {
+          "type": "string",
+          "default": "Secrets must be entered via 'nuke :secrets [profile]'"
+        },
         "Configuration": {
           "type": "string",
           "enum": [
