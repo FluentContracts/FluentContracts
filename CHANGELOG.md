@@ -30,6 +30,10 @@ This file is the curated summary of notable changes on top of those.
   `Exception` ended up with no message at all. Exceptions without such a constructor keep the previous
   behaviour, so no message is lost.
 
+### Internal
+- `AGENTS.md` now requires every pull request to add a changelog entry, and says which heading to use
+  and how to word it.
+
 ### Packaging
 - The nuget.org listing now uses its own readme (`docs/PackageReadme.md`). The repository README relies
   on raw HTML, relative links and images from domains nuget.org does not render, so it appeared mangled

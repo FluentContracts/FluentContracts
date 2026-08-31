@@ -60,6 +60,7 @@ This is the part most likely to surprise you.
 - **Every merge into `master` is released**: the `release` workflow packs, publishes to
   nuget.org and creates a GitHub release and tag.
 - **Pull requests are squash-merged, so the pull request title becomes the commit message.**
+- **Every pull request updates `CHANGELOG.md`** — see [Changelog](#changelog).
 
 ### Choosing the version
 
@@ -156,9 +157,31 @@ When editing `docs/PackageReadme.md`, keep to plain CommonMark, use absolute `ht
 use images from allowed domains (`img.shields.io` and `raw.githubusercontent.com` cover most needs). A
 published readme cannot be corrected in place — it takes a new package version.
 
+## Changelog
+
+**Every pull request updates `CHANGELOG.md`.** There is no automation for this and no reviewer
+will add it for you — an entry that is not written when the change is made is never written.
+
+Add it under `## [Unreleased]`, in the heading that fits, creating the heading if it is missing:
+
+| Heading | For |
+| --- | --- |
+| `Breaking` | anything that can change the behaviour of code that compiles today |
+| `Added` | new contracts and new checks |
+| `Fixed` | bug fixes |
+| `Changed` | behaviour that changed without breaking |
+| `Packaging` | target frameworks, package contents, metadata |
+| `Internal` | build, CI and repository tooling, with no effect on the package |
+
+Write for someone deciding whether to upgrade. Name the contracts affected, and for a behaviour
+change say **what the old behaviour was** — that is what tells a reader whether their code is
+affected. "Fixed a null bug" tells them nothing; "`BeNegative` used to accept `null` and pass
+silently, and now throws `ArgumentNullException`" tells them exactly what to check.
+
+The notes on the releases page are generated from pull request titles. `CHANGELOG.md` is the curated
+account that sits on top of them, so the two are not duplicates of each other.
+
 ## Housekeeping
 
-- `CHANGELOG.md` is a curated summary of notable changes. Per-release notes are generated
-  on the releases page, so only add entries that are worth calling out.
 - `docs/SupportedContracts.md` is produced by the `GenerateSupportedContracts` target on
   local builds. Never edit it by hand; change the contracts and rebuild.
