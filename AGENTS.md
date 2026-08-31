@@ -146,10 +146,20 @@ unavailable on `netstandard2.0`, add a guarded helper to `Infrastructure/Compat.
 than scattering `#if` through the contracts. `PolySharp` supplies the missing language and
 nullable-analysis attributes.
 
-**XML documentation.** Every public check needs a `<summary>` and `<param>` entries; the
-package ships the generated XML. Refer to a parameter with `<paramref name="x"/>` and to a
-type parameter with `<typeparamref name="T"/>` — `<see cref="x"/>` does not resolve to
-parameters and silently produces broken documentation.
+**XML documentation.** Every public member needs it — types, constructors and properties as well as
+checks. A `<summary>`, a `<param>` for each parameter and a `<typeparam>` for each type parameter. The
+package ships the generated XML, so an undocumented public member is a blank in every consumer's
+IntelliSense.
+
+Refer to a parameter with `<paramref name="x"/>` and to a type parameter with `<typeparamref name="T"/>`
+— `<see cref="x"/>` does not resolve to parameters and silently produces broken documentation.
+
+The compiler enforces this as CS1591, which is currently listed in `NoWarn` in
+`src/FluentContracts/FluentContracts.csproj` because 140 members predate the rule: the contract types,
+their constructors and the base-class properties. **That suppression is a backlog marker, not
+permission.** Document everything you add, and document what is missing on any type you are already
+editing. Deleting the `NoWarn` entry is what finishes the job, and it cannot be deleted until the count
+reaches zero — warnings are errors here.
 
 ## Tests
 

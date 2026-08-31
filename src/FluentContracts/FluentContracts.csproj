@@ -24,9 +24,10 @@
 
         <!-- Ship the XML docs so the summaries show up in consumers' IntelliSense. -->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <!-- CS1591: every contract check is documented, but the base types, constructors and
-             inherited members are not yet. Documenting those is tracked separately; until then
-             do not fail the build over them. -->
+        <!-- CS1591: AGENTS.md requires XML documentation on every public member. Every contract
+             check has it; 140 members do not - the contract types, their constructors and the
+             base-class properties. Until those are written this would fail the build, since
+             warnings are errors. Remove this entry once the count reaches zero. -->
         <NoWarn>$(NoWarn);CS1591</NoWarn>
 
         <!-- Source Link is provided by the .NET SDK (8.0+); no package reference required. -->

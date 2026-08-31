@@ -27,6 +27,9 @@ This file is the curated summary of notable changes on top of those.
   Calling `NotContain()` with no elements now passes instead of throwing, matching `Contain()`.
 
 ### Internal
+- `AGENTS.md` now requires XML documentation on every public member, not only on the checks, and
+  records that the `CS1591` suppression in the library project is a backlog marker for the 140
+  members that predate the rule rather than permission to skip it.
 - The release workflow now finalises `CHANGELOG.md` itself: after a successful publish it renames
   `## [Unreleased]` to the version it shipped, dates it, leaves a fresh empty section above it,
   updates the comparison links and commits that back to `master`. The commit is pushed with a
