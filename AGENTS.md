@@ -64,15 +64,22 @@ This is the part most likely to surprise you.
 
 ### Merging without releasing
 
-Not every change belongs in a package. Put `[skip release]` in the **pull request title** and the merge
-is still built and tested on `master`, but nothing is packed, published, tagged or released, and the
-version does not move:
+Not every change belongs in a package. Put the **`skip-release` label** on the pull request and the
+merge is still built and tested on `master`, but nothing is packed, published, tagged or released, and
+the version does not move.
 
-```
-Tidy up the contributing guide [skip release]
-```
+The release reads the label off the pull request the merge came from, resolved from the merge commit
+rather than from anything written in it. So the label is visible on the pull request right up to the
+moment you merge, and you can add or remove it there.
 
-This is ours, not GitHub's `[skip ci]`, which would skip every workflow including the tests.
+> [!IMPORTANT]
+> **Do not use the pull request title for this.** GitHub composes the squash commit subject in the
+> merge box when that page is *rendered*, so a tab opened before the title was edited will merge the
+> title it was holding. That is exactly how a `[skip release]` title once published anyway. The marker
+> is still honoured in a commit message, for a direct push and for anything already written down, but
+> the label is what to reach for.
+
+Neither is GitHub's `[skip ci]`, which would skip every workflow including the tests.
 
 > [!WARNING]
 > Markers are read out of the **whole commit message, body included** — by GitHub for `[skip ci]`
@@ -80,7 +87,8 @@ This is ours, not GitHub's `[skip ci]`, which would skip every workflow includin
 > one in a commit message while merely *describing* it will trigger it: a body that explains
 > `[skip ci]` silently stops CI from running on the pull request at all, and the pull request just
 > sits there with no checks. Mention the syntax in a file (like this one), never in a commit
-> message or a pull request title.
+> message or a pull request title. The `skip-release` label carries no such hazard, which is the
+> other reason to prefer it.
 
 > [!CAUTION]
 > Two files look like documentation but ship **inside the package**: `docs/PackageReadme.md`, which

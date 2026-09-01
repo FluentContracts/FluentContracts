@@ -21,6 +21,12 @@ This file is the curated summary of notable changes on top of those.
   step was mangled when the section was renamed.
 
 ### Internal
+- A merge is now held back from releasing by the `skip-release` **label** on its pull request, read
+  from the pull request the merge commit came from. `[skip release]` in a commit message still works,
+  for a direct push and for anything already written down, but it is no longer the mechanism to reach
+  for: GitHub fills the squash commit subject in when the merge box is rendered, so a pull request
+  titled with the marker can merge without it — which is what happened after 3.2.0, and only the run
+  being cancelled mid-build stopped an unintended 3.2.1 from being published.
 - A failure while finalising the changelog can no longer fail the release. The step already ran after
   the package was pushed, but its exception still left the workflow red, which reads as a failed
   release; it now reports the problem and leaves the run green.

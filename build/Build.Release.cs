@@ -3,11 +3,13 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.GitHub;
 using Nuke.Common.Utilities;
+using Octokit;
 using Serilog;
 using static Nuke.Common.Tools.Git.GitTasks;
 
@@ -19,7 +21,19 @@ partial class Build
     const string UnreleasedHeading = "## [Unreleased]";
 
     /// <summary>
-    /// Put this in a pull request title to merge without publishing a package.
+    /// The label that holds a merge back from publishing a package. Put it on the pull request.
+    /// </summary>
+    /// <remarks>
+    /// This is read from the pull request the merge came from, so it stays visible and changeable
+    /// right up to the moment of merging. The commit subject is not: GitHub composes it in the merge
+    /// box when that page is rendered, so a stale tab or an edit there can silently drop a marker and
+    /// publish a release nobody meant to publish.
+    /// </remarks>
+    const string SkipReleaseLabel = "skip-release";
+
+    /// <summary>
+    /// The older marker, still honoured in a commit message so a direct push can use it and so
+    /// anything already documented keeps working. Prefer <see cref="SkipReleaseLabel"/>.
     /// </summary>
     /// <remarks>
     /// GitHub understands <c>[skip ci]</c> natively, but that skips every workflow. This one is ours,
@@ -34,12 +48,66 @@ partial class Build
     /// </summary>
     const string SkipCiToken = "[skip ci]";
 
+    bool? _skipRelease;
+
     /// <summary>
-    /// Whether the commit being built asked not to be released. Pull requests are squash-merged, so
-    /// the pull request title is what ends up in this message.
+    /// Whether this merge asked not to be released, by the label on its pull request or by the marker
+    /// in its commit message. Resolved once: several targets ask, and the answer costs an API call.
     /// </summary>
-    bool SkipRelease =>
-        HeadCommitMessage.IndexOf(SkipReleaseToken, StringComparison.OrdinalIgnoreCase) >= 0;
+    bool SkipRelease => _skipRelease ??= ResolveSkipRelease();
+
+    bool ResolveSkipRelease()
+    {
+        if (HeadCommitMessage.IndexOf(SkipReleaseToken, StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            Log.Information("Not releasing: the commit message carries {Marker}.", SkipReleaseToken);
+            return true;
+        }
+
+        var token = GitHubActions.Instance?.Token;
+        if (token == null)
+        {
+            // A local build has no pull request to consult, and nothing to publish either.
+            return false;
+        }
+
+        try
+        {
+            GitHubTasks.GitHubClient.Credentials = new Credentials(token);
+
+            // Resolve the pull request from the merge commit rather than parsing "(#123)" out of the
+            // subject, which is the same editable text the label is here to stop us depending on.
+            var pullRequests = GitHubTasks.GitHubClient.Repository.Commit
+                .PullRequests(GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName(), GitVersion.Sha)
+                .GetAwaiter().GetResult();
+
+            var labelled = pullRequests
+                .Where(x => x.Labels.Any(label =>
+                    label.Name.EqualsOrdinalIgnoreCase(SkipReleaseLabel)))
+                .ToList();
+
+            if (labelled.Count == 0) return false;
+
+            Log.Information(
+                "Not releasing: pull request #{Number} is labelled {Label}.",
+                labelled[0].Number,
+                SkipReleaseLabel);
+
+            return true;
+        }
+        catch (Exception exception)
+        {
+            // Releasing is the default, so say clearly that the question could not be answered.
+            Log.Warning(
+                exception,
+                "Could not read the labels for {Sha}; releasing. Add {Marker} to the commit message to "
+                + "hold a release back when the label cannot be reached.",
+                GitVersion.Sha,
+                SkipReleaseToken);
+
+            return false;
+        }
+    }
 
     string HeadCommitMessage =>
         Git("log -1 --pretty=%B", logOutput: false, logInvocation: false)

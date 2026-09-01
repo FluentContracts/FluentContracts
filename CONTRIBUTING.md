@@ -79,8 +79,12 @@ in the merge commit message:
 > them out of commit messages, so quoting one there will actually request that bump.
 
 To merge something that does not belong in a package — a change to the guides, the CI configuration,
-the issue templates — put `[skip release]` in the pull-request title instead. The merge is still built
-and tested, but nothing is published and the version does not move.
+the issue templates — put the `skip-release` label on the pull-request. The merge is still built and
+tested, but nothing is published and the version does not move.
+
+Use the label rather than the pull-request title. GitHub fills the squash commit subject in from the
+title when the merge box is rendered, so a tab opened earlier can merge a stale subject and publish a
+release you meant to hold back; a label is read off the pull-request itself at release time.
 
 Note that `docs/PackageReadme.md` and `assets/icon.png` ship *inside* the package even though they look
 like documentation, so changes to those do need a release to reach anyone.
