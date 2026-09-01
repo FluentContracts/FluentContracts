@@ -10,6 +10,24 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Changed
+- Every check that fails without a caller-supplied message now says what was expected of which
+  argument, and what the value actually was: `Expected quantity to be greater than 5, but found 3.`
+  instead of the framework's `Specified argument was out of the range of valid values.` The old
+  default messages carried no information at all, so code that matched on them exactly is the only
+  code that can notice — a caller-supplied message still replaces the default entirely, and the
+  exception types, `ParamName` and check semantics are unchanged. Values are rendered in the
+  invariant culture; strings are quoted and truncated at 64 characters, collections at 5 items;
+  credit-card checks deliberately never put the value in the message.
+- Contract failures no longer point inside the library. The validator and throw-helper frames are
+  hidden from the stack trace (`[StackTraceHidden]`) and skipped by the debugger
+  (`[DebuggerStepThrough]`), so the trace starts at the check the caller wrote. On runtimes older
+  than .NET 6 (the `netstandard2.0` target on .NET Framework) stack traces keep the frames — the
+  attribute is ignored there.
+
+### Internal
+- Every change now starts as an issue, and the pull request references it — recorded in `AGENTS.md`
+  and `CONTRIBUTING.md`.
 
 ## [3.4.0] / 2026-09-01
 ### Added

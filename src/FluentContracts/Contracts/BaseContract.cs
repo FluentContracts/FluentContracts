@@ -48,7 +48,8 @@ public abstract class BaseContract<TArgument, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         var typedValue = Validator.CheckForTypeAndConvert<TArgument, T>(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(customCondition, typedValue, ArgumentName, message);
+        Validator.CheckGenericCondition(customCondition, typedValue, ArgumentName, message,
+            expectation: "satisfy the given condition");
         return _linker;
     }
 

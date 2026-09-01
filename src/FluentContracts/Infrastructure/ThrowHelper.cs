@@ -1,8 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace FluentContracts.Infrastructure;
 
+// A contract failure should read as the caller's, not the library's: the trace starts at the
+// check the caller wrote, and the debugger breaks there instead of inside the plumbing.
+// StackTraceHidden needs a net6+ runtime, so netstandard2.0 consumers on older runtimes still
+// see these frames — the attribute (polyfilled there by PolySharp) is simply ignored.
+[StackTraceHidden]
+[DebuggerStepThrough]
 internal static class ThrowHelper
 {
     [DoesNotReturn]

@@ -35,7 +35,9 @@ The issue will be addressed sooner or later depending on the priority, available
 
 In your own interest of getting a pull-request merged (timely):
 
-- Discuss non-trivial changes in an [issue](https://github.com/FluentContracts/FluentContracts/issues/new/choose)
+- Open an [issue](https://github.com/FluentContracts/FluentContracts/issues/new/choose) first — every
+  pull-request should reference one (`Closes #123`), so the reasoning behind a change is findable
+  without reading its diff
 - Make sure your employer allows contributions
 - Branch your work off from the `master` branch
 - Get familiar with the coding conventions

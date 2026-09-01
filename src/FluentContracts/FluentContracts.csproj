@@ -43,4 +43,11 @@
         <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     </ItemGroup>
 
+    <!-- StackTraceHidden is a runtime-supported attribute, which PolySharp only generates on request.
+         The polyfill lets the netstandard2.0 build compile; the attribute only takes effect on
+         runtimes that know it (net6+). -->
+    <PropertyGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+    </PropertyGroup>
+
 </Project>

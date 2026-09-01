@@ -185,7 +185,8 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     {
         Validator.CheckForNotNull(flag, nameof(flag));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message,
+            expectation: $"have the flag {Validator.Describe(flag)}");
         return _linker;
     }
 
@@ -200,7 +201,8 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     {
         Validator.CheckForNotNull(flag, nameof(flag));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message,
+            expectation: $"not have the flag {Validator.Describe(flag)}");
         return _linker;
     }
 }

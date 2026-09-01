@@ -113,9 +113,10 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"be shorter than {Validator.Describe(expectedValue)}");
         return _linker;
-    } 
+    }
 
     /// <summary>
     /// Checks if the specified argument's elapsed ticks is not shorter than <paramref name="expectedValue"/>
@@ -128,9 +129,10 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"not be shorter than {Validator.Describe(expectedValue)}");
         return _linker;
-    } 
+    }
 
     /// <summary>
     /// Checks if the specified argument's elapsed ticks is longer than <paramref name="expectedValue"/>
@@ -143,9 +145,10 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"be longer than {Validator.Describe(expectedValue)}");
         return _linker;
-    } 
+    }
 
     /// <summary>
     /// Checks if the specified argument's elapsed ticks is not longer than <paramref name="expectedValue"/>
@@ -158,9 +161,10 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"not be longer than {Validator.Describe(expectedValue)}");
         return _linker;
-    } 
+    }
 
     /// <summary>
     /// Checks if the specified argument's elapsed ticks is equal to the ticks of <paramref name="expectedValue"/>
@@ -173,7 +177,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks == expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks == expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"be equal to {Validator.Describe(expectedValue)}");
         return _linker;
     } 
 
@@ -188,7 +193,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks != expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks != expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+            expectation: $"not be equal to {Validator.Describe(expectedValue)}");
         return _linker;
     } 
 }
