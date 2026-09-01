@@ -32,7 +32,9 @@ internal static class ThrowHelper
     }
 
     [DoesNotReturn]
-    public static void ThrowUserDefinedException<TException>(string message)
+    public static void ThrowUserDefinedException<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        string message)
         where TException : Exception, new()
     {
         throw CreateUserDefinedException<TException>(message);
@@ -51,8 +53,17 @@ internal static class ThrowHelper
     /// When no such constructor exists there is nothing to call, so fall back to writing the private
     /// field on <see cref="Exception"/>, which is at least no worse than losing the message.
     /// </para>
+    /// <para>
+    /// Trimming and AOT: the <see cref="DynamicallyAccessedMembersAttribute"/> on
+    /// <typeparamref name="TException"/> — propagated from every public check that takes the type
+    /// parameter — keeps its public constructors, so the preferred path always works. The field
+    /// fallback degrades cleanly if <c>_message</c> is ever unavailable: the null-conditional write
+    /// is skipped and the exception keeps its default message.
+    /// </para>
     /// </remarks>
-    private static TException CreateUserDefinedException<TException>(string message)
+    private static TException CreateUserDefinedException<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        string message)
         where TException : Exception, new()
     {
         var messageConstructor = typeof(TException).GetConstructor([typeof(string)]);

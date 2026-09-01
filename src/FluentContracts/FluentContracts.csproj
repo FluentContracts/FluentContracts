@@ -43,6 +43,15 @@
         <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
     </ItemGroup>
 
+    <!-- Trimming and Native AOT compatibility, declared where the tooling supports it. The one
+         reflection path (user-defined exception construction) is annotated with
+         DynamicallyAccessedMembers through the whole call chain; warnings are errors here, so a
+         new unannotated reflection use fails the build. netstandard2.0 predates the annotation
+         model, but ships the same annotated code via PolySharp's attribute polyfills. -->
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <IsAotCompatible>true</IsAotCompatible>
+    </PropertyGroup>
+
     <!-- StackTraceHidden is a runtime-supported attribute, which PolySharp only generates on request.
          The polyfill lets the netstandard2.0 build compile; the attribute only takes effect on
          runtimes that know it (net6+). -->

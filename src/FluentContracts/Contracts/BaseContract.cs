@@ -1,4 +1,5 @@
-﻿using FluentContracts.Infrastructure;
+﻿using System.Diagnostics.CodeAnalysis;
+using FluentContracts.Infrastructure;
 using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
@@ -61,7 +62,9 @@ public abstract class BaseContract<TArgument, TContract>
     /// <param name="customCondition">The custom condition to check.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> Satisfy<T, TException>(Func<T, bool> customCondition)
+    public Linker<TContract> Satisfy<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        Func<T, bool> customCondition)
         where TException : Exception, new()
         where T : TArgument
     {
@@ -78,7 +81,9 @@ public abstract class BaseContract<TArgument, TContract>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <returns>Linker for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> Satisfy<T, TException>(Func<T, bool> customCondition, string message)
+    public Linker<TContract> Satisfy<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        Func<T, bool> customCondition, string message)
         where TException : Exception, new()
         where T : TArgument
     {

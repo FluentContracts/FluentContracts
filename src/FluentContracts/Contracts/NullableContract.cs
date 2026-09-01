@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using FluentContracts.Infrastructure;
 using FluentContracts.Validators;
 
@@ -41,7 +42,9 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <typeparam name="TException">Type of the exception to throw</typeparam>
     /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNull<TException>(string? message = null)
+    public Linker<TContract> NotBeNull<
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        string? message = null)
         where TException : Exception, new()
     {
         if (message != null)
