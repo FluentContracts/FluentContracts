@@ -82,9 +82,10 @@ To merge something that does not belong in a package — a change to the guides,
 the issue templates — put the `skip-release` label on the pull-request. The merge is still built and
 tested, but nothing is published and the version does not move.
 
-Use the label rather than the pull-request title. GitHub fills the squash commit subject in from the
-title when the merge box is rendered, so a tab opened earlier can merge a stale subject and publish a
-release you meant to hold back; a label is read off the pull-request itself at release time.
+Use the label rather than the pull-request title. The merged subject does not always come from the
+title — with a single commit on the branch, GitHub's squash default uses that commit's subject instead
+— so a marker in the title can simply never reach the commit the release reads. A label is read off
+the pull-request itself, so the commit count cannot affect it.
 
 Note that `docs/PackageReadme.md` and `assets/icon.png` ship *inside* the package even though they look
 like documentation, so changes to those do need a release to reach anyone.

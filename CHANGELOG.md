@@ -10,6 +10,14 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Internal
+- Corrected why a merge can lose its `+semver:` directive, in `AGENTS.md`, `CONTRIBUTING.md` and the
+  message the release fails with. It is not a stale merge page: GitHub's squash default takes the
+  merged subject from the pull request title only when the branch has more than one commit, and with
+  exactly one it uses that commit's own subject, so a directive in the title never reaches the commit
+  the release reads. Both losses so far were single-commit pull requests; every multi-commit one kept
+  its marker.
+
 ### Added
 - `BeAnyOf` and `NotBeAnyOf` take a sequence with the message second — `BeAnyOf(IEnumerable<T> values,
   string? message = null)` — matching `ListContract.Contain` and unable to confuse a value for a message.

@@ -109,12 +109,15 @@ Drop the Linker allocation from every check +semver: major
 Most pull requests need no directive at all — a patch release is the default.
 
 > [!IMPORTANT]
-> **Put the directive in the title when you open the pull request.** GitHub fills the squash commit
-> subject in from the title when the merge box is *rendered*, so a title edited after that page was
-> opened is not what gets merged, and the bump is silently lost. If you do edit the title later,
-> reload the merge page before merging. The release checks this: if the pull request asks for a bump
-> that the merged commit does not carry, it fails **before** anything is published, rather than
-> shipping breaking changes as a patch.
+> **On a single-commit pull request, put the directive in the commit subject too.** GitHub's squash
+> default takes the merged subject from the pull request title *only when the branch has more than one
+> commit*; with exactly one, it uses that commit's own subject and the title is never consulted. Two
+> releases were computed wrong this way before it was understood. The release now checks: if the pull
+> request asks for a bump the merged commit does not carry, it fails **before** anything is published
+> rather than shipping breaking changes as a patch.
+>
+> The durable fix is a repository setting — Settings → General → Pull Requests → set the squash commit
+> **title** to *Default to pull request title*. Then the branch's commit count stops mattering.
 
 > [!WARNING]
 > GitVersion reads these directives out of commit messages, so the rule above applies here too:
