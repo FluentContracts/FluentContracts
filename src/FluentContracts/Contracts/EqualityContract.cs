@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using FluentContracts.Infrastructure;
 using FluentContracts.Validators;
 
@@ -13,6 +16,11 @@ namespace FluentContracts.Contracts;
 public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TArgument, TContract>
     where TContract : EqualityContract<TArgument, TContract>
 {
+    const string ObsoleteMessageFirst =
+        "Passing the message before the values binds wrongly when the argument is a string: "
+        + "BeAnyOf(\"a\", \"b\") takes \"a\" as the message and checks only against \"b\". "
+        + "Use BeAnyOf(IEnumerable<T> values, string? message) instead. This overload is removed in 4.0.0.";
+
     private readonly Linker<TContract> _linker;
 
     /// <summary>
@@ -57,7 +65,36 @@ public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TA
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> BeAnyOf(params TArgument[] expectedValues)
     {
-        return BeAnyOf(null, expectedValues);
+        Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, null);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument is the expected value.
+    /// </summary>
+    /// <param name="expectedValue">The only value the argument may be.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>
+    /// Declared separately from the <c>params</c> overload so that a single <see cref="string"/> binds
+    /// here. Without it, <c>BeAnyOf("a")</c> on a string argument matched the message overload below
+    /// and checked against an empty set, which no argument can be a member of.
+    /// </remarks>
+    public Linker<TContract> BeAnyOf(TArgument expectedValue)
+    {
+        Validator.CheckForAnyOf([expectedValue], ArgumentValue, ArgumentName, null);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument is any of the expected values.
+    /// </summary>
+    /// <param name="expectedValues">Expected values among which the argument can be.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> BeAnyOf(IEnumerable<TArgument> expectedValues, string? message = null)
+    {
+        Validator.CheckForAnyOf(expectedValues.ToArray(), ArgumentValue, ArgumentName, message);
+        return _linker;
     }
 
     /// <summary>
@@ -66,6 +103,7 @@ public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TA
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
     /// <returns>Linker for chaining more checks</returns>
+    [Obsolete(ObsoleteMessageFirst)]
     public Linker<TContract> BeAnyOf(string? message, params TArgument[] expectedValues)
     {
         Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
@@ -79,7 +117,36 @@ public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TA
     /// <returns>Linker for chaining more checks</returns>
     public Linker<TContract> NotBeAnyOf(params TArgument[] expectedValues)
     {
-        return NotBeAnyOf(null, expectedValues);
+        Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, null);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument is not the given value.
+    /// </summary>
+    /// <param name="unexpectedValue">The value the argument must not be.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>
+    /// Declared separately from the <c>params</c> overload so that a single <see cref="string"/> binds
+    /// here. Without it, <c>NotBeAnyOf("a")</c> on a string argument matched the message overload below
+    /// and checked against an empty set, which nothing is a member of, so the check always passed.
+    /// </remarks>
+    public Linker<TContract> NotBeAnyOf(TArgument unexpectedValue)
+    {
+        Validator.CheckForNotAnyOf([unexpectedValue], ArgumentValue, ArgumentName, null);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument is not any of the expected values.
+    /// </summary>
+    /// <param name="unexpectedValues">The values the argument must not be.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> NotBeAnyOf(IEnumerable<TArgument> unexpectedValues, string? message = null)
+    {
+        Validator.CheckForNotAnyOf(unexpectedValues.ToArray(), ArgumentValue, ArgumentName, message);
+        return _linker;
     }
 
     /// <summary>
@@ -88,6 +155,7 @@ public abstract class EqualityContract<TArgument, TContract> : ObjectContract<TA
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>Linker for chaining more checks</returns>
+    [Obsolete(ObsoleteMessageFirst)]
     public Linker<TContract> NotBeAnyOf(string? message, params TArgument[] expectedValues)
     {
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);

@@ -147,9 +147,16 @@ public Linker<TContract> Contain(IEnumerable<T> elements, string? message = null
 
 Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds
 `Check("a", "b")` to that overload and silently swallows `"a"` as the message, so the check runs
-against the wrong set. `EqualityContract.BeAnyOf` and `NotBeAnyOf` still have that shape and are
-wrong for `StringContract`; correcting it changes what already-compiling code means, so it is held
-for the next major version.
+against the wrong set — it prefers the candidate with more declared parameters when both are
+applicable only in expanded form.
+
+`EqualityContract.BeAnyOf` and `NotBeAnyOf` are the existing casualties. They are now `[Obsolete]`,
+with `(IEnumerable<T>, string?)` alongside them, and a single value binds to its own overload rather
+than being read as a message. Several string values still reach the deprecated overload, because that
+call already means something today and the compiler cannot tell the two readings apart; removing the
+overload in 4.0.0 is what settles it. The value-type contracts declare the same shape but cannot be
+hit by it — a string is not a candidate value for `params int[]` — so they are left alone rather than
+deprecated for a defect they do not have.
 
 **Null policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException`; the guard lives
@@ -238,6 +245,7 @@ Add it under `## [Unreleased]`, in the heading that fits, creating the heading i
 | `Breaking` | anything that can change the behaviour of code that compiles today |
 | `Added` | new contracts and new checks |
 | `Fixed` | bug fixes |
+| `Deprecated` | public API marked `[Obsolete]`, with what to use instead |
 | `Changed` | behaviour that changed without breaking |
 | `Packaging` | target frameworks, package contents, metadata |
 | `Internal` | build, CI and repository tooling, with no effect on the package |
