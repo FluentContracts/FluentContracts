@@ -51,6 +51,15 @@ dotnet test tests/FluentContracts.Tests/FluentContracts.Tests.csproj
 for a blanket suppression to get a green build — fix the cause, or add a narrowly scoped
 `NoWarn` with a comment explaining why.
 
+## Issues first, then pull requests
+
+**Always open an issue before opening a pull request**, whatever the size of the change, and have
+the pull request reference it (`Closes #123`). The issue is where the problem or feature is stated in
+its own right — what is wrong or missing, and why it matters — before any diff exists; the pull
+request is only the implementation. This keeps the repository's history navigable: the issue list is
+the record of what was considered and why, and a pull request without one leaves its reasoning
+stranded in the diff.
+
 ## Branching and releases
 
 This is the part most likely to surprise you.

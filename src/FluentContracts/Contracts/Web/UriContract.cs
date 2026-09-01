@@ -72,7 +72,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => string.Equals(a.Scheme, scheme, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message);
+            message,
+            expectation: $"have the scheme {Validator.Describe(scheme)}");
         return _linker;
     }
 
@@ -90,7 +91,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => !string.Equals(a.Scheme, scheme, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message);
+            message,
+            expectation: $"not have the scheme {Validator.Describe(scheme)}");
         return _linker;
     }
 
@@ -124,7 +126,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => string.Equals(a.Host, host, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message);
+            message,
+            expectation: $"have the host {Validator.Describe(host)}");
         return _linker;
     }
 
@@ -142,7 +145,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => !string.Equals(a.Host, host, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message);
+            message,
+            expectation: $"not have the host {Validator.Describe(host)}");
         return _linker;
     }
 
@@ -159,7 +163,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public Linker<TContract> HavePort(int port, string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.Port == port, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a.Port == port, uri, ArgumentName, message,
+            expectation: $"have the port {port}");
         return _linker;
     }
 
@@ -176,7 +181,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public Linker<TContract> NotHavePort(int port, string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.Port != port, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a.Port != port, uri, ArgumentName, message,
+            expectation: $"not have the port {port}");
         return _linker;
     }
 
@@ -243,7 +249,10 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     private Uri GetAbsoluteArgument(string? message)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message);
+        // The expectation is spelled out because the caller's name here would be this helper's,
+        // not the check the user wrote.
+        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message,
+            expectation: "be an absolute URI");
         return ArgumentValue;
     }
 }

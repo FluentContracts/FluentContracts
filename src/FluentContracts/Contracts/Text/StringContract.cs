@@ -188,7 +188,8 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
-            ArgumentValue, ArgumentName, message);
+            ArgumentValue, ArgumentName, message,
+            expectation: $"contain {Validator.Describe(containedString)}");
         return _linker;
     }
 
@@ -203,7 +204,8 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
-            ArgumentValue, ArgumentName, message);
+            ArgumentValue, ArgumentName, message,
+            expectation: $"not contain {Validator.Describe(containedString)}");
         return _linker;
     }
     
@@ -244,10 +246,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => Regex.IsMatch(a, pattern, RegexOptions.CultureInvariant), 
+            a => Regex.IsMatch(a, pattern, RegexOptions.CultureInvariant),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"match the pattern {Validator.Describe(pattern)}");
         return _linker;
     }
     
@@ -262,10 +265,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => !Regex.IsMatch(a, unexpectedPattern, RegexOptions.CultureInvariant), 
+            a => !Regex.IsMatch(a, unexpectedPattern, RegexOptions.CultureInvariant),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"not match the pattern {Validator.Describe(unexpectedPattern)}");
         return _linker;
     }
 
@@ -284,10 +288,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => a.StartsWith(startingWith, comparisonType), 
+            a => a.StartsWith(startingWith, comparisonType),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"start with {Validator.Describe(startingWith)}");
         return _linker;
     }
     
@@ -306,10 +311,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => !a.StartsWith(startingWith, comparisonType), 
+            a => !a.StartsWith(startingWith, comparisonType),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"not start with {Validator.Describe(startingWith)}");
         return _linker;
     }
     
@@ -328,10 +334,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => a.EndsWith(endingWith, comparisonType), 
+            a => a.EndsWith(endingWith, comparisonType),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"end with {Validator.Describe(endingWith)}");
         return _linker;
     }
     
@@ -350,10 +357,11 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
-            a => !a.EndsWith(endingWith, comparisonType), 
+            a => !a.EndsWith(endingWith, comparisonType),
             ArgumentValue,
-            ArgumentName, 
-            message);
+            ArgumentName,
+            message,
+            expectation: $"not end with {Validator.Describe(endingWith)}");
         return _linker;
     }
     
