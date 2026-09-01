@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [3.5.0] / 2026-09-01
 ### Changed
 - Every check that fails without a caller-supplied message now says what was expected of which
   argument, and what the value actually was: `Expected quantity to be greater than 5, but found 3.`
@@ -322,7 +324,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.4.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.5.0...HEAD
+[3.5.0]: https://github.com/FluentContracts/FluentContracts/compare/3.4.0...3.5.0
 [3.4.0]: https://github.com/FluentContracts/FluentContracts/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...3.2.0
