@@ -10,6 +10,19 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- `BeNaN`, `NotBeNaN`, `BeInfinity`, `NotBeInfinity`, `BeFinite` and `NotBeFinite` on the `double` and
+  `float` contracts — the values an ordering comparison cannot express, now assertable deliberately.
+  `BeFinite` is the one to reach for before comparing.
+
+### Fixed
+- `NaN` no longer satisfies an ordering check on a `double` or `float` argument.
+  `double.NaN.Must().BeNegative()` and `.BeLessThan(0)` both used to **pass**, because `Comparer<T>` is
+  a total order that sorts `NaN` below every other value — so the contract went silently unenforced,
+  the same shape as the null policy fixed in 3.0.0. Every ordering check now rejects `NaN` with
+  `ArgumentOutOfRangeException`, matching IEEE, where no ordering comparison with `NaN` is true.
+  Infinity is deliberately untouched: it orders correctly.
+
 ### Internal
 - The changelog push now clears the Authorization header `actions/checkout` leaves configured for
   github.com. Git sends that header whatever credentials a remote URL carries, so the push went out as

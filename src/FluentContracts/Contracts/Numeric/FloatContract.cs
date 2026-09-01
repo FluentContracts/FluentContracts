@@ -377,4 +377,73 @@ public class FloatContract<TContract> : ObjectContract<float?, TContract>
         Validator.CheckForNotSpecificValue(0f, ArgumentValue, ArgumentName, message);
         return _linker;
     }
+
+    /// <summary>
+    /// Checks if the value of the argument is not a number.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> BeNaN(string? message = null)
+    {
+        Validator.CheckForNaN(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is a number.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> NotBeNaN(string? message = null)
+    {
+        Validator.CheckForNotNaN(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is positive or negative infinity.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> BeInfinity(string? message = null)
+    {
+        Validator.CheckForInfinity(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is neither positive nor negative infinity.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> NotBeInfinity(string? message = null)
+    {
+        Validator.CheckForNotInfinity(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is a finite number: neither NaN nor infinite.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>
+    /// This is the check to reach for before an ordering comparison, which rejects NaN outright.
+    /// </remarks>
+    public Linker<TContract> BeFinite(string? message = null)
+    {
+        Validator.CheckForFinite(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the value of the argument is not finite: either NaN or infinite.
+    /// </summary>
+    /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    public Linker<TContract> NotBeFinite(string? message = null)
+    {
+        Validator.CheckForNotFinite(ArgumentValue, ArgumentName, message);
+        return _linker;
+    }
 }

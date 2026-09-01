@@ -226,6 +226,73 @@ internal static partial class Validator
         ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
     }
 
+    /// <summary>
+    /// Ordering comparisons reject <see cref="double.NaN"/> the way they reject null.
+    /// </summary>
+    /// <remarks>
+    /// <see cref="Comparer{T}"/> is a total order and sorts NaN below every other value, so a check
+    /// asking whether the argument is less than something was satisfied by NaN. IEEE says every
+    /// ordering comparison with NaN is false, so no ordering check can be satisfied by one.
+    /// </remarks>
+    public static void CheckForNotNaN<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (!IsNaN(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    public static void CheckForNaN<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (IsNaN(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    public static void CheckForInfinity<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (IsInfinity(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    public static void CheckForNotInfinity<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (!IsInfinity(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    public static void CheckForFinite<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (!IsNaN(argumentValue) && !IsInfinity(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    public static void CheckForNotFinite<T>(T argumentValue, string argumentName, string? message = null)
+    {
+        if (IsNaN(argumentValue) || IsInfinity(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(argumentName, message);
+    }
+
+    // A contract holds its value as a nullable, so the pattern sees the boxed underlying type.
+    private static bool IsNaN<T>(T value) =>
+        value switch
+        {
+            double d => double.IsNaN(d),
+            float f => float.IsNaN(f),
+            _ => false
+        };
+
+    private static bool IsInfinity<T>(T value) =>
+        value switch
+        {
+            double d => double.IsInfinity(d),
+            float f => float.IsInfinity(f),
+            _ => false
+        };
+
     public static void CheckForBetween<T>(
         T start, 
         T end, 
@@ -234,6 +301,7 @@ internal static partial class Validator
         string? message = null)
     {
         CheckForNotNull(argumentValue, argumentName, message);
+        CheckForNotNaN(argumentValue, argumentName, message);
 
         if (argumentValue.IsGreaterOrEqualTo(start) && argumentValue.IsLessOrEqualTo(end)) return;
 
@@ -247,6 +315,7 @@ internal static partial class Validator
         string? message = null)
     {
         CheckForNotNull(argumentValue, argumentName, message);
+        CheckForNotNaN(argumentValue, argumentName, message);
 
         if (argumentValue.IsGreaterThan(value)) return;
 
@@ -260,6 +329,7 @@ internal static partial class Validator
         string? message = null)
     {
         CheckForNotNull(argumentValue, argumentName, message);
+        CheckForNotNaN(argumentValue, argumentName, message);
 
         if (argumentValue.IsGreaterOrEqualTo(value)) return;
 
@@ -273,6 +343,7 @@ internal static partial class Validator
         string? message = null)
     {
         CheckForNotNull(argumentValue, argumentName, message);
+        CheckForNotNaN(argumentValue, argumentName, message);
 
         if (argumentValue.IsLessThan(value)) return;
 
@@ -286,6 +357,7 @@ internal static partial class Validator
         string? message = null)
     {
         CheckForNotNull(argumentValue, argumentName, message);
+        CheckForNotNaN(argumentValue, argumentName, message);
 
         if (argumentValue.IsLessOrEqualTo(value)) return;
 

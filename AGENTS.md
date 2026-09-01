@@ -161,11 +161,16 @@ overload in 4.0.0 is what settles it. The value-type contracts declare the same 
 hit by it — a string is not a candidate value for `params int[]` — so they are left alone rather than
 deprecated for a defect they do not have.
 
-**Null policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
-`BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException`; the guard lives
-inside the `Validator` ordering methods, not at the call sites. Equality checks and the
-explicit null checks accept `null`. New checks must follow this split, and
-`NullArgumentPolicyTests` exists to keep it honest.
+**Null and NaN policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
+`BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException` and `NaN` with
+`ArgumentOutOfRangeException`. Both guards live inside the `Validator` ordering methods, not at the
+call sites, so a check added later cannot forget them. Equality checks and the explicit null checks
+accept `null`; `BeNaN` and `BeFinite` are how a caller asks about NaN deliberately.
+
+`Comparer<T>` is a *total* order and sorts `NaN` below every other value, which is why `BeNegative`
+and `BeLessThan` used to be satisfied by one. IEEE says every ordering comparison with `NaN` is false,
+so none of them can be. New checks must follow this split; `NullArgumentPolicyTests` and
+`NonFiniteNumberTests` exist to keep it honest.
 
 **Multi-targeting.** The library builds for `netstandard2.0` and `net8.0`. When an API is
 unavailable on `netstandard2.0`, add a guarded helper to `Infrastructure/Compat.cs` rather
