@@ -18,7 +18,7 @@ partial class Build
     int PushDegreeOfParallelism => 5;
     
     Target Publish => _ => _
-        .DependsOn(Test, Pack)
+        .DependsOn(Test, Pack, VerifyVersionDirective)
         .Requires(() => NuGetApiKey)
         // A merge can opt out of releasing; the build and tests still run.
         .OnlyWhenDynamic(() => !SkipRelease)
