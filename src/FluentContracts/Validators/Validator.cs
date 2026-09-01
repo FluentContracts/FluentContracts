@@ -114,7 +114,8 @@ internal static partial class Validator
     }
 
     /// <inheritdoc cref="CheckForTypeAndConvert{TArgument,T}"/>
-    public static T CheckForTypeAndConvert<TArgument, T, TException>(
+    public static T CheckForTypeAndConvert<TArgument, T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
         TArgument argumentValue,
         string? message = null)
         where TException : Exception, new()
@@ -128,7 +129,9 @@ internal static partial class Validator
         return default!;
     }
 
-    public static void CheckForNotNull<T, TException>([NotNull] T? value)
+    public static void CheckForNotNull<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        [NotNull] T? value)
         where TException : Exception, new()
     {
         if (value is not null) return;
@@ -136,8 +139,9 @@ internal static partial class Validator
         ThrowHelper.ThrowUserDefinedException<TException>();
     }
 
-    public static void CheckForNotNull<T, TException>(
-        [NotNull] T? argumentValue, 
+    public static void CheckForNotNull<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        [NotNull] T? argumentValue,
         string message)
         where TException : Exception, new()
     {
@@ -192,8 +196,9 @@ internal static partial class Validator
             message ?? Expected(argumentName, expectation ?? HumaniseCheckName(checkName), argumentValue));
     }
 
-    public static void CheckGenericCondition<T, TException>(
-        Func<T, bool> genericCondition, 
+    public static void CheckGenericCondition<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        Func<T, bool> genericCondition,
         [NotNull] T argumentValue)
         where TException : Exception, new()
     {
@@ -204,9 +209,10 @@ internal static partial class Validator
         ThrowHelper.ThrowUserDefinedException<TException>();
     }
 
-    public static void CheckGenericCondition<T, TException>(
-        Func<T, bool> genericCondition, 
-        [NotNull] T argumentValue, 
+    public static void CheckGenericCondition<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        Func<T, bool> genericCondition,
+        [NotNull] T argumentValue,
         string message)
         where TException : Exception, new()
     {

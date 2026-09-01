@@ -10,6 +10,16 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Packaging
+- The `net8.0` assets declare trimming and Native AOT compatibility (`IsAotCompatible`), so a
+  trimmed or AOT-published app no longer warns about the package. The library's one reflection
+  path — constructing a user-defined exception for checks like `Satisfy<T, TException>` — is
+  annotated with `DynamicallyAccessedMembers` through the whole call chain, which keeps the
+  exception's `(string message)` constructor through trimming; verified on a `TrimMode=full`
+  publish and a Native AOT publish, both of which run every path including that one. The trim
+  analyzers now run on every build with warnings as errors, so an unannotated reflection use
+  cannot be added silently. `netstandard2.0` ships the same annotated code via PolySharp's
+  attribute polyfills; behaviour there is unchanged.
 
 ## [3.6.0] / 2026-09-01
 ### Added
