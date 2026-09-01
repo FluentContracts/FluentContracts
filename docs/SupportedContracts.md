@@ -219,6 +219,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeFinite`
+- `(Not)BeInfinity`
+- `(Not)BeNaN`
 - `(Not)BeNegative`
 - `(Not)BePositive`
 - `(Not)BeZero`
@@ -232,6 +235,9 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeFinite`
+- `(Not)BeInfinity`
+- `(Not)BeNaN`
 - `(Not)BeNegative`
 - `(Not)BePositive`
 - `(Not)BeZero`
