@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [3.6.0] / 2026-09-01
 ### Added
 - `Value()` ends a chain with the value it just validated, so the guard and the read are one
   expression: `this.port = config.Port.Must().BeBetween(1, 65535).Value();`. It returns the
@@ -351,7 +353,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.5.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.6.0...HEAD
+[3.6.0]: https://github.com/FluentContracts/FluentContracts/compare/3.5.0...3.6.0
 [3.5.0]: https://github.com/FluentContracts/FluentContracts/compare/3.4.0...3.5.0
 [3.4.0]: https://github.com/FluentContracts/FluentContracts/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...3.3.0
