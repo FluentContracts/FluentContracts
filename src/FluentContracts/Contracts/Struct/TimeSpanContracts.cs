@@ -129,7 +129,9 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        // Not the mirror of BeShorterThan's strict <: a span exactly equal to the expected value is
+        // not shorter, so the negation must admit equality.
+        Validator.CheckGenericCondition(a => a!.Value.Ticks >= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
             expectation: $"not be shorter than {Validator.Describe(expectedValue)}");
         return _linker;
     }
@@ -161,7 +163,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        // Same shape as NotBeShorterThan: equal is not longer, so the negation admits equality.
+        Validator.CheckGenericCondition(a => a!.Value.Ticks <= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
             expectation: $"not be longer than {Validator.Describe(expectedValue)}");
         return _linker;
     }

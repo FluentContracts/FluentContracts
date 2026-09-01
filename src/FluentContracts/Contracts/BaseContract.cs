@@ -28,13 +28,15 @@ public abstract class BaseContract<TArgument, TContract>
         ArgumentValue = argumentValue;
     }
 
+    // Both are additionally internal so ValueExtensions can end a chain with the validated value;
+    // to deriving contracts outside the assembly nothing changes.
     /// <summary>The argument being checked, as it was handed to <c>Must()</c>.</summary>
-    protected TArgument? ArgumentValue { get; }
+    protected internal TArgument? ArgumentValue { get; }
     /// <summary>
     /// The argument's name, captured by <c>[CallerArgumentExpression]</c> at the call to <c>Must()</c>
     /// and reported as the parameter name when a check fails.
     /// </summary>
-    protected string ArgumentName { get; }
+    protected internal string ArgumentName { get; }
 
     /// <summary>
     /// Checks if the specified argument satisfies a custom condition.

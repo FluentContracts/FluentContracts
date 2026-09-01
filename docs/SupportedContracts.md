@@ -99,6 +99,19 @@
 - `BeFalse`
 - `BeTrue`
 
+## `DateOnly` (extends `Equality`)
+
+- `(Not)BeInTheFuture`
+- `(Not)BeInThePast`
+- `(Not)BeToday`
+- `(Not)BeWeekday`
+- `(Not)BeWeekend`
+- `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
 ## `DateTime` (extends `Base`)
 
 - `(Not)Be`
@@ -164,6 +177,7 @@
 
 - `(Not)Be`
 - `(Not)BeAnyOf`
+- `(Not)BeDefined`
 - `(Not)HaveFlag`
 
 ## `Guid` (extends `Object`)
@@ -171,6 +185,14 @@
 - `(Not)Be`
 - `(Not)BeAnyOf`
 - `(Not)BeEmpty`
+
+## `TimeOnly` (extends `Equality`)
+
+- `(Not)BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
 
 ## `TimeSpan` (extends `Base`)
 
@@ -374,5 +396,7 @@
 
 ## `List` (extends `Collection`)
 
+- `(Not)BeInAscendingOrder`
+- `(Not)BeInDescendingOrder`
 - `(Not)Contain`
 - `HaveElementsOfType`

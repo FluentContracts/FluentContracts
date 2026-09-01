@@ -213,6 +213,116 @@ internal static partial class Validator
             message ?? Expected(argumentName, $"not contain the key {Describe(key)} with the value {Describe(value)}"));
     }
 
+    public static void CheckForAscendingOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForOrder(collection, comparer, descending: false, argumentName, message);
+    }
+
+    public static void CheckForDescendingOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForOrder(collection, comparer, descending: true, argumentName, message);
+    }
+
+    public static void CheckForNotAscendingOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotOrder(collection, comparer, descending: false, argumentName, message);
+    }
+
+    public static void CheckForNotDescendingOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        string argumentName,
+        string? message = null)
+    {
+        CheckForNotOrder(collection, comparer, descending: true, argumentName, message);
+    }
+
+    /// <summary>
+    /// Non-strict, matching <c>List&lt;T&gt;.Sort</c>: equal neighbours are in order. A single pass,
+    /// so the failure can name the offending neighbours without enumerating the caller's collection
+    /// again — it may be a one-shot enumerable.
+    /// </summary>
+    private static void CheckForOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        bool descending,
+        string argumentName,
+        string? message)
+    {
+        if (TryFindDisorder(collection, comparer, descending, out var previous, out var next))
+        {
+            ThrowHelper.ThrowArgumentOutOfRangeException(
+                argumentName,
+                message ?? Expected(
+                    argumentName,
+                    $"be in {OrderName(descending)} order, but {Describe(previous)} appears before {Describe(next)}"));
+        }
+    }
+
+    /// <summary>
+    /// The negation asserts at least one out-of-order neighbour pair exists. An empty or single-item
+    /// collection is vacuously in every order, so it fails this check.
+    /// </summary>
+    private static void CheckForNotOrder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        bool descending,
+        string argumentName,
+        string? message)
+    {
+        if (TryFindDisorder(collection, comparer, descending, out _, out _)) return;
+
+        ThrowHelper.ThrowArgumentOutOfRangeException(
+            argumentName,
+            message ?? Expected(argumentName, $"not be in {OrderName(descending)} order"));
+    }
+
+    private static string OrderName(bool descending) => descending ? "descending" : "ascending";
+
+    private static bool TryFindDisorder<T>(
+        IEnumerable<T> collection,
+        IComparer<T> comparer,
+        bool descending,
+        out T previous,
+        out T next)
+    {
+        previous = default!;
+        next = default!;
+        var first = true;
+
+        foreach (var item in collection)
+        {
+            if (!first)
+            {
+                var comparison = comparer.Compare(previous, item);
+
+                if (descending ? comparison < 0 : comparison > 0)
+                {
+                    next = item;
+                    return true;
+                }
+            }
+
+            previous = item;
+            first = false;
+        }
+
+        previous = default!;
+        return false;
+    }
+
     private static bool CollectionContains<T>(IEnumerable<T> collection, IEnumerable<T> containedElements) =>
         CollectionContains(collection, containedElements.ToArray());
 

@@ -139,6 +139,24 @@ public class TimeSpanContractTests : Tests
             "testArgument");
     }
 
+    /// <summary>
+    /// Pins the boundary of the four length comparisons: a span exactly equal to the expected value
+    /// is neither shorter nor longer, so the strict checks fail and their negations pass.
+    /// <c>NotBeShorterThan</c> and <c>NotBeLongerThan</c> used to throw on equality.
+    /// </summary>
+    [Fact]
+    public void Test_Length_Comparisons_On_Equal_Spans()
+    {
+        var timeSpan = DummyData.GetTimeSpan();
+        var equal = TimeSpan.FromTicks(timeSpan.Ticks);
+
+        equal.Must().NotBeShorterThan(timeSpan);
+        equal.Must().NotBeLongerThan(timeSpan);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => equal.Must().BeShorterThan(timeSpan));
+        Assert.Throws<ArgumentOutOfRangeException>(() => equal.Must().BeLongerThan(timeSpan));
+    }
+
     [Fact]
     public void Test_Must_BeEqualTo()
     {

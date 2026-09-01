@@ -85,4 +85,124 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
         Validator.CheckForType<T, TElement>(ArgumentValue, ArgumentName, message);
         return _linker;
     }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are in ascending order, comparing
+    /// with <see cref="Comparer{T}.Default"/>. Non-strict: equal neighbours are in order, matching
+    /// <c>List&lt;T&gt;.Sort</c>. An empty or single-element list is in order.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> BeInAscendingOrder(string? message = null)
+    {
+        return BeInAscendingOrder(Comparer<T>.Default, message);
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are in ascending order, comparing
+    /// with <paramref name="comparer"/>. Non-strict: equal neighbours are in order, matching
+    /// <c>List&lt;T&gt;.Sort</c>. An empty or single-element list is in order.
+    /// </summary>
+    /// <param name="comparer">The comparer that defines the order.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> BeInAscendingOrder(IComparer<T> comparer, string? message = null)
+    {
+        Validator.CheckForNotNull(comparer, nameof(comparer));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForAscendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are not in ascending order,
+    /// comparing with <see cref="Comparer{T}.Default"/> — at least one neighbour pair descends.
+    /// An empty or single-element list is vacuously in every order, so it fails this check.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> NotBeInAscendingOrder(string? message = null)
+    {
+        return NotBeInAscendingOrder(Comparer<T>.Default, message);
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are not in ascending order,
+    /// comparing with <paramref name="comparer"/> — at least one neighbour pair descends.
+    /// An empty or single-element list is vacuously in every order, so it fails this check.
+    /// </summary>
+    /// <param name="comparer">The comparer that defines the order.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> NotBeInAscendingOrder(IComparer<T> comparer, string? message = null)
+    {
+        Validator.CheckForNotNull(comparer, nameof(comparer));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotAscendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are in descending order, comparing
+    /// with <see cref="Comparer{T}.Default"/>. Non-strict: equal neighbours are in order.
+    /// An empty or single-element list is in order.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> BeInDescendingOrder(string? message = null)
+    {
+        return BeInDescendingOrder(Comparer<T>.Default, message);
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are in descending order, comparing
+    /// with <paramref name="comparer"/>. Non-strict: equal neighbours are in order.
+    /// An empty or single-element list is in order.
+    /// </summary>
+    /// <param name="comparer">The comparer that defines the order.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> BeInDescendingOrder(IComparer<T> comparer, string? message = null)
+    {
+        Validator.CheckForNotNull(comparer, nameof(comparer));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForDescendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are not in descending order,
+    /// comparing with <see cref="Comparer{T}.Default"/> — at least one neighbour pair ascends.
+    /// An empty or single-element list is vacuously in every order, so it fails this check.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> NotBeInDescendingOrder(string? message = null)
+    {
+        return NotBeInDescendingOrder(Comparer<T>.Default, message);
+    }
+
+    /// <summary>
+    /// Checks if the elements of the <see cref="IList{T}"/> argument are not in descending order,
+    /// comparing with <paramref name="comparer"/> — at least one neighbour pair ascends.
+    /// An empty or single-element list is vacuously in every order, so it fails this check.
+    /// </summary>
+    /// <param name="comparer">The comparer that defines the order.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public Linker<ListContract<T>> NotBeInDescendingOrder(IComparer<T> comparer, string? message = null)
+    {
+        Validator.CheckForNotNull(comparer, nameof(comparer));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotDescendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        return _linker;
+    }
 }
