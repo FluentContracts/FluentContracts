@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -245,10 +246,16 @@ partial class Build
         Git($"add {ChangelogFile}");
         Git($"commit -m {message}");
 
-        // The checkout is detached at the commit that triggered this run, and its credentials are the
-        // workflow's GITHUB_TOKEN, which the branch protection on MainBranch rejects. Point the remote
-        // at a URL carrying the app token instead. Unlike GITHUB_TOKEN, an app's push does start
-        // another workflow run, which the markers in the message are there to stop.
+        // actions/checkout leaves an Authorization header configured for github.com, and that header
+        // wins over any credentials in a remote URL. Without clearing it the push goes out as
+        // github-actions[bot] however the remote is spelled, and the app's bypass never applies —
+        // which is exactly how 3.3.0 was rejected by rules the app is exempt from. An empty value
+        // resets the header list, verified by watching what git actually sends.
+        ClearCheckoutCredentials();
+
+        // The checkout is detached at the commit that triggered this run, so name the branch to push
+        // to. Unlike GITHUB_TOKEN, an app's push does start another workflow run, which the markers in
+        // the commit message are there to stop.
         var remote =
             $"https://x-access-token:{ChangelogPushToken}@github.com/"
             + $"{GitRepository.GetGitHubOwner()}/{GitRepository.GetGitHubName()}.git";
@@ -259,6 +266,23 @@ partial class Build
         Git($"push origin HEAD:{MainBranch}");
 
         Log.Information("Changelog finalized for {Version}", MajorMinorPatchVersion);
+    }
+
+    /// <summary>
+    /// Stops git sending the Authorization header <c>actions/checkout</c> leaves configured for
+    /// github.com.
+    /// </summary>
+    /// <remarks>
+    /// That header is sent whatever credentials a remote URL carries, so the changelog push went out
+    /// as <c>github-actions[bot]</c> — which has no bypass — rather than as the app, and 3.3.0 was
+    /// rejected by rules the app is exempt from. An empty value resets the header list, and it is
+    /// written to the config directly because the value has to be genuinely empty.
+    /// </remarks>
+    void ClearCheckoutCredentials()
+    {
+        File.AppendAllText(
+            RootDirectory / ".git" / "config",
+            $"[http \"https://github.com/\"]{Environment.NewLine}\textraheader ={Environment.NewLine}");
     }
 
     bool TryFinalizeChangelog(string version, out string reason)
