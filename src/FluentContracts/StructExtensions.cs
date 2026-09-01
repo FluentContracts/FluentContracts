@@ -209,4 +209,72 @@ public static class StructExtensions
     }
 
     #endregion
+
+#if NET8_0_OR_GREATER
+
+    #region DateOnly
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateOnly"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting the current date</param>
+    /// <returns>A new instance of the DateOnlyContract class.</returns>
+    public static DateOnlyContract Must(
+        this DateOnly? argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
+        IDateTimeProvider? dateTimeProvider = null)
+    {
+        return new DateOnlyContract(argument, argumentName, dateTimeProvider);
+    }
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateOnly"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <param name="dateTimeProvider">DateTime provider override to use for getting the current date</param>
+    /// <returns>A new instance of the DateOnlyContract class.</returns>
+    public static DateOnlyContract Must(
+        this DateOnly argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
+        IDateTimeProvider? dateTimeProvider = null)
+    {
+        return new DateOnlyContract(argument, argumentName, dateTimeProvider);
+    }
+
+    #endregion
+
+    #region TimeOnly
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="TimeOnly"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the TimeOnlyContract class.</returns>
+    public static TimeOnlyContract Must(
+        this TimeOnly? argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+    {
+        return new TimeOnlyContract(argument, argumentName);
+    }
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of type <see cref="TimeOnly"/>
+    /// </summary>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the TimeOnlyContract class.</returns>
+    public static TimeOnlyContract Must(
+        this TimeOnly argument,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+    {
+        return new TimeOnlyContract(argument, argumentName);
+    }
+
+    #endregion
+
+#endif
 }

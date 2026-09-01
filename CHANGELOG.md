@@ -10,6 +10,33 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- `Value()` ends a chain with the value it just validated, so the guard and the read are one
+  expression: `this.port = config.Port.Must().BeBetween(1, 65535).Value();`. It returns the
+  unwrapped, non-nullable value (`int` from an `int?` argument), and a null argument fails with
+  `ArgumentNullException` naming the argument, exactly as `NotBeNull` would. Available on every
+  contract, and only after at least one check has run.
+- `DateOnlyContract` and `TimeOnlyContract`, on the `net8.0` target (the types do not exist on
+  `netstandard2.0`, which simply does not see the new `Must()` overloads). `DateOnly` gets equality,
+  `BeAnyOf`, the comparison family, `BeBetween`, `BeInThePast`/`BeInTheFuture`/`BeToday` — driven by
+  the same `IDateTimeProvider` the `DateTime` contract uses, so tests can pin the clock — and
+  `BeWeekday`/`BeWeekend`. `TimeOnly` gets equality, `BeAnyOf`, comparisons and `BeBetween`/
+  `NotBeBetween` with `TimeOnly.IsBetween`'s semantics: start inclusive, end exclusive, and the
+  window wraps midnight, so between 22:00 and 02:00 contains 23:30.
+- `BeDefined` and `NotBeDefined` on the enum contract: `(DayOfWeek)9` is representable and flowed
+  through every existing check; `BeDefined` rejects it. On a `[Flags]` enum an undeclared
+  combination of flags is not defined, matching `Enum.IsDefined`.
+- `BeInAscendingOrder`, `BeInDescendingOrder` and their `Not` mirrors on the list contract, each
+  with an `IComparer<T>` overload. Non-strict — equal neighbours are in order, matching
+  `List<T>.Sort` — and the failure names the first out-of-order neighbours. An empty or
+  single-element list is vacuously in every order, so it satisfies the positive checks and fails
+  the negations.
+
+### Fixed
+- `NotBeShorterThan` and `NotBeLongerThan` on the `TimeSpan` contract used to **throw** for a span
+  exactly equal to the expected value — they were implemented as strict `>` and `<` instead of the
+  actual negations `>=` and `<=`. A span equal to the bound now passes both, since it is neither
+  shorter nor longer.
 
 ## [3.5.0] / 2026-09-01
 ### Changed

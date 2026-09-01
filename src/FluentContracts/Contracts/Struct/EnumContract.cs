@@ -205,4 +205,41 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
             expectation: $"not have the flag {Validator.Describe(flag)}");
         return _linker;
     }
+
+    /// <summary>
+    /// Checks if the specified argument is a declared member of <typeparamref name="TEnum"/>.
+    /// A value cast from a number the enum never declared — <c>(DayOfWeek)9</c> — fails.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>
+    /// Also checks for the argument to NOT be null. On a <see cref="FlagsAttribute"/> enum, a
+    /// combination of flags that is not itself a declared member is not defined — that is
+    /// <see cref="Enum.IsDefined(Type, object)"/>'s behaviour, which this check follows.
+    /// </remarks>
+    public Linker<TContract> BeDefined(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => Enum.IsDefined(typeof(TEnum), a!.Value), ArgumentValue, ArgumentName, message,
+            expectation: $"be a defined member of {typeof(TEnum)}");
+        return _linker;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument is not a declared member of <typeparamref name="TEnum"/>.
+    /// </summary>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>Linker for chaining more checks</returns>
+    /// <remarks>
+    /// Also checks for the argument to NOT be null. On a <see cref="FlagsAttribute"/> enum, a
+    /// combination of flags that is not itself a declared member is not defined — that is
+    /// <see cref="Enum.IsDefined(Type, object)"/>'s behaviour, which this check follows.
+    /// </remarks>
+    public Linker<TContract> NotBeDefined(string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !Enum.IsDefined(typeof(TEnum), a!.Value), ArgumentValue, ArgumentName, message,
+            expectation: $"not be a defined member of {typeof(TEnum)}");
+        return _linker;
+    }
 }

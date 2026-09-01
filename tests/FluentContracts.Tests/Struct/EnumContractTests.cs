@@ -161,4 +161,24 @@ public class EnumContractTests : Tests
             (testArgument, message) => testArgument.Must().NotHaveFlag(StarWarsCharacter.DarthVader, message),
             "testArgument");
     }
+
+    [Fact]
+    public void Test_Must_BeDefined()
+    {
+        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentOutOfRangeException>(
+            DayOfWeek.Monday,
+            (DayOfWeek)9,
+            (testArgument, message) => testArgument.Must().BeDefined(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeDefined()
+    {
+        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentOutOfRangeException>(
+            (DayOfWeek)9,
+            DayOfWeek.Monday,
+            (testArgument, message) => testArgument.Must().NotBeDefined(message),
+            "testArgument");
+    }
 }
