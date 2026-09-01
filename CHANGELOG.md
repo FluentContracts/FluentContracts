@@ -27,6 +27,10 @@ This file is the curated summary of notable changes on top of those.
   for: GitHub fills the squash commit subject in when the merge box is rendered, so a pull request
   titled with the marker can merge without it — which is what happened after 3.2.0, and only the run
   being cancelled mid-build stopped an unintended 3.2.1 from being published.
+- A release now stops if its pull request asks for a `+semver:` bump that the merged commit does not
+  carry. The directive is read from the commit message, but the commit subject is composed from the
+  title when the merge box is rendered, so a title edited afterwards can lose it and ship breaking
+  changes as a patch. The check runs before anything is published, so failing costs nothing.
 - A failure while finalising the changelog can no longer fail the release. The step already ran after
   the package was pushed, but its exception still left the workflow red, which reads as a failed
   release; it now reports the problem and leaves the run green.

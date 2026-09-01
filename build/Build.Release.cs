@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.Annotations;
@@ -48,6 +49,60 @@ partial class Build
     /// </summary>
     const string SkipCiToken = "[skip ci]";
 
+    /// <summary>
+    /// The bump directives GitVersion recognises in a commit message, per its default configuration.
+    /// </summary>
+    static readonly Regex SemVerDirective = new(
+        @"\+semver:\s?(major|breaking|minor|feature|patch|fix|none|skip)",
+        RegexOptions.IgnoreCase);
+
+    IReadOnlyList<PullRequest> _headPullRequests;
+
+    /// <summary>
+    /// The pull requests this merge commit came from, resolved from the commit rather than by parsing
+    /// "(#123)" out of its subject — that subject is the editable text these lookups exist to avoid
+    /// depending on. Empty when there is none, or when the answer could not be fetched.
+    /// </summary>
+    IReadOnlyList<PullRequest> HeadPullRequests => _headPullRequests ??= FetchHeadPullRequests();
+
+    IReadOnlyList<PullRequest> FetchHeadPullRequests()
+    {
+        var token = GitHubActions.Instance?.Token;
+        if (token == null)
+        {
+            // A local build has no pull request to consult, and nothing to publish either.
+            return [];
+        }
+
+        try
+        {
+            GitHubTasks.GitHubClient.Credentials = new Credentials(token);
+
+            var owner = GitRepository.GetGitHubOwner();
+            var name = GitRepository.GetGitHubName();
+
+            // The commit endpoint gives numbers; fetch each one for the title and labels.
+            var references = GitHubTasks.GitHubClient.Repository.Commit
+                .PullRequests(owner, name, GitVersion.Sha)
+                .GetAwaiter().GetResult();
+
+            return references
+                .Select(x => GitHubTasks.GitHubClient.PullRequest.Get(owner, name, x.Number)
+                    .GetAwaiter().GetResult())
+                .ToList();
+        }
+        catch (Exception exception)
+        {
+            Log.Warning(exception, "Could not read the pull request for {Sha}.", GitVersion.Sha);
+            return [];
+        }
+    }
+
+    string HeadCommitMessage =>
+        Git("log -1 --pretty=%B", logOutput: false, logInvocation: false)
+            .Select(x => x.Text)
+            .JoinNewLine();
+
     bool? _skipRelease;
 
     /// <summary>
@@ -64,55 +119,59 @@ partial class Build
             return true;
         }
 
-        var token = GitHubActions.Instance?.Token;
-        if (token == null)
-        {
-            // A local build has no pull request to consult, and nothing to publish either.
-            return false;
-        }
+        var labelled = HeadPullRequests
+            .FirstOrDefault(x => x.Labels.Any(label => label.Name.EqualsOrdinalIgnoreCase(SkipReleaseLabel)));
 
-        try
-        {
-            GitHubTasks.GitHubClient.Credentials = new Credentials(token);
+        if (labelled == null) return false;
 
-            // Resolve the pull request from the merge commit rather than parsing "(#123)" out of the
-            // subject, which is the same editable text the label is here to stop us depending on.
-            var pullRequests = GitHubTasks.GitHubClient.Repository.Commit
-                .PullRequests(GitRepository.GetGitHubOwner(), GitRepository.GetGitHubName(), GitVersion.Sha)
-                .GetAwaiter().GetResult();
+        Log.Information(
+            "Not releasing: pull request #{Number} is labelled {Label}.",
+            labelled.Number,
+            SkipReleaseLabel);
 
-            var labelled = pullRequests
-                .Where(x => x.Labels.Any(label =>
-                    label.Name.EqualsOrdinalIgnoreCase(SkipReleaseLabel)))
-                .ToList();
-
-            if (labelled.Count == 0) return false;
-
-            Log.Information(
-                "Not releasing: pull request #{Number} is labelled {Label}.",
-                labelled[0].Number,
-                SkipReleaseLabel);
-
-            return true;
-        }
-        catch (Exception exception)
-        {
-            // Releasing is the default, so say clearly that the question could not be answered.
-            Log.Warning(
-                exception,
-                "Could not read the labels for {Sha}; releasing. Add {Marker} to the commit message to "
-                + "hold a release back when the label cannot be reached.",
-                GitVersion.Sha,
-                SkipReleaseToken);
-
-            return false;
-        }
+        return true;
     }
 
-    string HeadCommitMessage =>
-        Git("log -1 --pretty=%B", logOutput: false, logInvocation: false)
-            .Select(x => x.Text)
-            .JoinNewLine();
+    /// <summary>
+    /// Stops a release whose pull request asked for a version bump that the commit being built does
+    /// not carry.
+    /// </summary>
+    /// <remarks>
+    /// GitVersion reads the directive out of the commit message, and GitHub composes the squash commit
+    /// subject from the pull request title when the merge box is <em>rendered</em> — so a title edited
+    /// after that page was opened is not what gets merged, and the bump is silently lost. A lost
+    /// <c>major</c> ships breaking changes as a patch, straight into everyone's version range. Nothing
+    /// has been published at this point, so failing is free and shipping the wrong version is not.
+    /// </remarks>
+    [UsedImplicitly]
+    Target VerifyVersionDirective => _ => _
+        .Unlisted()
+        .OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
+        .OnlyWhenDynamic(() => !SkipRelease)
+        .Executes(() =>
+        {
+            var pullRequest = HeadPullRequests.FirstOrDefault();
+            if (pullRequest == null)
+            {
+                Log.Warning(
+                    "No pull request found for {Sha}; releasing {Version} as computed.",
+                    GitVersion.Sha,
+                    MajorMinorPatchVersion);
+                return;
+            }
+
+            var requested = SemVerDirective.Match(pullRequest.Title);
+            if (!requested.Success) return;
+            if (SemVerDirective.IsMatch(HeadCommitMessage)) return;
+
+            Assert.Fail(
+                $"Pull request #{pullRequest.Number} asks for \"{requested.Value}\", but the commit being "
+                + $"released does not carry it, so the version was computed as {MajorMinorPatchVersion}. "
+                + "GitHub fills the squash commit subject in when the merge box is rendered, so a title "
+                + "edited after that page was opened is not what got merged. Nothing has been published. "
+                + "Push a commit carrying the directive before the next release, or tag the intended "
+                + "version by hand.");
+        });
 
     /// <summary>
     /// An installation token for the GitHub App that is allowed to push to <see cref="MainBranch"/>.

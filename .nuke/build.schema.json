@@ -34,7 +34,8 @@
         "Publish",
         "ReportCoverage",
         "Restore",
-        "Test"
+        "Test",
+        "VerifyVersionDirective"
       ]
     },
     "Verbosity": {
