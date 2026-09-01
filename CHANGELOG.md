@@ -10,6 +10,12 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Internal
+- A BenchmarkDotNet suite under `benchmarks/`, measuring the happy path of representative checks
+  against the hand-written guard each replaces, with allocations. `docs/Benchmarks.md` holds a
+  curated snapshot of the results with the machine and runtime stated; the benchmarks are
+  deliberately not run in CI, where shared runners make the numbers noise — CI only asserts the
+  project compiles. No effect on the package.
 
 ## [3.6.1] / 2026-09-01
 ### Packaging
