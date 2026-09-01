@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [3.4.0] / 2026-09-01
 ### Added
 - `BeNaN`, `NotBeNaN`, `BeInfinity`, `NotBeInfinity`, `BeFinite` and `NotBeFinite` on the `double` and
   `float` contracts — the values an ordering comparison cannot express, now assertable deliberately.
@@ -302,7 +304,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.3.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.4.0...HEAD
+[3.4.0]: https://github.com/FluentContracts/FluentContracts/compare/3.3.0...3.4.0
 [3.3.0]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/FluentContracts/FluentContracts/compare/3.0.0...3.1.0
