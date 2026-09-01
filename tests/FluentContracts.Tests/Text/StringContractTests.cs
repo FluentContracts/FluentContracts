@@ -64,8 +64,7 @@ public class StringContractTests : Tests, IDisposable
         TestContract<string, StringContract, ArgumentOutOfRangeException>(
             pair.TestArgument,
             pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+            (testArgument, message) => testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -78,10 +77,7 @@ public class StringContractTests : Tests, IDisposable
         TestContract<string, StringContract, ArgumentOutOfRangeException>(
             pair.DifferentArgument,
             pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+            (testArgument, message) => testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 

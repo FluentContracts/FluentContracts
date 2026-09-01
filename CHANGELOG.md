@@ -10,7 +10,24 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- `BeAnyOf` and `NotBeAnyOf` take a sequence with the message second — `BeAnyOf(IEnumerable<T> values,
+  string? message = null)` — matching `ListContract.Contain` and unable to confuse a value for a message.
+
+### Deprecated
+- `BeAnyOf(string? message, params T[] values)` and `NotBeAnyOf(string? message, params T[] values)` on
+  `EqualityContract`. When the argument is a string, the compiler prefers this overload for a call like
+  `BeAnyOf("a", "b")` — it has more declared parameters, and both are applicable only in expanded form —
+  so `"a"` became the message and only `"b"` was checked. Callers now get a compiler warning naming the
+  trap; the overload is removed in 4.0.0. The value-type contracts declare the same shape but cannot be
+  reached by it, and are untouched.
+
 ### Fixed
+- `BeAnyOf` and `NotBeAnyOf` with a **single** value on a string argument. `"a".Must().BeAnyOf("a")` used
+  to throw and `"a".Must().NotBeAnyOf("a")` used to pass, both because the value was taken as the message
+  and the set was left empty — so the first could never succeed and the second could never fail. A single
+  value now binds to its own overload. Several values on a string argument still reach the deprecated
+  overload and keep the old behaviour, which only removing it can settle.
 - The release workflow finalises `CHANGELOG.md` again. The commit message was assembled with quotes of
   our own around values that the build's argument handler also quotes, so `git commit -m` received a
   nested pair, took the tail of the message as pathspecs and failed. 3.2.0 published normally but its
