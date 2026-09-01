@@ -11,6 +11,16 @@ This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
 ### Internal
+- The changelog push now clears the Authorization header `actions/checkout` leaves configured for
+  github.com. Git sends that header whatever credentials a remote URL carries, so the push went out as
+  `github-actions[bot]` rather than as the app however the remote was spelled, and 3.3.0's changelog
+  commit was rejected by the very rules the app is exempt from. Verified by watching what git actually
+  sends: one Authorization header before the reset, none after.
+- The 3.3.0 section was written by running the release's own transform for that version, since the
+  push that should have written it never landed.
+
+## [3.3.0] / 2026-09-01
+### Internal
 - Corrected why a merge can lose its `+semver:` directive, in `AGENTS.md`, `CONTRIBUTING.md` and the
   message the release fails with. It is not a stale merge page: GitHub's squash default takes the
   merged subject from the pull request title only when the branch has more than one commit, and with
@@ -279,7 +289,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.3.0...HEAD
+[3.3.0]: https://github.com/FluentContracts/FluentContracts/compare/3.2.0...3.3.0
 [3.2.0]: https://github.com/FluentContracts/FluentContracts/compare/3.1.0...3.2.0
 [3.1.0]: https://github.com/FluentContracts/FluentContracts/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/FluentContracts/FluentContracts/compare/2.1.0...3.0.0
