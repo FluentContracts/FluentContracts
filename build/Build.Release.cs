@@ -137,11 +137,12 @@ partial class Build
     /// not carry.
     /// </summary>
     /// <remarks>
-    /// GitVersion reads the directive out of the commit message, and GitHub composes the squash commit
-    /// subject from the pull request title when the merge box is <em>rendered</em> — so a title edited
-    /// after that page was opened is not what gets merged, and the bump is silently lost. A lost
-    /// <c>major</c> ships breaking changes as a patch, straight into everyone's version range. Nothing
-    /// has been published at this point, so failing is free and shipping the wrong version is not.
+    /// GitVersion reads the directive out of the commit message, and the merged subject does not always
+    /// come from the pull request title: GitHub's squash default uses the title only when the branch has
+    /// more than one commit, and with exactly one it takes that commit's own subject instead. So a
+    /// directive in the title can never reach the commit at all. A lost <c>major</c> ships breaking
+    /// changes as a patch, straight into everyone's version range. Nothing has been published at this
+    /// point, so failing is free and shipping the wrong version is not.
     /// </remarks>
     [UsedImplicitly]
     Target VerifyVersionDirective => _ => _
@@ -167,10 +168,10 @@ partial class Build
             Assert.Fail(
                 $"Pull request #{pullRequest.Number} asks for \"{requested.Value}\", but the commit being "
                 + $"released does not carry it, so the version was computed as {MajorMinorPatchVersion}. "
-                + "GitHub fills the squash commit subject in when the merge box is rendered, so a title "
-                + "edited after that page was opened is not what got merged. Nothing has been published. "
-                + "Push a commit carrying the directive before the next release, or tag the intended "
-                + "version by hand.");
+                + "The merged subject comes from the pull request title only when the branch had more "
+                + "than one commit; with exactly one it is that commit's own subject, so a directive in "
+                + "the title never reaches the commit. Nothing has been published. Merge a follow-up "
+                + "whose commit subject carries the directive, or tag the intended version by hand.");
         });
 
     /// <summary>
