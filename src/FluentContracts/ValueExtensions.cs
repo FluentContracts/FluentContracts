@@ -1,3 +1,6 @@
+﻿#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 using FluentContracts.Contracts;
 using FluentContracts.Contracts.Collections;
 using FluentContracts.Contracts.IO;
@@ -276,6 +279,17 @@ public static class ValueExtensions
     /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
     public static TimeOnly Value(this TimeOnlyContract contract)
+    {
+        Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
+        return contract.ArgumentValue.Value;
+    }
+
+    /// <summary>Returns the validated number, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
+    /// <typeparam name="T">The number type.</typeparam>
+    /// <param name="contract">The chain being ended.</param>
+    /// <returns>The argument's value.</returns>
+    public static T Value<T>(this NumberContract<T> contract)
+        where T : struct, INumber<T>
     {
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;

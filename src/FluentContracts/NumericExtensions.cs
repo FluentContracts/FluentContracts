@@ -1,4 +1,7 @@
-
+﻿
+#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 using System.Runtime.CompilerServices;
 using FluentContracts.Contracts.Numeric;
 using FluentContracts.Infrastructure;
@@ -389,4 +392,50 @@ public static class NumericExtensions
     }
 
     #endregion
+
+#if NET8_0_OR_GREATER
+
+    #region INumber<T>
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for an argument of any number type — one
+    /// implementing <see cref="INumber{TSelf}"/> — that has no hand-written contract: <c>Half</c>,
+    /// <c>Int128</c>, <c>BigInteger</c>, <c>nint</c>, a user's own number type. The types with a
+    /// hand-written contract keep binding to it; a non-generic overload wins the tie.
+    /// </summary>
+    /// <typeparam name="T">The number type.</typeparam>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the <see cref="NumberContract{T}"/> class.</returns>
+    public static NumberContract<T> Must<T>(
+        this T argument,
+        string? message = null,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+        where T : struct, INumber<T>
+    {
+        return new NumberContract<T>(argument, argumentName) { ChainMessage = message };
+    }
+
+    /// <summary>
+    /// Indicates a start in the fluent chain of validations for a nullable argument of any number
+    /// type — one implementing <see cref="INumber{TSelf}"/> — that has no hand-written contract.
+    /// </summary>
+    /// <typeparam name="T">The number type.</typeparam>
+    /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
+    /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
+    /// <returns>A new instance of the <see cref="NumberContract{T}"/> class.</returns>
+    public static NumberContract<T> Must<T>(
+        this T? argument,
+        string? message = null,
+        [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
+        where T : struct, INumber<T>
+    {
+        return new NumberContract<T>(argument, argumentName) { ChainMessage = message };
+    }
+
+    #endregion
+
+#endif
 }

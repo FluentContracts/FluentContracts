@@ -67,6 +67,17 @@ This file is the curated summary of notable changes on top of those.
   those exact tokens.
 - A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
   once for every check in the chain; a check's own message still wins for that check.
+- **`NumberContract<T>` for any `INumber<T>`** on the `net8.0` target (#64, part of #62): `Half`,
+  `Int128`, `UInt128`, `BigInteger`, `nint`, a user's own number type — every number without a
+  hand-written contract now has `Must()`, with the checks the hand-written ones have: sign,
+  equality, `BeAnyOf`, `BeBetween`, the comparisons, zero, parity, and the NaN family (`BeNaN`,
+  `BeInfinity`, `BeFinite` and their negations, decided by the type itself, so they are simply
+  always-false/always-true on an integer). It follows the null and NaN policy: an ordering check
+  rejects `null` with `ArgumentNullException` and `NaN` with `ArgumentOutOfRangeException`, asked of
+  the type through `INumberBase<T>.IsNaN` rather than the `double`/`float` switch the hand-written
+  contracts use. Types with a hand-written contract (`int`, `decimal`, `char`, …) keep binding to it
+  — a non-generic overload wins the tie — which `NumberContractResolutionTests` pins;
+  `netstandard2.0` consumers do not see the overload, exactly as with `DateOnly`.
 - **Specifications** (#66, part of #62; resolves #3): `ISpecification<T>` — `IsSatisfiedBy` plus an
   `Expectation` phrase — is the extensibility point. A rule written once, `Spec.From<string>(s =>
   Iban.IsValid(s), "be a valid IBAN")` or a class deriving from `Specification<T>`, runs through
