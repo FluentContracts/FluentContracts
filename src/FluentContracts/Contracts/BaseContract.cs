@@ -37,6 +37,13 @@ public abstract class BaseContract<TArgument, TContract>
     protected internal string ArgumentName { get; }
 
     /// <summary>
+    /// A message for every check in this chain, given to <c>Must()</c>:
+    /// <c>environment.Must("This should be prod").NotBe("test").NotBeEmpty()</c>. A check's own
+    /// <c>message</c> argument still wins for that check.
+    /// </summary>
+    protected internal string? ChainMessage { get; init; }
+
+    /// <summary>
     /// The contract itself. Every check already returns the contract, so a chain reads
     /// <c>x.Must().NotBeNull().BeGreaterThan(5)</c>; <c>And</c> is kept so chains written as
     /// <c>x.Must().NotBeNull().And.BeGreaterThan(5)</c> keep compiling, and for anyone who finds
@@ -54,9 +61,9 @@ public abstract class BaseContract<TArgument, TContract>
     public TContract Satisfy<T>(Func<T, bool> customCondition, string? message = null)
         where T : TArgument
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T>(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(customCondition, typedValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(customCondition, typedValue, ArgumentName, message ?? ChainMessage,
             expectation: "satisfy the given condition");
         return (TContract)this;
     }

@@ -48,7 +48,7 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterThan(DateTimeOffset value, string? message = null)
     {
-        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -61,7 +61,7 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterOrEqualTo(DateTimeOffset value, string? message = null)
     {
-        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -74,7 +74,7 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessThan(DateTimeOffset value, string? message = null)
     {
-        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -87,7 +87,7 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessOrEqualTo(DateTimeOffset value, string? message = null)
     {
-        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -101,7 +101,7 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeBetween(DateTimeOffset start, DateTimeOffset end, string? message = null)
     {
-        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
+        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -130,8 +130,8 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveOffset(TimeSpan offset, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -144,8 +144,8 @@ public class DateTimeOffsetContract<TContract> : EqualityContract<DateTimeOffset
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotHaveOffset(TimeSpan offset, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(offset, ArgumentValue.Value.Offset, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 

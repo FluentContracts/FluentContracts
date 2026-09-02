@@ -14,27 +14,31 @@ public static class IOExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="FileInfo"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the StreamContract class.</returns>
     /// 
     public static FileInfoContract Must(
         this FileInfo? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new FileInfoContract(argument, argumentName);
+        return new FileInfoContract(argument, argumentName) { ChainMessage = message };
     }
     
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DirectoryInfo"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the StreamContract class.</returns>
     /// 
     public static DirectoryInfoContract Must(
         this DirectoryInfo? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new DirectoryInfoContract(argument, argumentName);
+        return new DirectoryInfoContract(argument, argumentName) { ChainMessage = message };
     }
 }

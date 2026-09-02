@@ -51,7 +51,7 @@ public class FailureMessageTests
     {
         const int number = 9;
 
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => number.Must().BeAnyOf(1, 2, 3));
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(() => number.Must().BeAnyOf([1, 2, 3]));
 
         exception.Message.Should().Be("Expected number to be any of [1, 2, 3], but found 9. (Parameter 'number')");
     }
@@ -62,7 +62,7 @@ public class FailureMessageTests
         const int number = 9;
 
         var exception = Assert.Throws<ArgumentOutOfRangeException>(
-            () => number.Must().BeAnyOf(1, 2, 3, 4, 5, 6, 7));
+            () => number.Must().BeAnyOf([1, 2, 3, 4, 5, 6, 7]));
 
         exception.Message.Should().Be(
             "Expected number to be any of [1, 2, 3, 4, 5, …], but found 9. (Parameter 'number')");

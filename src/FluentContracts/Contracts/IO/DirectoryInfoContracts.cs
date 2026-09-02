@@ -27,8 +27,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract Exist(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Exists, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Exists, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -40,8 +40,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract NotExist(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Exists, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Exists, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -53,8 +53,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract BeReadOnly(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.ReadOnly), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.ReadOnly), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -66,8 +66,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract NotBeReadOnly(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.ReadOnly), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.ReadOnly), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -79,8 +79,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract BeHidden(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -92,8 +92,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract NotBeHidden(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -105,8 +105,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract BeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.GetFiles().Length + a.GetDirectories().Length == 0, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.GetFiles().Length + a.GetDirectories().Length == 0, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -118,8 +118,8 @@ public class DirectoryInfoContract : NullableContract<DirectoryInfo, DirectoryIn
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public DirectoryInfoContract NotBeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.GetFiles().Length + a.GetDirectories().Length > 0, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.GetFiles().Length + a.GetDirectories().Length > 0, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 }

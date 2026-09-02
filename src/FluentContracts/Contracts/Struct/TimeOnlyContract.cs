@@ -42,7 +42,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterThan(TimeOnly value, string? message = null)
     {
-        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -55,7 +55,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterOrEqualTo(TimeOnly value, string? message = null)
     {
-        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -68,7 +68,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessThan(TimeOnly value, string? message = null)
     {
-        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -81,7 +81,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessOrEqualTo(TimeOnly value, string? message = null)
     {
-        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -98,8 +98,8 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"be between {Validator.Describe(start)} and {Validator.Describe(end)}");
         return (TContract)this;
     }
@@ -116,8 +116,8 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"not be between {Validator.Describe(start)} and {Validator.Describe(end)}");
         return (TContract)this;
     }

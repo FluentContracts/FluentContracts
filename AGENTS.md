@@ -170,26 +170,30 @@ one object, and a new check must return `(TContract)this`, never a new object.
 **Checks do not throw directly.** They delegate to a `Validator.*` method, which throws via
 `ThrowHelper`. Keep new checks in that shape.
 
-**Overload shape for multi-value checks.** A check taking several values comes as a pair — see
-`ListContract.Contain`:
+**Overload shape for multi-value checks.** A check that takes several values has exactly three
+overloads — one value, a set, and a set followed by the message — and never `params`:
 
 ```csharp
-public TContract Contain(params T[] elements);
-public TContract Contain(IEnumerable<T> elements, string? message = null);
+public TContract BeAnyOf(T expectedValue);
+public TContract BeAnyOf(IEnumerable<T> expectedValues, string? message = null);
 ```
 
-Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds
-`Check("a", "b")` to that overload and silently swallows `"a"` as the message, so the check runs
-against the wrong set — it prefers the candidate with more declared parameters when both are
-applicable only in expanded form.
+There is deliberately no `(T value, string message)` overload. With it, `BeAnyOf("draft",
+"published")` on a string would compile and silently take `"published"` as the message — the trap
+3.3.0 deprecated and 4.0.0 removed. Without it, and without `params` (which C# requires to be last,
+so no message could ever follow it), the rule is one sentence: **a message only ever follows a
+bracketed set**. `BeAnyOf("draft", "published")` is a compile error, which `OverloadShapeTests` in
+the analyzer test project pins by compiling snippets against the real library.
 
-`EqualityContract.BeAnyOf` and `NotBeAnyOf` are the existing casualties. They are now `[Obsolete]`,
-with `(IEnumerable<T>, string?)` alongside them, and a single value binds to its own overload rather
-than being read as a message. Several string values still reach the deprecated overload, because that
-call already means something today and the compiler cannot tell the two readings apart; removing the
-overload in 4.0.0 is what settles it. The value-type contracts declare the same shape but cannot be
-hit by it — a string is not a candidate value for `params int[]` — so they are left alone rather than
-deprecated for a defect they do not have.
+Fixed-arity checks keep `(operands…, string? message = null)`: the compiler knows their arity, so
+`NotBe("test", "This should be prod")` binds one way only.
+
+**Messages.** The `message` parameter is the mechanism, always after the operands. It may carry
+`{argument}` and `{value}`, filled on the failure path by `Validator.Custom`; every throw site in a
+validator is `Custom(message, argumentName, actual) ?? Expected(argumentName, …)`, so a new
+validator gets both behaviours by following that shape. `Must()` takes a chain-wide message as its
+first parameter, stored as `ChainMessage` on the contract; every check passes
+`message ?? ChainMessage` to the validators, and a new check must do the same.
 
 **Null and NaN policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException` and `NaN` with
@@ -320,8 +324,9 @@ so only the IDE-only code-fix assembly may reference it.
 - When changing the packaging, verify the result like a consumer: pack, restore the nupkg from a
   local feed into a scratch project, and confirm the diagnostic appears in its build output.
 
-Current rules: **FC0001** — a string argument's `BeAnyOf`/`NotBeAnyOf` bound to the deprecated
-message-first overload, silently taking the first value as the message.
+Current rules: none. **FC0001** policed the message-first `BeAnyOf` overload and was retired with it
+in 4.0.0 — recorded under *Removed Rules* in `AnalyzerReleases.Shipped.md`. The projects and the
+packaging stay in place for the next rule.
 
 ## Benchmarks
 

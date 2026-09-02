@@ -11,6 +11,34 @@ This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
 ### Breaking
+- **Multi-value checks take one bracketed set, never `params`** (#67, part of #62). `BeAnyOf`,
+  `NotBeAnyOf`, `Contain`, `NotContain` and `ContainAnyOf` each have exactly three overloads: one
+  value, a set, and a set followed by a message — `tag.Must().BeAnyOf(["draft", "published"],
+  "Not a state")`. Every `params` overload and every message-first `(string? message, params T[])`
+  overload is gone, on every contract, not only the deprecated pair on `EqualityContract`. What
+  breaks: `BeAnyOf(1, 2, 3)` becomes `BeAnyOf([1, 2, 3])` (or `new[] { 1, 2, 3 }` on a pre-C# 12
+  compiler), and `BeAnyOf("msg", 1, 2)` becomes `BeAnyOf([1, 2], "msg")`. What that buys: a message
+  can only ever follow a bracketed set, so `BeAnyOf("draft", "published")` on a string — which used
+  to compile and silently take `"draft"` as the message — no longer compiles at all. The
+  value-type contracts also lose their nullable-set overloads (`params int?[]` and friends): a
+  collection expression is ambiguous between `IEnumerable<int>` and `IEnumerable<int?>`, and
+  `BeNull` already covers the null case. The FC0001 analyzer rule is retired with the overload it
+  policed; the analyzer projects and packaging stay for future rules.
+- `Must()` takes an optional message as its **first** parameter, so the argument name can no longer
+  be overridden positionally — `x.Must("name")` is now a chain message — only as
+  `x.Must(argumentName: "name")`. `[CallerArgumentExpression]` fills the name in every ordinary
+  call, so this only affects code that spelled the name out.
+
+### Added
+- A caller's message may carry `{argument}` and `{value}`, filled on the failure path with the
+  argument's name and its rendered value (quoted, truncated, invariant culture — the same rendering
+  the default messages use): `port.Must().BeBetween(1, 65535, "{argument} must be a usable port,
+  got {value}")`. One shared message constant now names whichever argument it guards. A message
+  without tokens is untouched; this is a change only for a literal message that already contained
+  those exact tokens.
+- A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
+  once for every check in the chain; a check's own message still wins for that check.
+
 - Every check now returns the contract itself instead of a `Linker<TContract>`, and the `Linker`
   type is gone (#63, part of the 4.0.0 design in #62). `And` is kept as a property on the contract
   that returns the contract, so a chain written as `x.Must().NotBeNull().And.BeGreaterThan(5)` keeps

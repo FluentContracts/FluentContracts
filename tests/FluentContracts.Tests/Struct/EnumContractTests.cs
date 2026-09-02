@@ -86,23 +86,7 @@ public class EnumContractTests : Tests
             included,
             excluded,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var included = DummyData.GetNullableEnumValue<StarWarsCharacter>();
-        var excluded = DummyData.GetNullableEnumValue(included);
-        
-        var array = DummyData.GetArray(() => DummyData.GetNullableEnumValue<StarWarsCharacter>(), included, excluded);
-
-        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
-            included,
-            excluded,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -118,27 +102,7 @@ public class EnumContractTests : Tests
             excluded,
             included,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var included = DummyData.GetNullableEnumValue<StarWarsCharacter>();
-        var excluded = DummyData.GetNullableEnumValue(included);
-        
-        var array = DummyData.GetArray(() => DummyData.GetNullableEnumValue<StarWarsCharacter>(), included, excluded);
-
-        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
-            excluded,
-            included,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 

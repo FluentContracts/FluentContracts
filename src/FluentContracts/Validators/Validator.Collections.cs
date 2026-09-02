@@ -19,7 +19,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"contain {Describe(elements)}"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, $"contain {Describe(elements)}"));
     }
 
     public static void CheckForNotContaining<T>(
@@ -36,7 +36,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not contain any of {Describe(elements)}"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, $"not contain any of {Describe(elements)}"));
     }
 
     public static void CheckForContainingAny<T>(
@@ -51,7 +51,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"contain at least one of {Describe(elements)}"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, $"contain at least one of {Describe(elements)}"));
     }
 
     public static void CheckForUniqueItems<T>(
@@ -69,7 +69,7 @@ internal static partial class Validator
 
             ThrowHelper.ThrowArgumentOutOfRangeException(
                 argumentName,
-                message ?? Expected(argumentName, $"contain only unique items, but {Describe(item)} appears more than once"));
+                Custom(message, argumentName, item) ?? Expected(argumentName, $"contain only unique items, but {Describe(item)} appears more than once"));
         }
     }
 
@@ -82,7 +82,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "not contain null"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, "not contain null"));
     }
 
     public static void CheckForAllSatisfying<T>(
@@ -99,7 +99,7 @@ internal static partial class Validator
 
             ThrowHelper.ThrowArgumentOutOfRangeException(
                 argumentName,
-                message ?? Expected(argumentName, $"have every item satisfy the condition, but {Describe(item)} does not"));
+                Custom(message, argumentName, item) ?? Expected(argumentName, $"have every item satisfy the condition, but {Describe(item)} does not"));
         }
     }
 
@@ -113,7 +113,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "have at least one item satisfying the condition"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, "have at least one item satisfying the condition"));
     }
 
     public static void CheckForType<TElements, TCheck>(
@@ -129,7 +129,7 @@ internal static partial class Validator
 
             ThrowHelper.ThrowArgumentOutOfRangeException(
                 argumentName,
-                message ?? Expected(argumentName, $"contain only items of type {typeof(TCheck)}", element?.GetType()));
+                Custom(message, argumentName, element?.GetType()) ?? Expected(argumentName, $"contain only items of type {typeof(TCheck)}", element?.GetType()));
         }
     }
     
@@ -143,7 +143,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"contain the key {Describe(key)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"contain the key {Describe(key)}"));
     }
     
     public static void CheckForNotContainingKey<TKey, TValue>(
@@ -156,7 +156,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not contain the key {Describe(key)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"not contain the key {Describe(key)}"));
     }
     
     public static void CheckForContainingValue<TKey, TValue>(
@@ -169,7 +169,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"contain the value {Describe(value)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"contain the value {Describe(value)}"));
     }
     
     public static void CheckForNotContainingValue<TKey, TValue>(
@@ -182,7 +182,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not contain the value {Describe(value)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"not contain the value {Describe(value)}"));
     }
     
     public static void CheckForContainingKeyValuePair<TKey, TValue>(
@@ -196,7 +196,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"contain the key {Describe(key)} with the value {Describe(value)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"contain the key {Describe(key)} with the value {Describe(value)}"));
     }
     
     public static void CheckForNotContainingKeyValuePair<TKey, TValue>(
@@ -210,7 +210,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not contain the key {Describe(key)} with the value {Describe(value)}"));
+            Custom(message, argumentName, dictionary) ?? Expected(argumentName, $"not contain the key {Describe(key)} with the value {Describe(value)}"));
     }
 
     public static void CheckForAscendingOrder<T>(
@@ -265,7 +265,7 @@ internal static partial class Validator
         {
             ThrowHelper.ThrowArgumentOutOfRangeException(
                 argumentName,
-                message ?? Expected(
+                Custom(message, argumentName, next) ?? Expected(
                     argumentName,
                     $"be in {OrderName(descending)} order, but {Describe(previous)} appears before {Describe(next)}"));
         }
@@ -286,7 +286,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be in {OrderName(descending)} order"));
+            Custom(message, argumentName, collection) ?? Expected(argumentName, $"not be in {OrderName(descending)} order"));
     }
 
     private static string OrderName(bool descending) => descending ? "descending" : "ascending";

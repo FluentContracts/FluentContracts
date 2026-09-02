@@ -52,7 +52,7 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterThan(DateOnly value, string? message = null)
     {
-        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -65,7 +65,7 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterOrEqualTo(DateOnly value, string? message = null)
     {
-        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -78,7 +78,7 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessThan(DateOnly value, string? message = null)
     {
-        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -91,7 +91,7 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessOrEqualTo(DateOnly value, string? message = null)
     {
-        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -105,7 +105,7 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeBetween(DateOnly start, DateOnly end, string? message = null)
     {
-        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
+        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -191,8 +191,8 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeToday(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(Today, ArgumentValue.Value, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(Today, ArgumentValue.Value, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -204,8 +204,8 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeToday(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(Today, ArgumentValue.Value, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(Today, ArgumentValue.Value, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -217,8 +217,8 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeWeekday(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !IsWeekend(a!.Value), ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !IsWeekend(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: "fall on a weekday");
         return (TContract)this;
     }
@@ -239,8 +239,8 @@ public class DateOnlyContract<TContract> : EqualityContract<DateOnly?, TContract
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeWeekend(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => IsWeekend(a!.Value), ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => IsWeekend(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: "fall on a weekend");
         return (TContract)this;
     }

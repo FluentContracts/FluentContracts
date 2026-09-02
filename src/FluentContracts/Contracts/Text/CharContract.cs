@@ -38,7 +38,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract Be(char expectedValue, string? message = null)
     {
-        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -50,7 +50,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract Be(char? expectedValue, string? message = null)
     {
-        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -62,7 +62,7 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBe(char expectedValue, string? message = null)
     {
-        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     } 
 
@@ -74,99 +74,64 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBe(char? expectedValue, string? message = null)
     {
-        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     } 
     
     /// <summary>
-    /// Checks if the specified argument is any of the expected values.
+    /// Checks if the specified argument is the expected value.
     /// </summary>
-    /// <param name="expectedValues">Expected values among which the argument can be.</param>
+    /// <param name="expectedValue">The only value the argument may be.</param>
     /// <returns>The contract, for chaining more checks</returns>
-    public TContract BeAnyOf(params char[] expectedValues)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract BeAnyOf(char expectedValue)
     {
-        return BeAnyOf(null, expectedValues);
-    }
-    
-    /// <summary>
-    /// Checks if the specified argument is any of the expected values.
-    /// </summary>
-    /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>The contract, for chaining more checks</returns>
-    public TContract BeAnyOf(params char?[] expectedValues)
-    {
-        return BeAnyOf(null, expectedValues);
-    }
-
-    /// <summary>
-    /// Checks if the specified argument is any of the expected values.
-    /// </summary>
-    /// <param name="message">The optional error message to include in the exception.</param>
-    /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>The contract, for chaining more checks</returns>
-    public TContract BeAnyOf(string? message, params char[] expectedValues)
-    {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        Validator.CheckForAnyOf([expectedValue], ArgumentValue.Value, ArgumentName, null);
         return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is any of the expected values.
     /// </summary>
-    /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>The contract, for chaining more checks</returns>
-    public TContract BeAnyOf(string? message, params char?[] expectedValues)
-    {
-        Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
-        return (TContract)this;
-    }
-
-    /// <summary>
-    /// Checks if the specified argument is not any of the expected values.
-    /// </summary>
-    /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>The contract, for chaining more checks</returns>
-    public TContract NotBeAnyOf(params char[] expectedValues)
-    {
-        return NotBeAnyOf(null, expectedValues);
-    }
-
-    /// <summary>
-    /// Checks if the specified argument is not any of the expected values.
-    /// </summary>
-    /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>The contract, for chaining more checks</returns>
-    public TContract NotBeAnyOf(params char?[] expectedValues)
-    {
-        return NotBeAnyOf(null, expectedValues);
-    }
-
-    /// <summary>
-    /// Checks if the specified argument is not any of the expected values.
-    /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <param name="expectedValues">The expected values that the argument must not be.</param>
     /// <returns>The contract, for chaining more checks</returns>
-    public TContract NotBeAnyOf(string? message, params char[] expectedValues)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract BeAnyOf(IEnumerable<char> expectedValues, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
     /// <summary>
-    /// Checks if the specified argument is not any of the expected values.
+    /// Checks if the specified argument is not the given value.
     /// </summary>
-    /// <param name="message">The optional error message to include in the exception.</param>
-    /// <param name="expectedValues">The expected values that the argument must not be.</param>
+    /// <param name="unexpectedValue">The value the argument must not be.</param>
     /// <returns>The contract, for chaining more checks</returns>
-    public TContract NotBeAnyOf(string? message, params char?[] expectedValues)
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract NotBeAnyOf(char unexpectedValue)
     {
-        Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        Validator.CheckForNotAnyOf([unexpectedValue], ArgumentValue.Value, ArgumentName, null);
         return (TContract)this;
     }
+
+    /// <summary>
+    /// Checks if the specified argument is not any of the given values.
+    /// </summary>
+    /// <param name="unexpectedValues">The values the argument must not be.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>The contract, for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract NotBeAnyOf(IEnumerable<char> unexpectedValues, string? message = null)
+    {
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotAnyOf(unexpectedValues, ArgumentValue.Value, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
+    }
+
     
     /// <summary>
     /// Checks if the value of the argument is inclusively between the values of <paramref name="start"/> and <paramref name="end"/>
@@ -178,8 +143,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeBetween(char start, char end, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
     
@@ -193,8 +158,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeBetween(char? start, char? end, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForBetween(start, end, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -207,8 +172,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterThan(char value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -221,8 +186,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterThan(char? value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -235,8 +200,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterOrEqualTo(char value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -249,8 +214,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeGreaterOrEqualTo(char? value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -263,8 +228,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessThan(char value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -277,8 +242,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessThan(char? value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -291,8 +256,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessOrEqualTo(char value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -305,8 +270,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeLessOrEqualTo(char? value, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -317,8 +282,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeDigit(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsDigit(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsDigit(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -329,8 +294,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeDigit(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsDigit(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsDigit(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -341,8 +306,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeLetter(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsLetter(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsLetter(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -353,8 +318,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeLetter(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsLetter(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsLetter(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -365,8 +330,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeAlphanumeric(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsLetterOrDigit(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsLetterOrDigit(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -377,8 +342,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeAlphanumeric(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsLetterOrDigit(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsLetterOrDigit(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -389,8 +354,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeLowercase(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsLower(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsLower(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -401,8 +366,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeLowercase(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsLower(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsLower(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -413,8 +378,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeUppercase(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsUpper(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsUpper(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -425,8 +390,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeUppercase(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsUpper(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsUpper(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -437,8 +402,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeWhiteSpace(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => char.IsWhiteSpace(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => char.IsWhiteSpace(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -449,8 +414,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeWhiteSpace(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !char.IsWhiteSpace(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !char.IsWhiteSpace(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -461,8 +426,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeAscii(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -473,8 +438,8 @@ public class CharContract<TContract> : ObjectContract<char?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeAscii(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !Compat.IsAscii(a!.Value), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 }

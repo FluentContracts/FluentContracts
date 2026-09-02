@@ -87,21 +87,7 @@ public class SbyteContractTests : Tests
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableSbytePair();
-        var array = DummyData.GetArray(() => DummyData.GetSbyte(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -115,25 +101,7 @@ public class SbyteContractTests : Tests
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableSbytePair();
-        var array = DummyData.GetArray(() => DummyData.GetNullableSbyte(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
-            pair.DifferentArgument,
-            pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 

@@ -20,7 +20,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be of type {typeof(TCheck)}", argumentValue?.GetType()));
+            Custom(message, argumentName, argumentValue?.GetType()) ?? Expected(argumentName, $"be of type {typeof(TCheck)}", argumentValue?.GetType()));
     }
 
     public static void CheckForBeType<TArgument>(
@@ -35,7 +35,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be of type {type}", argumentValue.GetType()));
+            Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"be of type {type}", argumentValue.GetType()));
     }
 
     public static void CheckForNotBeType<TArgument, TCheck>(
@@ -47,7 +47,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be of type {typeof(TCheck)}", argumentValue.GetType()));
+            Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be of type {typeof(TCheck)}", argumentValue.GetType()));
     }
 
     public static void CheckForNotBeType<TArgument>(
@@ -62,7 +62,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be of type {type}"));
+            Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be of type {type}"));
     }
 
     public static void CheckForBeAssignableTo<TArgument>(
@@ -77,7 +77,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be assignable to {targetType}", argumentValue.GetType()));
+            Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"be assignable to {targetType}", argumentValue.GetType()));
     }
 
     public static void CheckForNotBeAssignableTo<TArgument>(
@@ -92,7 +92,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be assignable to {targetType}", argumentValue.GetType()));
+            Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be assignable to {targetType}", argumentValue.GetType()));
     }
     
     /// <summary>
@@ -109,7 +109,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be of type {typeof(T)}", argumentValue?.GetType()));
+            Custom(message, argumentName, argumentValue?.GetType()) ?? Expected(argumentName, $"be of type {typeof(T)}", argumentValue?.GetType()));
         return default!;
     }
 
@@ -159,7 +159,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentNullException(
             argumentName,
-            message ?? Expected(argumentName, "not be null"));
+            Custom(message, argumentName, null) ?? Expected(argumentName, "not be null"));
     }
 
     public static void CheckForNull<T>(
@@ -171,7 +171,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "be null", value));
+            Custom(message, argumentName, value) ?? Expected(argumentName, "be null", value));
     }
 
     /// <summary>
@@ -193,7 +193,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, expectation ?? HumaniseCheckName(checkName), argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, expectation ?? HumaniseCheckName(checkName), argumentValue));
     }
 
     public static void CheckGenericCondition<T,
@@ -237,7 +237,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be any of {Describe(candidates)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be any of {Describe(candidates)}", argumentValue));
     }
 
     public static void CheckForNotAnyOf<T>(
@@ -252,7 +252,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be any of {Describe(candidates)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"not be any of {Describe(candidates)}", argumentValue));
     }
 
     public static void CheckForSpecificValue<T>(
@@ -265,7 +265,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be {Describe(value)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be {Describe(value)}", argumentValue));
     }
 
     public static void CheckForNotSpecificValue<T>(
@@ -278,7 +278,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"not be {Describe(value)}"));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"not be {Describe(value)}"));
     }
 
     /// <summary>
@@ -295,7 +295,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "not be NaN"));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be NaN"));
     }
 
     public static void CheckForNaN<T>(T argumentValue, string argumentName, string? message = null)
@@ -304,7 +304,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "be NaN", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be NaN", argumentValue));
     }
 
     public static void CheckForInfinity<T>(T argumentValue, string argumentName, string? message = null)
@@ -313,7 +313,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "be infinity", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be infinity", argumentValue));
     }
 
     public static void CheckForNotInfinity<T>(T argumentValue, string argumentName, string? message = null)
@@ -322,7 +322,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "not be infinity", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be infinity", argumentValue));
     }
 
     public static void CheckForFinite<T>(T argumentValue, string argumentName, string? message = null)
@@ -331,7 +331,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "be finite", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be finite", argumentValue));
     }
 
     public static void CheckForNotFinite<T>(T argumentValue, string argumentName, string? message = null)
@@ -340,7 +340,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, "not be finite", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be finite", argumentValue));
     }
 
     // A contract holds its value as a nullable, so the pattern sees the boxed underlying type.
@@ -374,7 +374,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be between {Describe(start)} and {Describe(end)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be between {Describe(start)} and {Describe(end)}", argumentValue));
     }
 
     public static void CheckForGreaterThan<T>(
@@ -390,7 +390,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be greater than {Describe(value)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be greater than {Describe(value)}", argumentValue));
     }
 
     public static void CheckForGreaterOrEqualTo<T>(
@@ -406,7 +406,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be greater than or equal to {Describe(value)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be greater than or equal to {Describe(value)}", argumentValue));
     }
 
     public static void CheckForLessThan<T>(
@@ -422,7 +422,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be less than {Describe(value)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be less than {Describe(value)}", argumentValue));
     }
 
     public static void CheckForLessOrEqualTo<T>(
@@ -438,7 +438,7 @@ internal static partial class Validator
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
-            message ?? Expected(argumentName, $"be less than or equal to {Describe(value)}", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be less than or equal to {Describe(value)}", argumentValue));
     }
 
     private static bool IsEqualTo<T>(this T a, T b)
