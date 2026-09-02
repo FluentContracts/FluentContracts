@@ -12,7 +12,7 @@ public class UintContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             null,
             DummyData.GetUint(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class UintContractTests : Tests
     {
         var pair = DummyData.GetUintPair();
 
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class UintContractTests : Tests
     {
         var pair = DummyData.GetNullableUintPair();
 
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class UintContractTests : Tests
     {
         var pair = DummyData.GetUintPair();
 
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class UintContractTests : Tests
     {
         var pair = DummyData.GetNullableUintPair();
 
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,7 +83,7 @@ public class UintContractTests : Tests
         var pair = DummyData.GetUintPair();
         var array = DummyData.GetArray(() => DummyData.GetUint(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
@@ -97,7 +97,7 @@ public class UintContractTests : Tests
         var pair = DummyData.GetUintPair();
         var array = DummyData.GetArray(() => DummyData.GetUint(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -256,14 +256,14 @@ public class UintContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -274,14 +274,14 @@ public class UintContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -295,14 +295,14 @@ public class UintContractTests : Tests
         var successful = DummyData.GetUint(NumberOption.Odd);
         var failing = DummyData.GetUint(NumberOption.Even);
         
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeOdd(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -316,14 +316,14 @@ public class UintContractTests : Tests
         var successful = DummyData.GetUint(NumberOption.Even);
         var failing = DummyData.GetUint(NumberOption.Odd);
         
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeOdd(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -337,14 +337,14 @@ public class UintContractTests : Tests
         var successful = DummyData.GetUint(NumberOption.Even);
         var failing = DummyData.GetUint(NumberOption.Odd);
         
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeEven(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -358,14 +358,14 @@ public class UintContractTests : Tests
         var successful = DummyData.GetUint(NumberOption.Odd);
         var failing = DummyData.GetUint(NumberOption.Even);
         
-        TestContract<uint, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeEven(message),
             "testArgument");
         
-        TestContract<uint?, UintContract, ArgumentOutOfRangeException>(
+        TestContract<uint?, UintContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>

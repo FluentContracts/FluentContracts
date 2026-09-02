@@ -12,7 +12,7 @@ public class LongContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             null,
             DummyData.GetLong(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class LongContractTests : Tests
     {
         var pair = DummyData.GetLongPair();
 
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class LongContractTests : Tests
     {
         var pair = DummyData.GetNullableLongPair();
 
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class LongContractTests : Tests
     {
         var pair = DummyData.GetLongPair();
 
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class LongContractTests : Tests
     {
         var pair = DummyData.GetNullableLongPair();
 
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,7 +83,7 @@ public class LongContractTests : Tests
         var pair = DummyData.GetLongPair();
         var array = DummyData.GetArray(() => DummyData.GetLong(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
@@ -97,7 +97,7 @@ public class LongContractTests : Tests
         var pair = DummyData.GetLongPair();
         var array = DummyData.GetArray(() => DummyData.GetLong(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -256,7 +256,7 @@ public class LongContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -264,7 +264,7 @@ public class LongContractTests : Tests
             "testArgument");
         
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -275,14 +275,14 @@ public class LongContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -352,14 +352,14 @@ public class LongContractTests : Tests
         var successful = DummyData.GetLong(NumberOption.Odd);
         var failing = DummyData.GetLong(NumberOption.Even);
         
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeOdd(message),
             "testArgument");
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -373,14 +373,14 @@ public class LongContractTests : Tests
         var successful = DummyData.GetLong(NumberOption.Even);
         var failing = DummyData.GetLong(NumberOption.Odd);
         
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeOdd(message),
             "testArgument");
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -394,14 +394,14 @@ public class LongContractTests : Tests
         var successful = DummyData.GetLong(NumberOption.Even);
         var failing = DummyData.GetLong(NumberOption.Odd);
         
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeEven(message),
             "testArgument");
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -415,14 +415,14 @@ public class LongContractTests : Tests
         var successful = DummyData.GetLong(NumberOption.Odd);
         var failing = DummyData.GetLong(NumberOption.Even);
         
-        TestContract<long, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeEven(message),
             "testArgument");
         
-        TestContract<long?, LongContract, ArgumentOutOfRangeException>(
+        TestContract<long?, LongContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>

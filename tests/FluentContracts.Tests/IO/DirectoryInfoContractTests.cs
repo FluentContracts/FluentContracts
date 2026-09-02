@@ -13,7 +13,7 @@ public class DirectoryInfoContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             null,
             DummyData.GetDirectoryInfo(this),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this);
         var failing = DummyData.GetDirectoryInfo(this, FileInfoOption.NonExisting);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().Exist(message),
@@ -49,7 +49,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this, FileInfoOption.NonExisting);
         var failing = DummyData.GetDirectoryInfo(this);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotExist(message),
@@ -62,7 +62,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this, readOnly: true);
         var failing = DummyData.GetDirectoryInfo(this);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeReadOnly(message),
@@ -75,7 +75,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this);
         var failing = DummyData.GetDirectoryInfo(this, readOnly: true);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeReadOnly(message),
@@ -88,7 +88,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this, hidden: true);
         var failing = DummyData.GetDirectoryInfo(this);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeHidden(message),
@@ -101,7 +101,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this);
         var failing = DummyData.GetDirectoryInfo(this, hidden: true);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeHidden(message),
@@ -114,7 +114,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this, FileInfoOption.Empty);
         var failing = DummyData.GetDirectoryInfo(this, FileInfoOption.NotEmpty);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -127,7 +127,7 @@ public class DirectoryInfoContractTests : Tests
         var successful = DummyData.GetDirectoryInfo(this, FileInfoOption.NotEmpty);
         var failing = DummyData.GetDirectoryInfo(this, FileInfoOption.Empty);
         
-        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentOutOfRangeException>(
+        TestContract<DirectoryInfo?, DirectoryInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),

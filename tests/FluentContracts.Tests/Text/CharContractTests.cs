@@ -12,7 +12,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<char?, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char?, CharContract, ArgumentException>(
             null,
             DummyData.GetChar(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class CharContractTests : Tests
     {
         var pair = DummyData.GetCharPair();
 
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class CharContractTests : Tests
     {
         var pair = DummyData.GetNullableCharPair();
 
-        TestContract<char?, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char?, CharContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class CharContractTests : Tests
     {
         var pair = DummyData.GetCharPair();
 
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class CharContractTests : Tests
     {
         var pair = DummyData.GetNullableCharPair();
 
-        TestContract<char?, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char?, CharContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,7 +83,7 @@ public class CharContractTests : Tests
         var pair = DummyData.GetCharPair();
         var array = DummyData.GetArray(() => DummyData.GetChar(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
@@ -97,7 +97,7 @@ public class CharContractTests : Tests
         var pair = DummyData.GetCharPair();
         var array = DummyData.GetArray(() => DummyData.GetChar(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -108,7 +108,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeDigit()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Digit),
             DummyData.GetChar(CharOption.Letter),
             (testArgument, message) => testArgument.Must().BeDigit(message),
@@ -119,7 +119,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeDigit()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Letter),
             DummyData.GetChar(CharOption.Digit),
             (testArgument, message) => testArgument.Must().NotBeDigit(message),
@@ -129,7 +129,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeLetter()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Letter),
             DummyData.GetChar(CharOption.Digit),
             (testArgument, message) => testArgument.Must().BeLetter(message),
@@ -139,7 +139,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeLetter()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Digit),
             DummyData.GetChar(CharOption.Letter),
             (testArgument, message) => testArgument.Must().NotBeLetter(message),
@@ -149,7 +149,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeAlphanumeric()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Alphanumeric),
             DummyData.GetChar(CharOption.SpecialCharacter),
             (testArgument, message) => testArgument.Must().BeAlphanumeric(message),
@@ -159,7 +159,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeAlphanumeric()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.SpecialCharacter),
             DummyData.GetChar(CharOption.Alphanumeric),
             (testArgument, message) => testArgument.Must().NotBeAlphanumeric(message),
@@ -169,7 +169,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeWhiteSpace()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.WhiteSpace),
             DummyData.GetChar(),
             (testArgument, message) => testArgument.Must().BeWhiteSpace(message),
@@ -179,7 +179,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeWhiteSpace()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(),
             DummyData.GetChar(CharOption.WhiteSpace),
             (testArgument, message) => testArgument.Must().NotBeWhiteSpace(message),
@@ -189,7 +189,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeUppercase()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Uppercase),
             DummyData.GetChar(CharOption.Lowercase),
             (testArgument, message) => testArgument.Must().BeUppercase(message),
@@ -199,7 +199,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeUppercase()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Lowercase),
             DummyData.GetChar(CharOption.Uppercase),
             (testArgument, message) => testArgument.Must().NotBeUppercase(message),
@@ -209,7 +209,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeLowercase()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Lowercase),
             DummyData.GetChar(CharOption.Uppercase),
             (testArgument, message) => testArgument.Must().BeLowercase(message),
@@ -219,7 +219,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeLowercase()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Uppercase),
             DummyData.GetChar(CharOption.Lowercase),
             (testArgument, message) => testArgument.Must().NotBeLowercase(message),
@@ -229,7 +229,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_BeAscii()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.Ascii),
             DummyData.GetChar(CharOption.NonAscii),
             (testArgument, message) => testArgument.Must().BeAscii(message),
@@ -239,7 +239,7 @@ public class CharContractTests : Tests
     [Fact]
     public void Test_Must_NotBeAscii()
     {
-        TestContract<char, CharContract, ArgumentOutOfRangeException>(
+        TestContract<char, CharContract, ArgumentException>(
             DummyData.GetChar(CharOption.NonAscii),
             DummyData.GetChar(CharOption.Ascii),
             (testArgument, message) => testArgument.Must().NotBeAscii(message),

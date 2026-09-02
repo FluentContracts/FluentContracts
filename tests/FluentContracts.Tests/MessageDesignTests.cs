@@ -30,7 +30,7 @@ public class MessageDesignTests
     {
         const string text = "actual";
 
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(
+        var exception = Assert.Throws<ArgumentException>(
             () => text.Must().Be("expected", "wanted expected, not {value}"));
 
         exception.Message.Should().Be("wanted expected, not \"actual\" (Parameter 'text')");
@@ -65,14 +65,14 @@ public class MessageDesignTests
         FluentActions
             .Invoking(() => environment.Must("This should be prod").NotBe("test").NotBeEmpty())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("This should be prod*")
             .WithParameterName(nameof(environment));
 
         FluentActions
             .Invoking(() => "".Must("This should be prod").NotBe("test").NotBeEmpty())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("This should be prod*");
     }
 
@@ -84,7 +84,7 @@ public class MessageDesignTests
         FluentActions
             .Invoking(() => environment.Must("This should be prod").NotBe("test", "Not the test slot"))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("Not the test slot*");
     }
 

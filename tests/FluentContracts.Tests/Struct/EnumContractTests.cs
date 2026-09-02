@@ -13,7 +13,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentException>(
             null,
             StarWarsCharacter.LukeSkywalker,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -33,7 +33,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_Be()
     {
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             StarWarsCharacter.LukeSkywalker,
             StarWarsCharacter.DarthVader,
             (testArgument, message) => testArgument.Must().Be(StarWarsCharacter.LukeSkywalker, message),
@@ -45,7 +45,7 @@ public class EnumContractTests : Tests
     {
         StarWarsCharacter? expectedValue = StarWarsCharacter.LukeSkywalker;
         
-        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentException>(
             expectedValue,
             StarWarsCharacter.DarthVader,
             (testArgument, message) => testArgument.Must().Be(expectedValue, message),
@@ -55,7 +55,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_NotBe()
     {
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             StarWarsCharacter.DarthVader,
             StarWarsCharacter.LukeSkywalker,
             (testArgument, message) => testArgument.Must().NotBe(StarWarsCharacter.LukeSkywalker, message),
@@ -67,7 +67,7 @@ public class EnumContractTests : Tests
     {
         StarWarsCharacter? expectedValue = StarWarsCharacter.LukeSkywalker;
         
-        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter?, EnumContract<StarWarsCharacter>, ArgumentException>(
             StarWarsCharacter.DarthVader,
             expectedValue,
             (testArgument, message) => testArgument.Must().NotBe(expectedValue, message),
@@ -82,7 +82,7 @@ public class EnumContractTests : Tests
         
         var array = DummyData.GetArray(() => DummyData.GetEnumValue<StarWarsCharacter>(), included, excluded);
 
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             included,
             excluded,
             (testArgument, message) =>
@@ -98,7 +98,7 @@ public class EnumContractTests : Tests
         
         var array = DummyData.GetArray(() => DummyData.GetEnumValue<StarWarsCharacter>(), included, excluded);
 
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             excluded,
             included,
             (testArgument, message) =>
@@ -109,7 +109,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_HaveFlag()
     {
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             StarWarsCharacter.DarthMaul | StarWarsCharacter.DarthVader,
             StarWarsCharacter.LukeSkywalker | StarWarsCharacter.PrincessLeia,
             (testArgument, message) => testArgument.Must().HaveFlag(StarWarsCharacter.DarthVader, message),
@@ -119,7 +119,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_NotHaveFlag()
     {
-        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentOutOfRangeException>(
+        TestContract<StarWarsCharacter, EnumContract<StarWarsCharacter>, ArgumentException>(
             StarWarsCharacter.LukeSkywalker | StarWarsCharacter.PrincessLeia,
             StarWarsCharacter.DarthMaul | StarWarsCharacter.DarthVader,
             (testArgument, message) => testArgument.Must().NotHaveFlag(StarWarsCharacter.DarthVader, message),
@@ -129,7 +129,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_BeDefined()
     {
-        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentOutOfRangeException>(
+        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentException>(
             DayOfWeek.Monday,
             (DayOfWeek)9,
             (testArgument, message) => testArgument.Must().BeDefined(message),
@@ -139,7 +139,7 @@ public class EnumContractTests : Tests
     [Fact]
     public void Test_Must_NotBeDefined()
     {
-        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentOutOfRangeException>(
+        TestContract<DayOfWeek, EnumContract<DayOfWeek>, ArgumentException>(
             (DayOfWeek)9,
             DayOfWeek.Monday,
             (testArgument, message) => testArgument.Must().NotBeDefined(message),

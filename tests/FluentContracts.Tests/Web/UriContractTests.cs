@@ -13,7 +13,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             null,
             DummyData.GetUri(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -35,7 +35,7 @@ public class UriContractTests : Tests
     {
         var pair = DummyData.GetUriPair();
 
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -47,7 +47,7 @@ public class UriContractTests : Tests
     {
         var pair = DummyData.GetUriPair();
 
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.DifferentArgument, message),
@@ -57,7 +57,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_BeAbsolute()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUri(),
             DummyData.GetRelativeUri(),
             (testArgument, message) => testArgument.Must().BeAbsolute(message),
@@ -67,7 +67,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotBeAbsolute()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetRelativeUri(),
             DummyData.GetUri(),
             (testArgument, message) => testArgument.Must().NotBeAbsolute(message),
@@ -77,7 +77,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_HaveScheme()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("ftp"),
             DummyData.GetUriWithScheme("https"),
             (testArgument, message) => testArgument.Must().HaveScheme("ftp", message),
@@ -87,7 +87,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotHaveScheme()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("https"),
             DummyData.GetUriWithScheme("ftp"),
             (testArgument, message) => testArgument.Must().NotHaveScheme("ftp", message),
@@ -107,7 +107,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_BeHttps()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("https"),
             DummyData.GetUriWithScheme("http"),
             (testArgument, message) => testArgument.Must().BeHttps(message),
@@ -117,7 +117,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotBeHttps()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("http"),
             DummyData.GetUriWithScheme("https"),
             (testArgument, message) => testArgument.Must().NotBeHttps(message),
@@ -127,7 +127,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_HaveHost()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             new Uri("https://expected.example.com/path"),
             new Uri("https://other.example.com/path"),
             (testArgument, message) => testArgument.Must().HaveHost("expected.example.com", message),
@@ -137,7 +137,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotHaveHost()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             new Uri("https://other.example.com/path"),
             new Uri("https://expected.example.com/path"),
             (testArgument, message) => testArgument.Must().NotHaveHost("expected.example.com", message),
@@ -147,7 +147,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_HavePort()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("https", 8443),
             DummyData.GetUriWithScheme("https", 9443),
             (testArgument, message) => testArgument.Must().HavePort(8443, message),
@@ -157,7 +157,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotHavePort()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUriWithScheme("https", 9443),
             DummyData.GetUriWithScheme("https", 8443),
             (testArgument, message) => testArgument.Must().NotHavePort(8443, message),
@@ -177,7 +177,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_BeLoopback()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetLoopbackUri(),
             DummyData.GetUri(),
             (testArgument, message) => testArgument.Must().BeLoopback(message),
@@ -187,7 +187,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotBeLoopback()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUri(),
             DummyData.GetLoopbackUri(),
             (testArgument, message) => testArgument.Must().NotBeLoopback(message),
@@ -197,7 +197,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_BeFile()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetFileUri(),
             DummyData.GetUri(),
             (testArgument, message) => testArgument.Must().BeFile(message),
@@ -207,7 +207,7 @@ public class UriContractTests : Tests
     [Fact]
     public void Test_Must_NotBeFile()
     {
-        TestContract<Uri?, UriContract, ArgumentOutOfRangeException>(
+        TestContract<Uri?, UriContract, ArgumentException>(
             DummyData.GetUri(),
             DummyData.GetFileUri(),
             (testArgument, message) => testArgument.Must().NotBeFile(message),
@@ -246,7 +246,7 @@ public class UriContractTests : Tests
 
         FluentActions.Invoking(() => act(relative))
             .Should()
-            .Throw<ArgumentOutOfRangeException>($"\"{check}\" cannot be answered for a relative URI");
+            .Throw<ArgumentException>($"\"{check}\" cannot be answered for a relative URI");
     }
 
     [Theory]

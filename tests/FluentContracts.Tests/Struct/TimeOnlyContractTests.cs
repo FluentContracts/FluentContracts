@@ -14,7 +14,7 @@ public class TimeOnlyContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<TimeOnly?, TimeOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<TimeOnly?, TimeOnlyContract, ArgumentException>(
             null,
             Noon,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class TimeOnlyContractTests : Tests
     [Fact]
     public void Test_Must_Be()
     {
-        TestContract<TimeOnly, TimeOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<TimeOnly, TimeOnlyContract, ArgumentException>(
             Noon,
             Noon.AddHours(1),
             (testArgument, message) => testArgument.Must().Be(Noon, message),
@@ -44,7 +44,7 @@ public class TimeOnlyContractTests : Tests
     [Fact]
     public void Test_Must_NotBe()
     {
-        TestContract<TimeOnly, TimeOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<TimeOnly, TimeOnlyContract, ArgumentException>(
             Noon.AddHours(1),
             Noon,
             (testArgument, message) => testArgument.Must().NotBe(Noon, message),

@@ -17,14 +17,14 @@ public class ObjectContractTests : Tests
         var success = DummyData.GetEmployee();
         var fail = DummyData.GetPerson();
 
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().BeOfType<Employee>(message),
             "testArgument");
         
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -38,14 +38,14 @@ public class ObjectContractTests : Tests
         var success = DummyData.GetPerson();
         var fail = DummyData.GetEmployee();
 
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeOfType<Employee>(message),
             "testArgument");
         
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -59,14 +59,14 @@ public class ObjectContractTests : Tests
         var success = DummyData.GetEmployee();
         var fail = DummyData.GetPerson();
 
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().BeAssignableTo<Employee>(message),
             "testArgument");
         
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -81,14 +81,14 @@ public class ObjectContractTests : Tests
         var success = DummyData.GetPerson();
         var fail = DummyData.GetEmployee();
 
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeAssignableTo<Employee>(message),
             "testArgument");
         
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>

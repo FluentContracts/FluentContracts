@@ -13,7 +13,7 @@ public class FileInfoContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             null,
             DummyData.GetFileInfo(this),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this);
         var failing = DummyData.GetFileInfo(this, FileInfoOption.NonExisting);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().Exist(message),
@@ -49,7 +49,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, FileInfoOption.NonExisting);
         var failing = DummyData.GetFileInfo(this);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotExist(message),
@@ -65,7 +65,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, fileExtension: extension);
         var failing = DummyData.GetFileInfo(this, fileExtension: differentExtension);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().HaveExtension(extension, message),
@@ -81,7 +81,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, fileExtension: extension);
         var failing = DummyData.GetFileInfo(this, fileExtension: differentExtension);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotHaveExtension(differentExtension, message),
@@ -94,7 +94,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, readOnly: true);
         var failing = DummyData.GetFileInfo(this);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeReadOnly(message),
@@ -107,7 +107,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this);
         var failing = DummyData.GetFileInfo(this, readOnly: true);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeReadOnly(message),
@@ -120,7 +120,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, hidden: true);
         var failing = DummyData.GetFileInfo(this);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeHidden(message),
@@ -133,7 +133,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this);
         var failing = DummyData.GetFileInfo(this, hidden: true);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeHidden(message),
@@ -146,7 +146,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, FileInfoOption.Empty);
         var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -159,7 +159,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty);
         var failing = DummyData.GetFileInfo(this, FileInfoOption.Empty);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
@@ -173,7 +173,7 @@ public class FileInfoContractTests : Tests
         var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize);
         var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
         
-        TestContract<FileInfo?, FileInfoContract, ArgumentOutOfRangeException>(
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().HaveSizeEqualTo(fileSize, message),

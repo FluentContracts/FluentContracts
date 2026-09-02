@@ -22,7 +22,7 @@ public class AnyOfOverloadTests
         const string myArgument = "a";
 
         FluentActions.Invoking(() => myArgument.Must().BeAnyOf("a")).Should().NotThrow();
-        FluentActions.Invoking(() => myArgument.Must().NotBeAnyOf("a")).Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => myArgument.Must().NotBeAnyOf("a")).Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -31,8 +31,8 @@ public class AnyOfOverloadTests
         const string myArgument = "b";
 
         FluentActions.Invoking(() => myArgument.Must().BeAnyOf(["a", "b"])).Should().NotThrow();
-        FluentActions.Invoking(() => myArgument.Must().BeAnyOf(["a", "c"])).Should().Throw<ArgumentOutOfRangeException>();
-        FluentActions.Invoking(() => myArgument.Must().NotBeAnyOf(["a", "b"])).Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => myArgument.Must().BeAnyOf(["a", "c"])).Should().Throw<ArgumentException>();
+        FluentActions.Invoking(() => myArgument.Must().NotBeAnyOf(["a", "b"])).Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class AnyOfOverloadTests
         FluentActions
             .Invoking(() => myArgument.Must().BeAnyOf(["a", "b"], "Not a known state"))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("Not a known state*")
             .WithParameterName(nameof(myArgument));
     }

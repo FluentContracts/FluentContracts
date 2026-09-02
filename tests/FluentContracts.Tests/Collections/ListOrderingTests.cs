@@ -33,7 +33,7 @@ public class ListOrderingTests
         FluentActions
             .Invoking(() => myArgument.Must().BeInAscendingOrder())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(myArgument))
             .WithMessage("Expected myArgument to be in ascending order, but 5 appears before 3.*");
     }
@@ -57,7 +57,7 @@ public class ListOrderingTests
         FluentActions
             .Invoking(() => myArgument.Must().BeInDescendingOrder())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(myArgument));
     }
 
@@ -72,7 +72,7 @@ public class ListOrderingTests
         FluentActions
             .Invoking(() => sorted.Must().NotBeInAscendingOrder())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(sorted));
     }
 
@@ -87,7 +87,7 @@ public class ListOrderingTests
         FluentActions
             .Invoking(() => sorted.Must().NotBeInDescendingOrder())
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(sorted));
     }
 
@@ -103,9 +103,9 @@ public class ListOrderingTests
         FluentActions.Invoking(() => single.Must().BeInDescendingOrder()).Should().NotThrow();
 
         FluentActions.Invoking(() => empty.Must().NotBeInAscendingOrder())
-            .Should().Throw<ArgumentOutOfRangeException>();
+            .Should().Throw<ArgumentException>();
         FluentActions.Invoking(() => single.Must().NotBeInDescendingOrder())
-            .Should().Throw<ArgumentOutOfRangeException>();
+            .Should().Throw<ArgumentException>();
     }
 
     [Fact]
@@ -152,7 +152,7 @@ public class ListOrderingTests
         FluentActions
             .Invoking(() => myArgument.Must().BeInAscendingOrder("Pages must be sorted"))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("Pages must be sorted*");
     }
 }

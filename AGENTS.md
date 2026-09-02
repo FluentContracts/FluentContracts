@@ -195,6 +195,13 @@ validator gets both behaviours by following that shape. `Must()` takes a chain-w
 first parameter, stored as `ChainMessage` on the contract; every check passes
 `message ?? ChainMessage` to the validators, and a new check must do the same.
 
+**Exception taxonomy.** `ArgumentNullException` for a null argument. `ArgumentOutOfRangeException`
+only for ordinal checks — comparisons, ranges, sign, the NaN policy — thrown by
+`ThrowHelper.ThrowArgumentOutOfRangeException` from the ordering validators and from
+`CheckOrdinalCondition`. `ArgumentException` for everything else, via
+`ThrowHelper.ThrowArgumentException` and `CheckGenericCondition`. A new check picks the validator
+that matches what it asserts, and `ExceptionTaxonomyTests` pins the type per family.
+
 **Null and NaN policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException` and `NaN` with
 `ArgumentOutOfRangeException`. Both guards live inside the `Validator` ordering methods, not at the

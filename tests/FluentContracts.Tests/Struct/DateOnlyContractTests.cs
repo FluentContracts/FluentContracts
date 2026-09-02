@@ -17,7 +17,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<DateOnly?, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly?, DateOnlyContract, ArgumentException>(
             null,
             Anchor,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -37,7 +37,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_Be()
     {
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             Anchor,
             Anchor.AddDays(1),
             (testArgument, message) => testArgument.Must().Be(Anchor, message),
@@ -47,7 +47,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_NotBe()
     {
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             Anchor.AddDays(1),
             Anchor,
             (testArgument, message) => testArgument.Must().NotBe(Anchor, message),
@@ -144,7 +144,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_BeToday()
     {
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             Anchor,
             Anchor.AddDays(1),
             (testArgument, message) =>
@@ -155,7 +155,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_NotBeToday()
     {
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             Anchor.AddDays(1),
             Anchor,
             (testArgument, message) =>
@@ -167,7 +167,7 @@ public class DateOnlyContractTests : Tests
     public void Test_Must_BeWeekday()
     {
         // 2026-06-01 is a Monday, 2026-06-06 a Saturday.
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             new DateOnly(2026, 6, 1),
             new DateOnly(2026, 6, 6),
             (testArgument, message) => testArgument.Must().BeWeekday(message),
@@ -177,7 +177,7 @@ public class DateOnlyContractTests : Tests
     [Fact]
     public void Test_Must_BeWeekend()
     {
-        TestContract<DateOnly, DateOnlyContract, ArgumentOutOfRangeException>(
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
             new DateOnly(2026, 6, 6),
             new DateOnly(2026, 6, 1),
             (testArgument, message) => testArgument.Must().BeWeekend(message),

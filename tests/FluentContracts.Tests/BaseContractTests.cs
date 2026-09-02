@@ -20,7 +20,7 @@ public class BaseContractTests : Tests
         var fail = DummyData.GetPerson();
         Func<Person, bool> testCondition = p => p.Email == success.Email;
             
-        TestContract<Person, ObjectContract<object>, ArgumentOutOfRangeException>(
+        TestContract<Person, ObjectContract<object>, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -85,7 +85,7 @@ public class BaseContractTests : Tests
 
         action
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(testString));
     }
 
