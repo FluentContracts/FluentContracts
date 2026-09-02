@@ -38,7 +38,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeOfType<T>(string? message = null)
     {
-        Validator.CheckForBeType<object?, T>(ArgumentValue, ArgumentName, message);
+        Validator.CheckForBeType<object?, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -50,7 +50,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeOfType(Type type, string? message = null)
     {
-        Validator.CheckForBeType<object?>(type, ArgumentValue, ArgumentName, message);
+        Validator.CheckForBeType<object?>(type, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -61,7 +61,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeOfType<T>(string? message = null)
     {
-        Validator.CheckForNotBeType<object?, T>(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotBeType<object?, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -73,7 +73,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeOfType(Type type, string? message = null)
     {
-        Validator.CheckForNotBeType<object?>(type, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotBeType<object?>(type, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -84,7 +84,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeAssignableTo<T>(string? message = null)
     {
-        Validator.CheckForBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message);
+        Validator.CheckForBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -95,7 +95,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeAssignableTo<T>(string? message = null)
     {
-        Validator.CheckForNotBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message);
+        Validator.CheckForNotBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -107,7 +107,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeAssignableTo(Type targetType, string? message = null)
     {
-        Validator.CheckForBeAssignableTo(ArgumentValue, targetType, ArgumentName, message);
+        Validator.CheckForBeAssignableTo(ArgumentValue, targetType, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -119,7 +119,7 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeAssignableTo(Type targetType, string? message = null)
     {
-        Validator.CheckForNotBeAssignableTo(ArgumentValue, targetType, ArgumentName, message);
+        Validator.CheckForNotBeAssignableTo(ArgumentValue, targetType, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 }

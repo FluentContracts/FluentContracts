@@ -36,7 +36,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeNull(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -47,7 +47,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeNull(string? message = null)
     {
-        Validator.CheckForNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -59,7 +59,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract Be(TimeSpan expectedValue, string? message = null)
     {
-        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -71,7 +71,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract Be(TimeSpan? expectedValue, string? message = null)
     {
-        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -83,7 +83,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBe(TimeSpan expectedValue, string? message = null)
     {
-        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     } 
 
@@ -95,7 +95,7 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBe(TimeSpan? expectedValue, string? message = null)
     {
-        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     } 
 
@@ -109,8 +109,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract BeShorterThan(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks < expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"be shorter than {Validator.Describe(expectedValue)}");
         return (TContract)this;
     }
@@ -125,10 +125,10 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract NotBeShorterThan(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         // Not the mirror of BeShorterThan's strict <: a span exactly equal to the expected value is
         // not shorter, so the negation must admit equality.
-        Validator.CheckGenericCondition(a => a!.Value.Ticks >= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckGenericCondition(a => a!.Value.Ticks >= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"not be shorter than {Validator.Describe(expectedValue)}");
         return (TContract)this;
     }
@@ -143,8 +143,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract BeLongerThan(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks > expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"be longer than {Validator.Describe(expectedValue)}");
         return (TContract)this;
     }
@@ -159,9 +159,9 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract NotBeLongerThan(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         // Same shape as NotBeShorterThan: equal is not longer, so the negation admits equality.
-        Validator.CheckGenericCondition(a => a!.Value.Ticks <= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckGenericCondition(a => a!.Value.Ticks <= expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"not be longer than {Validator.Describe(expectedValue)}");
         return (TContract)this;
     }
@@ -176,8 +176,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract BeEqualTo(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks == expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks == expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"be equal to {Validator.Describe(expectedValue)}");
         return (TContract)this;
     } 
@@ -192,8 +192,8 @@ public class TimeSpanContract<TContract> : BaseContract<TimeSpan?, TContract>
     public TContract NotBeEqualTo(TimeSpan? expectedValue, string? message = null)
     {
         Validator.CheckForNotNull(expectedValue, nameof(expectedValue));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.Value.Ticks != expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message,
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.Value.Ticks != expectedValue.Value.Ticks, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"not be equal to {Validator.Describe(expectedValue)}");
         return (TContract)this;
     } 

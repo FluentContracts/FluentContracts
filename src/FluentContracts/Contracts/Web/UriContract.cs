@@ -37,8 +37,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeAbsolute(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -50,8 +50,8 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeAbsolute(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.IsAbsoluteUri, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.IsAbsoluteUri, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -69,7 +69,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => string.Equals(a.Scheme, scheme, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message,
+            message ?? ChainMessage,
             expectation: $"have the scheme {Validator.Describe(scheme)}");
         return (TContract)this;
     }
@@ -88,7 +88,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => !string.Equals(a.Scheme, scheme, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message,
+            message ?? ChainMessage,
             expectation: $"not have the scheme {Validator.Describe(scheme)}");
         return (TContract)this;
     }
@@ -123,7 +123,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => string.Equals(a.Host, host, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message,
+            message ?? ChainMessage,
             expectation: $"have the host {Validator.Describe(host)}");
         return (TContract)this;
     }
@@ -142,7 +142,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
             a => !string.Equals(a.Host, host, StringComparison.OrdinalIgnoreCase),
             uri,
             ArgumentName,
-            message,
+            message ?? ChainMessage,
             expectation: $"not have the host {Validator.Describe(host)}");
         return (TContract)this;
     }
@@ -160,7 +160,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract HavePort(int port, string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.Port == port, uri, ArgumentName, message,
+        Validator.CheckGenericCondition(a => a.Port == port, uri, ArgumentName, message ?? ChainMessage,
             expectation: $"have the port {port}");
         return (TContract)this;
     }
@@ -178,7 +178,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract NotHavePort(int port, string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.Port != port, uri, ArgumentName, message,
+        Validator.CheckGenericCondition(a => a.Port != port, uri, ArgumentName, message ?? ChainMessage,
             expectation: $"not have the port {port}");
         return (TContract)this;
     }
@@ -192,7 +192,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract BeLoopback(string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.IsLoopback, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a.IsLoopback, uri, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -205,7 +205,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract NotBeLoopback(string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => !a.IsLoopback, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a.IsLoopback, uri, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -218,7 +218,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract BeFile(string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => a.IsFile, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => a.IsFile, uri, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -231,7 +231,7 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     public TContract NotBeFile(string? message = null)
     {
         var uri = GetAbsoluteArgument(message);
-        Validator.CheckGenericCondition(a => !a.IsFile, uri, ArgumentName, message);
+        Validator.CheckGenericCondition(a => !a.IsFile, uri, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -245,10 +245,10 @@ public class UriContract<TContract> : EqualityContract<Uri?, TContract>
     /// </remarks>
     private Uri GetAbsoluteArgument(string? message)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         // The expectation is spelled out because the caller's name here would be this helper's,
         // not the check the user wrote.
-        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message,
+        Validator.CheckGenericCondition(a => a.IsAbsoluteUri, ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: "be an absolute URI");
         return ArgumentValue;
     }

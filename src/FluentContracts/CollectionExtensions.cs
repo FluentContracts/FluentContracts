@@ -16,14 +16,16 @@ public static class CollectionExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="IList{T}"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
     
     public static ListContract<T> Must<T>(
         this IList<T>? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new ListContract<T>(argument, argumentName);
+        return new ListContract<T>(argument, argumentName) { ChainMessage = message };
     }
     
     #endregion
@@ -34,14 +36,16 @@ public static class CollectionExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="Array"/> of {T}
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
     
     public static ListContract<T> Must<T>(
         this T[]? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new ListContract<T>(argument, argumentName);
+        return new ListContract<T>(argument, argumentName) { ChainMessage = message };
     }
     
     #endregion
@@ -52,14 +56,16 @@ public static class CollectionExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="IDictionary{TKey, TValue}"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the ListContract class.</returns>
     
     public static DictionaryContract<TKey, TValue> Must<TKey, TValue>(
         this IDictionary<TKey, TValue>? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new DictionaryContract<TKey, TValue>(argument, argumentName);
+        return new DictionaryContract<TKey, TValue>(argument, argumentName) { ChainMessage = message };
     }
     
     #endregion

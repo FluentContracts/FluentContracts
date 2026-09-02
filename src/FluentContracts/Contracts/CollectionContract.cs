@@ -34,8 +34,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(0, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(0, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -47,8 +47,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(0, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(0, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -61,8 +61,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountEqualTo(int expectedCount, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(expectedCount, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(expectedCount, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -75,8 +75,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotHaveCountEqualTo(int notExpectedCount, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(notExpectedCount, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(notExpectedCount, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -89,8 +89,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountGreaterThan(int count, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterThan(count, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterThan(count, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -103,8 +103,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountGreaterOrEqualTo(int count, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterOrEqualTo(count, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterOrEqualTo(count, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -117,8 +117,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountLessThan(int count, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessThan(count, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessThan(count, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -131,8 +131,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountLessOrEqualTo(int count, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessOrEqualTo(count, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessOrEqualTo(count, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -146,20 +146,20 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveCountBetween(int start, int end, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForBetween(start, end, ArgumentValue.Count, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForBetween(start, end, ArgumentValue.Count, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
     /// <summary>
-    /// Checks if the <see cref="ICollection"/> contains at least one of <paramref name="expectedElements"/>.
+    /// Checks if the <see cref="ICollection"/> contains <paramref name="expectedElement"/>.
     /// </summary>
-    /// <param name="expectedElements">One or more elements, at least one of which must be present.</param>
+    /// <param name="expectedElement">The element that must be present.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public TContract ContainAnyOf(params TElement[] expectedElements)
+    public TContract ContainAnyOf(TElement expectedElement)
     {
-        return ContainAnyOf(expectedElements, null);
+        return ContainAnyOf([expectedElement], null);
     }
 
     /// <summary>
@@ -171,8 +171,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract ContainAnyOf(IEnumerable<TElement> expectedElements, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForContainingAny(expectedElements, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForContainingAny(expectedElements, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -184,8 +184,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract HaveUniqueItems(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForUniqueItems(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForUniqueItems(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -200,8 +200,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     /// </remarks>
     public TContract NotContainNull(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotContainingNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotContainingNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -215,8 +215,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     public TContract AllSatisfy(Func<TElement, bool> condition, string? message = null)
     {
         Validator.CheckForNotNull(condition, nameof(condition));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForAllSatisfying(ArgumentValue, condition, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForAllSatisfying(ArgumentValue, condition, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -230,8 +230,8 @@ public abstract class CollectionContract<TElement, TArgument, TContract> : Equal
     public TContract AnySatisfy(Func<TElement, bool> condition, string? message = null)
     {
         Validator.CheckForNotNull(condition, nameof(condition));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForAnySatisfying(ArgumentValue, condition, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForAnySatisfying(ArgumentValue, condition, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 }

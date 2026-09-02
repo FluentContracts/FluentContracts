@@ -27,8 +27,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract Exist(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Exists, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Exists, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -40,8 +40,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract NotExist(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Exists, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Exists, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -59,8 +59,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
                 ? extension
                 : "." + extension;
             
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Extension.Equals(extensionWithDot, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Extension.Equals(extensionWithDot, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -78,8 +78,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
                 ? extension
                 : "." + extension;
             
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Extension.Equals(extensionWithDot, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Extension.Equals(extensionWithDot, StringComparison.OrdinalIgnoreCase), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -91,8 +91,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract BeReadOnly(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.IsReadOnly, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.IsReadOnly, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -104,8 +104,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract NotBeReadOnly(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.IsReadOnly, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.IsReadOnly, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -117,8 +117,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract BeHidden(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -130,8 +130,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract NotBeHidden(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a.Attributes.HasFlag(FileAttributes.Hidden), ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -143,8 +143,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract BeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Length == 0, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Length == 0, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -156,8 +156,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract NotBeEmpty(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a.Length != 0, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a.Length != 0, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -170,8 +170,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract HaveSizeEqualTo(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -184,8 +184,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract NotHaveSizeEqualTo(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -198,8 +198,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract HaveSizeLessThan(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessThan(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessThan(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -212,8 +212,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract HaveSizeLessOrEqualTo(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForLessOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForLessOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -226,8 +226,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract HaveSizeGreaterThan(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterThan(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterThan(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -240,8 +240,8 @@ public class FileInfoContract : NullableContract<FileInfo, FileInfoContract>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public FileInfoContract HaveSizeGreaterOrEqualTo(long byteSize, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForGreaterOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForGreaterOrEqualTo(byteSize, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return this;
     }
 }

@@ -33,7 +33,7 @@ public class DictionaryContract<TKey, TValue>
     {
         Validator.CheckForNotNull(key, nameof(key));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForContainingKey(key, ArgumentValue, ArgumentName, message);
+        Validator.CheckForContainingKey(key, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -48,7 +48,7 @@ public class DictionaryContract<TKey, TValue>
     {
         Validator.CheckForNotNull(key, nameof(key));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForNotContainingKey(key, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotContainingKey(key, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -63,7 +63,7 @@ public class DictionaryContract<TKey, TValue>
     {
         Validator.CheckForNotNull(value, nameof(value));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForContainingValue(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForContainingValue(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -78,7 +78,7 @@ public class DictionaryContract<TKey, TValue>
     {
         Validator.CheckForNotNull(value, nameof(value));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForNotContainingValue(value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotContainingValue(value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -107,7 +107,7 @@ public class DictionaryContract<TKey, TValue>
         Validator.CheckForNotNull(key, nameof(key));
         Validator.CheckForNotNull(value, nameof(value));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForContainingKeyValuePair(key, value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForContainingKeyValuePair(key, value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -136,7 +136,7 @@ public class DictionaryContract<TKey, TValue>
         Validator.CheckForNotNull(key, nameof(key));
         Validator.CheckForNotNull(value, nameof(value));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForNotContainingKeyValuePair(key, value, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotContainingKeyValuePair(key, value, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 }

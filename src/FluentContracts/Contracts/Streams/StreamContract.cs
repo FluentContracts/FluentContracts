@@ -39,8 +39,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeSeekable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.CanSeek, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.CanSeek, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -52,8 +52,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeSeekable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.CanSeek, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a!.CanSeek, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
     
@@ -65,8 +65,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeReadable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.CanRead, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.CanRead, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -77,8 +77,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeReadable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.CanRead, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a!.CanRead, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
     
@@ -90,8 +90,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeAbleToTimeout(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.CanTimeout, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.CanTimeout, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -103,8 +103,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeAbleToTimeout(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.CanTimeout, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a!.CanTimeout, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
     
@@ -116,8 +116,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeWriteable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => a!.CanWrite, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => a!.CanWrite, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -129,8 +129,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeWriteable(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckGenericCondition(a => !a!.CanWrite, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckGenericCondition(a => !a!.CanWrite, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -143,8 +143,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeAtPosition(long expectedPosition, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(expectedPosition, ArgumentValue.Position, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(expectedPosition, ArgumentValue.Position, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -157,8 +157,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeAtPosition(long unexpectedPosition, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(unexpectedPosition, ArgumentValue.Position, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(unexpectedPosition, ArgumentValue.Position, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -171,8 +171,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract BeWithLength(long expectedLength, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForSpecificValue(expectedLength, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecificValue(expectedLength, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -185,8 +185,8 @@ public abstract class StreamContract<TStream, TContract> : ObjectContract<TStrea
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotBeWithLength(long unexpectedLength, string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotSpecificValue(unexpectedLength, ArgumentValue.Length, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotSpecificValue(unexpectedLength, ArgumentValue.Length, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 }

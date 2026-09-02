@@ -21,14 +21,14 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     }
     
     /// <summary>
-    /// Checks if <paramref name="containedElements"/> subset is part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="containedElement"/> is one of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
-    /// <param name="containedElements">One or more elements to check for being part of the argument's values</param>
+    /// <param name="containedElement">The element to check for being part of the argument's values</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public ListContract<T> Contain(params T[] containedElements)
+    public ListContract<T> Contain(T containedElement)
     {
-        return Contain(containedElements, null);
+        return Contain([containedElement], null);
     }
     
     /// <summary>
@@ -41,19 +41,19 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> Contain(IEnumerable<T> containedElements, string? message = null)
     {   
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForContaining(containedElements, ArgumentValue, ArgumentName, message);
+        Validator.CheckForContaining(containedElements, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
     /// <summary>
-    /// Checks if <paramref name="notContainedElements"/> subset is not part of the elements of the <see cref="IList{T}"/> argument.
+    /// Checks if <paramref name="notContainedElement"/> is not one of the elements of the <see cref="IList{T}"/> argument.
     /// </summary>
-    /// <param name="notContainedElements">One or more elements to check for not being part of the argument's values</param>
+    /// <param name="notContainedElement">The element to check for not being part of the argument's values</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public ListContract<T> NotContain(params T[] notContainedElements)
+    public ListContract<T> NotContain(T notContainedElement)
     {
-        return NotContain(notContainedElements, null);
+        return NotContain([notContainedElement], null);
     }
 
     /// <summary>
@@ -66,7 +66,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> NotContain(IEnumerable<T> notContainedElements, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForNotContaining(notContainedElements, ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotContaining(notContainedElements, ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
     
@@ -79,7 +79,7 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> HaveElementsOfType<TElement>(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName);
-        Validator.CheckForType<T, TElement>(ArgumentValue, ArgumentName, message);
+        Validator.CheckForType<T, TElement>(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -108,8 +108,8 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> BeInAscendingOrder(IComparer<T> comparer, string? message = null)
     {
         Validator.CheckForNotNull(comparer, nameof(comparer));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForAscendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForAscendingOrder(ArgumentValue, comparer, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -138,8 +138,8 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> NotBeInAscendingOrder(IComparer<T> comparer, string? message = null)
     {
         Validator.CheckForNotNull(comparer, nameof(comparer));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotAscendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotAscendingOrder(ArgumentValue, comparer, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -168,8 +168,8 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> BeInDescendingOrder(IComparer<T> comparer, string? message = null)
     {
         Validator.CheckForNotNull(comparer, nameof(comparer));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForDescendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForDescendingOrder(ArgumentValue, comparer, ArgumentName, message ?? ChainMessage);
         return this;
     }
 
@@ -198,8 +198,8 @@ public class ListContract<T> : CollectionContract<T, IList<T>?, ListContract<T>>
     public ListContract<T> NotBeInDescendingOrder(IComparer<T> comparer, string? message = null)
     {
         Validator.CheckForNotNull(comparer, nameof(comparer));
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        Validator.CheckForNotDescendingOrder(ArgumentValue, comparer, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForNotDescendingOrder(ArgumentValue, comparer, ArgumentName, message ?? ChainMessage);
         return this;
     }
 }

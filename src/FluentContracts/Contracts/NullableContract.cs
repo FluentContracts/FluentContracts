@@ -29,7 +29,7 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// <returns>The contract, for chaining more checks</returns>
     public TContract NotBeNull(string? message = null)
     {
-        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 
@@ -44,8 +44,10 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
         string? message = null)
         where TException : Exception, new()
     {
-        if (message != null)
-            Validator.CheckForNotNull<TArgument, TException>(ArgumentValue, message);
+        var resolved = message ?? ChainMessage;
+
+        if (resolved != null)
+            Validator.CheckForNotNull<TArgument, TException>(ArgumentValue, resolved);
         else
             Validator.CheckForNotNull<TArgument, TException>(ArgumentValue);
 
@@ -59,7 +61,7 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// <returns>The contract, for chaining more checks</returns>
     public TContract BeNull(string? message = null)
     {
-        Validator.CheckForNull(ArgumentValue, ArgumentName, message);
+        Validator.CheckForNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
         return (TContract)this;
     }
 }
