@@ -70,6 +70,27 @@ public void AddOrder(Order myOrder)
 
 This will throw an instance of `OrderNullException` if `myOrder` is `null`.
 
+### Reusable rules
+
+A rule you check in more than one place is a specification: a predicate and the phrase that
+completes *"Expected `{argument}` to …"* in the failure message. `Spec.From` builds one in a line,
+`Satisfy` runs it, and the failure reads exactly like a built-in check:
+
+```csharp
+static readonly ISpecification<string> ValidIban =
+    Spec.From<string>(s => Iban.IsValid(s), "be a valid IBAN");
+
+public void Pay(string iban)
+{
+    iban.Must().Satisfy(ValidIban);
+    // ArgumentException: Expected iban to be a valid IBAN, but found "XX00". (Parameter 'iban')
+}
+```
+
+Rules compose — `ValidIban.And(SepaCountry)` expects *"be a valid IBAN and be in a SEPA country"* —
+and a rule that needs more room than a lambda derives from `Specification<T>` and overrides
+`IsSatisfiedBy`.
+
 ## Supported contracts
 
 You can find them [HERE](docs/SupportedContracts.md).

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using FluentContracts.Infrastructure;
+using FluentContracts.Specifications;
 using FluentContracts.Validators;
 
 namespace FluentContracts.Contracts;
@@ -104,5 +105,69 @@ public abstract class BaseContract<TArgument, TContract>
         Validator.CheckGenericCondition<T, TException>(customCondition, typedValue, message);
         return (TContract)this;
     }
-}
 
+    /// <summary>
+    /// Checks if the specified argument satisfies a specification — a named, reusable rule. The
+    /// failure message uses the rule's <see cref="ISpecification{T}.Expectation"/>:
+    /// <c>Expected iban to be a valid IBAN, but found "XX00".</c>
+    /// </summary>
+    /// <typeparam name="T">The type the specification applies to; the argument is converted to it first.</typeparam>
+    /// <param name="specification">The rule to check.</param>
+    /// <param name="message">The optional error message to include in the exception.</param>
+    /// <returns>The contract, for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null, exactly like <see cref="Satisfy{T}(Func{T,bool},string?)"/>.</remarks>
+    public TContract Satisfy<T>(ISpecification<T> specification, string? message = null)
+        where T : TArgument
+    {
+        Validator.CheckForNotNull(specification, nameof(specification));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        Validator.CheckForSpecification(specification, typedValue, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument satisfies a specification, throwing
+    /// <typeparamref name="TException"/> when it does not.
+    /// </summary>
+    /// <typeparam name="T">The type the specification applies to; the argument is converted to it first.</typeparam>
+    /// <typeparam name="TException">The exception to throw.</typeparam>
+    /// <param name="specification">The rule to check.</param>
+    /// <returns>The contract, for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract Satisfy<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        ISpecification<T> specification)
+        where TException : Exception, new()
+        where T : TArgument
+    {
+        Validator.CheckForNotNull(specification, nameof(specification));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T, TException>(ArgumentValue);
+        Validator.CheckForSpecification<T, TException>(specification, typedValue);
+        return (TContract)this;
+    }
+
+    /// <summary>
+    /// Checks if the specified argument satisfies a specification, throwing
+    /// <typeparamref name="TException"/> with <paramref name="message"/> when it does not.
+    /// </summary>
+    /// <typeparam name="T">The type the specification applies to; the argument is converted to it first.</typeparam>
+    /// <typeparam name="TException">The exception to throw.</typeparam>
+    /// <param name="specification">The rule to check.</param>
+    /// <param name="message">The error message to include in the exception.</param>
+    /// <returns>The contract, for chaining more checks</returns>
+    /// <remarks>Also checks for the argument to NOT be null</remarks>
+    public TContract Satisfy<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        ISpecification<T> specification, string message)
+        where TException : Exception, new()
+        where T : TArgument
+    {
+        Validator.CheckForNotNull(specification, nameof(specification));
+        Validator.CheckForNotNull(ArgumentValue, ArgumentName);
+        var typedValue = Validator.CheckForTypeAndConvert<TArgument, T, TException>(ArgumentValue, message);
+        Validator.CheckForSpecification<T, TException>(specification, typedValue, message);
+        return (TContract)this;
+    }
+}
