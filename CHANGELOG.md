@@ -10,6 +10,10 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Internal
+- The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major
+  version is assembled from several pull requests before one final merge into `master`. The process
+  is documented in `AGENTS.md`; 4.0.0 is the first to use it (#62). No effect on the package.
 
 ## [3.7.0] / 2026-09-02
 ### Added
