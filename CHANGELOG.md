@@ -10,6 +10,18 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- The package now ships a Roslyn analyzer. **FC0001** (warning) fires on the one misuse that
+  compiles clean and silently checks the wrong thing: a string argument's `BeAnyOf`/`NotBeAnyOf`
+  call binding to the deprecated message-first overload, where the first value becomes the
+  exception message instead of a candidate — `tag.Must().BeAnyOf("draft", "published")` only ever
+  checks against `"published"`. The diagnostic names the swallowed value at the call site, which
+  the overload's own `[Obsolete]` warning cannot do, and stays silent where the call is deliberate
+  (an explicit array) or the trap cannot bite (non-string arguments, a single value). Two code
+  fixes rewrite to the sequence overload: check every argument as a value, or keep the first as
+  the message. Loading requires a Roslyn 4.4+ compiler (VS 17.4 / .NET SDK 7+); older compilers
+  skip the analyzer and the package works as before.
+
 ### Internal
 - A BenchmarkDotNet suite under `benchmarks/`, measuring the happy path of representative checks
   against the hand-written guard each replaces, with allocations. `docs/Benchmarks.md` holds a
