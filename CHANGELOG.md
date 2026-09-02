@@ -91,6 +91,15 @@ This file is the curated summary of notable changes on top of those.
   nullable argument on the happy path; the type-convert step used a generic `is T` pattern, which
   boxes a `Nullable<T>`. Behaviour is unchanged; `docs/Benchmarks.md` has the before and after.
 
+### Packaging
+- Both readmes are rewritten around what the library can do (#77): the nuget.org listing
+  (`docs/PackageReadme.md`, packed into the package) and the repository `README.md` now show, per
+  task — numbers, text, dates and times, collections, enums, files and streams, any object — what
+  can be checked and the failure message each check produces, along with the message tokens, the
+  chain-wide message, `Value()`, the exception taxonomy, specifications and custom contracts, and
+  what the package is (targets, no dependencies, trimming and AOT, hidden frames, the analyzer).
+  Every sample was compiled and run against the library before it went in.
+
 ### Internal
 - The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major
   version is assembled from several pull requests before one final merge into `master`. The process
