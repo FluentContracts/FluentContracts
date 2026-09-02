@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [3.7.0] / 2026-09-02
 ### Added
 - The package now ships a Roslyn analyzer. **FC0001** (warning) fires on the one misuse that
   compiles clean and silently checks the wrong thing: a string argument's `BeAnyOf`/`NotBeAnyOf`
@@ -383,7 +385,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.6.1...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/3.7.0...HEAD
+[3.7.0]: https://github.com/FluentContracts/FluentContracts/compare/3.6.1...3.7.0
 [3.6.1]: https://github.com/FluentContracts/FluentContracts/compare/3.6.0...3.6.1
 [3.6.0]: https://github.com/FluentContracts/FluentContracts/compare/3.5.0...3.6.0
 [3.5.0]: https://github.com/FluentContracts/FluentContracts/compare/3.4.0...3.5.0
