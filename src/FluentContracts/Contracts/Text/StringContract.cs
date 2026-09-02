@@ -178,13 +178,17 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if <paramref name="containedString"/> is part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public TContract Contain(string containedString, string? message = null)
+    public TContract Contain(
+        string containedString,
+        StringComparison comparisonType = StringComparison.Ordinal,
+        string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
-        Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, comparisonType),
             ArgumentValue, ArgumentName, message,
             expectation: $"contain {Validator.Describe(containedString)}");
         return (TContract)this;
@@ -194,13 +198,17 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if <paramref name="containedString"/> is not part of the value of the <see cref="string"/> argument.
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public TContract NotContain(string containedString, string? message = null)
+    public TContract NotContain(
+        string containedString,
+        StringComparison comparisonType = StringComparison.Ordinal,
+        string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
-        Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
+        Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, comparisonType),
             ArgumentValue, ArgumentName, message,
             expectation: $"not contain {Validator.Describe(containedString)}");
         return (TContract)this;
@@ -274,13 +282,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if the value of the <see cref="string"/> argument is starting with a specific value
     /// </summary>
     /// <param name="startingWith">Value that the argument must start with</param>
-    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract StartWith(
         string startingWith, 
-        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        StringComparison comparisonType = StringComparison.Ordinal, 
         string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
@@ -297,13 +305,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if the value of the <see cref="string"/> argument is not starting with a specific value
     /// </summary>
     /// <param name="startingWith">Value that the argument must not start with</param>
-    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotStartWith(
         string startingWith, 
-        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        StringComparison comparisonType = StringComparison.Ordinal, 
         string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
@@ -320,13 +328,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if the value of the <see cref="string"/> argument is ending with a specific value
     /// </summary>
     /// <param name="endingWith">Value that the argument must end with</param>
-    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract EndWith(
         string endingWith, 
-        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        StringComparison comparisonType = StringComparison.Ordinal, 
         string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
@@ -343,13 +351,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// Checks if the value of the <see cref="string"/> argument is not ending with a specific value
     /// </summary>
     /// <param name="endingWith">Value that the argument must not end with</param>
-    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
+    /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.Ordinal"/> — case-sensitive; pass <see cref="StringComparison.OrdinalIgnoreCase"/> to ignore case.</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
     /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
     public TContract NotEndWith(
         string endingWith, 
-        StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
+        StringComparison comparisonType = StringComparison.Ordinal, 
         string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
