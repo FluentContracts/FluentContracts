@@ -223,6 +223,13 @@ and `BeLessThan` used to be satisfied by one. IEEE says every ordering compariso
 so none of them can be. New checks must follow this split; `NullArgumentPolicyTests` and
 `NonFiniteNumberTests` exist to keep it honest.
 
+The validators' NaN switch only knows `double` and `float`. The generic `NumberContract<T>`
+(`net8.0` only, for any `INumber<T>` without a hand-written contract) asks the type itself through
+`Validator.CheckForNumberNotNaN` at the top of every ordering check, so a new check there must call
+it too; `NumberContractTests` pins the policy for `Half`. `NumberContractResolutionTests` pins that
+the hand-written contracts keep winning `Must()` resolution — a non-generic overload beats the
+generic one on a tie — so a new hand-written numeric contract needs a line there.
+
 **Multi-targeting.** The library builds for `netstandard2.0` and `net8.0`. When an API is
 unavailable on `netstandard2.0`, add a guarded helper to `Infrastructure/Compat.cs` rather
 than scattering `#if` through the contracts. `PolySharp` supplies the missing language and
