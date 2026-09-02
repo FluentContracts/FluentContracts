@@ -23,6 +23,8 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | Path | What it is |
 | --- | --- |
 | `src/FluentContracts` | The library |
+| `src/FluentContracts.Analyzers` | Roslyn analyzer, shipped inside the package — see [Analyzers](#analyzers) |
+| `src/FluentContracts.Analyzers.CodeFixes` | The analyzer's code fixes, a separate assembly by necessity |
 | `tests/FluentContracts.Tests` | xUnit test suite |
 | `benchmarks/FluentContracts.Benchmarks` | BenchmarkDotNet suite — see [Benchmarks](#benchmarks) |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
@@ -282,6 +284,26 @@ above it, updates the comparison links, and commits that back to `master`. That 
 `[skip ci]` and `[skip release]`: it is generated, it changes nothing but Markdown, and the tree it
 sits on has already been tested by the merge it documents. The step does nothing when the section is
 empty, and nothing when that version already has a section, so a re-run is harmless.
+
+## Analyzers
+
+The package ships a Roslyn analyzer from `analyzers/dotnet/cs`, injected into the nupkg by
+`FluentContracts.csproj`. Rules live in `src/FluentContracts.Analyzers`, their code fixes in
+`src/FluentContracts.Analyzers.CodeFixes` — **two assemblies by necessity** (RS1038): the compiler
+loads the analyzer on the command line, where `Microsoft.CodeAnalysis.Workspaces` does not exist,
+so only the IDE-only code-fix assembly may reference it.
+
+- Both projects target `netstandard2.0` and reference Roslyn 4.4.0 with `PrivateAssets="all"` —
+  the consumer's compiler provides Roslyn at runtime, and nothing may leak into the package's
+  dependencies. Raising the Roslyn reference raises the minimum compiler consumers need.
+- A new rule goes into `AnalyzerReleases.Unshipped.md` (enforced by RS2008); tests go in
+  `tests/FluentContracts.Analyzers.Tests`, which compiles its snippets against the real library so
+  they bind the same overloads consumers do.
+- When changing the packaging, verify the result like a consumer: pack, restore the nupkg from a
+  local feed into a scratch project, and confirm the diagnostic appears in its build output.
+
+Current rules: **FC0001** — a string argument's `BeAnyOf`/`NotBeAnyOf` bound to the deprecated
+message-first overload, silently taking the first value as the message.
 
 ## Benchmarks
 

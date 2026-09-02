@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <!-- Code fixes live apart from the analyzer (RS1038): the compiler loads the analyzer
+             assembly on the command line, where Microsoft.CodeAnalysis.Workspaces does not exist,
+             so only the IDE-loaded assembly may reference it. -->
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+        <!-- Ships inside the FluentContracts package under analyzers/dotnet/cs,
+             not as a package of its own. -->
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.4.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FluentContracts.Analyzers\FluentContracts.Analyzers.csproj" />
+    </ItemGroup>
+
+</Project>

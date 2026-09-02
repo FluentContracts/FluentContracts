@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing" Version="1.1.2" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing" Version="1.1.2" />
+        <!-- The testing package declares a Roslyn floor from 2015 whose packages only carry
+             net461 assets (NU1701, an error here). Pin the Roslyn the tests actually run on. -->
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.8.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\FluentContracts.Analyzers\FluentContracts.Analyzers.csproj" />
+        <ProjectReference Include="..\..\src\FluentContracts.Analyzers.CodeFixes\FluentContracts.Analyzers.CodeFixes.csproj" />
+        <!-- The test compilations reference the real library, so the snippets bind against the
+             actual overloads rather than a re-declared stand-in. -->
+        <ProjectReference Include="..\..\src\FluentContracts\FluentContracts.csproj" />
+    </ItemGroup>
+
+</Project>

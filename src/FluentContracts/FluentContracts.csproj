@@ -38,6 +38,20 @@
         <None Include="..\..\docs\PackageReadme.md" Pack="true" PackagePath="\README.md" />
     </ItemGroup>
 
+    <!-- The analyzer and its code fixes ship inside this package, loaded by the consumer's
+         compiler and IDE from analyzers/dotnet/cs. ReferenceOutputAssembly=false gives the build
+         ordering without referencing the DLLs or adding package dependencies. -->
+    <ItemGroup>
+        <ProjectReference Include="..\FluentContracts.Analyzers\FluentContracts.Analyzers.csproj"
+                          ReferenceOutputAssembly="false" PrivateAssets="all" />
+        <ProjectReference Include="..\FluentContracts.Analyzers.CodeFixes\FluentContracts.Analyzers.CodeFixes.csproj"
+                          ReferenceOutputAssembly="false" PrivateAssets="all" />
+        <None Include="..\FluentContracts.Analyzers\bin\$(Configuration)\netstandard2.0\FluentContracts.Analyzers.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+        <None Include="..\FluentContracts.Analyzers.CodeFixes\bin\$(Configuration)\netstandard2.0\FluentContracts.Analyzers.CodeFixes.dll"
+              Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    </ItemGroup>
+
     <!-- Polyfills language/BCL attributes (CallerArgumentExpression, nullable analysis) for netstandard2.0. -->
     <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
         <PackageReference Include="PolySharp" Version="1.16.0" PrivateAssets="all" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" />
