@@ -234,7 +234,7 @@ public class StringContractTests : Tests, IDisposable
         TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             notContaining,
-            (testArgument, message) => testArgument.Must().Contain(pair.DifferentArgument, message),
+            (testArgument, message) => testArgument.Must().Contain(pair.DifferentArgument, message: message),
             "testArgument");
     }
 
@@ -247,7 +247,7 @@ public class StringContractTests : Tests, IDisposable
         TestContract<string, StringContract, ArgumentException>(
             notContaining,
             pair.TestArgument,
-            (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message),
+            (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message: message),
             "testArgument");
     }
     

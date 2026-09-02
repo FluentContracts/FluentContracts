@@ -39,6 +39,14 @@ This file is the curated summary of notable changes on top of those.
   `catch (ArgumentException)` is unaffected; only a `catch (ArgumentOutOfRangeException)` around a
   non-ordinal check stops matching, which is the point. Messages are unchanged.
   `ExceptionTaxonomyTests` pins the type per check family.
+- **String containment checks compare case-sensitively by default** (#68, part of #62).
+  `Contain`, `NotContain`, `StartWith`, `NotStartWith`, `EndWith` and `NotEndWith` on the string
+  contract used to compare with `StringComparison.OrdinalIgnoreCase`, so `"Hello".Must().Contain("hello")`
+  **passed**. The default is now `StringComparison.Ordinal`, the least surprising default for a guard.
+  The comparison parameter stays on the `StartWith`/`EndWith` family and `Contain`/`NotContain` gain
+  one, so any previous behaviour is one argument away:
+  `Contain("hello", StringComparison.OrdinalIgnoreCase)`. This is the quietest break in 4.0.0 — a
+  check that used to pass can now fail — so review string containment guards when upgrading.
 - Every check now returns the contract itself instead of a `Linker<TContract>`, and the `Linker`
   type is gone (#63, part of the 4.0.0 design in #62). `And` is kept as a property on the contract
   that returns the contract, so a chain written as `x.Must().NotBeNull().And.BeGreaterThan(5)` keeps
