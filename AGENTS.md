@@ -24,6 +24,7 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | --- | --- |
 | `src/FluentContracts` | The library |
 | `tests/FluentContracts.Tests` | xUnit test suite |
+| `benchmarks/FluentContracts.Benchmarks` | BenchmarkDotNet suite — see [Benchmarks](#benchmarks) |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
 | `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
@@ -281,6 +282,20 @@ above it, updates the comparison links, and commits that back to `master`. That 
 `[skip ci]` and `[skip release]`: it is generated, it changes nothing but Markdown, and the tree it
 sits on has already been tested by the merge it documents. The step does nothing when the section is
 empty, and nothing when that version already has a section, so a re-run is harmless.
+
+## Benchmarks
+
+`benchmarks/FluentContracts.Benchmarks` measures the happy path of representative checks against
+the hand-written guard each replaces, with allocations. Run it with:
+
+```bash
+dotnet run -c Release --project benchmarks/FluentContracts.Benchmarks
+```
+
+`docs/Benchmarks.md` holds a curated snapshot of the results, with the machine and runtime stated —
+update it when a change plausibly moves the numbers, from a run on your own machine. The benchmarks
+are deliberately **not** run in CI: shared runners make the numbers noise. CI only asserts the
+project still compiles, which it does by being in the solution.
 
 ## Housekeeping
 
