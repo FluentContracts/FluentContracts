@@ -21,8 +21,6 @@ public class ObjectContract<TArgument>(TArgument? argumentValue, string argument
 public abstract class ObjectContract<TArgument, TContract> : NullableContract<TArgument, TContract>
     where TContract : ObjectContract<TArgument, TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -31,18 +29,17 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     protected ObjectContract(TArgument? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract)this);
     }
 
     /// <summary>
     /// Checks if the specified argument is of type <typeparamref name="T"/>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeOfType<T>(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeOfType<T>(string? message = null)
     {
-        Validator.CheckForBeType<object?, T>(ArgumentValue, ArgumentName, message);
-        return _linker;
+        Validator.CheckForBeType<object?, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
@@ -50,22 +47,22 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// </summary>
     /// <param name="type">Type to check against</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeOfType(Type type, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeOfType(Type type, string? message = null)
     {
-        Validator.CheckForBeType<object?>(type, ArgumentValue, ArgumentName, message);
-        return _linker;
+        Validator.CheckForBeType<object?>(type, ArgumentValue, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is not of type <typeparamref name="T"/>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeOfType<T>(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeOfType<T>(string? message = null)
     {
-        Validator.CheckForNotBeType<object?, T>(ArgumentValue, ArgumentName, message);
-        return _linker;
+        Validator.CheckForNotBeType<object?, T>(ArgumentValue, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
@@ -73,33 +70,33 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// </summary>
     /// <param name="type">Type to check against</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeOfType(Type type, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeOfType(Type type, string? message = null)
     {
-        Validator.CheckForNotBeType<object?>(type, ArgumentValue, ArgumentName, message);
-        return _linker;
+        Validator.CheckForNotBeType<object?>(type, ArgumentValue, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is assignable to type <typeparamref name="T"/>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAssignableTo<T>(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAssignableTo<T>(string? message = null)
     {
-        Validator.CheckForBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message);
-        return _linker;
+        Validator.CheckForBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is not assignable to type <typeparamref name="T"/>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAssignableTo<T>(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAssignableTo<T>(string? message = null)
     {
-        Validator.CheckForNotBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message);
-        return _linker;
+        Validator.CheckForNotBeAssignableTo(ArgumentValue, typeof(T), ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
@@ -107,11 +104,11 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// </summary>
     /// <param name="targetType">Type to check against</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAssignableTo(Type targetType, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAssignableTo(Type targetType, string? message = null)
     {
-        Validator.CheckForBeAssignableTo(ArgumentValue, targetType, ArgumentName, message);
-        return _linker;
+        Validator.CheckForBeAssignableTo(ArgumentValue, targetType, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 
     /// <summary>
@@ -119,10 +116,10 @@ public abstract class ObjectContract<TArgument, TContract> : NullableContract<TA
     /// </summary>
     /// <param name="targetType">Type to check against</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAssignableTo(Type targetType, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAssignableTo(Type targetType, string? message = null)
     {
-        Validator.CheckForNotBeAssignableTo(ArgumentValue, targetType, ArgumentName, message);
-        return _linker;
+        Validator.CheckForNotBeAssignableTo(ArgumentValue, targetType, ArgumentName, message ?? ChainMessage);
+        return (TContract)this;
     }
 }

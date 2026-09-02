@@ -24,6 +24,24 @@ internal static partial class Validator
     public static string Expected(string argumentName, string expectation, object? actualValue) =>
         $"Expected {argumentName} to {expectation}, but found {Describe(actualValue)}.";
 
+    private const string ArgumentToken = "{argument}";
+    private const string ValueToken = "{value}";
+
+    /// <summary>
+    /// A caller-supplied message with its tokens filled: <c>{argument}</c> becomes the argument's
+    /// name and <c>{value}</c> its rendered value, so one message can serve any argument. Returns
+    /// null when there is no message, so it composes as <c>Custom(...) ?? Expected(...)</c>. A
+    /// message without tokens is returned as is; the scan only runs on the failure path.
+    /// </summary>
+    public static string? Custom(string? message, string argumentName, object? actualValue)
+    {
+        if (message is null || message.IndexOf('{') < 0) return message;
+
+        return message
+            .Replace(ArgumentToken, argumentName)
+            .Replace(ValueToken, Describe(actualValue));
+    }
+
     /// <summary>
     /// Renders a value for a failure message: strings quoted and truncated, formattable values in the
     /// invariant culture, collections as their first few items. Messages end up in logs across

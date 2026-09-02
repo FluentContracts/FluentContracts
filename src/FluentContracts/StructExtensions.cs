@@ -16,28 +16,32 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="Guid"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableGuidContract class.</returns>
     
     public static GuidContract Must(
         this Guid? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new GuidContract(argument, argumentName);
+        return new GuidContract(argument, argumentName) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="Guid"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the GuidContract class.</returns>
     
     public static GuidContract Must(
         this Guid argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new GuidContract(argument, argumentName);
+        return new GuidContract(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion
@@ -48,28 +52,32 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="bool"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableBoolContract class.</returns>
     
     public static BoolContract Must(
         this bool? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new BoolContract(argument, argumentName);
+        return new BoolContract(argument, argumentName) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="bool"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the BoolContract class.</returns>
     
     public static BoolContract Must(
         this bool argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new BoolContract(argument, argumentName);
+        return new BoolContract(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion
@@ -80,32 +88,36 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateTime"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting DateTime.Now and DateTime.Today</param>
     /// <returns>A new instance of the DateTimeContract class.</returns>
     
     public static DateTimeContract Must(
         this DateTime argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateTimeContract(argument, argumentName, dateTimeProvider);
+        return new DateTimeContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting DateTime.Now and DateTime.Today</param>
     /// <returns>A new instance of the NullableDateTimeContract class.</returns>
     
     public static DateTimeContract Must(
         this DateTime? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName, 
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateTimeContract(argument, argumentName, dateTimeProvider);
+        return new DateTimeContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     #endregion
@@ -116,30 +128,34 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateTimeOffset"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting the current moment</param>
     /// <returns>A new instance of the DateTimeOffsetContract class.</returns>
     public static DateTimeOffsetContract Must(
         this DateTimeOffset argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider);
+        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTimeOffset"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting the current moment</param>
     /// <returns>A new instance of the DateTimeOffsetContract class.</returns>
     public static DateTimeOffsetContract Must(
         this DateTimeOffset? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider);
+        return new DateTimeOffsetContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     #endregion
@@ -150,30 +166,34 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="Enum"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the EnumContract class.</returns>
     
     public static EnumContract<TEnum> Must<TEnum>(
         this TEnum argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
         where TEnum : struct, Enum
     {
-        return new EnumContract<TEnum>(argument, argumentName);
+        return new EnumContract<TEnum>(argument, argumentName) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="Enum"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the EnumContract class.</returns>
     
     public static EnumContract<TEnum> Must<TEnum>(
         this TEnum? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
         where TEnum : struct, Enum
     {
-        return new EnumContract<TEnum>(argument, argumentName);
+        return new EnumContract<TEnum>(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion
@@ -184,28 +204,32 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableDateTimeContract class.</returns>
     
     public static TimeSpanContract Must(
         this TimeSpan argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new TimeSpanContract(argument, argumentName);
+        return new TimeSpanContract(argument, argumentName) { ChainMessage = message };
     }
     
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type nullable <see cref="DateTime"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableDateTimeContract class.</returns>
     
     public static TimeSpanContract Must(
         this TimeSpan? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new TimeSpanContract(argument, argumentName);
+        return new TimeSpanContract(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion
@@ -218,30 +242,34 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateOnly"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting the current date</param>
     /// <returns>A new instance of the DateOnlyContract class.</returns>
     public static DateOnlyContract Must(
         this DateOnly? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateOnlyContract(argument, argumentName, dateTimeProvider);
+        return new DateOnlyContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="DateOnly"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <param name="dateTimeProvider">DateTime provider override to use for getting the current date</param>
     /// <returns>A new instance of the DateOnlyContract class.</returns>
     public static DateOnlyContract Must(
         this DateOnly argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName,
         IDateTimeProvider? dateTimeProvider = null)
     {
-        return new DateOnlyContract(argument, argumentName, dateTimeProvider);
+        return new DateOnlyContract(argument, argumentName, dateTimeProvider) { ChainMessage = message };
     }
 
     #endregion
@@ -252,26 +280,30 @@ public static class StructExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="TimeOnly"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the TimeOnlyContract class.</returns>
     public static TimeOnlyContract Must(
         this TimeOnly? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new TimeOnlyContract(argument, argumentName);
+        return new TimeOnlyContract(argument, argumentName) { ChainMessage = message };
     }
 
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="TimeOnly"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the TimeOnlyContract class.</returns>
     public static TimeOnlyContract Must(
         this TimeOnly argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new TimeOnlyContract(argument, argumentName);
+        return new TimeOnlyContract(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion

@@ -4,6 +4,7 @@
 
 ## `Base`
 
+- `get_And`
 - `Satisfy`
 
 ## `Nullable` (extends `Base`)
@@ -294,6 +295,24 @@
 - `(Not)BePositive`
 - `(Not)BeZero`
 - `BeBetween`
+- `BeGreaterOrEqualTo`
+- `BeGreaterThan`
+- `BeLessOrEqualTo`
+- `BeLessThan`
+
+## `Number` (extends `Object`)
+
+- `(Not)Be`
+- `(Not)BeAnyOf`
+- `(Not)BeEven`
+- `(Not)BeInfinity`
+- `(Not)BeNaN`
+- `(Not)BeNegative`
+- `(Not)BeOdd`
+- `(Not)BePositive`
+- `(Not)BeZero`
+- `BeBetween`
+- `BeFinite`
 - `BeGreaterOrEqualTo`
 - `BeGreaterThan`
 - `BeLessOrEqualTo`

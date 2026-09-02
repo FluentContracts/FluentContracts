@@ -10,6 +10,96 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Breaking
+- **Multi-value checks take one bracketed set, never `params`** (#67, part of #62). `BeAnyOf`,
+  `NotBeAnyOf`, `Contain`, `NotContain` and `ContainAnyOf` each have exactly three overloads: one
+  value, a set, and a set followed by a message — `tag.Must().BeAnyOf(["draft", "published"],
+  "Not a state")`. Every `params` overload and every message-first `(string? message, params T[])`
+  overload is gone, on every contract, not only the deprecated pair on `EqualityContract`. What
+  breaks: `BeAnyOf(1, 2, 3)` becomes `BeAnyOf([1, 2, 3])` (or `new[] { 1, 2, 3 }` on a pre-C# 12
+  compiler), and `BeAnyOf("msg", 1, 2)` becomes `BeAnyOf([1, 2], "msg")`. What that buys: a message
+  can only ever follow a bracketed set, so `BeAnyOf("draft", "published")` on a string — which used
+  to compile and silently take `"draft"` as the message — no longer compiles at all. The
+  value-type contracts also lose their nullable-set overloads (`params int?[]` and friends): a
+  collection expression is ambiguous between `IEnumerable<int>` and `IEnumerable<int?>`, and
+  `BeNull` already covers the null case. The FC0001 analyzer rule is retired with the overload it
+  policed; the analyzer projects and packaging stay for future rules.
+- `Must()` takes an optional message as its **first** parameter, so the argument name can no longer
+  be overridden positionally — `x.Must("name")` is now a chain message — only as
+  `x.Must(argumentName: "name")`. `[CallerArgumentExpression]` fills the name in every ordinary
+  call, so this only affects code that spelled the name out.
+- **`ArgumentOutOfRangeException` is now reserved for ordinal checks** (#65, part of #62):
+  comparisons (`BeGreaterThan` family, `BeShorterThan`, `BeInThePast`, count/length/size
+  comparisons), ranges (`BeBetween`), sign checks and the NaN policy — where "out of range" means
+  what it says. Every other failure — equality, `BeAnyOf`, `BeNull`, type checks, parse and format
+  checks, containment, string shape, collection order, `Satisfy` — throws `ArgumentException`,
+  where it used to throw `ArgumentOutOfRangeException` for all of them. Null stays
+  `ArgumentNullException`. Since `ArgumentOutOfRangeException` derives from `ArgumentException`, a
+  `catch (ArgumentException)` is unaffected; only a `catch (ArgumentOutOfRangeException)` around a
+  non-ordinal check stops matching, which is the point. Messages are unchanged.
+  `ExceptionTaxonomyTests` pins the type per check family.
+- **String containment checks compare case-sensitively by default** (#68, part of #62).
+  `Contain`, `NotContain`, `StartWith`, `NotStartWith`, `EndWith` and `NotEndWith` on the string
+  contract used to compare with `StringComparison.OrdinalIgnoreCase`, so `"Hello".Must().Contain("hello")`
+  **passed**. The default is now `StringComparison.Ordinal`, the least surprising default for a guard.
+  The comparison parameter stays on the `StartWith`/`EndWith` family and `Contain`/`NotContain` gain
+  one, so any previous behaviour is one argument away:
+  `Contain("hello", StringComparison.OrdinalIgnoreCase)`. This is the quietest break in 4.0.0 — a
+  check that used to pass can now fail — so review string containment guards when upgrading.
+- Every check now returns the contract itself instead of a `Linker<TContract>`, and the `Linker`
+  type is gone (#63, part of the 4.0.0 design in #62). `And` is kept as a property on the contract
+  that returns the contract, so a chain written as `x.Must().NotBeNull().And.BeGreaterThan(5)` keeps
+  compiling unchanged, and can now also be written `x.Must().NotBeNull().BeGreaterThan(5)`. What
+  breaks: code that named the `Linker<T>` type — a variable, a field, a helper taking or returning
+  it, a custom check extension declared on it — must name the contract type instead. `Value()` moved
+  from `Linker<T>` to the contracts, so it is now reachable directly after `Must()`, where it acts as
+  `NotBeNull` plus the unwrap. Binary-breaking for every consumer (recompile); source-breaking only
+  where `Linker` was spelled out. Every level of the contract hierarchy used to allocate its own
+  `Linker` — six objects to start an `int` chain, the 160 B measured in `docs/Benchmarks.md` — and a
+  chain start is now the one contract object.
+
+### Added
+- A caller's message may carry `{argument}` and `{value}`, filled on the failure path with the
+  argument's name and its rendered value (quoted, truncated, invariant culture — the same rendering
+  the default messages use): `port.Must().BeBetween(1, 65535, "{argument} must be a usable port,
+  got {value}")`. One shared message constant now names whichever argument it guards. A message
+  without tokens is untouched; this is a change only for a literal message that already contained
+  those exact tokens.
+- A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
+  once for every check in the chain; a check's own message still wins for that check.
+- **`NumberContract<T>` for any `INumber<T>`** on the `net8.0` target (#64, part of #62): `Half`,
+  `Int128`, `UInt128`, `BigInteger`, `nint`, a user's own number type — every number without a
+  hand-written contract now has `Must()`, with the checks the hand-written ones have: sign,
+  equality, `BeAnyOf`, `BeBetween`, the comparisons, zero, parity, and the NaN family (`BeNaN`,
+  `BeInfinity`, `BeFinite` and their negations, decided by the type itself, so they are simply
+  always-false/always-true on an integer). It follows the null and NaN policy: an ordering check
+  rejects `null` with `ArgumentNullException` and `NaN` with `ArgumentOutOfRangeException`, asked of
+  the type through `INumberBase<T>.IsNaN` rather than the `double`/`float` switch the hand-written
+  contracts use. Types with a hand-written contract (`int`, `decimal`, `char`, …) keep binding to it
+  — a non-generic overload wins the tie — which `NumberContractResolutionTests` pins;
+  `netstandard2.0` consumers do not see the overload, exactly as with `DateOnly`.
+- **Specifications** (#66, part of #62; resolves #3): `ISpecification<T>` — `IsSatisfiedBy` plus an
+  `Expectation` phrase — is the extensibility point. A rule written once, `Spec.From<string>(s =>
+  Iban.IsValid(s), "be a valid IBAN")` or a class deriving from `Specification<T>`, runs through
+  `Satisfy(specification)` and fails exactly like a built-in check: `Expected iban to be a valid
+  IBAN, but found "XX00"`. `And`, `Or` and `Not` compose both the rule and the phrase. The new
+  `Satisfy` overloads (message, `<T, TException>`, `<T, TException>` with message) mirror the
+  `Func` ones in every respect, including the implicit not-null check.
+
+### Changed
+- `Satisfy` against a value-type contract (`int`, `DateTime`, `Guid`, …) no longer boxes the
+  nullable argument on the happy path; the type-convert step used a generic `is T` pattern, which
+  boxes a `Nullable<T>`. Behaviour is unchanged; `docs/Benchmarks.md` has the before and after.
+
+### Packaging
+- Both readmes are rewritten around what the library can do (#77): the nuget.org listing
+  (`docs/PackageReadme.md`, packed into the package) and the repository `README.md` now show, per
+  task — numbers, text, dates and times, collections, enums, files and streams, any object — what
+  can be checked and the failure message each check produces, along with the message tokens, the
+  chain-wide message, `Value()`, the exception taxonomy, specifications and custom contracts, and
+  what the package is (targets, no dependencies, trimming and AOT, hidden frames, the analyzer).
+  Every sample was compiled and run against the library before it went in.
+
 ### Internal
 - The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major
   version is assembled from several pull requests before one final merge into `master`. The process

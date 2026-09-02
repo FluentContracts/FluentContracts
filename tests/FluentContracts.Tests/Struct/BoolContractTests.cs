@@ -12,7 +12,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool?, BoolContract, ArgumentException>(
             null,
             true,
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -32,7 +32,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_Be()
     {
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             true,
             false,
             (testArgument, message) => testArgument.Must().Be(true, message),
@@ -45,7 +45,7 @@ public class BoolContractTests : Tests
         bool? successful = true;
         bool? failing = false;
         
-        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool?, BoolContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().Be(successful, message),
@@ -55,7 +55,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_NotBe()
     {
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             false,
             true,
             (testArgument, message) => testArgument.Must().NotBe(true, message),
@@ -68,7 +68,7 @@ public class BoolContractTests : Tests
         bool? successful = false;
         bool? failing = true;
         
-        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool?, BoolContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBe(failing, message),
@@ -80,27 +80,11 @@ public class BoolContractTests : Tests
     {
         var array = DummyData.GetArray(() => true, true, false);
 
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             true,
             false,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        bool? successful = true;
-        bool? failing = false;
-        
-        var array = DummyData.GetArray(() => successful, true, false);
-
-        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
-            successful,
-            failing,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -109,38 +93,18 @@ public class BoolContractTests : Tests
     {
         var array = DummyData.GetArray(() => true, true, false);
 
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             false,
             true,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        bool? successful = false;
-        bool? failing = true;
-        
-        var array = DummyData.GetArray(() => failing, true, false);
-
-        TestContract<bool?, BoolContract, ArgumentOutOfRangeException>(
-            successful,
-            failing,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 
     [Fact]
     public void Test_Must_BeTrue()
     {
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             true,
             false,
             (testArgument, message) => testArgument.Must().BeTrue(message),
@@ -150,7 +114,7 @@ public class BoolContractTests : Tests
     [Fact]
     public void Test_Must_BeFalse()
     {
-        TestContract<bool, BoolContract, ArgumentOutOfRangeException>(
+        TestContract<bool, BoolContract, ArgumentException>(
             false,
             true,
             (testArgument, message) => testArgument.Must().BeFalse(message),

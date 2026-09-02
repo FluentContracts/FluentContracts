@@ -17,9 +17,9 @@ internal static partial class Validator
     {
         if (TryParse(option, argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, ParseExpectation(option), argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, ParseExpectation(option), argumentValue));
     }
 
     public static void CheckForNotParsed(
@@ -30,9 +30,9 @@ internal static partial class Validator
     {
         if (!TryParse(option, argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "not " + ParseExpectation(option), argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not " + ParseExpectation(option), argumentValue));
     }
 
     private static bool TryParse(ParseOptions options, string value)
@@ -74,9 +74,9 @@ internal static partial class Validator
         {
             if (!lower[start].Equals(lower[end]))
             {
-                ThrowHelper.ThrowArgumentOutOfRangeException(
+                ThrowHelper.ThrowArgumentException(
                     argumentName,
-                    message ?? Expected(argumentName, "be a palindrome", argumentValue));
+                    Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be a palindrome", argumentValue));
             }
 
             start++;
@@ -104,9 +104,9 @@ internal static partial class Validator
             end--;
         }
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "not be a palindrome", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be a palindrome", argumentValue));
     }
 
     public static void CheckForAlphanumeric(
@@ -116,9 +116,9 @@ internal static partial class Validator
     {
         if (argumentValue.All(char.IsLetterOrDigit)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "be alphanumeric", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be alphanumeric", argumentValue));
     }
 
     public static void CheckForNotAlphanumeric(
@@ -128,9 +128,9 @@ internal static partial class Validator
     {
         if (argumentValue.Any(a => !char.IsLetterOrDigit(a))) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "not be alphanumeric", argumentValue));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be alphanumeric", argumentValue));
     }
 
     public static void CheckForCreditCardNumber(
@@ -142,9 +142,9 @@ internal static partial class Validator
 
         // Deliberately no actual value: a card number does not belong in an exception message,
         // where it would end up in logs.
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "be a valid credit card number"));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be a valid credit card number"));
     }
 
     public static void CheckForNotCreditCardNumber(
@@ -154,9 +154,9 @@ internal static partial class Validator
     {
         if (!IsValidCreditCardNumber(argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
-            message ?? Expected(argumentName, "not be a valid credit card number"));
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be a valid credit card number"));
     }
     
     // Luhn algorithm code adapted from System.ComponentModel.DataAnnotations.CreditCardAttribute

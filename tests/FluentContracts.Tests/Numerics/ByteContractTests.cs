@@ -12,7 +12,7 @@ public class ByteContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             null,
             DummyData.GetByte(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class ByteContractTests : Tests
     {
         var pair = DummyData.GetBytePair();
 
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class ByteContractTests : Tests
     {
         var pair = DummyData.GetNullableBytePair();
 
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class ByteContractTests : Tests
     {
         var pair = DummyData.GetBytePair();
 
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class ByteContractTests : Tests
     {
         var pair = DummyData.GetNullableBytePair();
 
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,25 +83,11 @@ public class ByteContractTests : Tests
         var pair = DummyData.GetBytePair();
         var array = DummyData.GetArray(() => DummyData.GetByte(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableBytePair();
-        var array = DummyData.GetArray(DummyData.GetNullableByte, pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -111,29 +97,11 @@ public class ByteContractTests : Tests
         var pair = DummyData.GetBytePair();
         var array = DummyData.GetArray(() => DummyData.GetByte(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableBytePair();
-        var array = DummyData.GetArray(DummyData.GetNullableByte, pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
-            pair.DifferentArgument,
-            pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 
@@ -288,14 +256,14 @@ public class ByteContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -306,14 +274,14 @@ public class ByteContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -327,14 +295,14 @@ public class ByteContractTests : Tests
         var successful = DummyData.GetByte(NumberOption.Odd);
         var failing = DummyData.GetByte(NumberOption.Even);
         
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeOdd(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -348,14 +316,14 @@ public class ByteContractTests : Tests
         var successful = DummyData.GetByte(NumberOption.Even);
         var failing = DummyData.GetByte(NumberOption.Odd);
         
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeOdd(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -369,14 +337,14 @@ public class ByteContractTests : Tests
         var successful = DummyData.GetByte(NumberOption.Even);
         var failing = DummyData.GetByte(NumberOption.Odd);
         
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeEven(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -390,14 +358,14 @@ public class ByteContractTests : Tests
         var successful = DummyData.GetByte(NumberOption.Odd);
         var failing = DummyData.GetByte(NumberOption.Even);
         
-        TestContract<byte, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeEven(message),
             "testArgument");
         
-        TestContract<byte?, ByteContract, ArgumentOutOfRangeException>(
+        TestContract<byte?, ByteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>

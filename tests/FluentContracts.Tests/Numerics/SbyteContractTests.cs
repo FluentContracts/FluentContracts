@@ -12,7 +12,7 @@ public class SbyteContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             null,
             DummyData.GetSbyte(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class SbyteContractTests : Tests
     {
         var pair = DummyData.GetSbytePair();
 
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class SbyteContractTests : Tests
     {
         var pair = DummyData.GetNullableSbytePair();
 
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class SbyteContractTests : Tests
     {
         var pair = DummyData.GetSbytePair();
 
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class SbyteContractTests : Tests
     {
         var pair = DummyData.GetNullableSbytePair();
 
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,25 +83,11 @@ public class SbyteContractTests : Tests
         var pair = DummyData.GetSbytePair();
         var array = DummyData.GetArray(() => DummyData.GetSbyte(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableSbytePair();
-        var array = DummyData.GetArray(() => DummyData.GetSbyte(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -111,29 +97,11 @@ public class SbyteContractTests : Tests
         var pair = DummyData.GetSbytePair();
         var array = DummyData.GetArray(() => DummyData.GetSbyte(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableSbytePair();
-        var array = DummyData.GetArray(() => DummyData.GetNullableSbyte(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
-            pair.DifferentArgument,
-            pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 
@@ -288,7 +256,7 @@ public class SbyteContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -296,7 +264,7 @@ public class SbyteContractTests : Tests
             "testArgument");
         
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -307,7 +275,7 @@ public class SbyteContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -315,7 +283,7 @@ public class SbyteContractTests : Tests
             "testArgument");
         
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -385,14 +353,14 @@ public class SbyteContractTests : Tests
         var successful = DummyData.GetSbyte(NumberOption.Odd);
         var failing = DummyData.GetSbyte(NumberOption.Even);
         
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeOdd(message),
             "testArgument");
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -406,14 +374,14 @@ public class SbyteContractTests : Tests
         var successful = DummyData.GetSbyte(NumberOption.Even);
         var failing = DummyData.GetSbyte(NumberOption.Odd);
         
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeOdd(message),
             "testArgument");
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -427,14 +395,14 @@ public class SbyteContractTests : Tests
         var successful = DummyData.GetSbyte(NumberOption.Even);
         var failing = DummyData.GetSbyte(NumberOption.Odd);
         
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeEven(message),
             "testArgument");
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -448,14 +416,14 @@ public class SbyteContractTests : Tests
         var successful = DummyData.GetSbyte(NumberOption.Odd);
         var failing = DummyData.GetSbyte(NumberOption.Even);
         
-        TestContract<sbyte, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeEven(message),
             "testArgument");
         
-        TestContract<sbyte?, SbyteContract, ArgumentOutOfRangeException>(
+        TestContract<sbyte?, SbyteContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>

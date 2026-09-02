@@ -15,14 +15,16 @@ public static class TextExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="string"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the StringContract class.</returns>
     
     public static StringContract Must(
         this string? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new StringContract(argument, argumentName);
+        return new StringContract(argument, argumentName) { ChainMessage = message };
     }
     
     #endregion
@@ -33,28 +35,32 @@ public static class TextExtensions
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="char"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the NullableCharContract class.</returns>
     
     public static CharContract Must(
         this char? argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new CharContract(argument, argumentName);
+        return new CharContract(argument, argumentName) { ChainMessage = message };
     }
     
     /// <summary>
     /// Indicates a start in the fluent chain of validations for an argument of type <see cref="char"/>
     /// </summary>
     /// <param name="argument">Argument to be validated</param>
+    /// <param name="message">Optional message for every check in the chain; a check's own message still wins.</param>
     /// <param name="argumentName">Optional parameter to overwrite the argument name</param>
     /// <returns>A new instance of the CharContract class.</returns>
     
     public static CharContract Must(
         this char argument,
+        string? message = null,
         [CallerArgumentExpression("argument")] string argumentName = Constants.DefaultArgumentName)
     {
-        return new CharContract(argument, argumentName);
+        return new CharContract(argument, argumentName) { ChainMessage = message };
     }
 
     #endregion

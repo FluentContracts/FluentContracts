@@ -21,7 +21,7 @@ public class SatisfyTypeMismatchTests
         FluentActions
             .Invoking(() => myArgument.Must().Satisfy<string>(s => s.Length > 0))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithParameterName(nameof(myArgument));
     }
 
@@ -33,7 +33,7 @@ public class SatisfyTypeMismatchTests
         FluentActions
             .Invoking(() => myArgument.Must().Satisfy<string>(s => s.Length > 0, "must be a non-empty string"))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("must be a non-empty string*");
     }
 
@@ -74,7 +74,7 @@ public class SatisfyTypeMismatchTests
         FluentActions
             .Invoking(() => myArgument.Must().Satisfy<string>(s => s.Length > 100))
             .Should()
-            .Throw<ArgumentOutOfRangeException>("the type matches, so the condition decides");
+            .Throw<ArgumentException>("the type matches, so the condition decides");
     }
 
     [Fact]

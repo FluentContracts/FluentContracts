@@ -14,7 +14,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<string?, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string?, StringContract, ArgumentException>(
             null,
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class StringContractTests : Tests, IDisposable
     {
         var pair = DummyData.GetStringPair();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -48,7 +48,7 @@ public class StringContractTests : Tests, IDisposable
     {
         var pair = DummyData.GetStringPair();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -61,7 +61,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair();
         var array = DummyData.GetArray(DummyData.GetString, pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().BeAnyOf(array, message),
@@ -74,7 +74,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair();
         var array = DummyData.GetArray(DummyData.GetString, pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBeAnyOf(array, message),
@@ -84,7 +84,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeEmpty()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             string.Empty,
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -94,7 +94,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeEmpty()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(),
             string.Empty,
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
@@ -104,13 +104,13 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeNullOrEmpty()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             string.Empty,
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeNullOrEmpty(message),
             "testArgument");
 
-        TestContract<string?, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string?, StringContract, ArgumentException>(
             null,
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeNullOrEmpty(message),
@@ -120,13 +120,13 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeNullOrEmpty()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(),
             string.Empty,
             (testArgument, message) => testArgument.Must().NotBeNullOrEmpty(message),
             "testArgument");
 
-        TestContract<string?, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string?, StringContract, ArgumentException>(
             DummyData.GetString(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNullOrEmpty(message),
@@ -136,13 +136,13 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeNullOrWhiteSpace()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.WhiteSpace),
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
             "testArgument");
 
-        TestContract<string?, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string?, StringContract, ArgumentException>(
             null,
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeNullOrWhiteSpace(message),
@@ -152,13 +152,13 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeNullOrWhiteSpace()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(),
             DummyData.GetString(StringOption.WhiteSpace),
             (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
             "testArgument");
 
-        TestContract<string?, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string?, StringContract, ArgumentException>(
             DummyData.GetString(),
             null,
             (testArgument, message) => testArgument.Must().NotBeNullOrWhiteSpace(message),
@@ -168,7 +168,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeWhiteSpace()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.WhiteSpace),
             DummyData.GetString(),
             (testArgument, message) => testArgument.Must().BeWhiteSpace(message),
@@ -178,7 +178,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeWhiteSpace()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(),
             DummyData.GetString(StringOption.WhiteSpace),
             (testArgument, message) => testArgument.Must().NotBeWhiteSpace(message),
@@ -188,7 +188,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeUppercase()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.Uppercase),
             DummyData.GetString(StringOption.Lowercase),
             (testArgument, message) => testArgument.Must().BeUppercase(message),
@@ -198,7 +198,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeUppercase()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.Lowercase),
             DummyData.GetString(StringOption.Uppercase),
             (testArgument, message) => testArgument.Must().NotBeUppercase(message),
@@ -208,7 +208,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_BeLowercase()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.Lowercase),
             DummyData.GetString(StringOption.Uppercase),
             (testArgument, message) => testArgument.Must().BeLowercase(message),
@@ -218,7 +218,7 @@ public class StringContractTests : Tests, IDisposable
     [Fact]
     public void Test_Must_NotBeLowercase()
     {
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             DummyData.GetString(StringOption.Uppercase),
             DummyData.GetString(StringOption.Lowercase),
             (testArgument, message) => testArgument.Must().NotBeLowercase(message),
@@ -231,10 +231,10 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.Containing);
         var notContaining = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             notContaining,
-            (testArgument, message) => testArgument.Must().Contain(pair.DifferentArgument, message),
+            (testArgument, message) => testArgument.Must().Contain(pair.DifferentArgument, message: message),
             "testArgument");
     }
 
@@ -244,10 +244,10 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.Containing);
         var notContaining = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             notContaining,
             pair.TestArgument,
-            (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message),
+            (testArgument, message) => testArgument.Must().NotContain(pair.DifferentArgument, message: message),
             "testArgument");
     }
     
@@ -257,7 +257,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetEmailAddress();
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeEmailAddress(message),
@@ -270,7 +270,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString();
         var fail = DummyData.GetEmailAddress();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeEmailAddress(message),
@@ -284,7 +284,7 @@ public class StringContractTests : Tests, IDisposable
         const string success = "JediMaster42";
         const string fail = "SithLord007";
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeMatching(pattern, message),
@@ -298,7 +298,7 @@ public class StringContractTests : Tests, IDisposable
         const string success = "SithLord007";
         const string fail = "JediMaster42";
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeMatching(pattern, message),
@@ -311,7 +311,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.StartWith);
         var notStartingWith = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             notStartingWith,
             (testArgument, message) => testArgument.Must().StartWith(pair.DifferentArgument, message: message),
@@ -324,7 +324,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.StartWith);
         var notStartingWith = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             notStartingWith,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotStartWith(pair.DifferentArgument, message: message),
@@ -337,7 +337,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.EndWith);
         var notStartingWith = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             pair.TestArgument,
             notStartingWith,
             (testArgument, message) => testArgument.Must().EndWith(pair.DifferentArgument, message: message),
@@ -350,7 +350,7 @@ public class StringContractTests : Tests, IDisposable
         var pair = DummyData.GetStringPair(PairOption.EndWith);
         var notStartingWith = DummyData.GetString();
 
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             notStartingWith,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotEndWith(pair.DifferentArgument, message: message),
@@ -363,7 +363,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Palindrome);
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BePalindrome(message),
@@ -376,7 +376,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString();
         var fail = DummyData.GetString(StringOption.Palindrome);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBePalindrome(message),
@@ -389,7 +389,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Url);
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeUrl(message),
@@ -402,7 +402,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString();
         var fail = DummyData.GetString(StringOption.Url);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeUrl(message),
@@ -416,7 +416,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(targetLength);
         var fail = DummyData.GetString(targetLength + 10);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().HaveLengthEqualTo(targetLength, message),
@@ -430,7 +430,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(targetLength + 10);
         var fail = DummyData.GetString(targetLength);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotHaveLengthEqualTo(targetLength, message),
@@ -529,7 +529,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Alphanumeric);
         var fail = DummyData.GetString(StringOption.SpecialCharacters);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeAlphanumeric(message),
@@ -542,7 +542,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.SpecialCharacters);
         var fail = DummyData.GetString(StringOption.Alphanumeric);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeAlphanumeric(message),
@@ -556,13 +556,13 @@ public class StringContractTests : Tests, IDisposable
         var success6 = DummyData.GetString(StringOption.IpAddressV6);
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success4,
             fail,
             (testArgument, message) => testArgument.Must().BeIpAddress(message),
             "testArgument");
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success6,
             fail,
             (testArgument, message) => testArgument.Must().BeIpAddress(message),
@@ -576,13 +576,13 @@ public class StringContractTests : Tests, IDisposable
         var fail4 = DummyData.GetString(StringOption.IpAddressV4);
         var fail6 = DummyData.GetString(StringOption.IpAddressV6);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail4,
             (testArgument, message) => testArgument.Must().NotBeIpAddress(message),
             "testArgument");
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail6,
             (testArgument, message) => testArgument.Must().NotBeIpAddress(message),
@@ -595,7 +595,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Guid);
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeGuid(message),
@@ -608,7 +608,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString();
         var fail = DummyData.GetString(StringOption.Guid);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeGuid(message),
@@ -621,7 +621,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Base64);
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeBase64(message),
@@ -634,7 +634,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString();
         var fail = DummyData.GetString(StringOption.Base64);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeBase64(message),
@@ -647,7 +647,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.Hexadecimal);
         var fail = DummyData.GetString(StringOption.SpecialCharacters);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeHexadecimal(message),
@@ -660,7 +660,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.SpecialCharacters);
         var fail = DummyData.GetString(StringOption.Hexadecimal);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeHexadecimal(message),
@@ -673,7 +673,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(StringOption.CreditCardNumber);
         var fail = DummyData.GetString(length: 16);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeCreditCardNumber(message),
@@ -686,7 +686,7 @@ public class StringContractTests : Tests, IDisposable
         var success = DummyData.GetString(length: 16);
         var fail = DummyData.GetString(StringOption.CreditCardNumber);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeCreditCardNumber(message),
@@ -700,7 +700,7 @@ public class StringContractTests : Tests, IDisposable
         
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeExistingFile(message),
@@ -714,7 +714,7 @@ public class StringContractTests : Tests, IDisposable
         
         var fail = DummyData.GetFilePath(this);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeExistingFile(message),
@@ -728,7 +728,7 @@ public class StringContractTests : Tests, IDisposable
         
         var fail = DummyData.GetString();
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeExistingDirectory(message),
@@ -742,7 +742,7 @@ public class StringContractTests : Tests, IDisposable
         
         var fail = DummyData.GetDirectoryPath(this);
         
-        TestContract<string, StringContract, ArgumentOutOfRangeException>(
+        TestContract<string, StringContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeExistingDirectory(message),

@@ -1,3 +1,6 @@
+﻿#if NET8_0_OR_GREATER
+using System.Numerics;
+#endif
 using FluentContracts.Contracts;
 using FluentContracts.Contracts.Collections;
 using FluentContracts.Contracts.IO;
@@ -6,7 +9,6 @@ using FluentContracts.Contracts.Streams;
 using FluentContracts.Contracts.Struct;
 using FluentContracts.Contracts.Text;
 using FluentContracts.Contracts.Web;
-using FluentContracts.Infrastructure;
 using FluentContracts.Validators;
 
 namespace FluentContracts;
@@ -15,252 +17,228 @@ namespace FluentContracts;
 /// Ends a contract chain with the value it just validated, so the guard and the read are one
 /// expression: <c>this.port = config.Port.Must().BeBetween(1, 65535).Value();</c>
 /// <para>
-/// <c>Value()</c> is only reachable after at least one check has run, returns the unwrapped,
-/// non-nullable value, and fails a null argument with <see cref="ArgumentNullException"/> naming
-/// the argument — exactly as <c>NotBeNull</c> would, so it is itself a null check plus the unwrap.
+/// <c>Value()</c> returns the unwrapped, non-nullable value, and fails a null argument with
+/// <see cref="ArgumentNullException"/> naming the argument — exactly as <c>NotBeNull</c> would, so
+/// it is itself a null check plus the unwrap, and <c>x.Must().Value()</c> alone is a valid guard.
 /// </para>
 /// </summary>
 public static class ValueExtensions
 {
     /// <summary>Returns the validated <see cref="bool"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static bool Value(this Linker<BoolContract> linker)
+    public static bool Value(this BoolContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="byte"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static byte Value(this Linker<ByteContract> linker)
+    public static byte Value(this ByteContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="char"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static char Value(this Linker<CharContract> linker)
+    public static char Value(this CharContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="DateTime"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static DateTime Value(this Linker<DateTimeContract> linker)
+    public static DateTime Value(this DateTimeContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="DateTimeOffset"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static DateTimeOffset Value(this Linker<DateTimeOffsetContract> linker)
+    public static DateTimeOffset Value(this DateTimeOffsetContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="decimal"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static decimal Value(this Linker<DecimalContract> linker)
+    public static decimal Value(this DecimalContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="double"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static double Value(this Linker<DoubleContract> linker)
+    public static double Value(this DoubleContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="float"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static float Value(this Linker<FloatContract> linker)
+    public static float Value(this FloatContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="Guid"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static Guid Value(this Linker<GuidContract> linker)
+    public static Guid Value(this GuidContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="int"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static int Value(this Linker<IntContract> linker)
+    public static int Value(this IntContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="long"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static long Value(this Linker<LongContract> linker)
+    public static long Value(this LongContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="sbyte"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static sbyte Value(this Linker<SbyteContract> linker)
+    public static sbyte Value(this SbyteContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="short"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static short Value(this Linker<ShortContract> linker)
+    public static short Value(this ShortContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="TimeSpan"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static TimeSpan Value(this Linker<TimeSpanContract> linker)
+    public static TimeSpan Value(this TimeSpanContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="uint"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static uint Value(this Linker<UintContract> linker)
+    public static uint Value(this UintContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="ulong"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static ulong Value(this Linker<UlongContract> linker)
+    public static ulong Value(this UlongContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="ushort"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static ushort Value(this Linker<UshortContract> linker)
+    public static ushort Value(this UshortContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated enum argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
     /// <typeparam name="TEnum">The enum type being checked.</typeparam>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static TEnum Value<TEnum>(this Linker<EnumContract<TEnum>> linker)
+    public static TEnum Value<TEnum>(this EnumContract<TEnum> contract)
         where TEnum : struct, Enum
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="string"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static string Value(this Linker<StringContract> linker)
+    public static string Value(this StringContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated <see cref="Uri"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static Uri Value(this Linker<UriContract> linker)
+    public static Uri Value(this UriContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated <see cref="Stream"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static Stream Value(this Linker<StreamContract> linker)
+    public static Stream Value(this StreamContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated <see cref="FileInfo"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static FileInfo Value(this Linker<FileInfoContract> linker)
+    public static FileInfo Value(this FileInfoContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated <see cref="DirectoryInfo"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static DirectoryInfo Value(this Linker<DirectoryInfoContract> linker)
+    public static DirectoryInfo Value(this DirectoryInfoContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated <see cref="IList{T}"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
     /// <typeparam name="T">The element type.</typeparam>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static IList<T> Value<T>(this Linker<ListContract<T>> linker)
+    public static IList<T> Value<T>(this ListContract<T> contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
@@ -268,22 +246,20 @@ public static class ValueExtensions
     /// <summary>Returns the validated <see cref="IDictionary{TKey,TValue}"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
     /// <typeparam name="TKey">The key type.</typeparam>
     /// <typeparam name="TValue">The value type.</typeparam>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static IDictionary<TKey, TValue> Value<TKey, TValue>(this Linker<DictionaryContract<TKey, TValue>> linker)
+    public static IDictionary<TKey, TValue> Value<TKey, TValue>(this DictionaryContract<TKey, TValue> contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
 
     /// <summary>Returns the validated argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
     /// <typeparam name="TArgument">The type of the argument being checked.</typeparam>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static TArgument Value<TArgument>(this Linker<ObjectContract<TArgument>> linker)
+    public static TArgument Value<TArgument>(this ObjectContract<TArgument> contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue;
     }
@@ -291,21 +267,30 @@ public static class ValueExtensions
 #if NET8_0_OR_GREATER
 
     /// <summary>Returns the validated <see cref="DateOnly"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static DateOnly Value(this Linker<DateOnlyContract> linker)
+    public static DateOnly Value(this DateOnlyContract contract)
     {
-        var contract = linker.And;
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }
 
     /// <summary>Returns the validated <see cref="TimeOnly"/> argument, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
-    /// <param name="linker">The chain being ended.</param>
+    /// <param name="contract">The chain being ended.</param>
     /// <returns>The argument's value.</returns>
-    public static TimeOnly Value(this Linker<TimeOnlyContract> linker)
+    public static TimeOnly Value(this TimeOnlyContract contract)
     {
-        var contract = linker.And;
+        Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
+        return contract.ArgumentValue.Value;
+    }
+
+    /// <summary>Returns the validated number, ending the chain with the value it checked. A null argument fails with <see cref="ArgumentNullException"/>, as <c>NotBeNull</c> would.</summary>
+    /// <typeparam name="T">The number type.</typeparam>
+    /// <param name="contract">The chain being ended.</param>
+    /// <returns>The argument's value.</returns>
+    public static T Value<T>(this NumberContract<T> contract)
+        where T : struct, INumber<T>
+    {
         Validator.CheckForNotNull(contract.ArgumentValue, contract.ArgumentName);
         return contract.ArgumentValue.Value;
     }

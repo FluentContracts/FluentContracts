@@ -12,7 +12,7 @@ public class UshortContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             null,
             DummyData.GetUshort(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class UshortContractTests : Tests
     {
         var pair = DummyData.GetUshortPair();
 
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class UshortContractTests : Tests
     {
         var pair = DummyData.GetNullableUshortPair();
 
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class UshortContractTests : Tests
     {
         var pair = DummyData.GetUshortPair();
 
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class UshortContractTests : Tests
     {
         var pair = DummyData.GetNullableUshortPair();
 
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,25 +83,11 @@ public class UshortContractTests : Tests
         var pair = DummyData.GetUshortPair();
         var array = DummyData.GetArray(() => DummyData.GetUshort(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableUshortPair();
-        var array = DummyData.GetArray(DummyData.GetNullableUshort, pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -111,29 +97,11 @@ public class UshortContractTests : Tests
         var pair = DummyData.GetUshortPair();
         var array = DummyData.GetArray(() => DummyData.GetUshort(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableUshortPair();
-        var array = DummyData.GetArray(DummyData.GetNullableUshort, pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
-            pair.DifferentArgument,
-            pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 
@@ -288,14 +256,14 @@ public class UshortContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             0,
             42,
             (testArgument, message) =>
@@ -306,14 +274,14 @@ public class UshortContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             69,
             0,
             (testArgument, message) =>
@@ -327,14 +295,14 @@ public class UshortContractTests : Tests
         var successful = DummyData.GetUshort(NumberOption.Odd);
         var failing = DummyData.GetUshort(NumberOption.Even);
         
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeOdd(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -348,14 +316,14 @@ public class UshortContractTests : Tests
         var successful = DummyData.GetUshort(NumberOption.Even);
         var failing = DummyData.GetUshort(NumberOption.Odd);
         
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeOdd(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -369,14 +337,14 @@ public class UshortContractTests : Tests
         var successful = DummyData.GetUshort(NumberOption.Even);
         var failing = DummyData.GetUshort(NumberOption.Odd);
         
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().BeEven(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
@@ -390,14 +358,14 @@ public class UshortContractTests : Tests
         var successful = DummyData.GetUshort(NumberOption.Odd);
         var failing = DummyData.GetUshort(NumberOption.Even);
         
-        TestContract<ushort, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>
                 testArgument.Must().NotBeEven(message),
             "testArgument");
         
-        TestContract<ushort?, UshortContract, ArgumentOutOfRangeException>(
+        TestContract<ushort?, UshortContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) =>

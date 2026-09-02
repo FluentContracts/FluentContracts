@@ -20,9 +20,9 @@ public class CollectionContainmentTests
         IList<int> myArgument = [1, 2, 3];
 
         FluentActions
-            .Invoking(() => myArgument.Must().NotContain(2, 99))
+            .Invoking(() => myArgument.Must().NotContain([2, 99]))
             .Should()
-            .Throw<ArgumentOutOfRangeException>("2 is in the collection")
+            .Throw<ArgumentException>("2 is in the collection")
             .WithParameterName(nameof(myArgument));
     }
 
@@ -32,7 +32,7 @@ public class CollectionContainmentTests
         IList<int> myArgument = [1, 2, 3];
 
         FluentActions
-            .Invoking(() => myArgument.Must().NotContain(98, 99))
+            .Invoking(() => myArgument.Must().NotContain([98, 99]))
             .Should()
             .NotThrow();
     }
@@ -45,7 +45,7 @@ public class CollectionContainmentTests
         FluentActions
             .Invoking(() => myArgument.Must().NotContain([2, 99], "no reserved ids"))
             .Should()
-            .Throw<ArgumentOutOfRangeException>()
+            .Throw<ArgumentException>()
             .WithMessage("no reserved ids*");
     }
 
@@ -54,7 +54,7 @@ public class CollectionContainmentTests
     {
         IList<int> myArgument = [1, 2, 3];
 
-        FluentActions.Invoking(() => myArgument.Must().NotContain(2)).Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => myArgument.Must().NotContain(2)).Should().Throw<ArgumentException>();
         FluentActions.Invoking(() => myArgument.Must().NotContain(99)).Should().NotThrow();
     }
 
@@ -66,11 +66,11 @@ public class CollectionContainmentTests
     {
         IList<int> myArgument = [1, 2, 3];
 
-        FluentActions.Invoking(() => myArgument.Must().Contain(1, 2)).Should().NotThrow();
+        FluentActions.Invoking(() => myArgument.Must().Contain([1, 2])).Should().NotThrow();
         FluentActions
-            .Invoking(() => myArgument.Must().Contain(1, 99))
+            .Invoking(() => myArgument.Must().Contain([1, 99]))
             .Should()
-            .Throw<ArgumentOutOfRangeException>("99 is missing");
+            .Throw<ArgumentException>("99 is missing");
     }
 
     /// <summary>
@@ -83,8 +83,8 @@ public class CollectionContainmentTests
         IList<int> myArgument = [1, 2, 3];
         int[] partiallyPresent = [2, 99];
 
-        FluentActions.Invoking(() => myArgument.Must().Contain(partiallyPresent)).Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => myArgument.Must().Contain(partiallyPresent)).Should().Throw<ArgumentException>();
         FluentActions.Invoking(() => myArgument.Must().ContainAnyOf(partiallyPresent)).Should().NotThrow();
-        FluentActions.Invoking(() => myArgument.Must().NotContain(partiallyPresent)).Should().Throw<ArgumentOutOfRangeException>();
+        FluentActions.Invoking(() => myArgument.Must().NotContain(partiallyPresent)).Should().Throw<ArgumentException>();
     }
 }

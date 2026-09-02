@@ -163,31 +163,54 @@ gets a pair: a sealed entry point (`IntContract`) and a generic, inheritable bas
 `BaseContract` → `NullableContract` → `ObjectContract` → `EqualityContract` → specific
 contracts.
 
-**Every check returns `Linker<TContract>`** so callers can keep chaining with `.And`.
+**Every check returns the contract itself** (`TContract`) so callers keep chaining; `And` is an
+identity property kept so chains written with it read the same. There is no `Linker` — a chain is
+one object, and a new check must return `(TContract)this`, never a new object.
 
 **Checks do not throw directly.** They delegate to a `Validator.*` method, which throws via
 `ThrowHelper`. Keep new checks in that shape.
 
-**Overload shape for multi-value checks.** A check taking several values comes as a pair — see
-`ListContract.Contain`:
+**Overload shape for multi-value checks.** A check that takes several values has exactly three
+overloads — one value, a set, and a set followed by the message — and never `params`:
 
 ```csharp
-public Linker<TContract> Contain(params T[] elements);
-public Linker<TContract> Contain(IEnumerable<T> elements, string? message = null);
+public TContract BeAnyOf(T expectedValue);
+public TContract BeAnyOf(IEnumerable<T> expectedValues, string? message = null);
 ```
 
-Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds
-`Check("a", "b")` to that overload and silently swallows `"a"` as the message, so the check runs
-against the wrong set — it prefers the candidate with more declared parameters when both are
-applicable only in expanded form.
+There is deliberately no `(T value, string message)` overload. With it, `BeAnyOf("draft",
+"published")` on a string would compile and silently take `"published"` as the message — the trap
+3.3.0 deprecated and 4.0.0 removed. Without it, and without `params` (which C# requires to be last,
+so no message could ever follow it), the rule is one sentence: **a message only ever follows a
+bracketed set**. `BeAnyOf("draft", "published")` is a compile error, which `OverloadShapeTests` in
+the analyzer test project pins by compiling snippets against the real library.
 
-`EqualityContract.BeAnyOf` and `NotBeAnyOf` are the existing casualties. They are now `[Obsolete]`,
-with `(IEnumerable<T>, string?)` alongside them, and a single value binds to its own overload rather
-than being read as a message. Several string values still reach the deprecated overload, because that
-call already means something today and the compiler cannot tell the two readings apart; removing the
-overload in 4.0.0 is what settles it. The value-type contracts declare the same shape but cannot be
-hit by it — a string is not a candidate value for `params int[]` — so they are left alone rather than
-deprecated for a defect they do not have.
+Fixed-arity checks keep `(operands…, string? message = null)`: the compiler knows their arity, so
+`NotBe("test", "This should be prod")` binds one way only.
+
+**Messages.** The `message` parameter is the mechanism, always after the operands. It may carry
+`{argument}` and `{value}`, filled on the failure path by `Validator.Custom`; every throw site in a
+validator is `Custom(message, argumentName, actual) ?? Expected(argumentName, …)`, so a new
+validator gets both behaviours by following that shape. `Must()` takes a chain-wide message as its
+first parameter, stored as `ChainMessage` on the contract; every check passes
+`message ?? ChainMessage` to the validators, and a new check must do the same.
+
+**Specifications.** The extensibility point is `ISpecification<T>` in `src/FluentContracts/Specifications/`:
+`IsSatisfiedBy` plus an `Expectation` phrase that completes "Expected `{argument}` to …", so a
+user's rule fails through the same `Validator.Expected` machinery as a built-in check.
+`Satisfy(ISpecification<T>)` mirrors `Satisfy(Func<T, bool>)` in every respect — implicit not-null,
+conversion to `T`, `message ?? ChainMessage` — and the two must not drift apart. `Spec.From` is the
+one-line form, `Specification<T>` the class form, and `And`/`Or`/`Not` compose both the predicate
+and the phrase. A phrase is a fragment, never a sentence, and never names the argument: the library
+adds the name and the value. `Validator` stays static and internal; nothing about a specification
+reaches into it.
+
+**Exception taxonomy.** `ArgumentNullException` for a null argument. `ArgumentOutOfRangeException`
+only for ordinal checks — comparisons, ranges, sign, the NaN policy — thrown by
+`ThrowHelper.ThrowArgumentOutOfRangeException` from the ordering validators and from
+`CheckOrdinalCondition`. `ArgumentException` for everything else, via
+`ThrowHelper.ThrowArgumentException` and `CheckGenericCondition`. A new check picks the validator
+that matches what it asserts, and `ExceptionTaxonomyTests` pins the type per family.
 
 **Null and NaN policy.** Ordering comparisons (`BeGreaterThan`, `BeLessThan`, `BeBetween`,
 `BePositive`, `BeNegative`, …) reject `null` with `ArgumentNullException` and `NaN` with
@@ -199,6 +222,13 @@ accept `null`; `BeNaN` and `BeFinite` are how a caller asks about NaN deliberate
 and `BeLessThan` used to be satisfied by one. IEEE says every ordering comparison with `NaN` is false,
 so none of them can be. New checks must follow this split; `NullArgumentPolicyTests` and
 `NonFiniteNumberTests` exist to keep it honest.
+
+The validators' NaN switch only knows `double` and `float`. The generic `NumberContract<T>`
+(`net8.0` only, for any `INumber<T>` without a hand-written contract) asks the type itself through
+`Validator.CheckForNumberNotNaN` at the top of every ordering check, so a new check there must call
+it too; `NumberContractTests` pins the policy for `Half`. `NumberContractResolutionTests` pins that
+the hand-written contracts keep winning `Must()` resolution — a non-generic overload beats the
+generic one on a tie — so a new hand-written numeric contract needs a line there.
 
 **Multi-targeting.** The library builds for `netstandard2.0` and `net8.0`. When an API is
 unavailable on `netstandard2.0`, add a guarded helper to `Infrastructure/Compat.cs` rather
@@ -318,8 +348,9 @@ so only the IDE-only code-fix assembly may reference it.
 - When changing the packaging, verify the result like a consumer: pack, restore the nupkg from a
   local feed into a scratch project, and confirm the diagnostic appears in its build output.
 
-Current rules: **FC0001** — a string argument's `BeAnyOf`/`NotBeAnyOf` bound to the deprecated
-message-first overload, silently taking the first value as the message.
+Current rules: none. **FC0001** policed the message-first `BeAnyOf` overload and was retired with it
+in 4.0.0 — recorded under *Removed Rules* in `AnalyzerReleases.Shipped.md`. The projects and the
+packaging stay in place for the next rule.
 
 ## Benchmarks
 

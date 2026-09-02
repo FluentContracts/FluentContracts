@@ -12,7 +12,7 @@ public class DoubleContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentException>(
             null,
             DummyData.GetDouble(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class DoubleContractTests : Tests
     {
         var pair = DummyData.GetDoublePair();
 
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class DoubleContractTests : Tests
     {
         var pair = DummyData.GetNullableDoublePair();
 
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -58,7 +58,7 @@ public class DoubleContractTests : Tests
     {
         var pair = DummyData.GetDoublePair();
 
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -70,7 +70,7 @@ public class DoubleContractTests : Tests
     {
         var pair = DummyData.GetNullableDoublePair();
 
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -83,25 +83,11 @@ public class DoubleContractTests : Tests
         var pair = DummyData.GetDoublePair();
         var array = DummyData.GetArray(() => DummyData.GetDouble(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_BeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableDoublePair();
-        var array = DummyData.GetArray(() => DummyData.GetNullableDouble(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
-            pair.TestArgument,
-            pair.DifferentArgument,
-            (testArgument, message) =>
-                message == null ? testArgument.Must().BeAnyOf(array) : testArgument.Must().BeAnyOf(message, array),
+                testArgument.Must().BeAnyOf(array, message),
             "testArgument");
     }
 
@@ -111,29 +97,11 @@ public class DoubleContractTests : Tests
         var pair = DummyData.GetDoublePair();
         var array = DummyData.GetArray(() => DummyData.GetDouble(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
-            "testArgument");
-    }
-
-    [Fact]
-    public void Test_Must_NotBeAnyOf_Nullable()
-    {
-        var pair = DummyData.GetNullableDoublePair();
-        var array = DummyData.GetArray(() => DummyData.GetNullableDouble(), pair.TestArgument, pair.DifferentArgument);
-
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
-            pair.DifferentArgument,
-            pair.TestArgument,
-            (testArgument, message) =>
-                message == null
-                    ? testArgument.Must().NotBeAnyOf(array)
-                    : testArgument.Must().NotBeAnyOf(message, array),
+                testArgument.Must().NotBeAnyOf(array, message),
             "testArgument");
     }
 
@@ -288,14 +256,14 @@ public class DoubleContractTests : Tests
     [Fact]
     public void Test_Must_BeZero()
     {
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             0D,
             0.42D,
             (testArgument, message) =>
                 testArgument.Must().BeZero(message),
             "testArgument");
         
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentException>(
             0D,
             0.42D,
             (testArgument, message) =>
@@ -306,14 +274,14 @@ public class DoubleContractTests : Tests
     [Fact]
     public void Test_Must_NotBeZero()
     {
-        TestContract<double, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double, DoubleContract, ArgumentException>(
             0.69D,
             0D,
             (testArgument, message) =>
                 testArgument.Must().NotBeZero(message),
             "testArgument");
         
-        TestContract<double?, DoubleContract, ArgumentOutOfRangeException>(
+        TestContract<double?, DoubleContract, ArgumentException>(
             0.69D,
             0D,
             (testArgument, message) =>

@@ -14,7 +14,7 @@ public class DateTimeOffsetContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<DateTimeOffset?, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset?, DateTimeOffsetContract, ArgumentException>(
             null,
             DummyData.GetDateTimeOffset(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class DateTimeOffsetContractTests : Tests
     {
         var pair = DummyData.GetDateTimeOffsetPair();
 
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -48,7 +48,7 @@ public class DateTimeOffsetContractTests : Tests
     {
         var pair = DummyData.GetDateTimeOffsetPair();
 
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.DifferentArgument, message),
@@ -119,7 +119,7 @@ public class DateTimeOffsetContractTests : Tests
     [Fact]
     public void Test_Must_BeUtc()
     {
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             DummyData.GetDateTimeOffset(),
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(3)),
             (testArgument, message) => testArgument.Must().BeUtc(message),
@@ -129,7 +129,7 @@ public class DateTimeOffsetContractTests : Tests
     [Fact]
     public void Test_Must_NotBeUtc()
     {
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(3)),
             DummyData.GetDateTimeOffset(),
             (testArgument, message) => testArgument.Must().NotBeUtc(message),
@@ -139,7 +139,7 @@ public class DateTimeOffsetContractTests : Tests
     [Fact]
     public void Test_Must_HaveOffset()
     {
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(2)),
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(-5)),
             (testArgument, message) => testArgument.Must().HaveOffset(TimeSpan.FromHours(2), message),
@@ -149,7 +149,7 @@ public class DateTimeOffsetContractTests : Tests
     [Fact]
     public void Test_Must_NotHaveOffset()
     {
-        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentOutOfRangeException>(
+        TestContract<DateTimeOffset, DateTimeOffsetContract, ArgumentException>(
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(-5)),
             DummyData.GetDateTimeOffset(TimeSpan.FromHours(2)),
             (testArgument, message) => testArgument.Must().NotHaveOffset(TimeSpan.FromHours(2), message),
@@ -240,6 +240,6 @@ public class DateTimeOffsetContractTests : Tests
 
         FluentActions.Invoking(() => sameInstantInBerlin.Must().BeUtc())
             .Should()
-            .Throw<ArgumentOutOfRangeException>("the offset is +02:00, even though the instant matches");
+            .Throw<ArgumentException>("the offset is +02:00, even though the instant matches");
     }
 }

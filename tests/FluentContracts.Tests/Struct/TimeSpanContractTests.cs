@@ -14,7 +14,7 @@ public class TimeSpanContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<TimeSpan?, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan?, TimeSpanContract, ArgumentException>(
             null,
             DummyData.GetTimeSpan(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class TimeSpanContractTests : Tests
     {
         var pair = DummyData.GetTimeSpanPair();
 
-        TestContract<TimeSpan, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan, TimeSpanContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -48,7 +48,7 @@ public class TimeSpanContractTests : Tests
     {
         var pair = DummyData.GetNullableTimeSpanPair();
 
-        TestContract<TimeSpan?, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan?, TimeSpanContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -60,7 +60,7 @@ public class TimeSpanContractTests : Tests
     {
         var pair = DummyData.GetTimeSpanPair();
 
-        TestContract<TimeSpan, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan, TimeSpanContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -72,7 +72,7 @@ public class TimeSpanContractTests : Tests
     {
         var pair = DummyData.GetNullableTimeSpanPair();
 
-        TestContract<TimeSpan?, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan?, TimeSpanContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -166,7 +166,7 @@ public class TimeSpanContractTests : Tests
         var successful = TimeSpan.FromTicks(timeSpan.Ticks);
         var failing = TimeSpan.FromTicks(different);
 
-        TestContract<TimeSpan, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan, TimeSpanContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().BeEqualTo(timeSpan, message),
@@ -182,7 +182,7 @@ public class TimeSpanContractTests : Tests
         var successful = TimeSpan.FromTicks(different);
         var failing = TimeSpan.FromTicks(timeSpan.Ticks);
 
-        TestContract<TimeSpan, TimeSpanContract, ArgumentOutOfRangeException>(
+        TestContract<TimeSpan, TimeSpanContract, ArgumentException>(
             successful,
             failing,
             (testArgument, message) => testArgument.Must().NotBeEqualTo(timeSpan, message),
