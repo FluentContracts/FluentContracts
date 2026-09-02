@@ -23,8 +23,6 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     where TEnum : struct, Enum
     where TContract : EnumContract<TEnum, TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -33,7 +31,6 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     protected EnumContract(TEnum? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract) this);
     }
 
     /// <summary>
@@ -41,11 +38,11 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(TEnum expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract Be(TEnum expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -53,11 +50,11 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(TEnum? expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract Be(TEnum? expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -65,11 +62,11 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(TEnum expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBe(TEnum expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     } 
 
     /// <summary>
@@ -77,19 +74,19 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(TEnum? expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBe(TEnum? expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     } 
     
     /// <summary>
     /// Checks if the specified argument is any of the expected values.
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params TEnum[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(params TEnum[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -98,8 +95,8 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// Checks if the specified argument is any of the expected values.
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params TEnum?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(params TEnum?[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -109,12 +106,12 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params TEnum[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(string? message, params TEnum[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -122,19 +119,19 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params TEnum?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(string? message, params TEnum?[] expectedValues)
     {
         Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is not any of the expected values.
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params TEnum[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(params TEnum[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -143,8 +140,8 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// Checks if the specified argument is not any of the expected values.
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params TEnum?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(params TEnum?[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -154,12 +151,12 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params TEnum[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(string? message, params TEnum[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -167,11 +164,11 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params TEnum?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(string? message, params TEnum?[] expectedValues)
     {
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -179,15 +176,15 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="flag">The flag to check against the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveFlag(TEnum flag, string? message = null)
+    public TContract HaveFlag(TEnum flag, string? message = null)
     {
         Validator.CheckForNotNull(flag, nameof(flag));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message,
             expectation: $"have the flag {Validator.Describe(flag)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -195,15 +192,15 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// </summary>
     /// <param name="flag">The flag to check against the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotHaveFlag(TEnum flag, string? message = null)
+    public TContract NotHaveFlag(TEnum flag, string? message = null)
     {
         Validator.CheckForNotNull(flag, nameof(flag));
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !a!.Value.HasFlag(flag), ArgumentValue, ArgumentName, message,
             expectation: $"not have the flag {Validator.Describe(flag)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -211,35 +208,35 @@ public class EnumContract<TEnum, TContract> : ObjectContract<TEnum?, TContract>
     /// A value cast from a number the enum never declared — <c>(DayOfWeek)9</c> — fails.
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>
     /// Also checks for the argument to NOT be null. On a <see cref="FlagsAttribute"/> enum, a
     /// combination of flags that is not itself a declared member is not defined — that is
     /// <see cref="Enum.IsDefined(Type, object)"/>'s behaviour, which this check follows.
     /// </remarks>
-    public Linker<TContract> BeDefined(string? message = null)
+    public TContract BeDefined(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => Enum.IsDefined(typeof(TEnum), a!.Value), ArgumentValue, ArgumentName, message,
             expectation: $"be a defined member of {typeof(TEnum)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is not a declared member of <typeparamref name="TEnum"/>.
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>
     /// Also checks for the argument to NOT be null. On a <see cref="FlagsAttribute"/> enum, a
     /// combination of flags that is not itself a declared member is not defined — that is
     /// <see cref="Enum.IsDefined(Type, object)"/>'s behaviour, which this check follows.
     /// </remarks>
-    public Linker<TContract> NotBeDefined(string? message = null)
+    public TContract NotBeDefined(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !Enum.IsDefined(typeof(TEnum), a!.Value), ArgumentValue, ArgumentName, message,
             expectation: $"not be a defined member of {typeof(TEnum)}");
-        return _linker;
+        return (TContract)this;
     }
 }

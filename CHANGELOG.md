@@ -10,6 +10,19 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Breaking
+- Every check now returns the contract itself instead of a `Linker<TContract>`, and the `Linker`
+  type is gone (#63, part of the 4.0.0 design in #62). `And` is kept as a property on the contract
+  that returns the contract, so a chain written as `x.Must().NotBeNull().And.BeGreaterThan(5)` keeps
+  compiling unchanged, and can now also be written `x.Must().NotBeNull().BeGreaterThan(5)`. What
+  breaks: code that named the `Linker<T>` type — a variable, a field, a helper taking or returning
+  it, a custom check extension declared on it — must name the contract type instead. `Value()` moved
+  from `Linker<T>` to the contracts, so it is now reachable directly after `Must()`, where it acts as
+  `NotBeNull` plus the unwrap. Binary-breaking for every consumer (recompile); source-breaking only
+  where `Linker` was spelled out. Every level of the contract hierarchy used to allocate its own
+  `Linker` — six objects to start an `int` chain, the 160 B measured in `docs/Benchmarks.md` — and a
+  chain start is now the one contract object.
+
 ### Internal
 - The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major
   version is assembled from several pull requests before one final merge into `master`. The process

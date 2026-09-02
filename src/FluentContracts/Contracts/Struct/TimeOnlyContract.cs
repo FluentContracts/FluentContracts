@@ -23,8 +23,6 @@ public class TimeOnlyContract(TimeOnly? argumentValue, string argumentName)
 public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract>
     where TContract : TimeOnlyContract<TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -33,7 +31,6 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     protected TimeOnlyContract(TimeOnly? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract)this);
     }
 
     /// <summary>
@@ -41,12 +38,12 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// </summary>
     /// <param name="value">Value that the argument must be greater than</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterThan(TimeOnly value, string? message = null)
+    public TContract BeGreaterThan(TimeOnly value, string? message = null)
     {
         Validator.CheckForGreaterThan(value, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -54,12 +51,12 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// </summary>
     /// <param name="value">Value that the argument must be greater than or equal to</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGreaterOrEqualTo(TimeOnly value, string? message = null)
+    public TContract BeGreaterOrEqualTo(TimeOnly value, string? message = null)
     {
         Validator.CheckForGreaterOrEqualTo(value, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -67,12 +64,12 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// </summary>
     /// <param name="value">Value that the argument must be less than</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessThan(TimeOnly value, string? message = null)
+    public TContract BeLessThan(TimeOnly value, string? message = null)
     {
         Validator.CheckForLessThan(value, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -80,12 +77,12 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// </summary>
     /// <param name="value">Value that the argument must be less than or equal to</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLessOrEqualTo(TimeOnly value, string? message = null)
+    public TContract BeLessOrEqualTo(TimeOnly value, string? message = null)
     {
         Validator.CheckForLessOrEqualTo(value, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -97,14 +94,14 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <param name="start">Start of the window, inclusive</param>
     /// <param name="end">End of the window, exclusive</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeBetween(TimeOnly start, TimeOnly end, string? message = null)
+    public TContract BeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message,
             expectation: $"be between {Validator.Describe(start)} and {Validator.Describe(end)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -115,14 +112,14 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     /// <param name="start">Start of the window, inclusive</param>
     /// <param name="end">End of the window, exclusive</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeBetween(TimeOnly start, TimeOnly end, string? message = null)
+    public TContract NotBeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message,
             expectation: $"not be between {Validator.Describe(start)} and {Validator.Describe(end)}");
-        return _linker;
+        return (TContract)this;
     }
 }
 #endif

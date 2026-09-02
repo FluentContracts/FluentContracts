@@ -163,7 +163,9 @@ gets a pair: a sealed entry point (`IntContract`) and a generic, inheritable bas
 `BaseContract` → `NullableContract` → `ObjectContract` → `EqualityContract` → specific
 contracts.
 
-**Every check returns `Linker<TContract>`** so callers can keep chaining with `.And`.
+**Every check returns the contract itself** (`TContract`) so callers keep chaining; `And` is an
+identity property kept so chains written with it read the same. There is no `Linker` — a chain is
+one object, and a new check must return `(TContract)this`, never a new object.
 
 **Checks do not throw directly.** They delegate to a `Validator.*` method, which throws via
 `ThrowHelper`. Keep new checks in that shape.
@@ -172,8 +174,8 @@ contracts.
 `ListContract.Contain`:
 
 ```csharp
-public Linker<TContract> Contain(params T[] elements);
-public Linker<TContract> Contain(IEnumerable<T> elements, string? message = null);
+public TContract Contain(params T[] elements);
+public TContract Contain(IEnumerable<T> elements, string? message = null);
 ```
 
 Never `Check(string? message, params T[] values)`. When `T` is `string`, the compiler binds

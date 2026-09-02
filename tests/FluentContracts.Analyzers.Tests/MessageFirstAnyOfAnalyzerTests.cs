@@ -22,7 +22,7 @@ public class MessageFirstAnyOfAnalyzerTests
             ReferenceAssemblies = ReferenceAssemblies.Net.Net80,
         };
 
-        test.TestState.AdditionalReferences.Add(typeof(FluentContracts.Infrastructure.Linker<>).Assembly);
+        test.TestState.AdditionalReferences.Add(typeof(FluentContracts.Contracts.BaseContract<,>).Assembly);
         return test;
     }
 

@@ -4,6 +4,7 @@
 
 ## `Base`
 
+- `get_And`
 - `Satisfy`
 
 ## `Nullable` (extends `Base`)

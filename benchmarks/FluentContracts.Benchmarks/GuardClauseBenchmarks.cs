@@ -5,8 +5,8 @@ namespace FluentContracts.Benchmarks;
 /// <summary>
 /// The happy path of representative checks against the hand-written guard each replaces — the
 /// per-check overhead a caller pays for the fluent form, and what it allocates (the contract and
-/// its <c>Linker</c> are the known costs). Failure paths are deliberately not measured: a throwing
-/// guard is not a hot path.
+/// nothing else, since 4.0.0 removed the per-level <c>Linker</c> objects). Failure paths are
+/// deliberately not measured: a throwing guard is not a hot path.
 /// </summary>
 [MemoryDiagnoser]
 public class GuardClauseBenchmarks
