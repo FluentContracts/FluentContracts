@@ -195,6 +195,16 @@ validator gets both behaviours by following that shape. `Must()` takes a chain-w
 first parameter, stored as `ChainMessage` on the contract; every check passes
 `message ?? ChainMessage` to the validators, and a new check must do the same.
 
+**Specifications.** The extensibility point is `ISpecification<T>` in `src/FluentContracts/Specifications/`:
+`IsSatisfiedBy` plus an `Expectation` phrase that completes "Expected `{argument}` to …", so a
+user's rule fails through the same `Validator.Expected` machinery as a built-in check.
+`Satisfy(ISpecification<T>)` mirrors `Satisfy(Func<T, bool>)` in every respect — implicit not-null,
+conversion to `T`, `message ?? ChainMessage` — and the two must not drift apart. `Spec.From` is the
+one-line form, `Specification<T>` the class form, and `And`/`Or`/`Not` compose both the predicate
+and the phrase. A phrase is a fragment, never a sentence, and never names the argument: the library
+adds the name and the value. `Validator` stays static and internal; nothing about a specification
+reaches into it.
+
 **Exception taxonomy.** `ArgumentNullException` for a null argument. `ArgumentOutOfRangeException`
 only for ordinal checks — comparisons, ranges, sign, the NaN policy — thrown by
 `ThrowHelper.ThrowArgumentOutOfRangeException` from the ordering validators and from

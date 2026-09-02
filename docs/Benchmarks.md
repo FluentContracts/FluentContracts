@@ -47,6 +47,36 @@ such as .NET 8, which this container cannot run directly: **one 32-byte contract
 on the order of 15 ns**. `ListContains` carries the `params` array on top; that path is replaced
 by the 4.0.0 overload triad.
 
+## 4.0.0 — `Satisfy` with a predicate and with a specification
+
+The same rule, `quantity > 5`, as the `Func` overload and as an `ISpecification<int?>` built once
+(`--job short`, same machine and runtime as above):
+
+| Method                                |       Mean | Allocated |
+|-------------------------------------- |-----------:|----------:|
+| HandWritten_Satisfy                   |  0.1197 ns |         – |
+| FluentContracts_Satisfy_Func          | 18.3117 ns |      40 B |
+| FluentContracts_Satisfy_Specification |  2.2613 ns |         – |
+
+With object stack allocation switched off:
+
+| Method                                |       Mean | Allocated |
+|-------------------------------------- |-----------:|----------:|
+| FluentContracts_Satisfy_Func          | 17.7613 ns |      40 B |
+| FluentContracts_Satisfy_Specification | 17.7642 ns |      40 B |
+
+**A specification costs nothing over a predicate.** The validator calls `IsSatisfiedBy` directly
+rather than through a delegate, so the only object on either path is the contract — 40 B for an
+`int` contract, the 32 B above plus the chain message added in 4.0.0. On .NET 10 the specification
+path stack-allocates even that; the predicate path keeps the contract on the heap in this run,
+which is the JIT declining to inline the delegate-taking overload, not anything the library does,
+and both paths are the same one object on runtimes without object stack allocation.
+
+Two allocations that used to sit on both paths are gone along the way: the generic `is T` pattern in
+the type-convert step boxed a `Nullable<T>` argument (24 B on every `Satisfy` against a value-type
+contract) and now short-circuits on a same-type conversion, and the specification's method group no
+longer becomes a delegate (64 B).
+
 ## 3.6.1 — the baseline this replaced
 
 | Method                         |        Mean | Allocated |

@@ -28,7 +28,6 @@ This file is the curated summary of notable changes on top of those.
   be overridden positionally — `x.Must("name")` is now a chain message — only as
   `x.Must(argumentName: "name")`. `[CallerArgumentExpression]` fills the name in every ordinary
   call, so this only affects code that spelled the name out.
-
 - **`ArgumentOutOfRangeException` is now reserved for ordinal checks** (#65, part of #62):
   comparisons (`BeGreaterThan` family, `BeShorterThan`, `BeInThePast`, count/length/size
   comparisons), ranges (`BeBetween`), sign checks and the NaN policy — where "out of range" means
@@ -68,6 +67,18 @@ This file is the curated summary of notable changes on top of those.
   those exact tokens.
 - A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
   once for every check in the chain; a check's own message still wins for that check.
+- **Specifications** (#66, part of #62; resolves #3): `ISpecification<T>` — `IsSatisfiedBy` plus an
+  `Expectation` phrase — is the extensibility point. A rule written once, `Spec.From<string>(s =>
+  Iban.IsValid(s), "be a valid IBAN")` or a class deriving from `Specification<T>`, runs through
+  `Satisfy(specification)` and fails exactly like a built-in check: `Expected iban to be a valid
+  IBAN, but found "XX00"`. `And`, `Or` and `Not` compose both the rule and the phrase. The new
+  `Satisfy` overloads (message, `<T, TException>`, `<T, TException>` with message) mirror the
+  `Func` ones in every respect, including the implicit not-null check.
+
+### Changed
+- `Satisfy` against a value-type contract (`int`, `DateTime`, `Guid`, …) no longer boxes the
+  nullable argument on the happy path; the type-convert step used a generic `is T` pattern, which
+  boxes a `Nullable<T>`. Behaviour is unchanged; `docs/Benchmarks.md` has the before and after.
 
 ### Internal
 - The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major

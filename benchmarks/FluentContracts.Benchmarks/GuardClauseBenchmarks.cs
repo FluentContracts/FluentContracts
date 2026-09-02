@@ -1,4 +1,5 @@
 using BenchmarkDotNet.Attributes;
+using FluentContracts.Specifications;
 
 namespace FluentContracts.Benchmarks;
 
@@ -15,6 +16,7 @@ public class GuardClauseBenchmarks
     private readonly int _quantity = 42;
     private readonly int? _port = 8080;
     private readonly List<int> _pages = [1, 2, 3, 4, 5, 6, 7, 8];
+    private static readonly ISpecification<int?> MoreThanFive = Spec.From<int?>(q => q > 5, "be more than 5");
 
     [Benchmark(Baseline = true)]
     public string HandWritten_NotNull()
@@ -82,5 +84,28 @@ public class GuardClauseBenchmarks
     {
         _pages.Must().Contain(5);
         return _pages;
+    }
+
+    [Benchmark]
+    public int HandWritten_Satisfy()
+    {
+        if (!(_quantity > 5)) throw new ArgumentException("not more than 5", nameof(_quantity));
+        return _quantity;
+    }
+
+    /// <summary>The predicate form of a custom rule: a non-capturing lambda, cached by the compiler.</summary>
+    [Benchmark]
+    public int FluentContracts_Satisfy_Func()
+    {
+        _quantity.Must().Satisfy<int?>(q => q > 5);
+        return _quantity;
+    }
+
+    /// <summary>The same rule as a reusable specification, built once.</summary>
+    [Benchmark]
+    public int FluentContracts_Satisfy_Specification()
+    {
+        _quantity.Must().Satisfy(MoreThanFive);
+        return _quantity;
     }
 }

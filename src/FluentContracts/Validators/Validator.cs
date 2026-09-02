@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using FluentContracts.Infrastructure;
+using FluentContracts.Specifications;
 
 namespace FluentContracts.Validators;
 
@@ -105,6 +106,9 @@ internal static partial class Validator
         string argumentName,
         string? message = null)
     {
+        // The `is T` pattern below boxes a Nullable<T> argument (24 B on every Satisfy against a
+        // value-type contract); a same-type cast folds to nothing, so it takes the common case first.
+        if (typeof(TArgument) == typeof(T)) return (T)(object)argumentValue!;
         if (argumentValue is T typedValue) return typedValue;
 
         ThrowHelper.ThrowArgumentException(
@@ -120,6 +124,7 @@ internal static partial class Validator
         string? message = null)
         where TException : Exception, new()
     {
+        if (typeof(TArgument) == typeof(T)) return (T)(object)argumentValue!;
         if (argumentValue is T typedValue) return typedValue;
 
         if (message is null)
@@ -239,6 +244,51 @@ internal static partial class Validator
         CheckForNotNull<T, TException>(argumentValue, message);
         
         if (genericCondition(argumentValue)) return;
+
+        ThrowHelper.ThrowUserDefinedException<TException>(message);
+    }
+
+    /// <summary>
+    /// <see cref="CheckGenericCondition{T}"/> for a specification. Calls the rule directly rather than
+    /// through a delegate, so the happy path allocates nothing beyond the contract, and takes the
+    /// expectation phrase from the rule.
+    /// </summary>
+    public static void CheckForSpecification<T>(
+        ISpecification<T> specification,
+        T argumentValue,
+        string argumentName,
+        string? message = null)
+    {
+        if (specification.IsSatisfiedBy(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentException(
+            argumentName,
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, specification.Expectation ?? "satisfy the given condition", argumentValue));
+    }
+
+    public static void CheckForSpecification<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        ISpecification<T> specification,
+        [NotNull] T argumentValue)
+        where TException : Exception, new()
+    {
+        CheckForNotNull<T, TException>(argumentValue);
+
+        if (specification.IsSatisfiedBy(argumentValue)) return;
+
+        ThrowHelper.ThrowUserDefinedException<TException>();
+    }
+
+    public static void CheckForSpecification<T,
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
+        ISpecification<T> specification,
+        [NotNull] T argumentValue,
+        string message)
+        where TException : Exception, new()
+    {
+        CheckForNotNull<T, TException>(argumentValue, message);
+
+        if (specification.IsSatisfiedBy(argumentValue)) return;
 
         ThrowHelper.ThrowUserDefinedException<TException>(message);
     }
