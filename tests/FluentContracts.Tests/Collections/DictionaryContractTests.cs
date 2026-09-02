@@ -16,7 +16,7 @@ public class DictionaryContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<Dictionary<string, string>?, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>?, DictionaryContract<string, string>, ArgumentException>(
             null,
             DummyData.GetDictionary(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -38,7 +38,7 @@ public class DictionaryContractTests : Tests
     {
         var pair = DummyData.GetDictionaryPair(DummyData.GetString);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -50,7 +50,7 @@ public class DictionaryContractTests : Tests
     {
         var pair = DummyData.GetDictionaryPair(DummyData.GetString);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -60,7 +60,7 @@ public class DictionaryContractTests : Tests
     [Fact]
     public void Test_Must_BeEmpty()
     {
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             [],
             DummyData.GetDictionary(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -70,7 +70,7 @@ public class DictionaryContractTests : Tests
     [Fact]
     public void Test_Must_NotBeEmpty()
     {
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             DummyData.GetDictionary(DummyData.GetString),
             [],
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
@@ -84,7 +84,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, size: size);
         var fail = DummyData.GetDictionary(DummyData.GetString, size: size + 10);
         
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().HaveCountEqualTo(size, message),
@@ -98,7 +98,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, size: size + 10);
         var fail = DummyData.GetDictionary(DummyData.GetString, size: size);
         
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotHaveCountEqualTo(size, message),
@@ -198,7 +198,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().ContainKey(pair.Key, message),
@@ -212,7 +212,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContainKey(pair.Key, message),
@@ -226,7 +226,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().ContainValue(pair.Value, message),
@@ -240,7 +240,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContainValue(pair.Value, message),
@@ -254,7 +254,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().ContainKeyValuePair(pair, message),
@@ -262,7 +262,7 @@ public class DictionaryContractTests : Tests
         
         
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().ContainKeyValuePair(pair.Key, pair.Value, message),
@@ -276,7 +276,7 @@ public class DictionaryContractTests : Tests
         var success = DummyData.GetDictionary(DummyData.GetString, excludedPair: pair);
         var fail = DummyData.GetDictionary(DummyData.GetString, includedPair: pair);
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContainKeyValuePair(pair, message),
@@ -284,7 +284,7 @@ public class DictionaryContractTests : Tests
         
         
     
-        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, string>, DictionaryContract<string, string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContainKeyValuePair(pair.Key, pair.Value, message),
@@ -298,7 +298,7 @@ public class DictionaryContractTests : Tests
     [Fact]
     public void Test_Must_AllSatisfy()
     {
-        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentException>(
             new Dictionary<string, int> { ["a"] = 2, ["b"] = 4 },
             new Dictionary<string, int> { ["a"] = 2, ["b"] = 5 },
             (testArgument, message) => testArgument.Must().AllSatisfy(x => x.Value % 2 == 0, message),
@@ -308,7 +308,7 @@ public class DictionaryContractTests : Tests
     [Fact]
     public void Test_Must_AnySatisfy()
     {
-        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentOutOfRangeException>(
+        TestContract<Dictionary<string, int>, DictionaryContract<string, int>, ArgumentException>(
             new Dictionary<string, int> { ["a"] = 1, ["b"] = 9 },
             new Dictionary<string, int> { ["a"] = 1, ["b"] = 2 },
             (testArgument, message) => testArgument.Must().AnySatisfy(x => x.Value > 5, message),

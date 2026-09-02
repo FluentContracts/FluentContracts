@@ -17,7 +17,7 @@ internal static partial class Validator
     {
         if (TryParse(option, argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, ParseExpectation(option), argumentValue));
     }
@@ -30,7 +30,7 @@ internal static partial class Validator
     {
         if (!TryParse(option, argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not " + ParseExpectation(option), argumentValue));
     }
@@ -74,7 +74,7 @@ internal static partial class Validator
         {
             if (!lower[start].Equals(lower[end]))
             {
-                ThrowHelper.ThrowArgumentOutOfRangeException(
+                ThrowHelper.ThrowArgumentException(
                     argumentName,
                     Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be a palindrome", argumentValue));
             }
@@ -104,7 +104,7 @@ internal static partial class Validator
             end--;
         }
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be a palindrome", argumentValue));
     }
@@ -116,7 +116,7 @@ internal static partial class Validator
     {
         if (argumentValue.All(char.IsLetterOrDigit)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be alphanumeric", argumentValue));
     }
@@ -128,7 +128,7 @@ internal static partial class Validator
     {
         if (argumentValue.Any(a => !char.IsLetterOrDigit(a))) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be alphanumeric", argumentValue));
     }
@@ -142,7 +142,7 @@ internal static partial class Validator
 
         // Deliberately no actual value: a card number does not belong in an exception message,
         // where it would end up in logs.
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "be a valid credit card number"));
     }
@@ -154,7 +154,7 @@ internal static partial class Validator
     {
         if (!IsValidCreditCardNumber(argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, "not be a valid credit card number"));
     }

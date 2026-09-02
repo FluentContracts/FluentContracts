@@ -16,7 +16,7 @@ public class StreamContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<Stream?, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream?, StreamContract, ArgumentException>(
             null,
             new MockStream(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -45,7 +45,7 @@ public class StreamContractTests : Tests
 
         success.Must().BeWriteable();
         
-        TestContract<MockStream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<MockStream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeWriteable(message),
@@ -58,7 +58,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canWrite: false);
         var fail = new MockStream(canWrite: true);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeWriteable(message),
@@ -71,7 +71,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canRead: true);
         var fail = new MockStream(canRead: false);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeReadable(message),
@@ -84,7 +84,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canRead: false);
         var fail = new MockStream(canRead: true);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeReadable(message),
@@ -97,7 +97,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canSeek: true);
         var fail = new MockStream(canSeek: false);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeSeekable(message),
@@ -110,7 +110,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canSeek: false);
         var fail = new MockStream(canSeek: true);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeSeekable(message),
@@ -123,7 +123,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canTimeout: true);
         var fail = new MockStream(canTimeout: false);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeAbleToTimeout(message),
@@ -136,7 +136,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(canTimeout: false);
         var fail = new MockStream(canTimeout: true);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeAbleToTimeout(message),
@@ -151,7 +151,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(position: position.TestArgument);
         var fail = new MockStream(position: position.DifferentArgument);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeAtPosition(position.TestArgument, message),
@@ -166,7 +166,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(position: position.DifferentArgument);
         var fail = new MockStream(position: position.TestArgument);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeAtPosition(position.TestArgument, message),
@@ -183,7 +183,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(length: length.TestArgument);
         var fail = new MockStream(length: length.DifferentArgument);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().BeWithLength(length.TestArgument, message),
@@ -198,7 +198,7 @@ public class StreamContractTests : Tests
         var success = new MockStream(length: length.DifferentArgument);
         var fail = new MockStream(length: length.TestArgument);
         
-        TestContract<Stream, StreamContract, ArgumentOutOfRangeException>(
+        TestContract<Stream, StreamContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotBeWithLength(length.TestArgument, message),

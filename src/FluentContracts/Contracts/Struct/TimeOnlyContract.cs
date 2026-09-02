@@ -99,7 +99,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     public TContract BeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
-        Validator.CheckGenericCondition(a => a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
+        Validator.CheckOrdinalCondition(a => a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"be between {Validator.Describe(start)} and {Validator.Describe(end)}");
         return (TContract)this;
     }
@@ -117,7 +117,7 @@ public class TimeOnlyContract<TContract> : EqualityContract<TimeOnly?, TContract
     public TContract NotBeBetween(TimeOnly start, TimeOnly end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message ?? ChainMessage);
-        Validator.CheckGenericCondition(a => !a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
+        Validator.CheckOrdinalCondition(a => !a!.Value.IsBetween(start, end), ArgumentValue, ArgumentName, message ?? ChainMessage,
             expectation: $"not be between {Validator.Describe(start)} and {Validator.Describe(end)}");
         return (TContract)this;
     }

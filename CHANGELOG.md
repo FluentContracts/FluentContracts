@@ -29,16 +29,16 @@ This file is the curated summary of notable changes on top of those.
   `x.Must(argumentName: "name")`. `[CallerArgumentExpression]` fills the name in every ordinary
   call, so this only affects code that spelled the name out.
 
-### Added
-- A caller's message may carry `{argument}` and `{value}`, filled on the failure path with the
-  argument's name and its rendered value (quoted, truncated, invariant culture — the same rendering
-  the default messages use): `port.Must().BeBetween(1, 65535, "{argument} must be a usable port,
-  got {value}")`. One shared message constant now names whichever argument it guards. A message
-  without tokens is untouched; this is a change only for a literal message that already contained
-  those exact tokens.
-- A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
-  once for every check in the chain; a check's own message still wins for that check.
-
+- **`ArgumentOutOfRangeException` is now reserved for ordinal checks** (#65, part of #62):
+  comparisons (`BeGreaterThan` family, `BeShorterThan`, `BeInThePast`, count/length/size
+  comparisons), ranges (`BeBetween`), sign checks and the NaN policy — where "out of range" means
+  what it says. Every other failure — equality, `BeAnyOf`, `BeNull`, type checks, parse and format
+  checks, containment, string shape, collection order, `Satisfy` — throws `ArgumentException`,
+  where it used to throw `ArgumentOutOfRangeException` for all of them. Null stays
+  `ArgumentNullException`. Since `ArgumentOutOfRangeException` derives from `ArgumentException`, a
+  `catch (ArgumentException)` is unaffected; only a `catch (ArgumentOutOfRangeException)` around a
+  non-ordinal check stops matching, which is the point. Messages are unchanged.
+  `ExceptionTaxonomyTests` pins the type per check family.
 - Every check now returns the contract itself instead of a `Linker<TContract>`, and the `Linker`
   type is gone (#63, part of the 4.0.0 design in #62). `And` is kept as a property on the contract
   that returns the contract, so a chain written as `x.Must().NotBeNull().And.BeGreaterThan(5)` keeps
@@ -50,6 +50,16 @@ This file is the curated summary of notable changes on top of those.
   where `Linker` was spelled out. Every level of the contract hierarchy used to allocate its own
   `Linker` — six objects to start an `int` chain, the 160 B measured in `docs/Benchmarks.md` — and a
   chain start is now the one contract object.
+
+### Added
+- A caller's message may carry `{argument}` and `{value}`, filled on the failure path with the
+  argument's name and its rendered value (quoted, truncated, invariant culture — the same rendering
+  the default messages use): `port.Must().BeBetween(1, 65535, "{argument} must be a usable port,
+  got {value}")`. One shared message constant now names whichever argument it guards. A message
+  without tokens is untouched; this is a change only for a literal message that already contained
+  those exact tokens.
+- A chain-wide message: `environment.Must("This should be prod").NotBe("test").NotBeEmpty()` says it
+  once for every check in the chain; a check's own message still wins for that check.
 
 ### Internal
 - The `pr` workflow also runs for pull requests into `release/*` integration branches, where a major

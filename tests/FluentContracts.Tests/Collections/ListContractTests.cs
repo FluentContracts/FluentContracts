@@ -17,7 +17,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<List<string>?, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>?, ListContract<string>, ArgumentException>(
             null,
             DummyData.GetList(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -39,7 +39,7 @@ public class ListContractTests : Tests
     {
         var pair = DummyData.GetListPair(DummyData.GetString);
 
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -51,7 +51,7 @@ public class ListContractTests : Tests
     {
         var pair = DummyData.GetListPair(DummyData.GetString);
 
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -61,7 +61,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_BeEmpty()
     {
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             [],
             DummyData.GetList(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -71,7 +71,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_NotBeEmpty()
     {
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             DummyData.GetList(DummyData.GetString),
             [],
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
@@ -85,7 +85,7 @@ public class ListContractTests : Tests
         var success = DummyData.GetList(DummyData.GetString, size: size);
         var fail = DummyData.GetList(DummyData.GetString, size: size + 10);
         
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().HaveCountEqualTo(size, message),
@@ -99,7 +99,7 @@ public class ListContractTests : Tests
         var success = DummyData.GetList(DummyData.GetString, size: size + 10);
         var fail = DummyData.GetList(DummyData.GetString, size: size);
         
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotHaveCountEqualTo(size, message),
@@ -113,7 +113,7 @@ public class ListContractTests : Tests
         var fail = DummyData.GetList(DummyData.GetString, size: 20);
         var list = success[10..15];
 
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().Contain(list, message),
@@ -128,7 +128,7 @@ public class ListContractTests : Tests
         IList<string> success = DummyData.GetList(DummyData.GetString, included);
         IList<string> fail = DummyData.GetList(DummyData.GetString, excludedValue: included);
         
-        TestContract<IList<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<IList<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().Contain(included),
@@ -143,7 +143,7 @@ public class ListContractTests : Tests
         var success = DummyData.GetList(DummyData.GetString, size: 20);
         var list = fail[10..15];
 
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContain(list, message),
@@ -158,7 +158,7 @@ public class ListContractTests : Tests
         var success = DummyData.GetList(DummyData.GetString, excludedValue: included);
         var fail = DummyData.GetList(DummyData.GetString, included);
         
-        TestContract<List<string>, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<List<string>, ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().NotContain(included),
@@ -172,7 +172,7 @@ public class ListContractTests : Tests
         var success = new List<Person>(DummyData.GetArray(DummyData.GetEmployee));
         var fail = DummyData.GetArray(DummyData.GetPerson).ToList();
         
-        TestContract<List<Person>, ListContract<Person>, ArgumentOutOfRangeException>(
+        TestContract<List<Person>, ListContract<Person>, ArgumentException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().HaveElementsOfType<Employee>(),
@@ -269,7 +269,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_ContainAnyOf()
     {
-        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+        TestContract<List<int>, ListContract<int>, ArgumentException>(
             [1, 2, 3],
             [7, 8, 9],
             (testArgument, message) => testArgument.Must().ContainAnyOf([2, 99], message),
@@ -279,7 +279,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_HaveUniqueItems()
     {
-        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+        TestContract<List<int>, ListContract<int>, ArgumentException>(
             [1, 2, 3],
             [1, 2, 2],
             (testArgument, message) => testArgument.Must().HaveUniqueItems(message),
@@ -289,7 +289,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_NotContainNull()
     {
-        TestContract<List<string?>, ListContract<string?>, ArgumentOutOfRangeException>(
+        TestContract<List<string?>, ListContract<string?>, ArgumentException>(
             ["a", "b"],
             ["a", null],
             (testArgument, message) => testArgument.Must().NotContainNull(message),
@@ -299,7 +299,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_AllSatisfy()
     {
-        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+        TestContract<List<int>, ListContract<int>, ArgumentException>(
             [2, 4, 6],
             [2, 3, 6],
             (testArgument, message) => testArgument.Must().AllSatisfy(x => x % 2 == 0, message),
@@ -309,7 +309,7 @@ public class ListContractTests : Tests
     [Fact]
     public void Test_Must_AnySatisfy()
     {
-        TestContract<List<int>, ListContract<int>, ArgumentOutOfRangeException>(
+        TestContract<List<int>, ListContract<int>, ArgumentException>(
             [1, 2, 3],
             [1, 1, 1],
             (testArgument, message) => testArgument.Must().AnySatisfy(x => x > 2, message),
@@ -333,7 +333,7 @@ public class ListContractTests : Tests
         FluentActions
             .Invoking(() => testArgument.Must().AnySatisfy(x => x > 100))
             .Should()
-            .Throw<ArgumentOutOfRangeException>("no element of an empty collection satisfies anything");
+            .Throw<ArgumentException>("no element of an empty collection satisfies anything");
     }
 
     [Fact]

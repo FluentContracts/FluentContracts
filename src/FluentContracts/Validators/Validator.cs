@@ -18,7 +18,7 @@ internal static partial class Validator
     {
         if (argumentValue is TCheck) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue?.GetType()) ?? Expected(argumentName, $"be of type {typeof(TCheck)}", argumentValue?.GetType()));
     }
@@ -33,7 +33,7 @@ internal static partial class Validator
 
         if (argumentValue.GetType() == type) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"be of type {type}", argumentValue.GetType()));
     }
@@ -45,7 +45,7 @@ internal static partial class Validator
     {
         if (argumentValue is not TCheck) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be of type {typeof(TCheck)}", argumentValue.GetType()));
     }
@@ -60,7 +60,7 @@ internal static partial class Validator
 
         if (argumentValue.GetType() != type) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be of type {type}"));
     }
@@ -75,7 +75,7 @@ internal static partial class Validator
 
         if (targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"be assignable to {targetType}", argumentValue.GetType()));
     }
@@ -90,7 +90,7 @@ internal static partial class Validator
 
         if (!targetType.IsAssignableFrom(argumentValue.GetType())) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue.GetType()) ?? Expected(argumentName, $"not be assignable to {targetType}", argumentValue.GetType()));
     }
@@ -107,7 +107,7 @@ internal static partial class Validator
     {
         if (argumentValue is T typedValue) return typedValue;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue?.GetType()) ?? Expected(argumentName, $"be of type {typeof(T)}", argumentValue?.GetType()));
         return default!;
@@ -169,7 +169,7 @@ internal static partial class Validator
     {
         if (value is null) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, value) ?? Expected(argumentName, "be null", value));
     }
@@ -190,6 +190,26 @@ internal static partial class Validator
         [CallerMemberName] string checkName = "")
     {
         if (genericCondition(argumentValue)) return;
+
+        ThrowHelper.ThrowArgumentException(
+            argumentName,
+            Custom(message, argumentName, argumentValue) ?? Expected(argumentName, expectation ?? HumaniseCheckName(checkName), argumentValue));
+    }
+
+    /// <summary>
+    /// <see cref="CheckGenericCondition{T}"/> for a condition that is ordinal — a range or a comparison
+    /// expressed as a predicate — so its failure is <see cref="ArgumentOutOfRangeException"/> like every
+    /// other comparison, rather than the <see cref="ArgumentException"/> of the generic check.
+    /// </summary>
+    public static void CheckOrdinalCondition<T>(
+        Func<T, bool> ordinalCondition,
+        T argumentValue,
+        string argumentName,
+        string? message = null,
+        string? expectation = null,
+        [CallerMemberName] string checkName = "")
+    {
+        if (ordinalCondition(argumentValue)) return;
 
         ThrowHelper.ThrowArgumentOutOfRangeException(
             argumentName,
@@ -235,7 +255,7 @@ internal static partial class Validator
 
         if (candidates.Any(v => v.IsEqualTo(argumentValue))) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be any of {Describe(candidates)}", argumentValue));
     }
@@ -250,7 +270,7 @@ internal static partial class Validator
 
         if (candidates.All(v => v.IsNotEqualTo(argumentValue))) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"not be any of {Describe(candidates)}", argumentValue));
     }
@@ -263,7 +283,7 @@ internal static partial class Validator
     {
         if (value.IsEqualTo(argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"be {Describe(value)}", argumentValue));
     }
@@ -276,7 +296,7 @@ internal static partial class Validator
     {
         if (value.IsNotEqualTo(argumentValue)) return;
 
-        ThrowHelper.ThrowArgumentOutOfRangeException(
+        ThrowHelper.ThrowArgumentException(
             argumentName,
             Custom(message, argumentName, argumentValue) ?? Expected(argumentName, $"not be {Describe(value)}"));
     }

@@ -12,7 +12,7 @@ public class ArrayContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<string[]?, ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[]?, ListContract<string>, ArgumentException>(
             null,
             DummyData.GetArray(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -34,7 +34,7 @@ public class ArrayContractTests : Tests
     {
         var pair = DummyData.GetArrayPair(DummyData.GetString);
 
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -46,7 +46,7 @@ public class ArrayContractTests : Tests
     {
         var pair = DummyData.GetArrayPair(DummyData.GetString);
 
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -56,7 +56,7 @@ public class ArrayContractTests : Tests
     [Fact]
     public void Test_Must_BeEmpty()
     {
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             [],
             DummyData.GetArray(DummyData.GetString),
             (testArgument, message) => testArgument.Must().BeEmpty(message),
@@ -66,7 +66,7 @@ public class ArrayContractTests : Tests
     [Fact]
     public void Test_Must_NotBeEmpty()
     {
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             DummyData.GetArray(DummyData.GetString),
             [],
             (testArgument, message) => testArgument.Must().NotBeEmpty(message),
@@ -80,7 +80,7 @@ public class ArrayContractTests : Tests
         var success = DummyData.GetArray(DummyData.GetString, size: size);
         var fail = DummyData.GetArray(DummyData.GetString, size: size + 10);
         
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().HaveCountEqualTo(size, message),
@@ -94,7 +94,7 @@ public class ArrayContractTests : Tests
         var success = DummyData.GetArray(DummyData.GetString, size: size + 10);
         var fail = DummyData.GetArray(DummyData.GetString, size: size);
         
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotHaveCountEqualTo(size, message),
@@ -108,7 +108,7 @@ public class ArrayContractTests : Tests
         var fail = DummyData.GetArray(DummyData.GetString, size: 20);
         var list = success[10..15];
 
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().Contain(list, message),
@@ -123,7 +123,7 @@ public class ArrayContractTests : Tests
         var success = DummyData.GetArray(DummyData.GetString, included);
         var fail = DummyData.GetArray(DummyData.GetString, excludedValue: included);
         
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().Contain(included),
@@ -138,7 +138,7 @@ public class ArrayContractTests : Tests
         var success = DummyData.GetArray(DummyData.GetString, size: 20);
         var list = fail[10..15];
 
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, message) => testArgument.Must().NotContain(list, message),
@@ -153,7 +153,7 @@ public class ArrayContractTests : Tests
         var success = DummyData.GetArray(DummyData.GetString, excludedValue: included);
         var fail = DummyData.GetArray(DummyData.GetString, included);
         
-        TestContract<string[], ListContract<string>, ArgumentOutOfRangeException>(
+        TestContract<string[], ListContract<string>, ArgumentException>(
             success,
             fail,
             (testArgument, _) => testArgument.Must().NotContain(included),

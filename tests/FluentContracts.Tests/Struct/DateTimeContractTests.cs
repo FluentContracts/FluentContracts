@@ -14,7 +14,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_BeNull()
     {
-        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime?, DateTimeContract, ArgumentException>(
             null,
             DummyData.GetDateTime(),
             (testArgument, message) => testArgument.Must().BeNull(message),
@@ -36,7 +36,7 @@ public class DateTimeContractTests : Tests
     {
         var pair = DummyData.GetDateTimePair();
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -48,7 +48,7 @@ public class DateTimeContractTests : Tests
     {
         var pair = DummyData.GetNullableDateTimePair();
 
-        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime?, DateTimeContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) => testArgument.Must().Be(pair.TestArgument, message),
@@ -60,7 +60,7 @@ public class DateTimeContractTests : Tests
     {
         var pair = DummyData.GetDateTimePair();
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -72,7 +72,7 @@ public class DateTimeContractTests : Tests
     {
         var pair = DummyData.GetNullableDateTimePair();
 
-        TestContract<DateTime?, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime?, DateTimeContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) => testArgument.Must().NotBe(pair.TestArgument, message),
@@ -85,7 +85,7 @@ public class DateTimeContractTests : Tests
         var pair = DummyData.GetDateTimePair();
         var array = DummyData.GetArray(() => DummyData.GetDateTime(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             pair.TestArgument,
             pair.DifferentArgument,
             (testArgument, message) =>
@@ -99,7 +99,7 @@ public class DateTimeContractTests : Tests
         var pair = DummyData.GetDateTimePair();
         var array = DummyData.GetArray(() => DummyData.GetDateTime(), pair.TestArgument, pair.DifferentArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             pair.DifferentArgument,
             pair.TestArgument,
             (testArgument, message) =>
@@ -293,7 +293,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.InDaylightSaving);
         var failing = DummyData.GetDateTime(DateTimeOption.NotInDaylightSaving);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failing,
             (testArgument, message) =>
@@ -309,7 +309,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.NotInDaylightSaving);
         var failing = DummyData.GetDateTime(DateTimeOption.InDaylightSaving);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failing,
             (testArgument, message) =>
@@ -323,7 +323,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.LeapYear);
         var fail = DummyData.GetDateTime(DateTimeOption.NotLeapYear);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -337,7 +337,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.NotLeapYear);
         var fail = DummyData.GetDateTime(DateTimeOption.LeapYear);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -372,7 +372,7 @@ public class DateTimeContractTests : Tests
             var success = DummyData.GetDateTime(DateTimeOption.SpecificMonth, month);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificMonth, differentMonth);
 
-            TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            TestContract<DateTime, DateTimeContract, ArgumentException>(
                 success,
                 fail,
                 months[i],
@@ -407,7 +407,7 @@ public class DateTimeContractTests : Tests
             var success = DummyData.GetDateTime(DateTimeOption.SpecificMonth, differentMonth);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificMonth, month);
 
-            TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            TestContract<DateTime, DateTimeContract, ArgumentException>(
                 success,
                 fail,
                 months[i],
@@ -437,7 +437,7 @@ public class DateTimeContractTests : Tests
             var success = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: day);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: differentDay);
 
-            TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            TestContract<DateTime, DateTimeContract, ArgumentException>(
                 success,
                 fail,
                 days[i].Contract,
@@ -467,7 +467,7 @@ public class DateTimeContractTests : Tests
             var success = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: differentDay);
             var fail = DummyData.GetDateTime(DateTimeOption.SpecificWeekday, specificWeekday: day);
 
-            TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+            TestContract<DateTime, DateTimeContract, ArgumentException>(
                 success,
                 fail,
                 days[i].Contract,
@@ -481,7 +481,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime();
         var fail = DummyData.GetDateTime(DateTimeOption.Local);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -495,7 +495,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Local);
         var fail = DummyData.GetDateTime();
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -509,7 +509,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Local);
         var fail = DummyData.GetDateTime();
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -523,7 +523,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime();
         var fail = DummyData.GetDateTime(DateTimeOption.Local);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -544,21 +544,21 @@ public class DateTimeContractTests : Tests
         var failMonth = new DateTime(year.TestArgument, month.DifferentArgument, day.TestArgument);
         var failDay = new DateTime(year.TestArgument, month.TestArgument, day.DifferentArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failYear,
             (testArgument, message) =>
                 testArgument.Must().BeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failMonth,
             (testArgument, message) =>
                 testArgument.Must().BeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failDay,
             (testArgument, message) =>
@@ -579,21 +579,21 @@ public class DateTimeContractTests : Tests
         var failMonth = new DateTime(year.DifferentArgument, month.TestArgument, day.DifferentArgument);
         var failDay = new DateTime(year.DifferentArgument, month.DifferentArgument, day.TestArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failYear,
             (testArgument, message) =>
                 testArgument.Must().NotBeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failMonth,
             (testArgument, message) =>
                 testArgument.Must().NotBeOnDate(year.TestArgument, month.TestArgument, day.TestArgument, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failDay,
             (testArgument, message) =>
@@ -616,21 +616,21 @@ public class DateTimeContractTests : Tests
         var failMonth = new DateTime(year.TestArgument, month.DifferentArgument, day.TestArgument);
         var failDay = new DateTime(year.TestArgument, month.TestArgument, day.DifferentArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failYear,
             (testArgument, message) =>
                 testArgument.Must().BeOnDate(date, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failMonth,
             (testArgument, message) =>
                 testArgument.Must().BeOnDate(date, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failDay,
             (testArgument, message) =>
@@ -653,21 +653,21 @@ public class DateTimeContractTests : Tests
         var failMonth = new DateTime(year.DifferentArgument, month.TestArgument, day.DifferentArgument);
         var failDay = new DateTime(year.DifferentArgument, month.DifferentArgument, day.TestArgument);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failYear,
             (testArgument, message) =>
                 testArgument.Must().NotBeOnDate(date, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failMonth,
             (testArgument, message) =>
                 testArgument.Must().NotBeOnDate(date, message),
             "testArgument");
         
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             failDay,
             (testArgument, message) =>
@@ -775,7 +775,7 @@ public class DateTimeContractTests : Tests
         var success = new DateTime(date.Year, date.Month, date.Day);
         var fail = date.AddDays(7);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -791,7 +791,7 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(7);
         var fail = new DateTime(date.Year, date.Month, date.Day);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -807,7 +807,7 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(1);
         var fail = date.AddDays(-1);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -823,7 +823,7 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(-1);
         var fail = date.AddDays(1);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -839,7 +839,7 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(-1);
         var fail = date.AddDays(1);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -855,7 +855,7 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(1);
         var fail = date.AddDays(-1);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -871,14 +871,14 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.SpecificMonth, specificMonth: date.Month);
         var fail = date.AddMonths(1);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().BeInMonth(date.Month, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -894,14 +894,14 @@ public class DateTimeContractTests : Tests
         var success = date.AddMonths(1);
         var fail = DummyData.GetDateTime(DateTimeOption.SpecificMonth, specificMonth: date.Month);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeInMonth(date.Month, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -917,14 +917,14 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.SpecificYear, specificYear: date.Year);
         var fail = date.AddYears(1);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().BeInYear(date.Year, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -940,14 +940,14 @@ public class DateTimeContractTests : Tests
         var success = date.AddYears(1);
         var fail = DummyData.GetDateTime(DateTimeOption.SpecificYear, specificYear: date.Year);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeInYear(date.Year, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -963,14 +963,14 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.SpecificDay, specificDay: date.Day);
         var fail = date.AddDays(1);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().BeOnDay(date.Day, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -986,14 +986,14 @@ public class DateTimeContractTests : Tests
         var success = date.AddDays(1);
         var fail = DummyData.GetDateTime(DateTimeOption.SpecificDay, specificDay: date.Day);
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
                 testArgument.Must().NotBeOnDay(date.Day, message),
             "testArgument");
     
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1007,7 +1007,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Weekend);
         var fail = DummyData.GetDateTime(DateTimeOption.Weekday);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1021,7 +1021,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Weekday);
         var fail = DummyData.GetDateTime(DateTimeOption.Weekend);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1035,7 +1035,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Weekday);
         var fail = DummyData.GetDateTime(DateTimeOption.Weekend);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1049,7 +1049,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime(DateTimeOption.Weekend);
         var fail = DummyData.GetDateTime(DateTimeOption.Weekday);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1063,7 +1063,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime();
         var fail = success.AddDays(5);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>
@@ -1077,7 +1077,7 @@ public class DateTimeContractTests : Tests
         var success = DummyData.GetDateTime();
         var fail = success.AddDays(5);
 
-        TestContract<DateTime, DateTimeContract, ArgumentOutOfRangeException>(
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
             success,
             fail,
             (testArgument, message) =>

@@ -18,6 +18,17 @@ internal static class ThrowHelper
         throw new ArgumentOutOfRangeException(argumentName, message);
     }
 
+    /// <summary>
+    /// The failure for every check that is not about ordering: equality, type, format, containment,
+    /// string shape. <see cref="ArgumentOutOfRangeException"/> is reserved for the ordinal checks —
+    /// comparisons, ranges, sign, the NaN policy — where "out of range" means what it says.
+    /// </summary>
+    [DoesNotReturn]
+    public static void ThrowArgumentException(string argumentName, string? message = null)
+    {
+        throw new ArgumentException(message, argumentName);
+    }
+
     [DoesNotReturn]
     public static void ThrowArgumentNullException(string argumentName, string? message = null)
     {
