@@ -19,8 +19,6 @@ public class GuidContract(Guid? argumentValue, string argumentName)
 public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     where TContract : GuidContract<TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -29,7 +27,6 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     protected GuidContract(Guid? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract) this);
     } 
 
     /// <summary>
@@ -37,11 +34,11 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(Guid expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract Be(Guid expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -49,11 +46,11 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="expectedValue">The expected value to compare against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> Be(Guid? expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract Be(Guid? expectedValue, string? message = null)
     {
         Validator.CheckForSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -61,11 +58,11 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(Guid expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBe(Guid expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     } 
 
     /// <summary>
@@ -73,19 +70,19 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="expectedValue">The value to compare the argument against.</param>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBe(Guid? expectedValue, string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBe(Guid? expectedValue, string? message = null)
     {
         Validator.CheckForNotSpecificValue(expectedValue, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     } 
     
     /// <summary>
     /// Checks if the specified argument is any of the expected values.
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params Guid[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(params Guid[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -94,8 +91,8 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// Checks if the specified argument is any of the expected values.
     /// </summary>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(params Guid?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(params Guid?[] expectedValues)
     {
         return BeAnyOf(null, expectedValues);
     }
@@ -105,12 +102,12 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params Guid[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(string? message, params Guid[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -118,19 +115,19 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">Expected values among which the argument can be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeAnyOf(string? message, params Guid?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeAnyOf(string? message, params Guid?[] expectedValues)
     {
         Validator.CheckForAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is not any of the expected values.
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params Guid[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(params Guid[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -139,8 +136,8 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// Checks if the specified argument is not any of the expected values.
     /// </summary>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(params Guid?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(params Guid?[] expectedValues)
     {
         return NotBeAnyOf(null, expectedValues);
     }
@@ -150,12 +147,12 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params Guid[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(string? message, params Guid[] expectedValues)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue.Value, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -163,32 +160,32 @@ public class GuidContract<TContract> : ObjectContract<Guid?, TContract>
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <param name="expectedValues">The expected values that the argument must not be.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeAnyOf(string? message, params Guid?[] expectedValues)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeAnyOf(string? message, params Guid?[] expectedValues)
     {
         Validator.CheckForNotAnyOf(expectedValues, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="Guid"/> argument is empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeEmpty(string? message = null)
     {
         Validator.CheckForSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="Guid"/> argument is not empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeEmpty(string? message = null)
     {
         Validator.CheckForNotSpecificValue(Guid.Empty, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 }

@@ -12,8 +12,6 @@ namespace FluentContracts.Contracts;
 public abstract class NullableContract<TArgument, TContract> : BaseContract<TArgument, TContract>
     where TContract : NullableContract<TArgument, TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -22,18 +20,17 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     protected NullableContract(TArgument? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract)this);
     }
 
     /// <summary>
     /// Checks if the specified argument is not null.
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNull(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeNull(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -41,8 +38,8 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
     /// <typeparam name="TException">Type of the exception to throw</typeparam>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNull<
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeNull<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TException>(
         string? message = null)
         where TException : Exception, new()
@@ -52,17 +49,17 @@ public abstract class NullableContract<TArgument, TContract> : BaseContract<TArg
         else
             Validator.CheckForNotNull<TArgument, TException>(ArgumentValue);
 
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the specified argument is null.
     /// </summary>
     /// <param name="message">The optional error message to include in the exception.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeNull(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeNull(string? message = null)
     {
         Validator.CheckForNull(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 }

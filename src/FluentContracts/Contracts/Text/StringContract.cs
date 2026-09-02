@@ -20,8 +20,6 @@ public class StringContract(string? argumentValue, string argumentName)
 public class StringContract<TContract> : EqualityContract<string?, TContract>
     where TContract : StringContract<TContract>
 {
-    private readonly Linker<TContract> _linker;
-
     /// <summary>
     /// Creates the contract. Called by <c>Must()</c> and by deriving contracts.
     /// </summary>
@@ -30,151 +28,150 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     protected StringContract(string? argumentValue, string argumentName)
         : base(argumentValue, argumentName)
     {
-        _linker = new Linker<TContract>((TContract)this);
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeEmpty(string? message = null)
     {
         Validator.CheckForSpecificValue(string.Empty, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeEmpty(string? message = null)
     {
         Validator.CheckForNotSpecificValue(string.Empty, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is null or empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeNullOrEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeNullOrEmpty(string? message = null)
     {
         Validator.CheckGenericCondition(string.IsNullOrEmpty, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not null or empty.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNullOrEmpty(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeNullOrEmpty(string? message = null)
     {
         Validator.CheckGenericCondition(a => !string.IsNullOrEmpty(a), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is whitespace(s).
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeWhiteSpace(string? message = null)
+    public TContract BeWhiteSpace(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(string.IsNullOrWhiteSpace, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not whitespace(s).
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeWhiteSpace(string? message = null)
+    public TContract NotBeWhiteSpace(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !string.IsNullOrWhiteSpace(a), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is null or whitespace(s).
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> BeNullOrWhiteSpace(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract BeNullOrWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(string.IsNullOrWhiteSpace, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not null or whitespace(s).
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
-    public Linker<TContract> NotBeNullOrWhiteSpace(string? message = null)
+    /// <returns>The contract, for chaining more checks</returns>
+    public TContract NotBeNullOrWhiteSpace(string? message = null)
     {
         Validator.CheckGenericCondition(a => !string.IsNullOrWhiteSpace(a), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is uppercase.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeUppercase(string? message = null)
+    public TContract BeUppercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForSpecificValue(ArgumentValue.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not uppercase.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeUppercase(string? message = null)
+    public TContract NotBeUppercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotSpecificValue(ArgumentValue.ToUpperInvariant(), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is lowercase.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeLowercase(string? message = null)
+    public TContract BeLowercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForSpecificValue(ArgumentValue.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not lowercase.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeLowercase(string? message = null)
+    public TContract NotBeLowercase(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotSpecificValue(ArgumentValue.ToLowerInvariant(), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -182,15 +179,15 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> Contain(string containedString, string? message = null)
+    public TContract Contain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message,
             expectation: $"contain {Validator.Describe(containedString)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -198,41 +195,41 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="containedString">A string to check for being part of the argument</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotContain(string containedString, string? message = null)
+    public TContract NotContain(string containedString, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !Compat.Contains(a, containedString, StringComparison.OrdinalIgnoreCase),
             ArgumentValue, ArgumentName, message,
             expectation: $"not contain {Validator.Describe(containedString)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid email address.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeEmailAddress(string? message = null)
+    public TContract BeEmailAddress(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.EmailAddress, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid email address.
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeEmailAddress(string? message = null)
+    public TContract NotBeEmailAddress(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.EmailAddress, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -240,9 +237,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="pattern">The regex pattern to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeMatching(string pattern, string? message = null)
+    public TContract BeMatching(string pattern, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
@@ -251,7 +248,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"match the pattern {Validator.Describe(pattern)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
@@ -259,9 +256,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="unexpectedPattern">The regex pattern to NOT match the string</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeMatching(string unexpectedPattern, string? message = null)
+    public TContract NotBeMatching(string unexpectedPattern, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(
@@ -270,7 +267,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"not match the pattern {Validator.Describe(unexpectedPattern)}");
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -279,9 +276,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// <param name="startingWith">Value that the argument must start with</param>
     /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> StartWith(
+    public TContract StartWith(
         string startingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
         string? message = null)
@@ -293,7 +290,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"start with {Validator.Describe(startingWith)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
@@ -302,9 +299,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// <param name="startingWith">Value that the argument must not start with</param>
     /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotStartWith(
+    public TContract NotStartWith(
         string startingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
         string? message = null)
@@ -316,7 +313,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"not start with {Validator.Describe(startingWith)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
@@ -325,9 +322,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// <param name="endingWith">Value that the argument must end with</param>
     /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> EndWith(
+    public TContract EndWith(
         string endingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
         string? message = null)
@@ -339,7 +336,7 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"end with {Validator.Describe(endingWith)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
@@ -348,9 +345,9 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// <param name="endingWith">Value that the argument must not end with</param>
     /// <param name="comparisonType">Comparison type to use. Default: <see cref="StringComparison.OrdinalIgnoreCase"/></param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotEndWith(
+    public TContract NotEndWith(
         string endingWith, 
         StringComparison comparisonType = StringComparison.OrdinalIgnoreCase, 
         string? message = null)
@@ -362,59 +359,59 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
             ArgumentName,
             message,
             expectation: $"not end with {Validator.Describe(endingWith)}");
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a palindrome (if you reverse it, the string is the same)
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BePalindrome(string? message = null)
+    public TContract BePalindrome(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForPalindrome(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a palindrome (if you reverse it, the string is the same)
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBePalindrome(string? message = null)
+    public TContract NotBePalindrome(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotPalindrome(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid URL
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeUrl(string? message = null)
+    public TContract BeUrl(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.Url, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid URL
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeUrl(string? message = null)
+    public TContract NotBeUrl(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.Url, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -422,13 +419,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthEqualTo(int length, string? message = null)
+    public TContract HaveLengthEqualTo(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForSpecificValue(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -436,13 +433,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotHaveLengthEqualTo(int length, string? message = null)
+    public TContract NotHaveLengthEqualTo(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotSpecificValue(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -450,13 +447,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthGreaterThan(int length, string? message = null)
+    public TContract HaveLengthGreaterThan(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterThan(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -464,13 +461,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthGreaterOrEqualTo(int length, string? message = null)
+    public TContract HaveLengthGreaterOrEqualTo(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForGreaterOrEqualTo(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -478,13 +475,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthLessThan(int length, string? message = null)
+    public TContract HaveLengthLessThan(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessThan(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -492,13 +489,13 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// </summary>
     /// <param name="length">Length to check against</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthLessOrEqualTo(int length, string? message = null)
+    public TContract HaveLengthLessOrEqualTo(int length, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForLessOrEqualTo(length, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
@@ -507,220 +504,220 @@ public class StringContract<TContract> : EqualityContract<string?, TContract>
     /// <param name="start">Start of range</param>
     /// <param name="end">End of range</param>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> HaveLengthBetween(int start, int end, string? message = null)
+    public TContract HaveLengthBetween(int start, int end, string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForBetween(start, end, ArgumentValue.Length, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is alphanumeric
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeAlphanumeric(string? message = null)
+    public TContract BeAlphanumeric(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForAlphanumeric(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not alphanumeric
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeAlphanumeric(string? message = null)
+    public TContract NotBeAlphanumeric(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotAlphanumeric(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid IP address
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeIpAddress(string? message = null)
+    public TContract BeIpAddress(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.IpAddress, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid IP address
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeIpAddress(string? message = null)
+    public TContract NotBeIpAddress(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.IpAddress, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid GUID
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeGuid(string? message = null)
+    public TContract BeGuid(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.Guid, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid GUID
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeGuid(string? message = null)
+    public TContract NotBeGuid(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.Guid, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is an existing file path
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeExistingFile(string? message = null)
+    public TContract BeExistingFile(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(File.Exists, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not an existing file path
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeExistingFile(string? message = null)
+    public TContract NotBeExistingFile(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !File.Exists(a), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is an existing file path
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeExistingDirectory(string? message = null)
+    public TContract BeExistingDirectory(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(Directory.Exists, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is an existing file path
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeExistingDirectory(string? message = null)
+    public TContract NotBeExistingDirectory(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckGenericCondition(a => !Directory.Exists(a), ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid base64
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeBase64(string? message = null)
+    public TContract BeBase64(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.Base64, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid base64
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeBase64(string? message = null)
+    public TContract NotBeBase64(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.Base64, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid hexadecimal (without 0x prefix)
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeHexadecimal(string? message = null)
+    public TContract BeHexadecimal(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForParsed(ParseOptions.Hexadecimal, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid hexadecimal (without 0x prefix)
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeHexadecimal(string? message = null)
+    public TContract NotBeHexadecimal(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotParsed(ParseOptions.Hexadecimal, ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is a valid credit card number
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> BeCreditCardNumber(string? message = null)
+    public TContract BeCreditCardNumber(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForCreditCardNumber(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
     
     /// <summary>
     /// Checks if the value of the <see cref="string"/> argument is not a valid credit card number
     /// </summary>
     /// <param name="message">The optional message to include in the exception if the condition is not satisfied.</param>
-    /// <returns>Linker for chaining more checks</returns>
+    /// <returns>The contract, for chaining more checks</returns>
     /// <remarks>Also checks for the argument to NOT be null</remarks>
-    public Linker<TContract> NotBeCreditCardNumber(string? message = null)
+    public TContract NotBeCreditCardNumber(string? message = null)
     {
         Validator.CheckForNotNull(ArgumentValue, ArgumentName, message);
         Validator.CheckForNotCreditCardNumber(ArgumentValue, ArgumentName, message);
-        return _linker;
+        return (TContract)this;
     }
 }

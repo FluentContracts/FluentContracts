@@ -380,7 +380,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_BeInMonth_By_Name()
     {
-        var months = new Func<DateTime, string?, Linker<DateTimeContract>>[]
+        var months = new Func<DateTime, string?, DateTimeContract>[]
         {
             (testArgument, message) => testArgument.Must().BeInJanuary(message),
             (testArgument, message) => testArgument.Must().BeInFebruary(message),
@@ -415,7 +415,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_NotBeInMonth_By_Name()
     {
-        var months = new Func<DateTime, string?, Linker<DateTimeContract>>[]
+        var months = new Func<DateTime, string?, DateTimeContract>[]
         {
             (testArgument, message) => testArgument.Must().NotBeInJanuary(message),
             (testArgument, message) => testArgument.Must().NotBeInFebruary(message),
@@ -450,7 +450,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_BeWeekday_By_Name()
     {
-        var days = new (DayOfWeek Day, Func<DateTime, string?, Linker<DateTimeContract>> Contract)[]
+        var days = new (DayOfWeek Day, Func<DateTime, string?, DateTimeContract> Contract)[]
         {
             (DayOfWeek.Monday, (testArgument, message) => testArgument.Must().BeMonday(message)),
             (DayOfWeek.Tuesday, (testArgument, message) => testArgument.Must().BeTuesday(message)),
@@ -480,7 +480,7 @@ public class DateTimeContractTests : Tests
     [Fact]
     public void Test_Must_NotBeWeekday_By_Name()
     {
-        var days = new (DayOfWeek Day, Func<DateTime, string?, Linker<DateTimeContract>> Contract)[]
+        var days = new (DayOfWeek Day, Func<DateTime, string?, DateTimeContract> Contract)[]
         {
             (DayOfWeek.Monday, (testArgument, message) => testArgument.Must().NotBeMonday(message)),
             (DayOfWeek.Tuesday, (testArgument, message) => testArgument.Must().NotBeTuesday(message)),
