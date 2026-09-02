@@ -107,6 +107,22 @@ Neither is GitHub's `[skip ci]`, which would skip every workflow including the t
 > becomes the nuget.org listing, and `assets/icon.png`. A published readme cannot be corrected in
 > place, so a change to either only reaches anyone through a release — do not skip one.
 
+### Assembling a major version
+
+A breaking change cannot sit half-done on `master`, because every merge releases and the
+`skip-release` label defers packing, not the code. A major version is assembled on a temporary
+integration branch instead:
+
+- The branch is named `release/<major>.<minor>` (`release/4.0`). Pull requests into it get the same
+  `pr` workflow as pull requests into `master` — the generated workflow triggers on `release/*`.
+- Each piece of the major version is an ordinary issue-first pull request into that branch.
+- One final pull request merges the branch into `master`, titled with the major-version directive,
+  and that merge is the release. The branch is deleted afterwards.
+- `master` keeps releasing patches from unrelated pull requests throughout.
+
+GitVersion's GitHubFlow treats `release/*` as release branches, so builds on the integration branch
+report the upcoming version (`4.0.0-beta.n`); that is expected and nothing is published from there.
+
 ### Choosing the version
 
 The version is computed by GitVersion from the most recent tag, and the **patch** is

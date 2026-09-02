@@ -15,7 +15,9 @@ using Octokit;
     GitHubActionsImage.UbuntuLatest,
     GitHubActionsImage.WindowsLatest,
     GitHubActionsImage.MacOsLatest,
-    OnPullRequestBranches = [MainBranch],
+    // Pull requests into a release integration branch get the same checks as ones into master:
+    // a major version is assembled there from several pull requests before one final merge.
+    OnPullRequestBranches = [MainBranch, ReleaseBranches],
     FetchDepth = 0,
     PublishArtifacts = false,
     InvokedTargets = [nameof(Test), nameof(Pack)])]
@@ -38,6 +40,11 @@ partial class Build
 {
     /// The single long-lived branch. Every merge into it is released.
     const string MainBranch = "master";
+
+    /// Temporary integration branches for a major version (`release/4.0`): pull requests into
+    /// one are tested and packed like pull requests into master, and nothing is released until
+    /// the branch itself merges into master.
+    const string ReleaseBranches = "release/*";
     
     // ReSharper disable once InconsistentNaming
     [CI] readonly GitHubActions GitHubActions;
