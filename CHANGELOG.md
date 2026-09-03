@@ -10,22 +10,6 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
-### Internal
-- Filled the gaps in the test suite that coverage exposed, taking the library from 91.4% line and
-  96.4% branch coverage to 97.8% and 99.5%, with every method now executed at least once. The gaps
-  were real, not cosmetic: none of the 21 `Value()` overloads outside `int`, `string`, `IList<T>`,
-  enum and `Guid` had a test; the single-value `BeAnyOf`/`NotBeAnyOf` overloads — one hand-written
-  pair per value-type contract, each doing its own null check and unwrap — were untested on all 16
-  of them; and `NotBeNaN`, `NotBeInfinity` and `NotBeFinite` on `float`, `NotBeWeekday`/`NotBeWeekend`
-  on `DateOnly`, `BeGreaterOrEqualTo`/`BeLessOrEqualTo` on `TimeOnly`, `NotHaveSizeEqualTo` on
-  `FileInfo`, `ContainAnyOf(element)`, the nullable-operand comparisons on `NumberContract<T>` and
-  the success path of the `Satisfy(ISpecification<T>)` overloads that throw a user-defined exception
-  had none either. Also pinned the behaviour the remaining uncovered branches stood for: that a
-  chain-wide message reaches the non-finite, generic-number, list-order and whitespace checks and
-  that a check's own message still wins there; that expected values and elements may be a deferred
-  sequence walked only once; that `ContainAnyOf` fails on an empty set where `Contain` passes; that
-  `And`/`Or` short-circuit; and that both weekend days and both ends of the working week are
-  recognised. No production code changed.
 
 ## [4.0.0] / 2026-09-02
 ### Breaking
