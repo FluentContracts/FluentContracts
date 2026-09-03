@@ -72,6 +72,26 @@ public class TimeOnlyContractTests : Tests
     }
 
     [Fact]
+    public void Test_Must_BeGreaterOrEqualTo()
+    {
+        TestContract<TimeOnly, TimeOnlyContract, ArgumentOutOfRangeException>(
+            Noon,
+            Noon.AddHours(-1),
+            (testArgument, message) => testArgument.Must().BeGreaterOrEqualTo(Noon, message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_BeLessOrEqualTo()
+    {
+        TestContract<TimeOnly, TimeOnlyContract, ArgumentOutOfRangeException>(
+            Noon,
+            Noon.AddHours(1),
+            (testArgument, message) => testArgument.Must().BeLessOrEqualTo(Noon, message),
+            "testArgument");
+    }
+
+    [Fact]
     public void Test_Must_BeBetween()
     {
         TestContract<TimeOnly, TimeOnlyContract, ArgumentOutOfRangeException>(
