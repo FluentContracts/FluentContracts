@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using FluentContracts.Contracts.Struct;
 using FluentContracts.Tests.Mocks;
 using FluentContracts.Tests.TestAttributes;
@@ -181,6 +182,45 @@ public class DateOnlyContractTests : Tests
             new DateOnly(2026, 6, 6),
             new DateOnly(2026, 6, 1),
             (testArgument, message) => testArgument.Must().BeWeekend(message),
+            "testArgument");
+    }
+
+    /// <summary>
+    /// The negations are the other check under a different name — a week has only weekdays and weekend
+    /// days — so they are aliases rather than separate rules, and these pin that they stay pointed at
+    /// the right one.
+    /// </summary>
+    /// <summary>
+    /// The weekend is Saturday <em>or</em> Sunday, and a check that only knew about one of them would
+    /// pass every test written against the other.
+    /// </summary>
+    [Fact]
+    public void Sunday_is_a_weekend_day_too()
+    {
+        // 2026-06-07 is a Sunday.
+        var sunday = new DateOnly(2026, 6, 7);
+
+        FluentActions.Invoking(() => sunday.Must().BeWeekend()).Should().NotThrow();
+        FluentActions.Invoking(() => sunday.Must().BeWeekday()).Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Test_Must_NotBeWeekday()
+    {
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
+            new DateOnly(2026, 6, 6),
+            new DateOnly(2026, 6, 1),
+            (testArgument, message) => testArgument.Must().NotBeWeekday(message),
+            "testArgument");
+    }
+
+    [Fact]
+    public void Test_Must_NotBeWeekend()
+    {
+        TestContract<DateOnly, DateOnlyContract, ArgumentException>(
+            new DateOnly(2026, 6, 1),
+            new DateOnly(2026, 6, 6),
+            (testArgument, message) => testArgument.Must().NotBeWeekend(message),
             "testArgument");
     }
 

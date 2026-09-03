@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using FluentAssertions;
 using FluentContracts.Contracts.IO;
 using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
@@ -177,6 +178,34 @@ public class FileInfoContractTests : Tests
             successful,
             failing,
             (testArgument, message) => testArgument.Must().HaveSizeEqualTo(fileSize, message),
+            "testArgument");
+    }
+
+    /// <summary>
+    /// <see cref="FileInfo.Extension"/> includes the dot, so a bare "txt" has to have one prepended.
+    /// A caller who writes the dot themselves must not end up matching against "..txt".
+    /// </summary>
+    [Fact]
+    public void An_extension_may_be_given_with_or_without_its_dot()
+    {
+        var file = DummyData.GetFileInfo(this, fileExtension: "txt");
+
+        FluentActions.Invoking(() => file.Must().HaveExtension(".txt")).Should().NotThrow();
+        FluentActions.Invoking(() => file.Must().NotHaveExtension(".json")).Should().NotThrow();
+        FluentActions.Invoking(() => file.Must().NotHaveExtension(".txt")).Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Test_Must_NotHaveSizeEqualTo()
+    {
+        var fileSize = DummyData.GetLong(minValue: 1024L, maxValue: 10240L);
+        var successful = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize * 2);
+        var failing = DummyData.GetFileInfo(this, FileInfoOption.NotEmpty, fileSize: fileSize);
+
+        TestContract<FileInfo?, FileInfoContract, ArgumentException>(
+            successful,
+            failing,
+            (testArgument, message) => testArgument.Must().NotHaveSizeEqualTo(fileSize, message),
             "testArgument");
     }
 

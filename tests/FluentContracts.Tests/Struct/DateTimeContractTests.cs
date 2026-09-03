@@ -1,4 +1,5 @@
 using System;
+using FluentAssertions;
 using FluentContracts.Contracts.Struct;
 using FluentContracts.Infrastructure;
 using FluentContracts.Tests.Mocks;
@@ -767,6 +768,24 @@ public class DateTimeContractTests : Tests
             "testArgument");
     }
 
+    /// <summary>
+    /// <c>BeToday</c> compares the year, the month and the day as three separate checks, so a date in
+    /// the same month as today is the only argument that reaches the last of them.
+    /// </summary>
+    [Fact]
+    public void BeToday_rejects_another_day_of_the_same_month()
+    {
+        var today = new DateTime(2026, 6, 10, 0, 0, 0, DateTimeKind.Utc);
+        var sameMonth = new DateTime(2026, 6, 11, 9, 30, 0, DateTimeKind.Utc);
+
+        TestContract<DateTime, DateTimeContract, ArgumentException>(
+            today,
+            sameMonth,
+            (testArgument, message) =>
+                testArgument.Must(dateTimeProvider: new MockDateTimeProvider(today)).BeToday(message),
+            "testArgument");
+    }
+
     [Fact]
     public void Test_Must_BeToday()
     {
@@ -999,6 +1018,29 @@ public class DateTimeContractTests : Tests
             (testArgument, message) =>
                 testArgument.Must(dateTimeProvider: new MockDateTimeProvider(date)).NotBeOnCurrentDay(message),
             "testArgument");
+    }
+
+    /// <summary>
+    /// The weekend is Saturday <em>or</em> Sunday and the working week is Monday <em>through</em>
+    /// Friday, so each check spans a set rather than a single day. The random weekday and weekend
+    /// dates the tests above draw need not land on the ends of those sets.
+    /// </summary>
+    [Fact]
+    public void Both_weekend_days_and_both_ends_of_the_working_week_are_recognised()
+    {
+        // 2026-06-06 is a Saturday, 2026-06-07 a Sunday, 2026-06-01 a Monday and 2026-06-05 a Friday.
+        var saturday = new DateTime(2026, 6, 6, 12, 0, 0, DateTimeKind.Utc);
+        var sunday = new DateTime(2026, 6, 7, 12, 0, 0, DateTimeKind.Utc);
+        var monday = new DateTime(2026, 6, 1, 12, 0, 0, DateTimeKind.Utc);
+        var friday = new DateTime(2026, 6, 5, 12, 0, 0, DateTimeKind.Utc);
+
+        FluentActions.Invoking(() => saturday.Must().BeWeekend()).Should().NotThrow();
+        FluentActions.Invoking(() => sunday.Must().BeWeekend()).Should().NotThrow();
+        FluentActions.Invoking(() => monday.Must().BeWeekend()).Should().Throw<ArgumentException>();
+
+        FluentActions.Invoking(() => monday.Must().BeWeekday()).Should().NotThrow();
+        FluentActions.Invoking(() => friday.Must().BeWeekday()).Should().NotThrow();
+        FluentActions.Invoking(() => sunday.Must().BeWeekday()).Should().Throw<ArgumentException>();
     }
 
     [Fact]

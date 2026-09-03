@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using FluentAssertions;
 using FluentContracts.Contracts.Text;
 using FluentContracts.Tests.Mocks.Data;
 using FluentContracts.Tests.TestAttributes;
@@ -693,6 +694,23 @@ public class StringContractTests : Tests, IDisposable
             "testArgument");
     }
     
+    /// <summary>
+    /// The Luhn check skips the separators a card number is usually written with, so the same number
+    /// is accepted grouped by dashes or by spaces and the caller need not strip them first. A digit
+    /// that is neither a digit nor a separator still rejects the whole thing.
+    /// </summary>
+    [Fact]
+    public void A_credit_card_number_may_be_grouped_by_dashes_or_spaces()
+    {
+        FluentActions.Invoking(() => "4012-8888-8888-1881".Must().BeCreditCardNumber()).Should().NotThrow();
+        FluentActions.Invoking(() => "4012 8888 8888 1881".Must().BeCreditCardNumber()).Should().NotThrow();
+
+        FluentActions
+            .Invoking(() => "4012/8888/8888/1881".Must().BeCreditCardNumber())
+            .Should()
+            .Throw<ArgumentException>();
+    }
+
     [Fact]
     public void Test_Must_BeExistingFile()
     {

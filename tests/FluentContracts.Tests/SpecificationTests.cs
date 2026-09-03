@@ -136,6 +136,27 @@ public class SpecificationTests
         exception.Message.Should().Be("Not an IBAN");
     }
 
+    /// <summary>
+    /// The user-defined-exception overloads still have to return the contract when the rule holds, so
+    /// the chain carries on. Only their failure path is pinned above, and a check that threw on the way
+    /// out would look the same to a test that only ever fails it.
+    /// </summary>
+    [Fact]
+    public void A_satisfied_specification_keeps_the_chain_under_a_user_defined_exception()
+    {
+        const string iban = "DE89370400440532013000";
+
+        FluentActions
+            .Invoking(() => iban.Must().Satisfy<string, MockException>(ValidIban).And.NotBeNullOrEmpty())
+            .Should()
+            .NotThrow();
+
+        FluentActions
+            .Invoking(() => iban.Must().Satisfy<string, MockException>(ValidIban, "Not an IBAN").And.NotBeNullOrEmpty())
+            .Should()
+            .NotThrow();
+    }
+
     [Fact]
     public void And_requires_both_and_joins_the_phrases()
     {
@@ -147,6 +168,9 @@ public class SpecificationTests
         var exception = Assert.Throws<ArgumentException>(() => iban.Must().Satisfy(composed));
 
         exception.Message.Should().StartWith("Expected iban to be a valid IBAN and be in a SEPA country, but found ");
+
+        // The left rule holding is not enough on its own; the right one still has to be consulted.
+        "DE89370400440532013000".Must().Satisfy(composed);
     }
 
     [Fact]
@@ -189,5 +213,34 @@ public class SpecificationTests
         Assert.Throws<ArgumentNullException>(() => ((ISpecification<string>)null!).Or(ValidIban)).ParamName.Should().Be("left");
         Assert.Throws<ArgumentNullException>(() => ((ISpecification<string>)null!).Not()).ParamName.Should().Be("specification");
         Assert.Throws<ArgumentNullException>(() => Spec.From<string>(null!)).ParamName.Should().Be("predicate");
+    }
+
+    /// <summary>
+    /// <c>And</c> and <c>Or</c> compose the predicates with <c>&amp;&amp;</c> and <c>||</c>, so the right-hand rule
+    /// is only consulted when the left leaves the answer open. A rule that is expensive, or that would
+    /// throw on input the left-hand one already rejected, depends on that.
+    /// </summary>
+    [Fact]
+    public void Composition_short_circuits_on_the_left_hand_rule()
+    {
+        var rightWasAsked = false;
+        var recordsTheCall = Spec.From<string>(_ =>
+        {
+            rightWasAsked = true;
+            return true;
+        }, "be asked");
+
+        // The left rule fails, so And has its answer already.
+        FluentActions
+            .Invoking(() => "XX00".Must().Satisfy(ValidIban.And(recordsTheCall)))
+            .Should()
+            .Throw<ArgumentException>();
+
+        rightWasAsked.Should().BeFalse("And stops at the first rule that fails");
+
+        // The left rule holds, so Or has its answer already.
+        "DE89370400440532013000".Must().Satisfy(ValidIban.Or(recordsTheCall));
+
+        rightWasAsked.Should().BeFalse("Or stops at the first rule that holds");
     }
 }

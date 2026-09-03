@@ -226,6 +226,51 @@ public class NumberContractTests : Tests
             .Should().Throw<ArgumentOutOfRangeException>();
     }
 
+    /// <summary>
+    /// Every comparison takes a nullable operand as well as a plain one, so a caller can compare
+    /// against a value that is itself optional. Each is a separate method, and the plain twins are
+    /// pinned above; these walk the nullable ones.
+    /// </summary>
+    [Fact]
+    public void Test_Must_NotBe_Nullable_Operand()
+    {
+        Int128? unexpected = 10;
+
+        ((Int128)11).Must().NotBe(unexpected);
+        FluentActions.Invoking(() => ((Int128)10).Must().NotBe(unexpected))
+            .Should().Throw<ArgumentException>();
+    }
+
+    [Fact]
+    public void Test_Must_BeGreaterThan_Nullable_Operand()
+    {
+        Int128? value = 10;
+
+        ((Int128)11).Must().BeGreaterThan(value);
+        FluentActions.Invoking(() => ((Int128)10).Must().BeGreaterThan(value))
+            .Should().Throw<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Test_Must_BeGreaterOrEqualTo_Nullable_Operand()
+    {
+        Int128? value = 10;
+
+        ((Int128)10).Must().BeGreaterOrEqualTo(value);
+        FluentActions.Invoking(() => ((Int128)9).Must().BeGreaterOrEqualTo(value))
+            .Should().Throw<ArgumentOutOfRangeException>();
+    }
+
+    [Fact]
+    public void Test_Must_BeLessThan_Nullable_Operand()
+    {
+        Int128? value = 10;
+
+        ((Int128)9).Must().BeLessThan(value);
+        FluentActions.Invoking(() => ((Int128)10).Must().BeLessThan(value))
+            .Should().Throw<ArgumentOutOfRangeException>();
+    }
+
     [Fact]
     public void Test_Must_BeZero()
     {
