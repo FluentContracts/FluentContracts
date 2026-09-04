@@ -1,0 +1,5 @@
+{
+  "name": "fluentcontracts",
+  "version": "1.0.0",
+  "description": "Agent skill for FluentContracts — write and apply Must() guard chains in C#, pick the right check, and add reusable rules as specifications."
+}

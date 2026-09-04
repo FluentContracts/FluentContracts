@@ -1,0 +1,24 @@
+{
+  "name": "fluentcontracts",
+  "owner": {
+    "name": "FluentContracts",
+    "email": "fluentcontracts@pm.me",
+    "url": "https://github.com/FluentContracts/FluentContracts"
+  },
+  "plugins": [
+    {
+      "name": "fluentcontracts",
+      "source": "./plugins/fluentcontracts",
+      "description": "Agent skill for FluentContracts — write and apply Must() guard chains in C#, pick the right check, and add reusable rules as specifications.",
+      "version": "1.0.0",
+      "author": {
+        "name": "FluentContracts",
+        "email": "fluentcontracts@pm.me",
+        "url": "https://github.com/FluentContracts/FluentContracts"
+      },
+      "homepage": "https://github.com/FluentContracts/FluentContracts",
+      "license": "MIT",
+      "keywords": ["fluentcontracts", "dotnet", "csharp", "validation", "guard-clauses", "skills"]
+    }
+  ]
+}

@@ -28,6 +28,8 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | `tests/FluentContracts.Tests` | xUnit test suite |
 | `benchmarks/FluentContracts.Benchmarks` | BenchmarkDotNet suite — see [Benchmarks](#benchmarks) |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
+| `skills/` | The agent skill — the source of truth; see [The agent skill](#the-agent-skill) |
+| `plugins/fluentcontracts/` | The plugin the marketplaces install; its `skills/` is **generated** |
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
 | `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
 | `docs/SupportedContracts.md` | **Generated** by the build — never hand-edit |
@@ -351,6 +353,71 @@ so only the IDE-only code-fix assembly may reference it.
 Current rules: none. **FC0001** policed the message-first `BeAnyOf` overload and was retired with it
 in 4.0.0 — recorded under *Removed Rules* in `AnalyzerReleases.Shipped.md`. The projects and the
 packaging stay in place for the next rule.
+
+## The agent skill
+
+`skills/fluentcontracts/` teaches a coding agent to apply FluentContracts in a **consumer** project:
+which check to reach for, where the message goes, the one bracketed-set overload rule, the exception
+taxonomy, the null and NaN policy, and specifications. `AGENTS.md` is guidance for someone working in
+this repository; the skill is the same knowledge sent to where the library is actually used.
+
+`skills/` is the source of truth. It is published to three harnesses:
+
+| Surface | Manifest |
+| --- | --- |
+| Claude Code | `plugins/fluentcontracts/.claude-plugin/plugin.json`, listed in `.claude-plugin/marketplace.json` |
+| Codex | `plugins/fluentcontracts/.codex-plugin/plugin.json`, listed in `.agents/plugins/marketplace.json` |
+| Gemini CLI | `gemini-extension.json` at the root, which auto-discovers `skills/` |
+
+`plugins/fluentcontracts/skills/` is a **committed copy** of `skills/`, not a symlink: a Windows
+clone made without `core.symlinks` materialises a link as a small text file holding the link target,
+and the plugin then ships no skills at all.
+
+### Changing a skill
+
+1. Edit under `skills/`. Never hand-edit the copy under `plugins/`.
+2. Run `./build.sh SyncPluginSkills` to regenerate the copy, and commit it.
+3. **Bump the version by hand in all four manifests** — the two plugin manifests, the entry in
+   `.claude-plugin/marketplace.json`, and `gemini-extension.json`. Additive content is a minor bump;
+   a correction is a patch.
+
+The bump is the step that is easy to skip and expensive to miss: clients read the declared version to
+decide whether an installed plugin is stale, so skills edited without one never reach an agent that
+already holds the old copy. Nothing downstream complains — the pull request is green and the skills
+are correct in the repository.
+
+### What the build enforces
+
+All of it hangs off `Test`, so the existing `pr` and `release` workflows already run it and neither
+the workflows nor the attributes that generate them had to change.
+
+| Target | Fails when |
+| --- | --- |
+| `CheckSkillDocuments` | a skill violates the [Agent Skills specification](https://agentskills.io/specification) — most often a frontmatter `name` that no longer matches its directory, which every harness requires and which makes the skill silently fail to load |
+| `CheckPluginSkillsSync` | the committed copy has drifted from `skills/` |
+| `CheckPluginManifests` | the manifests disagree about the version, the plugin's name, or where it lives |
+| `CheckPluginVersion` | what the plugin publishes changed against the base ref and the version did not move **up** |
+
+Three more targets produce rather than check. `SyncPluginSkills` regenerates the committed copy — it
+is the generator, so fix drift by running it, never by hand. `PackPlugin` archives the plugin into
+`output/plugins` and the release attaches it next to the packages. `TagPluginRelease` tags the commit
+that published a plugin version as `plugin-v<version>`, so an installation can be pinned to it; it is
+idempotent, because every merge into `master` runs it while the version only moves when a skill
+changes.
+
+`CheckPluginVersion` is the one that needs history, because "the content changed and the version did
+not" is not a property of one snapshot. It compares against `FLUENTCONTRACTS_PLUGIN_BASE_REF`, else
+the pull request's base branch, else — on a push to `master` — the previous commit, else
+`origin/master`. Both workflows check out with `fetch-depth: 0`, so on CI the base is always there
+and a **skip is a failure**: a check that cannot run is not a check. Locally a skip is ordinary — a
+shallow clone, a fresh worktree, a base that was never fetched.
+
+Two things it insists on beyond "the version differs". It has to go **up**, so resolving a conflict
+by keeping the lower number is refused. And the previous-commit comparison on `master` is the only
+place a *collision* is visible: two branches that both bump 1.2.0 to 1.3.0 merge without a conflict —
+each side made the identical edit — and neither pull request's check ever saw the other, because
+GitHub does not re-run a pull request's checks when its base moves. With several skill-touching pull
+requests open at once, give each a distinct version, or bump once more after the last one lands.
 
 ## Benchmarks
 

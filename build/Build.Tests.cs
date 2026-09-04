@@ -20,7 +20,7 @@ partial class Build
     AbsolutePath TestResultDirectory => OutputDirectory / "test-results";
     
     Target Test => _ => _
-        .DependsOn(Compile)
+        .DependsOn(Compile, VerifySkills)
         .Produces(TestResultDirectory / "*.trx")
         .Produces(TestResultDirectory / "*.xml")
         .Produces(TestResultDirectory / "*.html")
