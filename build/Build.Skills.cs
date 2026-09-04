@@ -140,7 +140,7 @@ partial class Build
     /// </summary>
     [UsedImplicitly]
     Target VerifySkills => _ => _
-        .DependsOn(CheckSkillDocuments, CheckPluginManifests, CheckPluginVersion)
+        .DependsOn(CheckSkillDocuments, CheckSkillCatalogue, CheckPluginManifests, CheckPluginVersion)
         .Unlisted();
 
     /// <summary>
@@ -261,6 +261,222 @@ partial class Build
                 previous,
                 head);
         });
+
+    /// <summary>The reference whose catalogue section is generated from the library itself.</summary>
+    AbsolutePath SkillCheatsheet => SkillsDirectory / PluginName / "references" / "cheatsheet.md";
+
+    /// <summary>Opens the generated region of <see cref="SkillCheatsheet"/>.</summary>
+    const string CatalogueBeginMarker = "<!-- BEGIN GENERATED CATALOGUE -->";
+
+    /// <summary>Closes the generated region of <see cref="SkillCheatsheet"/>.</summary>
+    const string CatalogueEndMarker = "<!-- END GENERATED CATALOGUE -->";
+
+    /// <summary>
+    /// The order the catalogue's areas are rendered in, from the broadly useful to the niche. An area
+    /// missing from here is appended rather than dropped, so a contract in a brand new namespace
+    /// still reaches the catalogue — and the gate still notices it.
+    /// </summary>
+    static readonly string[] CatalogueAreaOrder =
+        [CoreArea, "Text", "Numeric", "Struct", "Collections", "Web", "Streams", "IO"];
+
+    /// <summary>Readable headings for the areas; anything absent is titled by its namespace.</summary>
+    static readonly Dictionary<string, string> CatalogueAreaHeadings = new()
+    {
+        // Not "the shared chain": `Collection` also lives in the root namespace, and it is a base
+        // for the collection contracts rather than something every contract inherits.
+        [CoreArea] = "Core",
+        ["Struct"] = "Values, dates and times",
+        ["Collections"] = "Collections",
+        ["Web"] = "URIs",
+        ["Streams"] = "Streams",
+        ["IO"] = "Files and directories"
+    };
+
+    /// <summary>
+    /// Regenerates the catalogue in <see cref="SkillCheatsheet"/> from the built library. Run it
+    /// after adding or removing a check; <see cref="CheckSkillCatalogue"/> fails the build until you
+    /// have.
+    /// </summary>
+    [UsedImplicitly]
+    Target SyncSkillCatalogue => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            var content = SkillCheatsheet.ReadAllText();
+            var updated = SpliceCatalogue(content, RenderCatalogue());
+
+            if (updated == content)
+            {
+                Log.Information("{File} is already current.", Relative(SkillCheatsheet));
+                return;
+            }
+
+            SkillCheatsheet.WriteAllText(updated);
+            Log.Information("Regenerated the catalogue in {File}.", Relative(SkillCheatsheet));
+        });
+
+    /// <summary>
+    /// Fails when the library has a contract or a check the skill's cheatsheet does not, or the
+    /// other way round.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The cheatsheet is how an agent answers "does this check exist?" without guessing, so a
+    /// catalogue that has fallen behind the library is worse than no catalogue: it reads as
+    /// authoritative and is wrong. Adding a check and forgetting the skill is the easiest possible
+    /// miss — the two live nowhere near each other, and every test still passes.
+    /// </para>
+    /// <para>
+    /// So the section is generated from the built assembly by the same reflection that produces
+    /// <c>docs/SupportedContracts.md</c>, and this fails the build when the committed copy has
+    /// drifted, naming the contracts that differ rather than just saying the file changed.
+    /// </para>
+    /// </remarks>
+    [UsedImplicitly]
+    Target CheckSkillCatalogue => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            var expected = RenderCatalogue();
+            var found = ExtractCatalogue(SkillCheatsheet.ReadAllText());
+
+            Assert.True(
+                found != null,
+                $"{Relative(SkillCheatsheet)} has no generated catalogue region. It must contain "
+                + $"{CatalogueBeginMarker} and {CatalogueEndMarker}; restore them and run "
+                + $"./build.sh {nameof(SyncSkillCatalogue)}.");
+
+            var differences = CatalogueDifferences(expected, found);
+
+            Assert.True(
+                differences.Count == 0,
+                $"The skill's catalogue no longer matches the library:{Environment.NewLine}"
+                + string.Join(Environment.NewLine, differences.Select(x => $"  {x}"))
+                + Environment.NewLine + Environment.NewLine
+                + $"Run ./build.sh {nameof(SyncSkillCatalogue)} and commit the result, then bump the "
+                + "plugin version so the change reaches agents holding the old copy."
+                + Environment.NewLine
+                + "The catalogue is what an agent trusts instead of guessing a check name, so one "
+                + "that has fallen behind is worse than none.");
+
+            Log.Information("The skill's catalogue matches the library.");
+        });
+
+    /// <summary>The catalogue as the library currently defines it, newline-normalised.</summary>
+    string RenderCatalogue()
+    {
+        var contracts = ExtractClasses();
+        var areas = contracts
+            .GroupBy(x => x.Area)
+            .OrderBy(x => Array.IndexOf(CatalogueAreaOrder, x.Key) is var index && index >= 0
+                ? index
+                : CatalogueAreaOrder.Length)
+            .ThenBy(x => x.Key, StringComparer.Ordinal);
+
+        var lines = new List<string>();
+
+        foreach (var area in areas)
+        {
+            lines.Add(string.Empty);
+            lines.Add($"### {(CatalogueAreaHeadings.TryGetValue(area.Key, out var heading) ? heading : area.Key)}");
+            lines.Add(string.Empty);
+
+            // Alphabetical, so the rendering does not depend on the order reflection happens to
+            // return types in — a generated file a gate compares against has to be reproducible.
+            foreach (var contract in area.OrderBy(x => x.Name, StringComparer.Ordinal))
+            {
+                var extends = contract.Extends == null ? string.Empty : $" (extends `{contract.Extends}`)";
+                var checks = string.Join(", ", contract.Contracts.Select(x => $"`{x}`"));
+                lines.Add($"- **`{contract.Name}`**{extends} — {checks}");
+            }
+        }
+
+        return string.Join("\n", lines).Trim('\n');
+    }
+
+    /// <summary>The generated region of <paramref name="content"/>, or <c>null</c> when it has none.</summary>
+    static string ExtractCatalogue(string content)
+    {
+        var normalised = content.Replace("\r\n", "\n");
+        var start = normalised.IndexOf(CatalogueBeginMarker, StringComparison.Ordinal);
+        var end = normalised.IndexOf(CatalogueEndMarker, StringComparison.Ordinal);
+
+        if (start < 0 || end < start) return null;
+
+        return normalised[(start + CatalogueBeginMarker.Length)..end].Trim('\n');
+    }
+
+    /// <summary>
+    /// <paramref name="content"/> with its generated region replaced by <paramref name="catalogue"/>,
+    /// keeping whichever newline the file already uses so a regeneration on Windows does not rewrite
+    /// every line of it.
+    /// </summary>
+    string SpliceCatalogue(string content, string catalogue)
+    {
+        var start = content.IndexOf(CatalogueBeginMarker, StringComparison.Ordinal);
+        var end = content.IndexOf(CatalogueEndMarker, StringComparison.Ordinal);
+
+        Assert.True(
+            start >= 0 && end > start,
+            $"{Relative(SkillCheatsheet)} has no generated catalogue region to write into. It must "
+            + $"contain {CatalogueBeginMarker} and {CatalogueEndMarker}.");
+
+        var newline = content.Contains("\r\n") ? "\r\n" : "\n";
+        var body = catalogue.Replace("\n", newline);
+
+        return content[..(start + CatalogueBeginMarker.Length)]
+            + newline + newline + body + newline + newline
+            + content[end..];
+    }
+
+    /// <summary>
+    /// How <paramref name="found"/> differs from <paramref name="expected"/>, described per contract
+    /// so the message says what changed in the library rather than that a file changed.
+    /// </summary>
+    static List<string> CatalogueDifferences(string expected, string found)
+    {
+        var differences = new List<string>();
+
+        if (expected == found) return differences;
+
+        var expectedContracts = CatalogueContracts(expected);
+        var foundContracts = CatalogueContracts(found);
+
+        foreach (var contract in expectedContracts.Where(x => !foundContracts.ContainsKey(x.Key)))
+            differences.Add($"`{contract.Key}` is in the library but not in the cheatsheet.");
+
+        foreach (var contract in foundContracts.Where(x => !expectedContracts.ContainsKey(x.Key)))
+            differences.Add($"`{contract.Key}` is in the cheatsheet but not in the library.");
+
+        foreach (var contract in expectedContracts.Where(x =>
+                     foundContracts.TryGetValue(x.Key, out var line) && line != x.Value))
+        {
+            differences.Add(
+                $"`{contract.Key}`'s checks changed."
+                + $"{Environment.NewLine}    library:    {contract.Value}"
+                + $"{Environment.NewLine}    cheatsheet: {foundContracts[contract.Key]}");
+        }
+
+        // A heading moved or an area appeared, with every contract line still identical.
+        if (differences.Count == 0)
+            differences.Add("the catalogue's sections differ from the generated ones.");
+
+        return differences;
+    }
+
+    /// <summary>The contract lines of a rendered catalogue, keyed by contract name.</summary>
+    static Dictionary<string, string> CatalogueContracts(string catalogue)
+    {
+        var contracts = new Dictionary<string, string>(StringComparer.Ordinal);
+
+        foreach (var line in catalogue.Split('\n').Select(x => x.Trim()))
+        {
+            var match = Regex.Match(line, @"^- \*\*`(?<name>[^`]+)`\*\*");
+            if (match.Success) contracts[match.Groups["name"].Value] = line;
+        }
+
+        return contracts;
+    }
 
     /// <summary>
     /// Archives the plugin, so a release carries a copy of exactly what it published. Attached to the

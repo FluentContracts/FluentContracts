@@ -23,13 +23,21 @@ This file is the curated summary of notable changes on top of those.
 
 ### Internal
 - The build gained the plumbing that keeps the skill honest, all of it part of `Test` so the
-  existing `pr` and `release` workflows already run it: `CheckSkillDocuments` validates `skills/`
-  against the Agent Skills specification, `CheckPluginManifests` fails when the five manifests
-  disagree about the version, the name or where the plugin lives, and `CheckPluginVersion` fails
-  when `skills/` changed against the base ref without the plugin version moving **up** — a bump that
-  is missed ships skills that never reach an agent still holding the old copy. `PackPlugin` archives
-  the plugin onto the GitHub release next to the packages, and `TagPluginRelease` tags the commit
-  that published a plugin version as `plugin-v<version>` so an installation can be pinned to it.
+  existing `pr` and `release` workflows already run it. `CheckSkillCatalogue` fails when the library
+  has a contract or check the skill's cheatsheet does not, or the other way round — the cheatsheet is
+  what an agent consults instead of guessing a check name, so one that has fallen behind is worse
+  than none, and adding a check while forgetting the skill is the easiest possible miss. Its
+  catalogue section is generated from the built assembly by `SyncSkillCatalogue`, grouped by the
+  namespace each contract is declared in. `CheckSkillDocuments` validates `skills/` against the Agent
+  Skills specification, `CheckPluginManifests` fails when the five manifests disagree about the
+  version, the name or where the plugin lives, and `CheckPluginVersion` fails when `skills/` changed
+  against the base ref without the plugin version moving **up** — a bump that is missed ships skills
+  that never reach an agent still holding the old copy. `PackPlugin` archives the plugin onto the
+  GitHub release next to the packages, and `TagPluginRelease` tags the commit that published a plugin
+  version as `plugin-v<version>` so an installation can be pinned to it.
+- `docs/SupportedContracts.md` listed `get_And` on `Base`, the compiler-generated getter behind the
+  `And` property, as though it were a check. The generator now skips special-name members, so it is
+  gone from that file and never reached the skill's catalogue.
 
 ## [4.0.0] / 2026-09-02
 ### Breaking

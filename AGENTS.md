@@ -32,6 +32,7 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
 | `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
 | `docs/SupportedContracts.md` | **Generated** by the build — never hand-edit |
+| `skills/fluentcontracts/references/cheatsheet.md` | Its catalogue section is **generated** — never hand-edit inside the markers |
 
 ## Prerequisites
 
@@ -253,6 +254,11 @@ CS1591, and warnings are errors here, so the build fails. Nothing suppresses it 
 Tests are required for every new check and every bug fix; a pull request without them will
 not be accepted.
 
+A new check also has to reach the **agent skill**, whose cheatsheet is what a coding agent consults
+instead of guessing a check name. That part is generated: run `./build.sh SyncSkillCatalogue`, commit
+the result, and bump the plugin version. `CheckSkillCatalogue` fails the build until you have — see
+[The agent skill](#the-agent-skill).
+
 - One file per contract, under `tests/FluentContracts.Tests/<area>/`, annotated with
   `[ContractTest("Name")]`.
 - Use the `TestContract<T, TContract, TException>` harness in `Tests.cs`. It asserts the
@@ -389,7 +395,8 @@ needs.
 
 ### Changing a skill
 
-1. Edit under `skills/`. There is nowhere else to edit; that is the point of the layout.
+1. Edit under `skills/`. There is nowhere else to edit; that is the point of the layout. The one
+   exception is the cheatsheet's catalogue section, which is generated — see below.
 2. **Bump the version by hand in all four manifests** — the two plugin manifests, the entry in
    `.claude-plugin/marketplace.json`, and `gemini-extension.json`. Additive content is a minor bump;
    a correction is a patch.
@@ -399,6 +406,35 @@ decide whether an installed plugin is stale, so skills edited without one never 
 already holds the old copy. Nothing downstream complains — the pull request is green and the skills
 are correct in the repository.
 
+### The catalogue is generated from the library
+
+`references/cheatsheet.md` carries a catalogue of every contract and the checks it adds, between
+`<!-- BEGIN GENERATED CATALOGUE -->` and `<!-- END GENERATED CATALOGUE -->`. **Never hand-edit inside
+those markers.** `./build.sh SyncSkillCatalogue` regenerates the section from the built assembly, by
+the same reflection that produces `docs/SupportedContracts.md`, grouping contracts by the namespace
+they are declared in — so a contract added under a new `Contracts/<Area>/` folder lands in its own
+section with nothing to maintain by hand.
+
+`CheckSkillCatalogue` fails the build when the committed catalogue no longer matches the library, and
+names the contracts that differ rather than saying a file changed:
+
+```
+The skill's catalogue no longer matches the library:
+  `Int`'s checks changed.
+    library:    - **`Int`** … `BeLessThan`, `BePerfectSquare`
+    cheatsheet: - **`Int`** … `BeLessThan`
+```
+
+This is the gate that matters most, and it is the one that is easiest to be sceptical of, so: the
+cheatsheet is how an agent answers *"does this check exist?"* without guessing. A catalogue that has
+fallen behind the library is **worse than no catalogue** — it reads as authoritative and is wrong,
+and the agent has no way to tell. Adding a check and forgetting the skill is the easiest possible
+miss, because the two live nowhere near each other and every test still passes.
+
+Regenerating changes `skills/`, so `CheckPluginVersion` will then require a plugin version bump in
+the same change. That is intended, not an annoyance to route around: agents holding the old plugin
+would otherwise keep the stale catalogue. Adding checks is a minor bump.
+
 ### What the build enforces
 
 All of it hangs off `Test`, so the existing `pr` and `release` workflows already run it and neither
@@ -407,10 +443,12 @@ the workflows nor the attributes that generate them had to change.
 | Target | Fails when |
 | --- | --- |
 | `CheckSkillDocuments` | a skill violates the [Agent Skills specification](https://agentskills.io/specification) — most often a frontmatter `name` that no longer matches its directory, which every harness requires and which makes the skill silently fail to load |
+| `CheckSkillCatalogue` | the library has a contract or check the cheatsheet does not, or the other way round |
 | `CheckPluginManifests` | the manifests disagree about the version, the plugin's name, or where it lives |
 | `CheckPluginVersion` | what the plugin publishes changed against the base ref and the version did not move **up** |
 
-Two more targets produce rather than check. `PackPlugin` archives the plugin into `output/plugins`,
+Three more targets produce rather than check. `SyncSkillCatalogue` regenerates the cheatsheet's
+catalogue — it is the generator, so fix a stale catalogue by running it, never by hand. `PackPlugin` archives the plugin into `output/plugins`,
 and the release attaches it next to the packages; it stages the manifests and `skills/` into a
 temporary tree rather than zipping the root, since the root is the whole library.
 `TagPluginRelease` tags the commit that published a plugin version as `plugin-v<version>`, so an
