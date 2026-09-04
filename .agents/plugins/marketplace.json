@@ -8,7 +8,7 @@
       "name": "fluentcontracts",
       "source": {
         "source": "local",
-        "path": "./plugins/fluentcontracts"
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -25,17 +25,27 @@ using Utils;
 /// </summary>
 /// <remarks>
 /// <para>
-/// <c>skills/</c> is the source of truth, and <c>plugins/fluentcontracts/skills/</c> is a committed
-/// copy of it. A copy rather than a symlink, because a Windows clone made without
-/// <c>core.symlinks</c> materialises a link as a small text file holding the link target — and the
-/// plugin then ships no skills at all.
+/// <b>The repository root is the plugin.</b> There is exactly one <c>skills/</c> tree and all three
+/// harnesses read it in place: the marketplace entry's source resolves to the marketplace root, so
+/// Claude Code's default <c>skills/</c> scan finds it; the Codex manifest points at <c>./skills/</c>
+/// from the same root; and the Gemini extension manifest discovers it there too. Hence the plugin
+/// manifests sitting at the root rather than under a plugin directory of their own.
 /// </para>
 /// <para>
-/// All of it is a build target because none of it fails on its own. The folders are loaded directly
-/// by three harnesses, so a frontmatter name that no longer matches its directory silently never
-/// loads; the copy can drift from its source with a green build; and the version the manifests carry
-/// is bumped by hand, so skills shipped without a bump never reach an agent already holding the old
-/// copy. Each one is a change that looks correct in the repository and reaches nobody.
+/// A plugin directory holding a second copy of the tree is the obvious alternative and was the first
+/// shape this took. It is worse twice over: the copy is real duplication that has to be regenerated
+/// and gated against drift, and it buys nothing the root layout does not already give. Replacing the
+/// copy with a <em>symlink</em> would be worse still — Git for Windows tests at clone time whether it
+/// can create links, and where it cannot it sets <c>core.symlinks=false</c> and writes the link out
+/// as a small text file holding the target path, so the plugin would ship no skills at all with
+/// nothing anywhere to say so.
+/// </para>
+/// <para>
+/// What remains is a build target because none of it fails on its own. The folders are loaded
+/// directly by three harnesses, so a frontmatter name that no longer matches its directory silently
+/// never loads; and the version the manifests carry is bumped by hand, so skills shipped without a
+/// bump never reach an agent already holding the old copy. Each is a change that looks correct in
+/// the repository and reaches nobody.
 /// </para>
 /// </remarks>
 partial class Build
@@ -43,17 +53,11 @@ partial class Build
     /// <summary>The skills tree that every distribution surface serves.</summary>
     AbsolutePath SkillsDirectory => RootDirectory / "skills";
 
-    /// <summary>The plugin directory the marketplaces install from.</summary>
-    AbsolutePath PluginDirectory => RootDirectory / "plugins" / PluginName;
-
-    /// <summary>The committed copy of <see cref="SkillsDirectory"/> that the plugin ships.</summary>
-    AbsolutePath PluginSkillsDirectory => PluginDirectory / "skills";
-
     /// <summary>The plugin's own manifest, whose version the marketplace reads.</summary>
-    AbsolutePath PluginManifest => PluginDirectory / ".claude-plugin" / "plugin.json";
+    AbsolutePath PluginManifest => RootDirectory / ".claude-plugin" / "plugin.json";
 
     /// <summary>The Codex-native copy of the plugin manifest.</summary>
-    AbsolutePath CodexPluginManifest => PluginDirectory / ".codex-plugin" / "plugin.json";
+    AbsolutePath CodexPluginManifest => RootDirectory / ".codex-plugin" / "plugin.json";
 
     /// <summary>The Claude Code marketplace manifest listing the plugin.</summary>
     AbsolutePath MarketplaceManifest => RootDirectory / ".claude-plugin" / "marketplace.json";
@@ -70,11 +74,37 @@ partial class Build
     /// <summary>The archive <see cref="PackPlugin"/> produced, if it ran.</summary>
     IEnumerable<AbsolutePath> PluginPackageFiles => PluginPackagesDirectory.GlobFiles("*.zip");
 
-    /// <summary>The name every manifest must agree on; also the plugin directory's own name.</summary>
+    /// <summary>
+    /// The files at the repository root that belong to the plugin rather than to the library. The
+    /// root is the plugin, so an archive of it has to be assembled from a list rather than taken
+    /// wholesale.
+    /// </summary>
+    IReadOnlyList<AbsolutePath> PluginRootFiles =>
+    [
+        PluginManifest,
+        CodexPluginManifest,
+        MarketplaceManifest,
+        AgentsMarketplaceManifest,
+        GeminiExtensionManifest,
+        RootDirectory / "LICENSE"
+    ];
+
+    /// <summary>The name every manifest must agree on.</summary>
     const string PluginName = "fluentcontracts";
 
-    /// <summary>The plugin's location, as the two marketplace manifests spell it.</summary>
-    const string PluginSourcePath = "./plugins/fluentcontracts";
+    /// <summary>
+    /// The plugin's location, as the two marketplace manifests spell it: the marketplace root, which
+    /// is the repository root, so that the one <see cref="SkillsDirectory"/> is what gets served.
+    /// </summary>
+    /// <remarks>
+    /// Documented for Claude Code, which resolves a marketplace-root source and then runs its default
+    /// <c>skills/</c> scan against it. Codex's own documentation requires only that the path be
+    /// relative to the marketplace root, be <c>./</c>-prefixed and stay inside that root — all of
+    /// which the root itself satisfies — but every example it gives is a subdirectory, so the root
+    /// form is undocumented rather than blessed there. If it ever proves unsupported, the fallback is
+    /// a Codex-only plugin directory carrying its own copy of the skills.
+    /// </remarks>
+    const string PluginSourcePath = "./";
 
     /// <summary>Where the Codex manifest points for the skills it serves.</summary>
     const string CodexSkillsPath = "./skills/";
@@ -110,25 +140,8 @@ partial class Build
     /// </summary>
     [UsedImplicitly]
     Target VerifySkills => _ => _
-        .DependsOn(CheckSkillDocuments, CheckPluginSkillsSync, CheckPluginManifests, CheckPluginVersion)
+        .DependsOn(CheckSkillDocuments, CheckPluginManifests, CheckPluginVersion)
         .Unlisted();
-
-    /// <summary>
-    /// Regenerates <see cref="PluginSkillsDirectory"/> from <see cref="SkillsDirectory"/>. Run it
-    /// after editing a skill; <see cref="CheckPluginSkillsSync"/> fails the build until you have.
-    /// </summary>
-    [UsedImplicitly]
-    Target SyncPluginSkills => _ => _
-        .Executes(() =>
-        {
-            CopyDirectory(SkillsDirectory, PluginSkillsDirectory);
-
-            var files = RelativeFiles(PluginSkillsDirectory);
-            foreach (var file in files)
-                Log.Information("Synced {File}", $"{Relative(PluginSkillsDirectory)}/{file}");
-
-            ReportSummary(_ => _.AddPair("Synced", files.Count.ToString()));
-        });
 
     /// <summary>
     /// Validates every skill document against the Agent Skills specification.
@@ -151,27 +164,6 @@ partial class Build
             Log.Information(
                 "{Count} skill(s) conform to the Agent Skills specification.",
                 Directory.GetDirectories(SkillsDirectory).Length);
-        });
-
-    /// <summary>
-    /// Fails when the plugin's committed copy of the skills has drifted from its source.
-    /// </summary>
-    [UsedImplicitly]
-    Target CheckPluginSkillsSync => _ => _
-        .Executes(() =>
-        {
-            var drift = FindSkillsDrift();
-
-            Assert.True(
-                drift.Count == 0,
-                $"{Relative(PluginSkillsDirectory)} has drifted from {Relative(SkillsDirectory)}:"
-                + Environment.NewLine
-                + string.Join(Environment.NewLine, drift.Select(x => $"  {x}"))
-                + Environment.NewLine + Environment.NewLine
-                + $"Run ./build.sh {nameof(SyncPluginSkills)} and commit the result. "
-                + "Never hand-edit the copy.");
-
-            Log.Information("The plugin's skills are an exact copy of {Directory}.", Relative(SkillsDirectory));
         });
 
     /// <summary>
@@ -274,6 +266,11 @@ partial class Build
     /// Archives the plugin, so a release carries a copy of exactly what it published. Attached to the
     /// GitHub release next to the packages.
     /// </summary>
+    /// <remarks>
+    /// Staged from <see cref="PluginRootFiles"/> and <see cref="SkillsDirectory"/> rather than zipped
+    /// wholesale: the plugin's root is the repository's root, and an archive of that would be the
+    /// whole library.
+    /// </remarks>
     [UsedImplicitly]
     Target PackPlugin => _ => _
         .TriggeredBy(Pack)
@@ -283,16 +280,31 @@ partial class Build
         {
             PluginPackagesDirectory.CreateOrCleanDirectory();
 
-            var archive = PluginPackagesDirectory / $"{PluginName}-plugin-{PluginVersion}.zip";
+            var staged = PluginPackagesDirectory / "staging";
+            staged.CreateOrCleanDirectory();
 
-            ZipFile.CreateFromDirectory(
-                PluginDirectory,
-                archive,
-                CompressionLevel.Optimal,
-                includeBaseDirectory: false);
+            foreach (var file in PluginRootFiles)
+                CopyInto(file, staged / Relative(file));
+
+            foreach (var file in RelativeFiles(SkillsDirectory))
+                CopyInto(SkillsDirectory / file, staged / Relative(SkillsDirectory) / file);
+
+            var archive = PluginPackagesDirectory / $"{PluginName}-plugin-{PluginVersion}.zip";
+            ZipFile.CreateFromDirectory(staged, archive, CompressionLevel.Optimal, includeBaseDirectory: false);
+
+            // The staging tree is an implementation detail; leaving it beside the archive would put a
+            // loose second copy of the plugin into the release artifacts.
+            staged.DeleteDirectory();
 
             ReportSummary(_ => _.AddPair("Plugin", $"{PluginName} {PluginVersion}"));
         });
+
+    /// <summary>Copies <paramref name="source"/> to <paramref name="target"/>, creating its parent.</summary>
+    static void CopyInto(AbsolutePath source, AbsolutePath target)
+    {
+        Directory.CreateDirectory(Path.GetDirectoryName(target));
+        File.Copy(source, target, overwrite: true);
+    }
 
     /// <summary>
     /// Tags the commit that published a plugin version, so an installation can be pinned to it:
@@ -441,38 +453,6 @@ partial class Build
         return problems;
     }
 
-    List<string> FindSkillsDrift()
-    {
-        var drift = new List<string>();
-        var source = RelativeFiles(SkillsDirectory);
-        var copy = RelativeFiles(PluginSkillsDirectory);
-        var copied = new HashSet<string>(copy, StringComparer.Ordinal);
-
-        foreach (var file in source)
-        {
-            if (!copied.Contains(file))
-            {
-                drift.Add($"{Relative(PluginSkillsDirectory)}/{file} is missing.");
-                continue;
-            }
-
-            if (Normalize(File.ReadAllText(SkillsDirectory / file)) !=
-                Normalize(File.ReadAllText(PluginSkillsDirectory / file)))
-            {
-                drift.Add(
-                    $"{Relative(PluginSkillsDirectory)}/{file} differs from "
-                    + $"{Relative(SkillsDirectory)}/{file}.");
-            }
-        }
-
-        var kept = new HashSet<string>(source, StringComparer.Ordinal);
-        drift.AddRange(copy
-            .Where(x => !kept.Contains(x))
-            .Select(x => $"{Relative(PluginSkillsDirectory)}/{x} is not in {Relative(SkillsDirectory)}/."));
-
-        return drift;
-    }
-
     string PluginBumpFailure(IReadOnlyList<string> changed, string previous, string head)
     {
         var lines = new List<string>
@@ -557,12 +537,12 @@ partial class Build
         var untracked = RunGit("ls-files", "--others", "--exclude-standard");
         Assert.True(untracked.ExitCode == 0, $"git ls-files failed: {untracked.Error}");
 
-        var published = new[] { $"{Relative(SkillsDirectory)}/", $"{Relative(PluginSkillsDirectory)}/" };
+        var published = $"{Relative(SkillsDirectory)}/";
 
         return $"{diff.Output}\n{untracked.Output}"
             .Split('\n')
             .Select(x => x.Trim())
-            .Where(x => x.Length > 0 && published.Any(prefix => x.StartsWith(prefix, StringComparison.Ordinal)))
+            .Where(x => x.StartsWith(published, StringComparison.Ordinal))
             .Distinct(StringComparer.Ordinal)
             .OrderBy(x => x, StringComparer.Ordinal)
             .ToList();
@@ -661,8 +641,6 @@ partial class Build
     /// <summary>The path as it is written in the repository, so a message can be pasted into git.</summary>
     string Relative(AbsolutePath path) => Path.GetRelativePath(RootDirectory, path).Replace('\\', '/');
 
-    static string Normalize(string content) => content.Replace("\r\n", "\n");
-
     static List<string> RelativeFiles(AbsolutePath directory)
     {
         if (!Directory.Exists(directory)) return [];
@@ -671,18 +649,6 @@ partial class Build
             .Select(x => Path.GetRelativePath(directory, x).Replace('\\', '/'))
             .OrderBy(x => x, StringComparer.Ordinal)
             .ToList();
-    }
-
-    static void CopyDirectory(AbsolutePath source, AbsolutePath destination)
-    {
-        destination.CreateOrCleanDirectory();
-
-        foreach (var file in RelativeFiles(source))
-        {
-            var target = (string)(destination / file);
-            Directory.CreateDirectory(Path.GetDirectoryName(target));
-            File.Copy(source / file, target, overwrite: true);
-        }
     }
 
     /// <summary>

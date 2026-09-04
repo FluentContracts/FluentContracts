@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "fluentcontracts",
-      "source": "./plugins/fluentcontracts",
+      "source": "./",
       "description": "Agent skill for FluentContracts — write and apply Must() guard chains in C#, pick the right check, and add reusable rules as specifications.",
       "version": "1.0.0",
       "author": {

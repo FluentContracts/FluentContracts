@@ -28,8 +28,7 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | `tests/FluentContracts.Tests` | xUnit test suite |
 | `benchmarks/FluentContracts.Benchmarks` | BenchmarkDotNet suite — see [Benchmarks](#benchmarks) |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
-| `skills/` | The agent skill — the source of truth; see [The agent skill](#the-agent-skill) |
-| `plugins/fluentcontracts/` | The plugin the marketplaces install; its `skills/` is **generated** |
+| `skills/` | The agent skill, served in place to every harness; see [The agent skill](#the-agent-skill) |
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
 | `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
 | `docs/SupportedContracts.md` | **Generated** by the build — never hand-edit |
@@ -361,23 +360,37 @@ which check to reach for, where the message goes, the one bracketed-set overload
 taxonomy, the null and NaN policy, and specifications. `AGENTS.md` is guidance for someone working in
 this repository; the skill is the same knowledge sent to where the library is actually used.
 
-`skills/` is the source of truth. It is published to three harnesses:
+**The repository root is the plugin.** There is exactly one copy of `skills/` and all three harnesses
+read it in place, which is why the plugin manifests sit at the root rather than under a plugin
+directory of their own:
 
-| Surface | Manifest |
-| --- | --- |
-| Claude Code | `plugins/fluentcontracts/.claude-plugin/plugin.json`, listed in `.claude-plugin/marketplace.json` |
-| Codex | `plugins/fluentcontracts/.codex-plugin/plugin.json`, listed in `.agents/plugins/marketplace.json` |
-| Gemini CLI | `gemini-extension.json` at the root, which auto-discovers `skills/` |
+| Surface | Manifest | How it finds the skills |
+| --- | --- | --- |
+| Claude Code | `.claude-plugin/plugin.json`, listed in `.claude-plugin/marketplace.json` | the entry's `source` is `./`, the marketplace root, and Claude Code's default `skills/` scan runs against it |
+| Codex | `.codex-plugin/plugin.json`, listed in `.agents/plugins/marketplace.json` | the manifest's `skills` is `./skills/`, relative to the same root |
+| Gemini CLI | `gemini-extension.json` | it discovers `skills/` at the root |
 
-`plugins/fluentcontracts/skills/` is a **committed copy** of `skills/`, not a symlink: a Windows
-clone made without `core.symlinks` materialises a link as a small text file holding the link target,
-and the plugin then ships no skills at all.
+Do not reintroduce a plugin directory holding a second copy of the tree. It was the first shape this
+took and it is worse twice over: the copy is real duplication that has to be regenerated and gated
+against drift, and it buys nothing this layout does not already give.
+
+Replacing such a copy with a **symlink** is worse still, which is worth knowing before anyone
+suggests it. Git for Windows tests at clone time whether it can create links; where it cannot — the
+default, absent Developer Mode — it sets `core.symlinks=false` and writes the link out as a small
+text file holding the target path. The plugin would ship no skills at all, on exactly the platform
+least likely to be the one you tested on, with nothing anywhere to say so.
+
+One caveat is worth recording. A marketplace-root `source` is documented for Claude Code. Codex
+requires only that `source.path` be relative to the marketplace root, `./`-prefixed and inside that
+root — all of which `./` satisfies — but every example in its documentation is a subdirectory, so the
+root form is undocumented rather than blessed there. If it turns out to be unsupported, the fallback
+is a Codex-only plugin directory carrying its own copy of the skills, and the drift gate that a copy
+needs.
 
 ### Changing a skill
 
-1. Edit under `skills/`. Never hand-edit the copy under `plugins/`.
-2. Run `./build.sh SyncPluginSkills` to regenerate the copy, and commit it.
-3. **Bump the version by hand in all four manifests** — the two plugin manifests, the entry in
+1. Edit under `skills/`. There is nowhere else to edit; that is the point of the layout.
+2. **Bump the version by hand in all four manifests** — the two plugin manifests, the entry in
    `.claude-plugin/marketplace.json`, and `gemini-extension.json`. Additive content is a minor bump;
    a correction is a patch.
 
@@ -394,16 +407,15 @@ the workflows nor the attributes that generate them had to change.
 | Target | Fails when |
 | --- | --- |
 | `CheckSkillDocuments` | a skill violates the [Agent Skills specification](https://agentskills.io/specification) — most often a frontmatter `name` that no longer matches its directory, which every harness requires and which makes the skill silently fail to load |
-| `CheckPluginSkillsSync` | the committed copy has drifted from `skills/` |
 | `CheckPluginManifests` | the manifests disagree about the version, the plugin's name, or where it lives |
 | `CheckPluginVersion` | what the plugin publishes changed against the base ref and the version did not move **up** |
 
-Three more targets produce rather than check. `SyncPluginSkills` regenerates the committed copy — it
-is the generator, so fix drift by running it, never by hand. `PackPlugin` archives the plugin into
-`output/plugins` and the release attaches it next to the packages. `TagPluginRelease` tags the commit
-that published a plugin version as `plugin-v<version>`, so an installation can be pinned to it; it is
-idempotent, because every merge into `master` runs it while the version only moves when a skill
-changes.
+Two more targets produce rather than check. `PackPlugin` archives the plugin into `output/plugins`,
+and the release attaches it next to the packages; it stages the manifests and `skills/` into a
+temporary tree rather than zipping the root, since the root is the whole library.
+`TagPluginRelease` tags the commit that published a plugin version as `plugin-v<version>`, so an
+installation can be pinned to it; it is idempotent, because every merge into `master` runs it while
+the version only moves when a skill changes.
 
 `CheckPluginVersion` is the one that needs history, because "the content changed and the version did
 not" is not a property of one snapshot. It compares against `FLUENTCONTRACTS_PLUGIN_BASE_REF`, else
