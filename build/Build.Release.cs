@@ -134,6 +134,98 @@ partial class Build
     }
 
     /// <summary>
+    /// The paths whose content ends up in the package: the library and the analyzers, the readme
+    /// nuget.org shows, the icon, and the properties that describe the package.
+    /// </summary>
+    static readonly string[] PackagedPaths =
+    [
+        "src/",
+        "docs/PackageReadme.md",
+        "assets/",
+        "Directory.Build.props"
+    ];
+
+    bool? _packageContentChanged;
+
+    /// <summary>
+    /// Whether anything that goes into the package changed since the last released version. Resolved
+    /// once: it costs two git invocations and more than one target asks.
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// <see cref="SkipReleaseLabel"/> is read off the pull request a merge came from, so a direct
+    /// push to the main branch has nothing to label — and the marker in a commit message is exactly
+    /// what nobody writes when editing a file through GitHub's web interface. That is how 4.0.1 was
+    /// published by a commit that only removed a link from <c>FUNDING.yml</c>: a functionally
+    /// identical republish of 4.0.0 that consumed a version number.
+    /// </para>
+    /// <para>
+    /// This decides from the diff instead of from someone remembering, which is the rule the label
+    /// has been approximating all along. The label stays for the other case: packaged content did
+    /// change, and you want to hold the release back anyway.
+    /// </para>
+    /// </remarks>
+    bool PackageContentChanged => _packageContentChanged ??= ResolvePackageContentChanged();
+
+    bool ResolvePackageContentChanged()
+    {
+        // Match version tags only. TagPluginRelease creates plugin-v<version> on every plugin bump,
+        // and a skill-only merge tags one without releasing a package — so the nearest tag by name
+        // can easily be a plugin tag, and diffing from it would start after packaged changes that
+        // have not been released yet.
+        var previous = RunGit("describe", "--tags", "--abbrev=0", "--match", "[0-9]*");
+
+        if (previous.ExitCode != 0)
+        {
+            // A check that cannot run must not silently stop a release.
+            Log.Warning(
+                "No previous version tag to compare against ({Reason}); releasing as usual.",
+                previous.Error.Trim());
+            return true;
+        }
+
+        var tag = previous.Output.Trim();
+
+        var arguments = new List<string> { "diff", "--name-only", $"{tag}..HEAD", "--" };
+        arguments.AddRange(PackagedPaths);
+
+        var diff = RunGit(arguments.ToArray());
+
+        if (diff.ExitCode != 0)
+        {
+            Log.Warning(
+                "Could not diff the packaged paths against {Tag} ({Reason}); releasing as usual.",
+                tag,
+                diff.Error.Trim());
+            return true;
+        }
+
+        var changed = diff.Output
+            .Split('\n')
+            .Select(x => x.Trim())
+            .Where(x => x.Length > 0)
+            .ToList();
+
+        if (changed.Count == 0)
+        {
+            Log.Information(
+                "Not releasing: nothing that goes into the package changed since {Tag}. The commits "
+                + "since then touch only paths the package does not carry ({Paths} are what it does).",
+                tag,
+                string.Join(", ", PackagedPaths));
+            return false;
+        }
+
+        Log.Information(
+            "{Count} packaged file(s) changed since {Tag}: {Files}",
+            changed.Count,
+            tag,
+            string.Join(", ", changed.Take(10)));
+
+        return true;
+    }
+
+    /// <summary>
     /// Stops a release whose pull request asked for a version bump that the commit being built does
     /// not carry.
     /// </summary>

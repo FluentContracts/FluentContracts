@@ -22,6 +22,9 @@ partial class Build
         .Requires(() => NuGetApiKey)
         // A merge can opt out of releasing; the build and tests still run.
         .OnlyWhenDynamic(() => !SkipRelease)
+        // And a merge that changed nothing the package carries has nothing to release, whatever it
+        // says: a direct push to the main branch has no pull request to label.
+        .OnlyWhenDynamic(() => PackageContentChanged)
         .Executes(() =>
         {
             DotNetNuGetPush(_ => _

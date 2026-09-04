@@ -10,6 +10,14 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Internal
+- **A merge that changes nothing the package carries no longer publishes one.** Before releasing,
+  the build diffs the packaged paths — `src/`, `docs/PackageReadme.md`, `assets/` and
+  `Directory.Build.props` — against the last version tag and stops if none of them moved (#82).
+  `4.0.1` was published by a commit that only removed a link from `FUNDING.yml`, and was a
+  byte-identical republish of `4.0.0`; the `skip-release` label could not have prevented it, because
+  the label is read off a pull request and a direct push to `master` has none. The label stays for
+  the case it is actually for: packaged content changed and the release should still be held back.
 
 ## [4.0.1] / 2026-09-04
 ### Added
