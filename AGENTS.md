@@ -78,9 +78,25 @@ This is the part most likely to surprise you.
 
 ### Merging without releasing
 
-Not every change belongs in a package. Put the **`skip-release` label** on the pull request and the
-merge is still built and tested on `master`, but nothing is packed, published, tagged or released, and
-the version does not move.
+**A merge that changes nothing the package carries does not release, whatever it says.** Before
+publishing, the build diffs the packaged paths — `src/`, `docs/PackageReadme.md`, `assets/` and
+`Directory.Build.props` — against the last version tag, and stops if none of them moved. Most changes
+that do not belong in a package are held back by this alone, with nothing to remember.
+
+That guard exists because the label below cannot cover every case. `skip-release` is read off a
+**pull request**, and a direct push to `master` has none — so a file edited through GitHub's web
+interface releases a package, which is exactly how `4.0.1` shipped as a byte-identical republish of
+`4.0.0` from a commit that only removed a link from `FUNDING.yml`. The marker in a commit message was
+the only defence, at the moment it is least likely to be written.
+
+The version tag it compares against is matched as `[0-9]*`, so the `plugin-v<version>` tags that
+[the agent skill](#the-agent-skill) creates are not mistaken for release tags. A check that cannot
+run — no tag reachable, a failing git invocation — says so and lets the release proceed, because
+silently blocking a real release is the worse failure.
+
+Put the **`skip-release` label** on the pull request for the other case: packaged content genuinely
+changed and you still want to hold the release back. The merge is still built and tested on `master`,
+but nothing is packed, published, tagged or released, and the version does not move.
 
 The release reads the label off the pull request the merge came from, resolved from the merge commit
 rather than from anything written in it. So the label is visible on the pull request right up to the
