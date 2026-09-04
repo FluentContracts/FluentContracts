@@ -1,0 +1,20 @@
+{
+  "name": "fluentcontracts",
+  "interface": {
+    "displayName": "FluentContracts"
+  },
+  "plugins": [
+    {
+      "name": "fluentcontracts",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

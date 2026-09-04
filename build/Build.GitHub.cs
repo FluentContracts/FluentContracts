@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Nuke.Common;
 using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.Tools.GitHub;
 using Octokit;
 
@@ -53,10 +55,17 @@ partial class Build
     bool Draft => false;
     
     
+    /// <summary>
+    /// The files attached to the GitHub release: the packages, plus the archived agent-skill plugin,
+    /// so a release carries a copy of exactly the plugin it published.
+    /// </summary>
+    IEnumerable<AbsolutePath> ReleaseAssetFiles => NuGetPackageFiles.Concat(PluginPackageFiles);
+
     [UsedImplicitly]
     Target CreateGitHubRelease => _ => _
         .Requires(() => GitHubActions.Instance.Token != null)
         .TriggeredBy(Publish)
+        .After(PackPlugin)
         .ProceedAfterFailure()
         .OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
         .OnlyWhenDynamic(() => !SkipRelease)
@@ -67,7 +76,7 @@ partial class Build
 
             var release = await GetOrCreateReleaseAsync();
 
-            var uploadTasks = NuGetPackageFiles.Select(async x =>
+            var uploadTasks = ReleaseAssetFiles.Select(async x =>
             {
                 await using var assetFile = File.OpenRead(x);
                 var asset = new ReleaseAssetUpload

@@ -1,0 +1,15 @@
+{
+  "name": "fluentcontracts",
+  "version": "1.0.0",
+  "description": "Agent skill for FluentContracts, the fluent argument-validation library for .NET. Bundles fluentcontracts — write and apply Must() guard chains, pick the right check, and add reusable rules as specifications.",
+  "author": {
+    "name": "FluentContracts",
+    "email": "fluentcontracts@pm.me",
+    "url": "https://github.com/FluentContracts/FluentContracts"
+  },
+  "homepage": "https://github.com/FluentContracts/FluentContracts",
+  "repository": "https://github.com/FluentContracts/FluentContracts",
+  "license": "MIT",
+  "keywords": ["fluentcontracts", "dotnet", "csharp", "validation", "guard-clauses", "skills"],
+  "skills": "./skills/"
+}

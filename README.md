@@ -207,6 +207,62 @@ chains with yours.
   moment; see [the analyzer project](src/FluentContracts.Analyzers/README.md)).
 - Every public member has XML documentation, so all of the above is in IntelliSense.
 
+## The agent skill
+
+The rules that make a chain correct — which check to reach for, where the message goes, which
+exception a check throws — are documented, but documentation does not reach a coding agent working in
+*your* project. So they ship as an **agent skill** too: `fluentcontracts`, packaged as a plugin for
+Claude Code, Codex and Gemini CLI.
+
+With it installed, an agent asked to add argument validation confirms a check exists instead of
+guessing one, chains from `Must()` and ends with `Value()`, keeps the message last, respects the
+single bracketed-set rule for `BeAnyOf` and its family, lets the check decide the exception, and
+reaches for `Satisfy` or an `ISpecification<T>` rather than dropping a raw `throw` into a chain.
+
+It is not in the NuGet package — it is served from this repository, so you install it once per
+machine and it applies to every project you use FluentContracts in.
+
+### Installing it
+
+**Claude Code** — add this repository as a plugin marketplace, then install the plugin:
+
+```
+/plugin marketplace add FluentContracts/FluentContracts
+/plugin install fluentcontracts@fluentcontracts
+```
+
+Pin it to a version by adding the marketplace at a tag instead —
+`FluentContracts/FluentContracts@plugin-v1.0.0`. Every merge that moves the plugin version tags it,
+whether or not a package was released alongside.
+
+**Codex** — the same repository is a Codex plugin marketplace:
+
+```
+codex plugin marketplace add https://github.com/FluentContracts/FluentContracts
+codex plugin install fluentcontracts
+```
+
+**Gemini CLI** — the repository is a Gemini extension, and the skills are discovered from it:
+
+```
+gemini extensions install https://github.com/FluentContracts/FluentContracts
+```
+
+**Any other agent** — the skill is a plain folder. Copy
+[`skills/fluentcontracts`](skills/fluentcontracts) into wherever your harness looks for skills.
+
+### Using it
+
+You do not invoke it. It carries a description of when it applies, and the agent loads it on its own
+once the work is about argument validation — "add guards to this constructor", "replace these
+`if`/`throw` blocks", "validate the options before we use them". Naming FluentContracts in the ask
+makes it certain.
+
+Two files, both worth reading yourself:
+[`SKILL.md`](skills/fluentcontracts/SKILL.md) is the guidance, and
+[`references/cheatsheet.md`](skills/fluentcontracts/references/cheatsheet.md) is the catalogue of what
+exists plus the rules that decide overloads, messages and exception types.
+
 ## Help needed 🙏
 
 The goal is for this to be exhaustive, safe and stable enough for production use on large projects,

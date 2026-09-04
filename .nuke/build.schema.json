@@ -24,6 +24,10 @@
     "ExecutableTarget": {
       "type": "string",
       "enum": [
+        "CheckPluginManifests",
+        "CheckPluginVersion",
+        "CheckSkillCatalogue",
+        "CheckSkillDocuments",
         "Clean",
         "Compile",
         "CreateGitHubRelease",
@@ -31,10 +35,14 @@
         "Full",
         "GenerateSupportedContracts",
         "Pack",
+        "PackPlugin",
         "Publish",
         "ReportCoverage",
         "Restore",
+        "SyncSkillCatalogue",
+        "TagPluginRelease",
         "Test",
+        "VerifySkills",
         "VerifyVersionDirective"
       ]
     },

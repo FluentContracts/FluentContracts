@@ -28,9 +28,11 @@ It ships as the `FluentContracts` NuGet package, targeting `netstandard2.0` and 
 | `tests/FluentContracts.Tests` | xUnit test suite |
 | `benchmarks/FluentContracts.Benchmarks` | BenchmarkDotNet suite — see [Benchmarks](#benchmarks) |
 | `build/` | The [NUKE](https://nuke.build) build, written in C# |
+| `skills/` | The agent skill, served in place to every harness; see [The agent skill](#the-agent-skill) |
 | `.github/workflows/` | **Generated** by NUKE — see [CI](#ci) |
 | `docs/PackageReadme.md` | The readme shown on nuget.org — see [The two readmes](#the-two-readmes) |
 | `docs/SupportedContracts.md` | **Generated** by the build — never hand-edit |
+| `skills/fluentcontracts/references/cheatsheet.md` | Its catalogue section is **generated** — never hand-edit inside the markers |
 
 ## Prerequisites
 
@@ -252,6 +254,11 @@ CS1591, and warnings are errors here, so the build fails. Nothing suppresses it 
 Tests are required for every new check and every bug fix; a pull request without them will
 not be accepted.
 
+A new check also has to reach the **agent skill**, whose cheatsheet is what a coding agent consults
+instead of guessing a check name. That part is generated: run `./build.sh SyncSkillCatalogue`, commit
+the result, and bump the plugin version. `CheckSkillCatalogue` fails the build until you have — see
+[The agent skill](#the-agent-skill).
+
 - One file per contract, under `tests/FluentContracts.Tests/<area>/`, annotated with
   `[ContractTest("Name")]`.
 - Use the `TestContract<T, TContract, TException>` harness in `Tests.cs`. It asserts the
@@ -351,6 +358,137 @@ so only the IDE-only code-fix assembly may reference it.
 Current rules: none. **FC0001** policed the message-first `BeAnyOf` overload and was retired with it
 in 4.0.0 — recorded under *Removed Rules* in `AnalyzerReleases.Shipped.md`. The projects and the
 packaging stay in place for the next rule.
+
+## The agent skill
+
+`skills/fluentcontracts/` teaches a coding agent to apply FluentContracts in a **consumer** project:
+which check to reach for, where the message goes, the one bracketed-set overload rule, the exception
+taxonomy, the null and NaN policy, and specifications. `AGENTS.md` is guidance for someone working in
+this repository; the skill is the same knowledge sent to where the library is actually used.
+
+**The repository root is the plugin.** There is exactly one copy of `skills/` and all three harnesses
+read it in place, which is why the plugin manifests sit at the root rather than under a plugin
+directory of their own:
+
+| Surface | Manifest | How it finds the skills |
+| --- | --- | --- |
+| Claude Code | `.claude-plugin/plugin.json`, listed in `.claude-plugin/marketplace.json` | the entry's `source` is `./`, the marketplace root, and Claude Code's default `skills/` scan runs against it |
+| Codex | `.codex-plugin/plugin.json`, listed in `.agents/plugins/marketplace.json` | the manifest's `skills` is `./skills/`, relative to the same root |
+| Gemini CLI | `gemini-extension.json` | it discovers `skills/` at the root |
+
+Do not reintroduce a plugin directory holding a second copy of the tree. It was the first shape this
+took and it is worse twice over: the copy is real duplication that has to be regenerated and gated
+against drift, and it buys nothing this layout does not already give.
+
+Replacing such a copy with a **symlink** is worse still, which is worth knowing before anyone
+suggests it. Git for Windows tests at clone time whether it can create links; where it cannot — the
+default, absent Developer Mode — it sets `core.symlinks=false` and writes the link out as a small
+text file holding the target path. The plugin would ship no skills at all, on exactly the platform
+least likely to be the one you tested on, with nothing anywhere to say so.
+
+One caveat is worth recording. A marketplace-root `source` is documented for Claude Code. Codex
+requires only that `source.path` be relative to the marketplace root, `./`-prefixed and inside that
+root — all of which `./` satisfies — but every example in its documentation is a subdirectory, so the
+root form is undocumented rather than blessed there. If it turns out to be unsupported, the fallback
+is a Codex-only plugin directory carrying its own copy of the skills, and the drift gate that a copy
+needs.
+
+### Changing a skill
+
+1. Edit under `skills/`. There is nowhere else to edit; that is the point of the layout. The one
+   exception is the cheatsheet's catalogue section, which is generated — see below.
+2. **Bump the version by hand in all four manifests** — the two plugin manifests, the entry in
+   `.claude-plugin/marketplace.json`, and `gemini-extension.json`. Additive content is a minor bump;
+   a correction is a patch.
+
+The bump is the step that is easy to skip and expensive to miss: clients read the declared version to
+decide whether an installed plugin is stale, so skills edited without one never reach an agent that
+already holds the old copy. Nothing downstream complains — the pull request is green and the skills
+are correct in the repository.
+
+### How it reaches people
+
+All three harnesses install **from the repository**, not from a package or a release, so a merge into
+`master` is what ships a skill change and there is nothing to publish. Claude Code and Codex clone
+the marketplace repository. Gemini CLI prefers a GitHub release asset and falls back to cloning —
+which is what happens here, because it looks for `{platform}.{arch}.{name}.{ext}` or
+`{platform}.{name}.{ext}` and treats a lone asset as a generic fallback, and a release of this
+repository carries several assets (the package, its symbols, the plugin archive) matching none of
+those patterns.
+
+What a release adds is only **pinning**: `TagPluginRelease` tags the merge commit `plugin-v<version>`
+so an installation can be fixed to a known version, and `PackPlugin`'s archive rides along on the
+GitHub release as a copy of what was published.
+
+> [!IMPORTANT]
+> The `skip-release` label does **not** hold back the plugin tag, and must not be made to. The label
+> controls the *package*; the plugin carries its own hand-bumped version. A change to the skill alone
+> is exactly the case that wants both — no package release, because the package did not change, and
+> the plugin tagged, because it did. That is why `TagPluginRelease` triggers off `Pack` rather than
+> `Publish`: `Publish` is skipped by the label, and anything triggered by it would go with it.
+
+### The catalogue is generated from the library
+
+`references/cheatsheet.md` carries a catalogue of every contract and the checks it adds, between
+`<!-- BEGIN GENERATED CATALOGUE -->` and `<!-- END GENERATED CATALOGUE -->`. **Never hand-edit inside
+those markers.** `./build.sh SyncSkillCatalogue` regenerates the section from the built assembly, by
+the same reflection that produces `docs/SupportedContracts.md`, grouping contracts by the namespace
+they are declared in — so a contract added under a new `Contracts/<Area>/` folder lands in its own
+section with nothing to maintain by hand.
+
+`CheckSkillCatalogue` fails the build when the committed catalogue no longer matches the library, and
+names the contracts that differ rather than saying a file changed:
+
+```
+The skill's catalogue no longer matches the library:
+  `Int`'s checks changed.
+    library:    - **`Int`** … `BeLessThan`, `BePerfectSquare`
+    cheatsheet: - **`Int`** … `BeLessThan`
+```
+
+This is the gate that matters most, and it is the one that is easiest to be sceptical of, so: the
+cheatsheet is how an agent answers *"does this check exist?"* without guessing. A catalogue that has
+fallen behind the library is **worse than no catalogue** — it reads as authoritative and is wrong,
+and the agent has no way to tell. Adding a check and forgetting the skill is the easiest possible
+miss, because the two live nowhere near each other and every test still passes.
+
+Regenerating changes `skills/`, so `CheckPluginVersion` will then require a plugin version bump in
+the same change. That is intended, not an annoyance to route around: agents holding the old plugin
+would otherwise keep the stale catalogue. Adding checks is a minor bump.
+
+### What the build enforces
+
+All of it hangs off `Test`, so the existing `pr` and `release` workflows already run it and neither
+the workflows nor the attributes that generate them had to change.
+
+| Target | Fails when |
+| --- | --- |
+| `CheckSkillDocuments` | a skill violates the [Agent Skills specification](https://agentskills.io/specification) — most often a frontmatter `name` that no longer matches its directory, which every harness requires and which makes the skill silently fail to load |
+| `CheckSkillCatalogue` | the library has a contract or check the cheatsheet does not, or the other way round |
+| `CheckPluginManifests` | the manifests disagree about the version, the plugin's name, or where it lives |
+| `CheckPluginVersion` | what the plugin publishes changed against the base ref and the version did not move **up** |
+
+Three more targets produce rather than check. `SyncSkillCatalogue` regenerates the cheatsheet's
+catalogue — it is the generator, so fix a stale catalogue by running it, never by hand. `PackPlugin` archives the plugin into `output/plugins`,
+and the release attaches it next to the packages; it stages the manifests and `skills/` into a
+temporary tree rather than zipping the root, since the root is the whole library.
+`TagPluginRelease` tags the commit that published a plugin version as `plugin-v<version>`, so an
+installation can be pinned to it; it is idempotent, because every merge into `master` runs it while
+the version only moves when a skill changes.
+
+`CheckPluginVersion` is the one that needs history, because "the content changed and the version did
+not" is not a property of one snapshot. It compares against `FLUENTCONTRACTS_PLUGIN_BASE_REF`, else
+the pull request's base branch, else — on a push to `master` — the previous commit, else
+`origin/master`. Both workflows check out with `fetch-depth: 0`, so on CI the base is always there
+and a **skip is a failure**: a check that cannot run is not a check. Locally a skip is ordinary — a
+shallow clone, a fresh worktree, a base that was never fetched.
+
+Two things it insists on beyond "the version differs". It has to go **up**, so resolving a conflict
+by keeping the lower number is refused. And the previous-commit comparison on `master` is the only
+place a *collision* is visible: two branches that both bump 1.2.0 to 1.3.0 merge without a conflict —
+each side made the identical edit — and neither pull request's check ever saw the other, because
+GitHub does not re-run a pull request's checks when its base moves. With several skill-touching pull
+requests open at once, give each a distinct version, or bump once more after the last one lands.
 
 ## Benchmarks
 

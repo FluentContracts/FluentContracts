@@ -10,6 +10,36 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+### Added
+- **An agent skill, `fluentcontracts`, packaged as a plugin for Claude Code, Codex and Gemini CLI**
+  (#80). It teaches a coding agent to write FluentContracts guards the way this repository intends
+  them: confirm a check exists rather than guessing it, chain from `Must()` and end with `Value()`,
+  put the message last, respect the one bracketed-set overload rule for `BeAnyOf` and friends, let
+  the check decide the exception, and reach for `Satisfy` or an `ISpecification<T>` instead of
+  dropping a raw `throw` into a chain. The repository root is the plugin, so there is one `skills/`
+  tree and all three harnesses read it in place. It ships from the repository, not from the NuGet
+  package, so it reaches you by installing the plugin rather than by upgrading `FluentContracts` —
+  see [the README](README.md#the-agent-skill) for how.
+
+### Internal
+- The build gained the plumbing that keeps the skill honest, all of it part of `Test` so the
+  existing `pr` and `release` workflows already run it. `CheckSkillCatalogue` fails when the library
+  has a contract or check the skill's cheatsheet does not, or the other way round — the cheatsheet is
+  what an agent consults instead of guessing a check name, so one that has fallen behind is worse
+  than none, and adding a check while forgetting the skill is the easiest possible miss. Its
+  catalogue section is generated from the built assembly by `SyncSkillCatalogue`, grouped by the
+  namespace each contract is declared in. `CheckSkillDocuments` validates `skills/` against the Agent
+  Skills specification, `CheckPluginManifests` fails when the five manifests disagree about the
+  version, the name or where the plugin lives, and `CheckPluginVersion` fails when `skills/` changed
+  against the base ref without the plugin version moving **up** — a bump that is missed ships skills
+  that never reach an agent still holding the old copy. `PackPlugin` archives the plugin onto the
+  GitHub release next to the packages, and `TagPluginRelease` tags the commit that published a plugin
+  version as `plugin-v<version>` so an installation can be pinned to it. The tag is deliberately not
+  held back by the `skip-release` label: that label controls the package, the plugin carries its own
+  hand-bumped version, and a skill-only change wants both — no package release and a tagged plugin.
+- `docs/SupportedContracts.md` listed `get_And` on `Base`, the compiler-generated getter behind the
+  `And` property, as though it were a check. The generator now skips special-name members, so it is
+  gone from that file and never reached the skill's catalogue.
 
 ## [4.0.0] / 2026-09-02
 ### Breaking
