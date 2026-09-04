@@ -34,7 +34,9 @@ This file is the curated summary of notable changes on top of those.
   against the base ref without the plugin version moving **up** — a bump that is missed ships skills
   that never reach an agent still holding the old copy. `PackPlugin` archives the plugin onto the
   GitHub release next to the packages, and `TagPluginRelease` tags the commit that published a plugin
-  version as `plugin-v<version>` so an installation can be pinned to it.
+  version as `plugin-v<version>` so an installation can be pinned to it. The tag is deliberately not
+  held back by the `skip-release` label: that label controls the package, the plugin carries its own
+  hand-bumped version, and a skill-only change wants both — no package release and a tagged plugin.
 - `docs/SupportedContracts.md` listed `get_And` on `Base`, the compiler-generated getter behind the
   `And` property, as though it were a check. The generator now skips special-name members, so it is
   gone from that file and never reached the skill's catalogue.

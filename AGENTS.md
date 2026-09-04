@@ -406,6 +406,27 @@ decide whether an installed plugin is stale, so skills edited without one never 
 already holds the old copy. Nothing downstream complains — the pull request is green and the skills
 are correct in the repository.
 
+### How it reaches people
+
+All three harnesses install **from the repository**, not from a package or a release, so a merge into
+`master` is what ships a skill change and there is nothing to publish. Claude Code and Codex clone
+the marketplace repository. Gemini CLI prefers a GitHub release asset and falls back to cloning —
+which is what happens here, because it looks for `{platform}.{arch}.{name}.{ext}` or
+`{platform}.{name}.{ext}` and treats a lone asset as a generic fallback, and a release of this
+repository carries several assets (the package, its symbols, the plugin archive) matching none of
+those patterns.
+
+What a release adds is only **pinning**: `TagPluginRelease` tags the merge commit `plugin-v<version>`
+so an installation can be fixed to a known version, and `PackPlugin`'s archive rides along on the
+GitHub release as a copy of what was published.
+
+> [!IMPORTANT]
+> The `skip-release` label does **not** hold back the plugin tag, and must not be made to. The label
+> controls the *package*; the plugin carries its own hand-bumped version. A change to the skill alone
+> is exactly the case that wants both — no package release, because the package did not change, and
+> the plugin tagged, because it did. That is why `TagPluginRelease` triggers off `Pack` rather than
+> `Publish`: `Publish` is skipped by the label, and anything triggered by it would go with it.
+
 ### The catalogue is generated from the library
 
 `references/cheatsheet.md` carries a catalogue of every contract and the checks it adds, between

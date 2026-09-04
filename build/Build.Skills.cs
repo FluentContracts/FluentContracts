@@ -527,16 +527,26 @@ partial class Build
     /// <c>/plugin marketplace add FluentContracts/FluentContracts@plugin-v1.0.0</c>.
     /// </summary>
     /// <remarks>
+    /// <para>
     /// Idempotent, because every merge into the main branch runs this while the plugin version only
-    /// moves when a skill changes: a version that already has its tag is left alone. The package is
-    /// on nuget.org by the time this runs, so nothing here may fail the release.
+    /// moves when a skill changes: a version that already has its tag is left alone. Nothing here may
+    /// fail the build — a merge is not worth failing over a tag.
+    /// </para>
+    /// <para>
+    /// <b>Deliberately not held back by <see cref="SkipRelease"/>,</b> and triggered by
+    /// <see cref="Pack"/> rather than <see cref="Publish"/> so that it is not skipped along with it.
+    /// The plugin carries its own version, computed from nothing and bumped by hand; the
+    /// <c>skip-release</c> label controls the <em>package</em>. A change to the skill alone is
+    /// exactly the case that wants both — no package release, because the package did not change,
+    /// and the plugin version tagged, because it did. Gating one on the other would mean the tag the
+    /// readme tells people to pin to never gets created.
+    /// </para>
     /// </remarks>
     [UsedImplicitly]
     Target TagPluginRelease => _ => _
-        .TriggeredBy(Publish)
-        .After(CreateGitHubRelease)
+        .TriggeredBy(Pack)
+        .After(PackPlugin, CreateGitHubRelease)
         .OnlyWhenStatic(() => GitRepository.IsOnMainOrMasterBranch())
-        .OnlyWhenDynamic(() => !SkipRelease)
         .Executes(async () =>
         {
             var tag = $"plugin-v{PluginVersion}";

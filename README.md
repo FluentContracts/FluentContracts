@@ -231,8 +231,9 @@ machine and it applies to every project you use FluentContracts in.
 /plugin install fluentcontracts@fluentcontracts
 ```
 
-Pin it to a released version by adding the marketplace at a tag instead —
-`FluentContracts/FluentContracts@plugin-v1.0.0`. Every release that moves the plugin version tags it.
+Pin it to a version by adding the marketplace at a tag instead —
+`FluentContracts/FluentContracts@plugin-v1.0.0`. Every merge that moves the plugin version tags it,
+whether or not a package was released alongside.
 
 **Codex** — the same repository is a Codex plugin marketplace:
 
