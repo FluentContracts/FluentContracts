@@ -10,6 +10,8 @@ merged pull-requests on the [releases page](https://github.com/FluentContracts/F
 This file is the curated summary of notable changes on top of those.
 
 ## [Unreleased]
+
+## [4.0.1] / 2026-09-04
 ### Added
 - **An agent skill, `fluentcontracts`, packaged as a plugin for Claude Code, Codex and Gemini CLI**
   (#80). It teaches a coding agent to write FluentContracts guards the way this repository intends
@@ -511,7 +513,8 @@ This file is the curated summary of notable changes on top of those.
 ## [1.0.1] / 2024-04-23
 - Initial release
 
-[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/FluentContracts/FluentContracts/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/FluentContracts/FluentContracts/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/FluentContracts/FluentContracts/compare/3.7.0...4.0.0
 [3.7.0]: https://github.com/FluentContracts/FluentContracts/compare/3.6.1...3.7.0
 [3.6.1]: https://github.com/FluentContracts/FluentContracts/compare/3.6.0...3.6.1
