@@ -21,7 +21,7 @@
              here is far older than that. PrivateAssets: the compiler provides these at runtime,
              and nothing may leak into the package's dependencies. -->
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.4.0" PrivateAssets="all" />
-        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.11.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
